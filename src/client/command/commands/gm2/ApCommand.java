@@ -26,6 +26,7 @@ package client.command.commands.gm2;
 import client.command.Command;
 import client.MapleClient;
 import client.MapleCharacter;
+import config.YamlConfig;
 import constants.ServerConstants;
 
 public class ApCommand extends Command {
@@ -44,7 +45,7 @@ public class ApCommand extends Command {
         if (params.length < 2) {
             int newAp = Integer.parseInt(params[0]);
             if (newAp < 0) newAp = 0;
-            else if (newAp > ServerConstants.MAX_AP) newAp = ServerConstants.MAX_AP;
+            else if (newAp > YamlConfig.config.server.MAX_AP) newAp = YamlConfig.config.server.MAX_AP;
 
             player.changeRemainingAp(newAp, false);
         } else {
@@ -52,7 +53,7 @@ public class ApCommand extends Command {
             if (victim != null) {
                 int newAp = Integer.parseInt(params[1]);
                 if (newAp < 0) newAp = 0;
-                else if (newAp > ServerConstants.MAX_AP) newAp = ServerConstants.MAX_AP;
+                else if (newAp > YamlConfig.config.server.MAX_AP) newAp = YamlConfig.config.server.MAX_AP;
 
                 victim.changeRemainingAp(newAp, false);
             } else {

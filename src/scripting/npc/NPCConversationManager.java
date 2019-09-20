@@ -24,6 +24,7 @@ package scripting.npc;
 import java.io.File;
 import java.sql.SQLException;
 
+import config.YamlConfig;
 import constants.ServerConstants;
 import net.server.Server;
 import net.server.guild.MapleAlliance;
@@ -340,7 +341,7 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
         
         public boolean canSpawnPlayerNpc(int mapid) {
                 MapleCharacter chr = getPlayer();
-                return !ServerConstants.PLAYERNPC_AUTODEPLOY && chr.getLevel() >= chr.getMaxClassLevel() && !chr.isGM() && MaplePlayerNPC.canSpawnPlayerNpc(chr.getName(), mapid);
+                return !YamlConfig.config.server.PLAYERNPC_AUTODEPLOY && chr.getLevel() >= chr.getMaxClassLevel() && !chr.isGM() && MaplePlayerNPC.canSpawnPlayerNpc(chr.getName(), mapid);
         }
         
         public MaplePlayerNPC getPlayerNPCByScriptid(int scriptId) {
@@ -592,7 +593,7 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
         }
         
         public boolean isUsingOldPqNpcStyle() {
-                return ServerConstants.USE_OLD_GMS_STYLED_PQ_NPCS && this.getPlayer().getParty() != null;
+                return YamlConfig.config.server.USE_OLD_GMS_STYLED_PQ_NPCS && this.getPlayer().getParty() != null;
         }
         
         public Object[] getAvailableMasteryBooks() {

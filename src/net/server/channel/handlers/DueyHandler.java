@@ -23,6 +23,7 @@ package net.server.channel.handlers;
 
 import client.MapleClient;
 import client.processor.DueyProcessor;
+import config.YamlConfig;
 import constants.ServerConstants;
 
 import net.AbstractMaplePacketHandler;
@@ -33,7 +34,7 @@ public final class DueyHandler extends AbstractMaplePacketHandler {
     
     @Override
     public final void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
-    	if (!ServerConstants.USE_DUEY){
+    	if (!YamlConfig.config.server.USE_DUEY){
             c.announce(MaplePacketCreator.enableActions());
             return;
     	}

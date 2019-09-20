@@ -19,6 +19,7 @@
 */
 package net.server.coordinator;
 
+import config.YamlConfig;
 import constants.ServerConstants;
 import scripting.event.EventInstanceManager;
 import java.util.LinkedList;
@@ -50,7 +51,7 @@ public class MapleEventRecallCoordinator {
     }
     
     public void storeEventInstance(int characterId, EventInstanceManager eim) {
-        if (ServerConstants.USE_ENABLE_RECALL_EVENT && isRecallableEvent(eim)) {
+        if (YamlConfig.config.server.USE_ENABLE_RECALL_EVENT && isRecallableEvent(eim)) {
             eventHistory.put(characterId, eim);
         }
     }

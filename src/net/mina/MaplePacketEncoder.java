@@ -21,6 +21,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package net.mina;
 
+import config.YamlConfig;
 import constants.ServerConstants;
 import client.MapleClient;
 import constants.OpcodeConstants;
@@ -46,7 +47,7 @@ public class MaplePacketEncoder implements ProtocolEncoder {
                 try {
                     final MapleAESOFB send_crypto = client.getSendCrypto();
                     final byte[] input = (byte[]) message;
-                    if (ServerConstants.USE_DEBUG_SHOW_PACKET) {
+                    if (YamlConfig.config.server.USE_DEBUG_SHOW_PACKET) {
                         int packetLen = input.length;
                         int pHeader = readFirstShort(input);
                         String pHeaderStr = Integer.toHexString(pHeader).toUpperCase();

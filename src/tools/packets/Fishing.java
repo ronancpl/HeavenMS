@@ -20,6 +20,7 @@
 package tools.packets;
 
 import client.MapleCharacter;
+import config.YamlConfig;
 import constants.GameConstants;
 import constants.ItemConstants;
 import constants.ServerConstants;
@@ -56,7 +57,7 @@ public class Fishing {
     private static boolean hitFishingTime(MapleCharacter chr, int baitLevel, double yearLikelihood, double timeLikelihood) {
         double baitLikelihood = 0.0002 * chr.getWorldServer().getFishingRate() * baitLevel;   // can improve 10.0 at "max level 50000" on rate 1x
         
-        if (ServerConstants.USE_DEBUG) {
+        if (YamlConfig.config.server.USE_DEBUG) {
             chr.dropMessage(5, "----- FISHING RESULT -----");
             chr.dropMessage(5, "Likelihoods - Year: " + yearLikelihood + " Time: " + timeLikelihood + " Meso: " + baitLikelihood);
             chr.dropMessage(5, "Score rolls - Year: " + (0.23 * yearLikelihood) + " Time: " + (0.77 * timeLikelihood) + " Meso: " + baitLikelihood);

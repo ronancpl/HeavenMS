@@ -26,6 +26,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import client.MapleJob;
+import config.YamlConfig;
 import tools.DatabaseConnection;
 import constants.ServerConstants;
 import net.server.Server;
@@ -85,7 +86,7 @@ public class RankingLoginWorker implements Runnable {
             con = DatabaseConnection.getConnection();
             con.setAutoCommit(false);
             
-            if(ServerConstants.USE_REFRESH_RANK_MOVE == true) {
+            if(YamlConfig.config.server.USE_REFRESH_RANK_MOVE == true) {
                 resetMoveRank(true);
                 resetMoveRank(false);
             }

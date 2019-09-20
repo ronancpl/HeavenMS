@@ -26,6 +26,7 @@ package client.command.commands.gm0;
 import client.command.Command;
 import client.MapleCharacter;
 import client.MapleClient;
+import config.YamlConfig;
 import constants.ServerConstants;
 import server.maps.MapleMap;
 
@@ -40,7 +41,7 @@ public class MapOwnerClaimCommand extends Command {
             try {
                 MapleCharacter chr = c.getPlayer();
                 
-                if (ServerConstants.USE_MAP_OWNERSHIP_SYSTEM) {
+                if (YamlConfig.config.server.USE_MAP_OWNERSHIP_SYSTEM) {
                     if (chr.getEventInstance() == null) {
                         MapleMap ownedMap = chr.getOwnedMap();  // thanks Conrad for suggesting not unlease a map as soon as player exits it
                         if (ownedMap != null) {

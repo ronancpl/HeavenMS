@@ -21,6 +21,7 @@
  */
 package net.server.channel.handlers;
 
+import config.YamlConfig;
 import constants.ServerConstants;
 import net.AbstractMaplePacketHandler;
 import client.inventory.manipulator.MapleInventoryManipulator;
@@ -42,7 +43,7 @@ public final class InventoryMergeHandler extends AbstractMaplePacketHandler {
         slea.readInt();
         chr.getAutobanManager().setTimestamp(2, Server.getInstance().getCurrentTimestamp(), 4);
         
-        if(!ServerConstants.USE_ITEM_SORT) {
+        if(!YamlConfig.config.server.USE_ITEM_SORT) {
             c.announce(MaplePacketCreator.enableActions());
             return;
 	}

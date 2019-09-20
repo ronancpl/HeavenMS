@@ -23,6 +23,7 @@ package net.server.handlers.login;
 
 import client.MapleCharacter;
 import client.MapleClient;
+import config.YamlConfig;
 import constants.ServerConstants;
 import java.util.List;
 import net.AbstractMaplePacketHandler;
@@ -64,7 +65,7 @@ public final class ViewAllCharHandler extends AbstractMaplePacketHandler {
             c.announce(MaplePacketCreator.showAllCharacter(charsSize, unk));
             
             for (Pair<Integer, List<MapleCharacter>> wchars : worldChars) {
-                c.announce(MaplePacketCreator.showAllCharacterInfo(wchars.getLeft(), wchars.getRight(), ServerConstants.ENABLE_PIC && !c.canBypassPic()));
+                c.announce(MaplePacketCreator.showAllCharacterInfo(wchars.getLeft(), wchars.getRight(), YamlConfig.config.server.ENABLE_PIC && !c.canBypassPic()));
             }
         } catch (Exception e) {
             e.printStackTrace();

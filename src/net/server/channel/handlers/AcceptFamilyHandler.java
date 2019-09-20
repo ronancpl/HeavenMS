@@ -21,6 +21,7 @@
  */
 package net.server.channel.handlers;
 
+import config.YamlConfig;
 import constants.ServerConstants;
 
 import java.sql.Connection;
@@ -50,7 +51,7 @@ public final class AcceptFamilyHandler extends AbstractMaplePacketHandler {
 
     @Override
     public final void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
-        if(!ServerConstants.USE_FAMILY_SYSTEM) {
+        if(!YamlConfig.config.server.USE_FAMILY_SYSTEM) {
             return;
         }
         MapleCharacter chr = c.getPlayer();
@@ -79,7 +80,7 @@ public final class AcceptFamilyHandler extends AbstractMaplePacketHandler {
                         MapleFamilyEntry targetEntry = chr.getFamilyEntry();
                         MapleFamily targetFamily = targetEntry.getFamily();
                         if(targetFamily.getLeader() != targetEntry) return;
-                        if(inviter.getFamily().getTotalGenerations() + targetFamily.getTotalGenerations() <= ServerConstants.FAMILY_MAX_GENERATIONS) {
+                        if(inviter.getFamily().getTotalGenerations() + targetFamily.getTotalGenerations() <= YamlConfig.config.server.FAMILY_MAX_GENERATIONS) {
                             targetEntry.join(inviter.getFamilyEntry());
                         } else {
                             inviter.announce(MaplePacketCreator.sendFamilyMessage(76, 0));
@@ -88,7 +89,7 @@ public final class AcceptFamilyHandler extends AbstractMaplePacketHandler {
                         }
                     }
                 } else { // create new family
-                    if(chr.getFamily() != null && inviter.getFamily() != null && chr.getFamily().getTotalGenerations() + inviter.getFamily().getTotalGenerations() >= ServerConstants.FAMILY_MAX_GENERATIONS) {
+                    if(chr.getFamily() != null && inviter.getFamily() != null && chr.getFamily().getTotalGenerations() + inviter.getFamily().getTotalGenerations() >= YamlConfig.config.server.FAMILY_MAX_GENERATIONS) {
                         inviter.announce(MaplePacketCreator.sendFamilyMessage(76, 0));
                         chr.announce(MaplePacketCreator.sendFamilyMessage(76, 0));
                         return;

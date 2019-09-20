@@ -32,6 +32,7 @@ import client.inventory.MapleInventory;
 import client.inventory.MapleInventoryType;
 import client.inventory.manipulator.MapleInventoryManipulator;
 import client.inventory.manipulator.MapleKarmaManipulator;
+import config.YamlConfig;
 import constants.ItemConstants;
 import constants.ServerConstants;
 import java.sql.Connection;
@@ -501,7 +502,7 @@ public class DueyProcessor {
         if (c.tryacquireClient()) {
             try {
                 long timeNow = System.currentTimeMillis();
-                if(timeNow - c.getPlayer().getNpcCooldown() < ServerConstants.BLOCK_NPC_RACE_CONDT) {
+                if(timeNow - c.getPlayer().getNpcCooldown() < YamlConfig.config.server.BLOCK_NPC_RACE_CONDT) {
                     c.announce(MaplePacketCreator.enableActions());
                     return;
                 }

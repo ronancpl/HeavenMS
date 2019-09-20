@@ -14,6 +14,7 @@ import client.inventory.MapleInventory;
 import client.inventory.MapleInventoryType;
 import client.inventory.manipulator.MapleInventoryManipulator;
 import client.inventory.manipulator.MapleKarmaManipulator;
+import config.YamlConfig;
 import constants.ItemConstants;
 import constants.ServerConstants;
 import net.AbstractMaplePacketHandler;
@@ -50,7 +51,7 @@ public final class WeddingHandler extends AbstractMaplePacketHandler {
                             String groomWishlistProp = "giftedItem" + (groomWishlist ? "G" : "B") + chr.getId();
 
                             int giftCount = marriage.getIntProperty(groomWishlistProp);
-                            if (giftCount < ServerConstants.WEDDING_GIFT_LIMIT) {
+                            if (giftCount < YamlConfig.config.server.WEDDING_GIFT_LIMIT) {
                                 int cid = marriage.getIntProperty(groomWishlist ? "groomId" : "brideId");
                                 if (chr.getId() != cid) {   // cannot gift yourself
                                     MapleCharacter spouse = marriage.getPlayerById(cid);
@@ -69,7 +70,7 @@ public final class WeddingHandler extends AbstractMaplePacketHandler {
                                                         marriage.addGiftItem(groomWishlist, newItem);
                                                         MapleInventoryManipulator.removeFromSlot(c, type, slot, quantity, false, false);
 
-                                                        if (ServerConstants.USE_ENFORCE_MERCHANT_SAVE) chr.saveCharToDB(false); 
+                                                        if (YamlConfig.config.server.USE_ENFORCE_MERCHANT_SAVE) chr.saveCharToDB(false); 
                                                         marriage.saveGiftItemsToDb(c, groomWishlist, cid);
 
                                                         MapleKarmaManipulator.toggleKarmaFlagToUntradeable(newItem);

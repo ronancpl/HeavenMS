@@ -26,6 +26,7 @@ import client.MapleClient;
 import client.MapleDisease;
 import client.inventory.Item;
 import client.inventory.MapleInventoryType;
+import config.YamlConfig;
 import constants.ItemConstants;
 import constants.ServerConstants;
 import net.AbstractMaplePacketHandler;
@@ -77,7 +78,7 @@ public final class UseItemHandler extends AbstractMaplePacketHandler {
                 long banTime = currentServerTime();
                 
                 if (ii.getItemEffect(toUse.getItemId()).applyTo(chr)) {
-                    if(ServerConstants.USE_BANISHABLE_TOWN_SCROLL) {
+                    if(YamlConfig.config.server.USE_BANISHABLE_TOWN_SCROLL) {
                         chr.setBanishPlayerData(banMap, banSp, banTime);
                     }
                     

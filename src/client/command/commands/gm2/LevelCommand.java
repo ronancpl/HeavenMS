@@ -26,6 +26,7 @@ package client.command.commands.gm2;
 import client.command.Command;
 import client.MapleClient;
 import client.MapleCharacter;
+import config.YamlConfig;
 import constants.ServerConstants;
 
 public class LevelCommand extends Command {
@@ -45,7 +46,7 @@ public class LevelCommand extends Command {
         player.setLevel(Math.min(Integer.parseInt(params[0]), player.getMaxClassLevel()) - 1);
 
         player.resetPlayerRates();
-        if (ServerConstants.USE_ADD_RATES_BY_LEVEL) player.setPlayerRates();
+        if (YamlConfig.config.server.USE_ADD_RATES_BY_LEVEL) player.setPlayerRates();
         player.setWorldRates();
 
         player.levelUp(false);

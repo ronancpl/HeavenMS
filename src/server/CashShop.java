@@ -33,6 +33,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.locks.Lock;
 
+import config.YamlConfig;
 import net.server.Server;
 import net.server.audit.locks.factory.MonitoredReentrantLockFactory;
 
@@ -278,7 +279,7 @@ public class CashShop {
         this.accountId = accountId;
         this.characterId = characterId;
 
-        if (!ServerConstants.USE_JOINT_CASHSHOP_INVENTORY) {
+        if (!YamlConfig.config.server.USE_JOINT_CASHSHOP_INVENTORY) {
             if (jobType == 0) {
                 factory = ItemFactory.CASH_EXPLORER;
             } else if (jobType == 1) {
@@ -358,7 +359,7 @@ public class CashShop {
     
     public void gainCash(int type, CashItem buyItem, int world) {
         gainCash(type, -buyItem.getPrice());
-        if(!ServerConstants.USE_ENFORCE_ITEM_SUGGESTION) Server.getInstance().getWorld(world).addCashItemBought(buyItem.getSN());
+        if(!YamlConfig.config.server.USE_ENFORCE_ITEM_SUGGESTION) Server.getInstance().getWorld(world).addCashItemBought(buyItem.getSN());
     }
 
     public boolean isOpened() {

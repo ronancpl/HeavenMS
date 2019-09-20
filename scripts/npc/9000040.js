@@ -25,7 +25,7 @@
  */
 
 importPackage(Packages.client.processor);
-importPackage(Packages.constants);
+importPackage(Packages.config);
 
 var status;
 var mergeFee = 50000;
@@ -50,7 +50,7 @@ function action(mode, type, selection) {
             status--;
 
         if(status == 0) {
-            if (!Packages.constants.ServerConstants.USE_ENABLE_CUSTOM_NPC_SCRIPT) {
+            if (!Packages.config.YamlConfig.config.server.USE_ENABLE_CUSTOM_NPC_SCRIPT) {
                 cm.sendOk("The medal ranking system is currently unavailable...");
                 cm.dispose();
                 return;
@@ -59,7 +59,7 @@ function action(mode, type, selection) {
             var levelLimit = !cm.getPlayer().isCygnus() ? 160 : 110;
             var selStr = "The medal ranking system is currently unavailable... Therefore, I am providing the #bEquipment Merge#k service! ";
             
-            if (!ServerConstants.USE_STARTER_MERGE && (cm.getPlayer().getLevel() < levelLimit || MakerProcessor.getMakerSkillLevel(cm.getPlayer()) < 3)) {
+            if (!YamlConfig.config.server.USE_STARTER_MERGE && (cm.getPlayer().getLevel() < levelLimit || MakerProcessor.getMakerSkillLevel(cm.getPlayer()) < 3)) {
                 selStr += "However, you must have #rMaker level 3#k and at least #rlevel 110#k (Cygnus Knight), #rlevel 160#k (other classes) and a fund of #r" + cm.numberWithCommas(mergeFee) + " mesos#k to use the service.";
                 cm.sendOk(selStr);
                 cm.dispose();

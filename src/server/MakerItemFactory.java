@@ -21,6 +21,7 @@
 */
 package server;
 
+import config.YamlConfig;
 import constants.EquipType;
 import constants.ServerConstants;
 import java.util.ArrayList;
@@ -74,7 +75,7 @@ public class MakerItemFactory {
     }
             
     private static double getMakerStimulantFee(int itemid) {
-        if(ServerConstants.USE_MAKER_FEE_HEURISTICS) {
+        if(YamlConfig.config.server.USE_MAKER_FEE_HEURISTICS) {
             EquipType et = EquipType.getEquipTypeById(itemid);
             int eqpLevel = ii.getEquipLevelReq(itemid);
 
@@ -109,7 +110,7 @@ public class MakerItemFactory {
     }
     
     private static double getMakerReagentFee(int itemid, int reagentLevel) {
-        if(ServerConstants.USE_MAKER_FEE_HEURISTICS) {
+        if(YamlConfig.config.server.USE_MAKER_FEE_HEURISTICS) {
             EquipType et = EquipType.getEquipTypeById(itemid);
             int eqpLevel = ii.getEquipLevelReq(itemid);
 

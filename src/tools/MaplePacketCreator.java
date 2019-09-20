@@ -62,6 +62,7 @@ import client.inventory.ModifyInventory;
 import client.newyear.NewYearCardRecord;
 import client.status.MonsterStatus;
 import client.status.MonsterStatusEffect;
+import config.YamlConfig;
 import constants.ExpTable;
 import constants.GameConstants;
 import constants.ItemConstants;
@@ -712,8 +713,8 @@ public class MaplePacketCreator {
                 mplew.write(c.getGender());
                 
                 boolean canFly = Server.getInstance().canFly(c.getAccID());
-                mplew.writeBool((ServerConstants.USE_ENFORCE_ADMIN_ACCOUNT || canFly) ? c.getGMLevel() > 1 : false);    // thanks Steve(kaito1410) for pointing the GM account boolean here
-                mplew.write(((ServerConstants.USE_ENFORCE_ADMIN_ACCOUNT || canFly) && c.getGMLevel() > 1) ? 0x80 : 0);  // Admin Byte. 0x80,0x40,0x20.. Rubbish.
+                mplew.writeBool((YamlConfig.config.server.USE_ENFORCE_ADMIN_ACCOUNT || canFly) ? c.getGMLevel() > 1 : false);    // thanks Steve(kaito1410) for pointing the GM account boolean here
+                mplew.write(((YamlConfig.config.server.USE_ENFORCE_ADMIN_ACCOUNT || canFly) && c.getGMLevel() > 1) ? 0x80 : 0);  // Admin Byte. 0x80,0x40,0x20.. Rubbish.
                 mplew.write(0); // Country Code.
                 
                 mplew.writeMapleAsciiString(c.getAccountName());
@@ -725,8 +726,8 @@ public class MaplePacketCreator {
 
                 mplew.writeInt(1); // 1: Remove the "Select the world you want to play in"
                 
-                mplew.write(ServerConstants.ENABLE_PIN && !c.canBypassPin() ? 0 : 1); // 0 = Pin-System Enabled, 1 = Disabled
-                mplew.write(ServerConstants.ENABLE_PIC && !c.canBypassPic() ? (c.getPic() == null || c.getPic().equals("") ? 0 : 1) : 2); // 0 = Register PIC, 1 = Ask for PIC, 2 = Disabled
+                mplew.write(YamlConfig.config.server.ENABLE_PIN && !c.canBypassPin() ? 0 : 1); // 0 = Pin-System Enabled, 1 = Disabled
+                mplew.write(YamlConfig.config.server.ENABLE_PIC && !c.canBypassPic() ? (c.getPic() == null || c.getPic().equals("") ? 0 : 1) : 2); // 0 = Register PIC, 1 = Ask for PIC, 2 = Disabled
                 
                 return mplew.getPacket();
         }
@@ -912,8 +913,8 @@ public class MaplePacketCreator {
                         addCharEntry(mplew, chr, false);
                 }
 
-                mplew.write(ServerConstants.ENABLE_PIC && !c.canBypassPic() ? (c.getPic() == null || c.getPic().equals("") ? 0 : 1) : 2);
-                mplew.writeInt(ServerConstants.COLLECTIVE_CHARSLOT ? chars.size() + c.getAvailableCharacterSlots() : c.getCharacterSlots());
+                mplew.write(YamlConfig.config.server.ENABLE_PIC && !c.canBypassPic() ? (c.getPic() == null || c.getPic().equals("") ? 0 : 1) : 2);
+                mplew.writeInt(YamlConfig.config.server.COLLECTIVE_CHARSLOT ? chars.size() + c.getAvailableCharacterSlots() : c.getCharacterSlots());
                 return mplew.getPacket();
         }
 

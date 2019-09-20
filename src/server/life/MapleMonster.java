@@ -30,6 +30,7 @@ import client.Skill;
 import client.SkillFactory;
 import client.status.MonsterStatus;
 import client.status.MonsterStatusEffect;
+import config.YamlConfig;
 import constants.ServerConstants;
 import constants.skills.Crusader;
 import constants.skills.FPMage;
@@ -451,7 +452,7 @@ public class MapleMonster extends AbstractLoadedMapleLife {
             return;
         }
         
-        if (ServerConstants.USE_DEBUG) {
+        if (YamlConfig.config.server.USE_DEBUG) {
             from.dropMessage(5, "Hitted MOB " + this.getId() + ", OID " + this.getObjectId());
         }
         
@@ -525,8 +526,8 @@ public class MapleMonster extends AbstractLoadedMapleLife {
     }
     
     private void distributePlayerExperience(MapleCharacter chr, float exp, float partyBonusMod, int totalPartyLevel, boolean highestPartyDamager, boolean whiteExpGain, boolean hasPartySharers) {
-        float playerExp = (ServerConstants.EXP_SPLIT_COMMON_MOD * chr.getLevel()) / totalPartyLevel;
-        if (highestPartyDamager) playerExp += ServerConstants.EXP_SPLIT_MVP_MOD;
+        float playerExp = (YamlConfig.config.server.EXP_SPLIT_COMMON_MOD * chr.getLevel()) / totalPartyLevel;
+        if (highestPartyDamager) playerExp += YamlConfig.config.server.EXP_SPLIT_MVP_MOD;
         
         playerExp *= exp;
         float bonusExp = partyBonusMod * playerExp;
@@ -537,7 +538,7 @@ public class MapleMonster extends AbstractLoadedMapleLife {
     
     private void distributePartyExperience(Map<MapleCharacter, Long> partyParticipation, float expPerDmg, Set<MapleCharacter> underleveled, Map<Integer, Float> personalRatio, double sdevRatio) {
         IntervalBuilder leechInterval = new IntervalBuilder();
-        leechInterval.addInterval(this.getLevel() - ServerConstants.EXP_SPLIT_LEVEL_INTERVAL, this.getLevel() + ServerConstants.EXP_SPLIT_LEVEL_INTERVAL);
+        leechInterval.addInterval(this.getLevel() - YamlConfig.config.server.EXP_SPLIT_LEVEL_INTERVAL, this.getLevel() + YamlConfig.config.server.EXP_SPLIT_LEVEL_INTERVAL);
         
         long maxDamage = 0, partyDamage = 0;
         MapleCharacter participationMvp = null;
@@ -552,14 +553,14 @@ public class MapleMonster extends AbstractLoadedMapleLife {
             
             // thanks Thora for pointing out leech level limitation
             int chrLevel = e.getKey().getLevel();
-            leechInterval.addInterval(chrLevel - ServerConstants.EXP_SPLIT_LEECH_INTERVAL, chrLevel + ServerConstants.EXP_SPLIT_LEECH_INTERVAL);
+            leechInterval.addInterval(chrLevel - YamlConfig.config.server.EXP_SPLIT_LEECH_INTERVAL, chrLevel + YamlConfig.config.server.EXP_SPLIT_LEECH_INTERVAL);
         }
         
         List<MapleCharacter> expMembers = new LinkedList<>();
         int totalPartyLevel = 0;
         
         // thanks G h o s t, Alfred, Vcoc, BHB for poiting out a bug in detecting party members after membership transactions in a party took place
-        if (ServerConstants.USE_ENFORCE_MOB_LEVEL_RANGE) {
+        if (YamlConfig.config.server.USE_ENFORCE_MOB_LEVEL_RANGE) {
             for (MapleCharacter member : partyParticipation.keySet().iterator().next().getPartyMembersOnSameMap()) {
                 if (!leechInterval.inInterval(member.getLevel())) {
                     underleveled.add(member);
@@ -685,7 +686,7 @@ public class MapleMonster extends AbstractLoadedMapleLife {
         // thanks Prophecy & Aika for finding out Holy Symbol not being applied on party bonuses
         Integer holySymbol = attacker.getBuffedValue(MapleBuffStat.HOLY_SYMBOL);
         if (holySymbol != null) {
-            if (ServerConstants.USE_FULL_HOLY_SYMBOL) { // thanks Mordred, xinyifly, AyumiLove, andy33 for noticing HS hands out 20% of its potential on less than 3 players
+            if (YamlConfig.config.server.USE_FULL_HOLY_SYMBOL) { // thanks Mordred, xinyifly, AyumiLove, andy33 for noticing HS hands out 20% of its potential on less than 3 players
                 multiplier *= (1.0 + (holySymbol.doubleValue() / 100.0));
             } else {
                 multiplier *= (1.0 + (holySymbol.doubleValue() / (hasPartySharers ? 100.0 : 500.0)));
@@ -734,7 +735,7 @@ public class MapleMonster extends AbstractLoadedMapleLife {
             if (partyExp != null) {
                 partyExp *= getStatusExpMultiplier(attacker, hasPartySharers);
                 partyExp *= attacker.getExpRate();
-                partyExp *= ServerConstants.PARTY_BONUS_EXP_RATE;
+                partyExp *= YamlConfig.config.server.PARTY_BONUS_EXP_RATE;
             } else {
                 partyExp = 0.0f;
             }
@@ -964,7 +965,7 @@ public class MapleMonster extends AbstractLoadedMapleLife {
     
     private void giveFamilyRep(MapleFamilyEntry entry) {
         if(entry != null) {
-            int repGain = isBoss() ? ServerConstants.FAMILY_REP_PER_BOSS_KILL : ServerConstants.FAMILY_REP_PER_KILL;
+            int repGain = isBoss() ? YamlConfig.config.server.FAMILY_REP_PER_BOSS_KILL : YamlConfig.config.server.FAMILY_REP_PER_KILL;
             if(getMaxHp() <= 1) repGain = 0; //don't count trash mobs
             entry.giveReputationToSenior(repGain, true);
         }
@@ -1401,7 +1402,7 @@ public class MapleMonster extends AbstractLoadedMapleLife {
                 int i = (skillid == Crusader.ARMOR_CRASH ? 1 : (skillid == WhiteKnight.MAGIC_CRASH ? 2 : 0));
                 debuffMobStat(statups[i]);
 
-                if(ServerConstants.USE_ANTI_IMMUNITY_CRASH) {
+                if(YamlConfig.config.server.USE_ANTI_IMMUNITY_CRASH) {
                     if (skillid == Crusader.ARMOR_CRASH) {
                         if(!isBuffed(MonsterStatus.WEAPON_REFLECT)) {
                             debuffMobStat(MonsterStatus.WEAPON_IMMUNITY);
@@ -2213,7 +2214,7 @@ public class MapleMonster extends AbstractLoadedMapleLife {
         };
         
         // had to schedule this since mob wouldn't stick to puppet aggro who knows why
-        this.getMap().getChannelServer().registerOverallAction(this.getMap().getId(), r, ServerConstants.UPDATE_INTERVAL);
+        this.getMap().getChannelServer().registerOverallAction(this.getMap().getId(), r, YamlConfig.config.server.UPDATE_INTERVAL);
     }
     
     /**

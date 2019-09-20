@@ -21,6 +21,7 @@
  */
 package net.server.channel.handlers;
 
+import config.YamlConfig;
 import server.MapleStatEffect;
 import tools.MaplePacketCreator;
 import tools.data.input.SeekableLittleEndianAccessor;
@@ -58,7 +59,7 @@ public final class MagicDamageHandler extends AbstractDealDamageHandler {
 		}
                 
                 if (chr.getMap().isDojoMap() && attack.numAttacked > 0) {
-                        chr.setDojoEnergy(chr.getDojoEnergy() +  + ServerConstants.DOJO_ENERGY_ATK);
+                        chr.setDojoEnergy(chr.getDojoEnergy() +  + YamlConfig.config.server.DOJO_ENERGY_ATK);
                         c.announce(MaplePacketCreator.getEnergy("energy", chr.getDojoEnergy()));
                 }
 

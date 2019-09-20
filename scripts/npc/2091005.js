@@ -25,7 +25,7 @@
 * @Map(s): Dojo Hall
 */
 
-importPackage(Packages.constants);
+importPackage(Packages.config);
 
 var disabled = false;
 var belts = Array(1132000, 1132001, 1132002, 1132003, 1132004);
@@ -44,7 +44,7 @@ function start() {
         return;
     }
     
-    belt_points = ServerConstants.USE_FAST_DOJO_UPGRADE ? Array(10, 90, 200, 460, 850) : Array(200, 1800, 4000, 9200, 17000);
+    belt_points = YamlConfig.config.server.USE_FAST_DOJO_UPGRADE ? Array(10, 90, 200, 460, 850) : Array(200, 1800, 4000, 9200, 17000);
     
     belt_on_inventory = new Array();
     for (var i = 0; i < belts.length; i++) {

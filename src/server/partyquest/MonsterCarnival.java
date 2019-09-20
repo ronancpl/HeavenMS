@@ -2,6 +2,7 @@ package server.partyquest;
 
 import java.util.concurrent.ScheduledFuture;
 import client.MapleCharacter;
+import config.YamlConfig;
 import constants.LanguageConstants;
 import constants.ServerConstants;
 import net.server.Server;
@@ -112,7 +113,7 @@ public class MonsterCarnival {
                 public void run() {
                     respawn();
                 }
-            }, ServerConstants.RESPAWN_INTERVAL);
+            }, YamlConfig.config.server.RESPAWN_INTERVAL);
             
             cs.initMonsterCarnival(cpq1, room);
         } catch (Exception e) {

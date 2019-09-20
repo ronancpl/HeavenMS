@@ -23,6 +23,7 @@ package net.server.world;
 
 import client.MapleCharacter;
 import client.MapleClient;
+import config.YamlConfig;
 import constants.ServerConstants;
 import java.util.Collection;
 import java.util.Collections;
@@ -344,7 +345,7 @@ public class MapleParty {
     public static boolean createParty(MapleCharacter player, boolean silentCheck) {
         MapleParty party = player.getParty();
         if (party == null) {
-            if (player.getLevel() < 10 && !ServerConstants.USE_PARTY_FOR_STARTERS) {
+            if (player.getLevel() < 10 && !YamlConfig.config.server.USE_PARTY_FOR_STARTERS) {
                 player.announce(MaplePacketCreator.partyStatusMessage(10));
                 return false;
             } else if (player.getAriantColiseum() != null) {

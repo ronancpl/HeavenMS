@@ -23,6 +23,7 @@ import client.MapleJob;
 import client.Skill;
 import client.inventory.Item;
 import client.inventory.MapleInventoryType;
+import config.YamlConfig;
 import constants.ServerConstants;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.LinkedHashMap;
@@ -56,8 +57,8 @@ public class CharacterFactoryRecipe {
         this.shoes = shoes;
         this.weapon = weapon;
         
-        if (!ServerConstants.USE_STARTING_AP_4) {
-            if (ServerConstants.USE_AUTOASSIGN_STARTERS_AP) {
+        if (!YamlConfig.config.server.USE_STARTING_AP_4) {
+            if (YamlConfig.config.server.USE_AUTOASSIGN_STARTERS_AP) {
                 str = 12;
                 dex = 5;
             } else {

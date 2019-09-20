@@ -6,4 +6,4 @@ WORKDIR /mnt
 COPY ./ ./
 RUN sh ./posix-compile.sh
 EXPOSE 8484 7575 7576 7577
-CMD exec tini -- sh ./docker-launch.sh
+CMD exec tini -- sh ./posix-launch.sh

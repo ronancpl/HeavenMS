@@ -23,6 +23,7 @@ package net.server.channel.handlers;
 
 import client.MapleCharacter;
 import client.MapleClient;
+import config.YamlConfig;
 import constants.ServerConstants;
 import net.AbstractMaplePacketHandler;
 import tools.LogHelper;
@@ -41,7 +42,7 @@ public final class SpouseChatHandler extends AbstractMaplePacketHandler {
             if (spouse != null) {
                 spouse.announce(MaplePacketCreator.OnCoupleMessage(c.getPlayer().getName(), msg, true));
                 c.announce(MaplePacketCreator.OnCoupleMessage(c.getPlayer().getName(), msg, true));
-                if (ServerConstants.USE_ENABLE_CHAT_LOG) {
+                if (YamlConfig.config.server.USE_ENABLE_CHAT_LOG) {
                     LogHelper.logChat(c, "Spouse", msg);
                 }
             } else {

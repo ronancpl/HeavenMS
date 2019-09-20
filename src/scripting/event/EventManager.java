@@ -21,6 +21,7 @@
 */
 package scripting.event;
 
+import config.YamlConfig;
 import jdk.nashorn.api.scripting.ScriptObjectMirror;
 import jdk.nashorn.api.scripting.ScriptUtils;
 import tools.exceptions.EventInstanceInProgressException;
@@ -184,7 +185,7 @@ public class EventManager {
     }
     
     public long getLobbyDelay() {
-        return ServerConstants.EVENT_LOBBY_DELAY;
+        return YamlConfig.config.server.EVENT_LOBBY_DELAY;
     }
     
     private List<Integer> getLobbyRange() {
@@ -312,7 +313,7 @@ public class EventManager {
                     instances.remove(name);
                 }
             }
-        }, ServerConstants.EVENT_LOBBY_DELAY * 1000);
+        }, YamlConfig.config.server.EVENT_LOBBY_DELAY * 1000);
     }
 
     public void setProperty(String key, String value) {
@@ -839,7 +840,7 @@ public class EventManager {
     
     public boolean isQueueFull() {
         synchronized(queuedGuilds) {
-            return queuedGuilds.size() >= ServerConstants.EVENT_MAX_GUILD_QUEUE;
+            return queuedGuilds.size() >= YamlConfig.config.server.EVENT_MAX_GUILD_QUEUE;
         }
     }
     

@@ -20,6 +20,7 @@
 package net.server.channel.worker;
 
 import client.status.MonsterStatusEffect;
+import config.YamlConfig;
 import constants.ServerConstants;
 import java.util.HashMap;
 import java.util.ArrayList;
@@ -45,7 +46,7 @@ public class MobStatusScheduler extends BaseScheduler {
         
         protected MobStatusOvertimeEntry(int delay, Runnable run) {
             procCount = 0;
-            procLimit = (int)Math.ceil((float) delay / ServerConstants.MOB_STATUS_MONITOR_PROC);
+            procLimit = (int)Math.ceil((float) delay / YamlConfig.config.server.MOB_STATUS_MONITOR_PROC);
             r = run;
         }
         

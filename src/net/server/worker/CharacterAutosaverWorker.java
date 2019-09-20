@@ -19,6 +19,7 @@
 */
 package net.server.worker;
 
+import config.YamlConfig;
 import net.server.world.World;
 import client.MapleCharacter;
 import constants.ServerConstants;
@@ -31,7 +32,7 @@ public class CharacterAutosaverWorker extends BaseWorker implements Runnable {
     
     @Override
     public void run() {
-        if(!ServerConstants.USE_AUTOSAVE) return;
+        if(!YamlConfig.config.server.USE_AUTOSAVE) return;
         
         PlayerStorage ps = wserv.getPlayerStorage();
         for(MapleCharacter chr: ps.getAllCharacters()) {

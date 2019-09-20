@@ -19,6 +19,7 @@
 */
 package net.server.coordinator;
 
+import config.YamlConfig;
 import constants.ServerConstants;
 import java.util.Collections;
 import java.util.LinkedList;
@@ -40,8 +41,8 @@ public class LoginStorage {
         List<Long> accHist = loginHistory.putIfAbsent(accountId, new LinkedList<Long>());
         if (accHist != null) {
             synchronized (accHist) {
-                if (accHist.size() > ServerConstants.MAX_ACCOUNT_LOGIN_ATTEMPT) {
-                    long blockExpiration = Server.getInstance().getCurrentTime() + ServerConstants.LOGIN_ATTEMPT_DURATION;
+                if (accHist.size() > YamlConfig.config.server.MAX_ACCOUNT_LOGIN_ATTEMPT) {
+                    long blockExpiration = Server.getInstance().getCurrentTime() + YamlConfig.config.server.LOGIN_ATTEMPT_DURATION;
                     Collections.fill(accHist, blockExpiration);
                     
                     return false;
@@ -52,7 +53,7 @@ public class LoginStorage {
         }
         
         synchronized (accHist) {
-            accHist.add(Server.getInstance().getCurrentTime() + ServerConstants.LOGIN_ATTEMPT_DURATION);
+            accHist.add(Server.getInstance().getCurrentTime() + YamlConfig.config.server.LOGIN_ATTEMPT_DURATION);
             return true;
         }
     }

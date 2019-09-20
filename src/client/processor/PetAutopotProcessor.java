@@ -27,6 +27,7 @@ import client.inventory.Item;
 import client.inventory.MapleInventory;
 import client.inventory.MapleInventoryType;
 import client.inventory.manipulator.MapleInventoryManipulator;
+import config.YamlConfig;
 import constants.ServerConstants;
 import java.util.List;
 import server.MapleItemInformationProvider;
@@ -125,13 +126,13 @@ public class PetAutopotProcessor {
                     incMp = stat.getMp();
                     if(incMp <= 0 && hasMpGain) incMp = Math.ceil(maxMp * stat.getMpRate());
 
-                    if (ServerConstants.USE_COMPULSORY_AUTOPOT) {
+                    if (YamlConfig.config.server.USE_COMPULSORY_AUTOPOT) {
                         if (hasHpGain) {
-                            qtyCount = (int) Math.ceil(((ServerConstants.PET_AUTOHP_RATIO * maxHp) - curHp) / incHp);
+                            qtyCount = (int) Math.ceil(((YamlConfig.config.server.PET_AUTOHP_RATIO * maxHp) - curHp) / incHp);
                         }
 
                         if (hasMpGain) {
-                            qtyCount = Math.max(qtyCount, (int) Math.ceil(((ServerConstants.PET_AUTOMP_RATIO * maxMp) - curMp) / incMp));
+                            qtyCount = Math.max(qtyCount, (int) Math.ceil(((YamlConfig.config.server.PET_AUTOMP_RATIO * maxMp) - curMp) / incMp));
                         }
                     } else {
                         qtyCount = 1;   // non-compulsory autopot concept thanks to marcuswoon

@@ -29,6 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map.Entry;
 
+import config.YamlConfig;
 import net.AbstractMaplePacketHandler;
 import net.server.PlayerBuffValueHolder;
 import net.server.Server;
@@ -233,7 +234,7 @@ public final class PlayerLoggedinHandler extends AbstractMaplePacketHandler {
 
                 c.announce(MaplePacketCreator.getCharInfo(player));
                 if (!player.isHidden()) {
-                    if(player.isGM() && ServerConstants.USE_AUTOHIDE_GM) {
+                    if(player.isGM() && YamlConfig.config.server.USE_AUTOHIDE_GM) {
                         player.toggleHide(true);
                     }
                 }
@@ -402,7 +403,7 @@ public final class PlayerLoggedinHandler extends AbstractMaplePacketHandler {
                 if (player.getMap().getHPDec() > 0) player.resetHpDecreaseTask();
 
                 player.resetPlayerRates();
-                if(ServerConstants.USE_ADD_RATES_BY_LEVEL == true) player.setPlayerRates();
+                if(YamlConfig.config.server.USE_ADD_RATES_BY_LEVEL == true) player.setPlayerRates();
                 player.setWorldRates();
                 player.updateCouponRates();
 
@@ -425,7 +426,7 @@ public final class PlayerLoggedinHandler extends AbstractMaplePacketHandler {
                     }
                 }
                 
-                if (ServerConstants.USE_NPCS_SCRIPTABLE) {
+                if (YamlConfig.config.server.USE_NPCS_SCRIPTABLE) {
                     c.announce(MaplePacketCreator.setNPCScriptable(ScriptableNPCConstants.SCRIPTABLE_NPCS));
                 }
                 

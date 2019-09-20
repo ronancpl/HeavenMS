@@ -19,6 +19,7 @@
 */
 package net.server.coordinator;
 
+import config.YamlConfig;
 import constants.ServerConstants;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -59,7 +60,7 @@ public class MapleLoginBypassCoordinator {
     }
     
     public void registerLoginBypassEntry(String nibbleHwid, int accId, boolean pic) {
-        long expireTime = (pic ? ServerConstants.BYPASS_PIC_EXPIRATION : ServerConstants.BYPASS_PIN_EXPIRATION);
+        long expireTime = (pic ? YamlConfig.config.server.BYPASS_PIC_EXPIRATION : YamlConfig.config.server.BYPASS_PIN_EXPIRATION);
         if (expireTime > 0) {
             Pair<String, Integer> entry = new Pair<>(nibbleHwid, accId);
             expireTime = Server.getInstance().getCurrentTime() + expireTime * 60 * 1000;

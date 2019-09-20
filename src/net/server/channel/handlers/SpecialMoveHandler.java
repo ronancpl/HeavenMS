@@ -23,6 +23,7 @@ package net.server.channel.handlers;
 
 import java.awt.Point;
 
+import config.YamlConfig;
 import net.AbstractMaplePacketHandler;
 import server.MapleStatEffect;
 import server.life.MapleMonster;
@@ -81,7 +82,7 @@ public final class SpecialMoveHandler extends AbstractMaplePacketHandler {
                 return;
             } else if (skillid != Corsair.BATTLE_SHIP) {
                 int cooldownTime = effect.getCooldown();
-                if(MapleStatEffect.isHerosWill(skillid) && ServerConstants.USE_FAST_REUSE_HERO_WILL) {
+                if(MapleStatEffect.isHerosWill(skillid) && YamlConfig.config.server.USE_FAST_REUSE_HERO_WILL) {
                     cooldownTime /= 60;
                 }
                 

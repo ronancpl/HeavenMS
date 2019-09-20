@@ -22,6 +22,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package net.server.channel.handlers;
 
 import client.inventory.manipulator.MapleInventoryManipulator;
+import config.YamlConfig;
 import server.MapleItemInformationProvider;
 import server.MapleStatEffect;
 import tools.MaplePacketCreator;
@@ -70,7 +71,7 @@ public final class RangedAttackHandler extends AbstractDealDamageHandler {
         }
         
         if (chr.getMap().isDojoMap() && attack.numAttacked > 0) {
-            chr.setDojoEnergy(chr.getDojoEnergy() + ServerConstants.DOJO_ENERGY_ATK);
+            chr.setDojoEnergy(chr.getDojoEnergy() + YamlConfig.config.server.DOJO_ENERGY_ATK);
             c.announce(MaplePacketCreator.getEnergy("energy", chr.getDojoEnergy()));
         }
         

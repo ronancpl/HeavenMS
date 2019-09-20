@@ -21,6 +21,7 @@ package net.server.coordinator;
 
 import client.MapleCharacter;
 import client.MapleJob;
+import config.YamlConfig;
 import constants.ServerConstants;
 import java.io.File;
 import net.server.world.MapleParty;
@@ -370,7 +371,7 @@ public class MaplePartySearchCoordinator {
             } else {
                 LeaderSearchMetadata settings = searchSettings.get(leader.getId());
                 if (settings != null) {
-                    if (settings.reentryCount < ServerConstants.PARTY_SEARCH_REENTRY_LIMIT) {
+                    if (settings.reentryCount < YamlConfig.config.server.PARTY_SEARCH_REENTRY_LIMIT) {
                         settings.reentryCount += 1;
                         recalledLeaders.add(leader);
                     } else {
@@ -413,7 +414,7 @@ public class MaplePartySearchCoordinator {
             if (leader.isLoggedinWorld()) {
                 if (settings != null) {
                     recycledLeaders.add(new Pair<>(leader, settings));
-                    if (ServerConstants.USE_DEBUG && leader.isGM()) leader.dropMessage(5, "Your Party Search token session is now on waiting queue for up to 7 minutes, to get it working right away please stop your Party Search and retry again later.");
+                    if (YamlConfig.config.server.USE_DEBUG && leader.isGM()) leader.dropMessage(5, "Your Party Search token session is now on waiting queue for up to 7 minutes, to get it working right away please stop your Party Search and retry again later.");
                 } else {
                     leader.dropMessage(5, "Your Party Search token session expired, please stop your Party Search and retry again later.");
                 }

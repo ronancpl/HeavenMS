@@ -31,6 +31,7 @@ import client.inventory.MapleInventoryType;
 import client.inventory.MaplePet;
 import client.inventory.ModifyInventory;
 import client.newyear.NewYearCardRecord;
+import config.YamlConfig;
 import constants.ItemConstants;
 import constants.ServerConstants;
 
@@ -689,9 +690,9 @@ public class MapleInventoryManipulator {
         if (ii.isDropRestricted(it.getItemId())) {
             return true;
         } else if (ii.isCash(it.getItemId())) {
-            if (ServerConstants.USE_ENFORCE_UNMERCHABLE_CASH) {     // thanks Ari for noticing cash drops not available server-side
+            if (YamlConfig.config.server.USE_ENFORCE_UNMERCHABLE_CASH) {     // thanks Ari for noticing cash drops not available server-side
                 return true;
-            } else if (ItemConstants.isPet(it.getItemId()) && ServerConstants.USE_ENFORCE_UNMERCHABLE_PET) {
+            } else if (ItemConstants.isPet(it.getItemId()) && YamlConfig.config.server.USE_ENFORCE_UNMERCHABLE_PET) {
                 return true;
             }
         } else if (isDroppedItemRestricted(it)) {
@@ -802,7 +803,7 @@ public class MapleInventoryManipulator {
     }
 
     private static boolean isDroppedItemRestricted(Item it) {
-        return ServerConstants.USE_ERASE_UNTRADEABLE_DROP && it.isUntradeable();
+        return YamlConfig.config.server.USE_ERASE_UNTRADEABLE_DROP && it.isUntradeable();
     }
     
     public static boolean isSandboxItem(Item it) {
