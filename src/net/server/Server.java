@@ -55,22 +55,22 @@ import net.server.audit.locks.factory.MonitoredReentrantLockFactory;
 import net.MapleServerHandler;
 import net.mina.MapleCodecFactory;
 import net.server.channel.Channel;
-import net.server.coordinator.MapleSessionCoordinator;
+import net.server.coordinator.session.MapleSessionCoordinator;
 import net.server.guild.MapleAlliance;
 import net.server.guild.MapleGuild;
 import net.server.guild.MapleGuildCharacter;
-import net.server.worker.BossLogWorker;
-import net.server.worker.CharacterDiseaseWorker;
-import net.server.worker.CouponWorker;
-import net.server.worker.EventRecallCoordinatorWorker;
-import net.server.worker.DueyFredrickWorker;
-import net.server.worker.InvitationWorker;
-import net.server.worker.LoginCoordinatorWorker;
-import net.server.worker.LoginStorageWorker;
-import net.server.worker.RankingCommandWorker;
-import net.server.worker.RankingLoginWorker;
-import net.server.worker.ReleaseLockWorker;
-import net.server.worker.RespawnWorker;
+import net.server.task.BossLogTask;
+import net.server.task.CharacterDiseaseTask;
+import net.server.task.CouponTask;
+import net.server.task.EventRecallCoordinatorTask;
+import net.server.task.DueyFredrickTask;
+import net.server.task.InvitationTask;
+import net.server.task.LoginCoordinatorTask;
+import net.server.task.LoginStorageTask;
+import net.server.task.RankingCommandTask;
+import net.server.task.RankingLoginTask;
+import net.server.task.ReleaseLockTask;
+import net.server.task.RespawnTask;
 import net.server.world.World;
 
 import org.apache.mina.core.buffer.IoBuffer;
@@ -91,10 +91,10 @@ import client.inventory.ItemFactory;
 import client.inventory.MaplePet;
 import client.inventory.manipulator.MapleCashidGenerator;
 import client.newyear.NewYearCardRecord;
-import constants.ItemConstants;
-import constants.GameConstants;
-import constants.OpcodeConstants;
-import constants.ServerConstants;
+import constants.inventory.ItemConstants;
+import constants.game.GameConstants;
+import constants.net.OpcodeConstants;
+import constants.net.ServerConstants;
 import java.util.TimeZone;
 import server.CashShop.CashItemFactory;
 import server.MapleSkillbookInformationProvider;
@@ -877,21 +877,21 @@ public class Server {
         disconnectIdlesOnLoginTask();
         
         long timeLeft = getTimeLeftForNextHour();
-        tMan.register(new CharacterDiseaseWorker(), YamlConfig.config.server.UPDATE_INTERVAL, YamlConfig.config.server.UPDATE_INTERVAL);
-        tMan.register(new ReleaseLockWorker(), 2 * 60 * 1000, 2 * 60 * 1000);
-        tMan.register(new CouponWorker(), YamlConfig.config.server.COUPON_INTERVAL, timeLeft);
-        tMan.register(new RankingCommandWorker(), 5 * 60 * 1000, 5 * 60 * 1000);
-        tMan.register(new RankingLoginWorker(), YamlConfig.config.server.RANKING_INTERVAL, timeLeft);
-        tMan.register(new LoginCoordinatorWorker(), 60 * 60 * 1000, timeLeft);
-        tMan.register(new EventRecallCoordinatorWorker(), 60 * 60 * 1000, timeLeft);
-        tMan.register(new LoginStorageWorker(), 2 * 60 * 1000, 2 * 60 * 1000);
-        tMan.register(new DueyFredrickWorker(), 60 * 60 * 1000, timeLeft);
-        tMan.register(new InvitationWorker(), 30 * 1000, 30 * 1000);
-        tMan.register(new RespawnWorker(), YamlConfig.config.server.RESPAWN_INTERVAL, YamlConfig.config.server.RESPAWN_INTERVAL);
+        tMan.register(new CharacterDiseaseTask(), ServerConstants.UPDATE_INTERVAL, ServerConstants.UPDATE_INTERVAL);
+        tMan.register(new ReleaseLockTask(), 2 * 60 * 1000, 2 * 60 * 1000);
+        tMan.register(new CouponTask(), ServerConstants.COUPON_INTERVAL, timeLeft);
+        tMan.register(new RankingCommandTask(), 5 * 60 * 1000, 5 * 60 * 1000);
+        tMan.register(new RankingLoginTask(), ServerConstants.RANKING_INTERVAL, timeLeft);
+        tMan.register(new LoginCoordinatorTask(), 60 * 60 * 1000, timeLeft);
+        tMan.register(new EventRecallCoordinatorTask(), 60 * 60 * 1000, timeLeft);
+        tMan.register(new LoginStorageTask(), 2 * 60 * 1000, 2 * 60 * 1000);
+        tMan.register(new DueyFredrickTask(), 60 * 60 * 1000, timeLeft);
+        tMan.register(new InvitationTask(), 30 * 1000, 30 * 1000);
+        tMan.register(new RespawnTask(), ServerConstants.RESPAWN_INTERVAL, ServerConstants.RESPAWN_INTERVAL);
         
         timeLeft = getTimeLeftForNextDay();
         MapleExpeditionBossLog.resetBossLogTable();
-        tMan.register(new BossLogWorker(), 24 * 60 * 60 * 1000, timeLeft);
+        tMan.register(new BossLogTask(), 24 * 60 * 60 * 1000, timeLeft);
         
         long timeToTake = System.currentTimeMillis();
         SkillFactory.loadAllSkills();
@@ -911,7 +911,7 @@ public class Server {
         if(YamlConfig.config.server.USE_THREAD_TRACKER) ThreadTracker.getInstance().registerThreadTrackerTask();
         
         try {
-            Integer worldCount = Math.min(GameConstants.WORLD_NAMES.length, YamlConfig.config.worlds.size());
+            Integer worldCount = Math.min(GameConstants.WORLD_NAMES.length, YamlConfig.config.server.WORLDS);
             
             for (int i = 0; i < worldCount; i++) {
                 initWorld();

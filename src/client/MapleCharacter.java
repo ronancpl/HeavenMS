@@ -58,7 +58,7 @@ import net.server.PlayerCoolDownValueHolder;
 import net.server.Server;
 import net.server.audit.locks.MonitoredLockType;
 import net.server.audit.locks.factory.MonitoredReentrantLockFactory;
-import net.server.coordinator.MapleInviteCoordinator;
+import net.server.coordinator.world.MapleInviteCoordinator;
 import net.server.guild.MapleAlliance;
 import net.server.guild.MapleGuild;
 import net.server.guild.MapleGuildCharacter;
@@ -137,12 +137,12 @@ import client.inventory.PetDataFactory;
 import client.inventory.manipulator.MapleCashidGenerator;
 import client.inventory.manipulator.MapleInventoryManipulator;
 import client.newyear.NewYearCardRecord;
-import client.processor.FredrickProcessor;
-import client.processor.PetAutopotProcessor;
-import constants.ExpTable;
-import constants.GameConstants;
-import constants.ItemConstants;
-import constants.ServerConstants;
+import client.processor.npc.FredrickProcessor;
+import client.processor.action.PetAutopotProcessor;
+import constants.game.ExpTable;
+import constants.game.GameConstants;
+import constants.inventory.ItemConstants;
+import constants.net.ServerConstants;
 import constants.skills.Aran;
 import constants.skills.Beginner;
 import constants.skills.Bishop;
@@ -212,6 +212,7 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
     private int localchairrate;
     private boolean hidden, equipchanged = true, berserk, hasMerchant, hasSandboxItem = false, whiteChat = false, canRecvPartySearchInvite = true;
     private boolean equippedMesoMagnet = false, equippedItemPouch = false, equippedPetItemIgnore = false;
+    private float autopotHpAlert, autopotMpAlert;
     private int linkedLevel = 0;
     private String linkedName = null;
     private boolean finishedDojoTutorial;
@@ -8815,6 +8816,10 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
         // Always send the macro packet to fix a client side bug when switching characters.
         client.announce(MaplePacketCreator.getMacros(skillMacros));
     }
+    
+    public SkillMacro[] getMacros() {
+        return skillMacros;
+    }
 
     public void sendNote(String to, String msg, byte fame) throws SQLException {
         sendNote(to, this.getName(), msg, fame);
@@ -9144,9 +9149,11 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
             MapleKeyBinding autohpPot = this.getKeymap().get(91);
             if (autohpPot != null) {
                 int autohpItemid = autohpPot.getAction();
-                Item autohpItem = this.getInventory(MapleInventoryType.USE).findById(autohpItemid);
-                if (autohpItem != null) {
-                    PetAutopotProcessor.runAutopotAction(client, autohpItem.getPosition(), autohpItemid);
+                if (((float) this.getHp()) / this.getMaxHp() <= this.getAutopotHpAlert()) { // try within user settings... thanks Lame, Optimist, Stealth2800
+                    Item autohpItem = this.getInventory(MapleInventoryType.USE).findById(autohpItemid);
+                    if (autohpItem != null) {
+                        PetAutopotProcessor.runAutopotAction(client, autohpItem.getPosition(), autohpItemid);
+                    }
                 }
             }
         }
@@ -9155,9 +9162,11 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
             MapleKeyBinding autompPot = this.getKeymap().get(92);
             if (autompPot != null) {
                 int autompItemid = autompPot.getAction();
-                Item autompItem = this.getInventory(MapleInventoryType.USE).findById(autompItemid);
-                if (autompItem != null) {
-                    PetAutopotProcessor.runAutopotAction(client, autompItem.getPosition(), autompItemid);
+                if (((float) this.getMp()) / this.getMaxMp() <= this.getAutopotMpAlert()) {
+                    Item autompItem = this.getInventory(MapleInventoryType.USE).findById(autompItemid);
+                    if (autompItem != null) {
+                        PetAutopotProcessor.runAutopotAction(client, autompItem.getPosition(), autompItemid);
+                    }
                 }
             }
         }
@@ -10627,6 +10636,22 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
 
     public void setDragon(MapleDragon dragon) {
         this.dragon = dragon;
+    }
+    
+    public void setAutopotHpAlert(float hpPortion) {
+        autopotHpAlert = hpPortion;
+    }
+    
+    public float getAutopotHpAlert() {
+        return autopotHpAlert;
+    }
+    
+    public void setAutopotMpAlert(float mpPortion) {
+        autopotMpAlert = mpPortion;
+    }
+    
+    public float getAutopotMpAlert() {
+        return autopotMpAlert;
     }
     
     public long getJailExpirationTimeLeft() {

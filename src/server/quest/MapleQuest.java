@@ -32,7 +32,6 @@ import client.MapleCharacter.DelayedQuestUpdate;
 import client.MapleQuestStatus;
 import client.MapleQuestStatus.Status;
 import config.YamlConfig;
-import constants.ServerConstants;
 import java.util.EnumMap;
 import java.util.Set;
 import provider.MapleData;

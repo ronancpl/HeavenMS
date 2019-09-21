@@ -22,9 +22,8 @@
 package net.server.channel.handlers;
 
 import client.MapleClient;
-import client.processor.DueyProcessor;
+import client.processor.npc.DueyProcessor;
 import config.YamlConfig;
-import constants.ServerConstants;
 
 import net.AbstractMaplePacketHandler;
 import tools.MaplePacketCreator;

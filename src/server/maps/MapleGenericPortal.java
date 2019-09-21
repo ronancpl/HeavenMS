@@ -23,7 +23,7 @@ package server.maps;
 
 import client.MapleClient;
 import client.MapleCharacter;
-import constants.GameConstants;
+import constants.game.GameConstants;
 import java.awt.Point;
 import scripting.portal.PortalScriptManager;
 import tools.MaplePacketCreator;

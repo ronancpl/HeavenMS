@@ -22,7 +22,6 @@
 package net.server.channel.handlers;
 
 import config.YamlConfig;
-import constants.ServerConstants;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -33,10 +32,10 @@ import client.MapleClient;
 import client.MapleFamily;
 import client.MapleFamilyEntry;
 import net.AbstractMaplePacketHandler;
-import net.server.coordinator.MapleInviteCoordinator;
-import net.server.coordinator.MapleInviteCoordinator.InviteResult;
-import net.server.coordinator.MapleInviteCoordinator.InviteType;
-import net.server.coordinator.MapleInviteCoordinator.MapleInviteResult;
+import net.server.coordinator.world.MapleInviteCoordinator;
+import net.server.coordinator.world.MapleInviteCoordinator.InviteResult;
+import net.server.coordinator.world.MapleInviteCoordinator.InviteType;
+import net.server.coordinator.world.MapleInviteCoordinator.MapleInviteResult;
 import tools.DatabaseConnection;
 import tools.FilePrinter;
 import tools.MaplePacketCreator;

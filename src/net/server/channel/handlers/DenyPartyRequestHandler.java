@@ -24,9 +24,9 @@ package net.server.channel.handlers;
 import client.MapleCharacter;
 import client.MapleClient;
 import net.AbstractMaplePacketHandler;
-import net.server.coordinator.MapleInviteCoordinator;
-import net.server.coordinator.MapleInviteCoordinator.InviteResult;
-import net.server.coordinator.MapleInviteCoordinator.InviteType;
+import net.server.coordinator.world.MapleInviteCoordinator;
+import net.server.coordinator.world.MapleInviteCoordinator.InviteResult;
+import net.server.coordinator.world.MapleInviteCoordinator.InviteType;
 import tools.MaplePacketCreator;
 import tools.data.input.SeekableLittleEndianAccessor;
 

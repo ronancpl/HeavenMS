@@ -21,7 +21,7 @@
 */
 package tools;
 
-import constants.CharsetConstants;
+import constants.string.CharsetConstants;
 import java.io.ByteArrayOutputStream;
 
 public class HexTool {

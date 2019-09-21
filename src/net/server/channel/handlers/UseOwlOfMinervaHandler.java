@@ -30,7 +30,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.PriorityQueue;
 
-import constants.GameConstants;
+import constants.game.GameConstants;
 
 /**
  * @author Ronan

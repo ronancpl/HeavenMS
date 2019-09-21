@@ -28,7 +28,6 @@ import client.command.Command;
 import client.MapleClient;
 import client.MapleCharacter;
 import config.YamlConfig;
-import constants.ServerConstants;
 
 public class MaxStatCommand extends Command {
     {

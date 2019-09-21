@@ -11,6 +11,7 @@ public class ServerConfig {
     public boolean DB_CONNECTION_POOL;
 
     //Login Configuration
+    public int WORLDS;
     public int WLDLIST_SIZE;
     public int CHANNEL_SIZE;
     public int CHANNEL_LOAD;

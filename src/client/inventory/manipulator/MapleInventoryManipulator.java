@@ -32,8 +32,7 @@ import client.inventory.MaplePet;
 import client.inventory.ModifyInventory;
 import client.newyear.NewYearCardRecord;
 import config.YamlConfig;
-import constants.ItemConstants;
-import constants.ServerConstants;
+import constants.inventory.ItemConstants;
 
 import java.awt.Point;
 import java.util.ArrayList;

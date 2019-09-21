@@ -30,7 +30,7 @@ import client.MapleCharacter;
 import client.MapleClient;
 import client.Skill;
 import client.SkillFactory;
-import constants.ServerConstants;
+import constants.net.ServerConstants;
 import constants.skills.Bishop;
 import constants.skills.Evan;
 import constants.skills.FPArchMage;

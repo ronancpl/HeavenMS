@@ -24,7 +24,6 @@ package net.server.channel.handlers;
 import client.MapleCharacter;
 import client.MapleClient;
 import config.YamlConfig;
-import constants.ServerConstants;
 import net.AbstractMaplePacketHandler;
 import tools.LogHelper;
 import tools.MaplePacketCreator;

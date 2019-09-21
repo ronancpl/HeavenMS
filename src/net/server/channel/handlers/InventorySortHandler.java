@@ -35,7 +35,7 @@ import client.inventory.Equip;
 import client.inventory.MapleInventory;
 import client.inventory.MapleInventoryType;
 import client.inventory.ModifyInventory;
-import constants.ServerConstants;
+import constants.net.ServerConstants;
 import server.MapleItemInformationProvider;
 import net.server.Server;
 

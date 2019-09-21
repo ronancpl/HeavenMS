@@ -26,8 +26,7 @@ import java.util.List;
 import java.util.Map;
 
 import config.YamlConfig;
-import constants.ItemConstants;
-import constants.ServerConstants;
+import constants.inventory.ItemConstants;
 
 import client.MapleClient;
 import client.inventory.Equip;

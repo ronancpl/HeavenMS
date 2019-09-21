@@ -22,12 +22,11 @@
 package net.server.channel.handlers;
 
 import config.YamlConfig;
-import constants.ServerConstants;
 import client.MapleCharacter;
 import client.MapleClient;
 import net.AbstractMaplePacketHandler;
-import net.server.coordinator.MapleInviteCoordinator;
-import net.server.coordinator.MapleInviteCoordinator.InviteType;
+import net.server.coordinator.world.MapleInviteCoordinator;
+import net.server.coordinator.world.MapleInviteCoordinator.InviteType;
 import tools.MaplePacketCreator;
 import tools.data.input.SeekableLittleEndianAccessor;
 

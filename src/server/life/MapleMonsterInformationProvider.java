@@ -21,8 +21,7 @@
 package server.life;
 
 import config.YamlConfig;
-import constants.ItemConstants;
-import constants.ServerConstants;
+import constants.inventory.ItemConstants;
 import java.io.File;
 import java.sql.Connection;
 import java.sql.PreparedStatement;

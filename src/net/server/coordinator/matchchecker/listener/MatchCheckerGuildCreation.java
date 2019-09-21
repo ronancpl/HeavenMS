@@ -21,8 +21,7 @@ package net.server.coordinator.matchchecker.listener;
 
 import client.MapleCharacter;
 import config.YamlConfig;
-import constants.GameConstants;
-import constants.ServerConstants;
+import constants.game.GameConstants;
 import net.server.coordinator.matchchecker.AbstractMatchCheckerListener;
 import net.server.coordinator.matchchecker.MatchCheckerListenerRecipe;
 import net.server.guild.MapleGuild;

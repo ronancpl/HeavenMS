@@ -20,7 +20,6 @@
 package net.server.channel.handlers;
 
 import config.YamlConfig;
-import constants.ServerConstants;
 import client.MapleCharacter;
 import client.MapleClient;
 import net.AbstractMaplePacketHandler;

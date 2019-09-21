@@ -25,6 +25,7 @@ import client.MapleCharacter;
 import client.MapleClient;
 import client.Skill;
 import client.SkillFactory;
+import client.SkillMacro;
 import client.creator.veteran.*;
 import client.inventory.Equip;
 import client.inventory.Equip.ScrollResult;
@@ -35,13 +36,12 @@ import client.inventory.MaplePet;
 import client.inventory.ModifyInventory;
 import client.inventory.manipulator.MapleInventoryManipulator;
 import client.inventory.manipulator.MapleKarmaManipulator;
-import client.processor.AssignAPProcessor;
-import client.processor.AssignSPProcessor;
-import client.processor.DueyProcessor;
+import client.processor.stat.AssignAPProcessor;
+import client.processor.stat.AssignSPProcessor;
+import client.processor.npc.DueyProcessor;
 import config.YamlConfig;
-import constants.GameConstants;
-import constants.ItemConstants;
-import constants.ServerConstants;
+import constants.game.GameConstants;
+import constants.inventory.ItemConstants;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -170,6 +170,33 @@ public final class UseCashItemHandler extends AbstractMaplePacketHandler {
                 if ((curLevel < skillSPTo.getMaxLevel()) && curLevelSPFrom > 0) {
                     player.changeSkillLevel(skillSPFrom, (byte) (curLevelSPFrom - 1), player.getMasterLevel(skillSPFrom), -1);
                     player.changeSkillLevel(skillSPTo, (byte) (curLevel + 1), player.getMasterLevel(skillSPTo), -1);
+                    
+                    // update macros, thanks to Arnah
+                    if((curLevelSPFrom - 1) == 0){
+                        boolean updated = false;
+                        for(SkillMacro macro : player.getMacros()){
+                            if(macro == null) continue;
+                            
+                            boolean update = false;// cleaner?
+                            if(macro.getSkill1() == SPFrom){
+                                update = true;
+                                macro.setSkill1(0);
+                            }
+                            if(macro.getSkill2() == SPFrom){
+                                update = true;
+                                macro.setSkill2(0);
+                            }
+                            if(macro.getSkill3() == SPFrom){
+                                update = true;
+                                macro.setSkill3(0);
+                            }
+                            if(update){
+                                updated = true;
+                                player.updateMacros(macro.getPosition(), macro);
+                            }
+                        }
+                        if(updated) player.sendMacros();
+                    }
                 }
             } else {
                 int APTo = slea.readInt();

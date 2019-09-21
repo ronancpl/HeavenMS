@@ -24,7 +24,6 @@ import client.Skill;
 import client.inventory.Item;
 import client.inventory.MapleInventoryType;
 import config.YamlConfig;
-import constants.ServerConstants;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;

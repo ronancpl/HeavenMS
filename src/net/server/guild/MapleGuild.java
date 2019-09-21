@@ -24,7 +24,6 @@ package net.server.guild;
 import client.MapleCharacter;
 import client.MapleClient;
 import config.YamlConfig;
-import constants.ServerConstants;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -48,10 +47,10 @@ import net.server.channel.Channel;
 import tools.DatabaseConnection;
 import tools.MaplePacketCreator;
 import net.server.audit.locks.MonitoredLockType;
-import net.server.coordinator.MapleInviteCoordinator;
-import net.server.coordinator.MapleInviteCoordinator.InviteType;
-import net.server.coordinator.MapleInviteCoordinator.MapleInviteResult;
-import net.server.coordinator.MapleMatchCheckerCoordinator;
+import net.server.coordinator.world.MapleInviteCoordinator;
+import net.server.coordinator.world.MapleInviteCoordinator.InviteType;
+import net.server.coordinator.world.MapleInviteCoordinator.MapleInviteResult;
+import net.server.coordinator.matchchecker.MapleMatchCheckerCoordinator;
 
 public class MapleGuild {
     

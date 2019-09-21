@@ -21,9 +21,9 @@ package tools.packets;
 
 import client.MapleCharacter;
 import config.YamlConfig;
-import constants.GameConstants;
-import constants.ItemConstants;
-import constants.ServerConstants;
+import constants.game.GameConstants;
+import constants.inventory.ItemConstants;
+import constants.net.ServerConstants;
 import server.MapleItemInformationProvider;
 import tools.MaplePacketCreator;
 

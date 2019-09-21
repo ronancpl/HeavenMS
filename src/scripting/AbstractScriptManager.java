@@ -29,7 +29,7 @@ import java.io.IOException;
 
 import javax.script.*;
 
-import constants.ServerConstants;
+import constants.net.ServerConstants;
 import jdk.nashorn.api.scripting.NashornScriptEngine;
 import tools.FilePrinter;
 

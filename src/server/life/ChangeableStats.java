@@ -17,7 +17,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package server.life;
 
-import constants.GameConstants;
+import constants.game.GameConstants;
 
 public class ChangeableStats extends OverrideMonsterStats {
 

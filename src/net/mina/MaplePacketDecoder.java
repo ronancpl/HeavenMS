@@ -22,10 +22,9 @@
 package net.mina;
 
 import config.YamlConfig;
-import constants.ServerConstants;
 import client.MapleClient;
-import constants.OpcodeConstants;
-import net.server.coordinator.MapleSessionCoordinator;
+import constants.net.OpcodeConstants;
+import net.server.coordinator.session.MapleSessionCoordinator;
 import org.apache.mina.core.buffer.IoBuffer;
 import org.apache.mina.core.session.IoSession;
 import org.apache.mina.filter.codec.CumulativeProtocolDecoder;

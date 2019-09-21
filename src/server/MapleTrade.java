@@ -35,12 +35,12 @@ import client.inventory.MapleInventory;
 import client.inventory.MapleInventoryType;
 import client.inventory.manipulator.MapleInventoryManipulator;
 import client.inventory.manipulator.MapleKarmaManipulator;
-import constants.GameConstants;
-import constants.ServerConstants;
-import net.server.coordinator.MapleInviteCoordinator;
-import net.server.coordinator.MapleInviteCoordinator.InviteResult;
-import net.server.coordinator.MapleInviteCoordinator.InviteType;
-import net.server.coordinator.MapleInviteCoordinator.MapleInviteResult;
+import constants.game.GameConstants;
+import constants.net.ServerConstants;
+import net.server.coordinator.world.MapleInviteCoordinator;
+import net.server.coordinator.world.MapleInviteCoordinator.InviteResult;
+import net.server.coordinator.world.MapleInviteCoordinator.InviteType;
+import net.server.coordinator.world.MapleInviteCoordinator.MapleInviteResult;
 import tools.Pair;
 
 /**

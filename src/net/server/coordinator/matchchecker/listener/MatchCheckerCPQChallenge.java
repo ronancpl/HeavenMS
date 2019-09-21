@@ -20,7 +20,7 @@
 package net.server.coordinator.matchchecker.listener;
 
 import client.MapleCharacter;
-import constants.LanguageConstants;
+import constants.string.LanguageConstants;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;

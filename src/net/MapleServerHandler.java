@@ -35,14 +35,14 @@ import org.apache.mina.core.session.IdleStatus;
 import org.apache.mina.core.session.IoSession;
 
 import client.MapleClient;
-import constants.ServerConstants;
+import constants.net.ServerConstants;
 import java.net.InetSocketAddress;
 
 import net.server.Server;
 import net.server.audit.locks.MonitoredLockType;
 import net.server.audit.locks.MonitoredReentrantLock;
 import net.server.audit.locks.factory.MonitoredReentrantLockFactory;
-import net.server.coordinator.MapleSessionCoordinator;
+import net.server.coordinator.session.MapleSessionCoordinator;
 
 import tools.FilePrinter;
 import tools.MapleAESOFB;

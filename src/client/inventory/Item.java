@@ -21,7 +21,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package client.inventory;
 
-import constants.ItemConstants;
+import constants.inventory.ItemConstants;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;

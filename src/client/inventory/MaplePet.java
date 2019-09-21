@@ -21,7 +21,7 @@
 */
 package client.inventory;
 
-import constants.ExpTable;
+import constants.game.ExpTable;
 import java.awt.Point;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

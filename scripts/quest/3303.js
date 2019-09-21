@@ -45,6 +45,11 @@ function end(mode, type, selection) {
 		qm.dispose();
 	    }
 	} else if (status == 0) {
+            if (!qm.haveItem(oreArray[selection], 2)) {     // thanks resinate for noticing a function missing here
+                qm.sendNext("What's this, you haven't got the ores. No ores no deal!");
+                return;
+            }
+            
 	    qm.gainItem(oreArray[selection], -2); // Take 2 ores
 	    qm.sendNext("Then wait for awhile. I'll go and get the stuff to help you pass the test of Chief Alcadno.");
 	    qm.forceCompleteQuest();

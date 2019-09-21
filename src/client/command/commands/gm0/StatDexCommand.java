@@ -27,7 +27,6 @@ import client.MapleCharacter;
 import client.MapleClient;
 import client.command.Command;
 import config.YamlConfig;
-import constants.ServerConstants;
 
 public class StatDexCommand extends Command {
     {

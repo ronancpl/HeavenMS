@@ -32,7 +32,7 @@ import server.maps.MapleMapItem;
 import server.maps.MapleMapObject;
 import tools.MaplePacketCreator;
 import tools.data.input.SeekableLittleEndianAccessor;
-import constants.ServerConstants;
+import constants.net.ServerConstants;
 
 /**
  * @author TheRamon

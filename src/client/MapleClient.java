@@ -49,8 +49,8 @@ import jdk.nashorn.api.scripting.NashornScriptEngine;
 import tools.*;
 
 import net.server.Server;
-import net.server.coordinator.MapleSessionCoordinator;
-import net.server.coordinator.MapleSessionCoordinator.AntiMulticlientResult;
+import net.server.coordinator.session.MapleSessionCoordinator;
+import net.server.coordinator.session.MapleSessionCoordinator.AntiMulticlientResult;
 import net.server.channel.Channel;
 import net.server.guild.MapleGuild;
 import net.server.guild.MapleGuildCharacter;
@@ -63,8 +63,8 @@ import net.server.world.World;
 import org.apache.mina.core.session.IoSession;
 
 import client.inventory.MapleInventoryType;
-import constants.GameConstants;
-import constants.ServerConstants;
+import constants.game.GameConstants;
+import constants.net.ServerConstants;
 import scripting.AbstractPlayerInteraction;
 import scripting.event.EventInstanceManager;
 import scripting.event.EventManager;
@@ -79,7 +79,7 @@ import server.quest.MapleQuest;
 
 import net.server.audit.locks.MonitoredLockType;
 import net.server.audit.locks.factory.MonitoredReentrantLockFactory;
-import net.server.coordinator.MapleLoginBypassCoordinator;
+import net.server.coordinator.login.MapleLoginBypassCoordinator;
 
 public class MapleClient {
 

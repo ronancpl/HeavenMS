@@ -20,7 +20,6 @@
 package net.server.coordinator.partysearch;
 
 import client.MapleCharacter;
-import net.server.coordinator.MaplePartySearchCoordinator;
 
 import java.lang.ref.WeakReference;
 

@@ -31,7 +31,7 @@ import client.inventory.Item;
 import client.inventory.MapleInventory;
 import client.inventory.MapleInventoryType;
 import client.inventory.ModifyInventory;
-import constants.ItemConstants;
+import constants.inventory.ItemConstants;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;

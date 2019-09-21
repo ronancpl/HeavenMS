@@ -29,7 +29,7 @@ import jdk.nashorn.api.scripting.NashornScriptEngine;
 import scripting.AbstractScriptManager;
 import server.quest.MapleQuest;
 import tools.FilePrinter;
-import constants.GameConstants;
+import constants.game.GameConstants;
 import client.MapleClient;
 import client.MapleQuestStatus;
 

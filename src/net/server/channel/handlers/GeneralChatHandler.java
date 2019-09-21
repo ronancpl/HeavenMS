@@ -26,7 +26,6 @@ import client.MapleClient;
 import client.autoban.AutobanFactory;
 import client.command.CommandsExecutor;
 import config.YamlConfig;
-import constants.ServerConstants;
 import net.AbstractMaplePacketHandler;
 import tools.FilePrinter;
 import tools.LogHelper;

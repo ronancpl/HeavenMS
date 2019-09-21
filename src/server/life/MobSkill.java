@@ -29,7 +29,7 @@ import java.util.List;
 import client.MapleCharacter;
 import client.MapleDisease;
 import client.status.MonsterStatus;
-import constants.GameConstants;
+import constants.game.GameConstants;
 import java.util.LinkedList;
 import java.util.Map;
 import tools.Randomizer;

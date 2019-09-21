@@ -21,7 +21,7 @@ package net.server.channel.handlers;
 
 import client.MapleCharacter;
 import client.MapleClient;
-import constants.GameConstants;
+import constants.game.GameConstants;
 import net.AbstractMaplePacketHandler;
 import server.life.MapleMonster;
 import server.life.MapleMonsterInformationProvider;

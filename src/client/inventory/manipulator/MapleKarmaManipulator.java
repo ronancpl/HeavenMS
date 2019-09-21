@@ -19,7 +19,7 @@
 */
 package client.inventory.manipulator;
 
-import constants.ItemConstants;
+import constants.inventory.ItemConstants;
 import client.inventory.Item;
 
 /**

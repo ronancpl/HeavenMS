@@ -30,14 +30,13 @@ import client.inventory.MapleInventoryType;
 import client.inventory.manipulator.MapleInventoryManipulator;
 import client.inventory.manipulator.MapleKarmaManipulator;
 import config.YamlConfig;
-import constants.ItemConstants;
-import constants.ServerConstants;
+import constants.inventory.ItemConstants;
 
 import net.AbstractMaplePacketHandler;
 import server.MapleItemInformationProvider;
 import server.maps.MaplePortal;
 import server.MapleTrade;
-import constants.GameConstants;
+import constants.game.GameConstants;
 import server.maps.FieldLimit;
 import server.maps.MapleHiredMerchant;
 import server.maps.MapleMapObject;

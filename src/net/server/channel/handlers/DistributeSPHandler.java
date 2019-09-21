@@ -22,7 +22,7 @@
 package net.server.channel.handlers;
 
 import client.MapleClient;
-import client.processor.AssignSPProcessor;
+import client.processor.stat.AssignSPProcessor;
 import net.AbstractMaplePacketHandler;
 import tools.data.input.SeekableLittleEndianAccessor;
 

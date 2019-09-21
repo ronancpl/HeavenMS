@@ -26,7 +26,7 @@ package client.command.commands.gm1;
 import client.MapleCharacter;
 import client.command.Command;
 import client.MapleClient;
-import constants.GameConstants;
+import constants.game.GameConstants;
 import java.util.ArrayList;
 import java.util.Collections;
 import net.server.Server;

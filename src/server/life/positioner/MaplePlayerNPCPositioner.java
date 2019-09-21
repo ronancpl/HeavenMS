@@ -20,7 +20,6 @@
 package server.life.positioner;
 
 import config.YamlConfig;
-import constants.ServerConstants;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.ArrayList;

@@ -34,8 +34,8 @@ import java.util.logging.Logger;
 
 import javax.script.ScriptException;
 
-import constants.ServerConstants;
-import constants.GameConstants;
+import constants.net.ServerConstants;
+import constants.game.GameConstants;
 import client.MapleCharacter;
 import net.server.Server;
 import net.server.world.World;
@@ -43,7 +43,7 @@ import net.server.channel.Channel;
 import net.server.guild.MapleGuild;
 import net.server.world.MapleParty;
 import net.server.world.MaplePartyCharacter;
-import scripting.event.worker.EventScriptScheduler;
+import scripting.event.scheduler.EventScriptScheduler;
 import server.MapleMarriage;
 import server.expeditions.MapleExpedition;
 import server.maps.MapleMap;
@@ -925,7 +925,7 @@ public class EventManager {
     }
     
     private void fillEimQueue() {
-        ThreadManager.getInstance().newTask(new EventManagerWorker());  //call new thread to fill up readied instances queue
+        ThreadManager.getInstance().newTask(new EventManagerTask());  //call new thread to fill up readied instances queue
     }
     
     private EventInstanceManager getReadyInstance() {
@@ -974,7 +974,7 @@ public class EventManager {
         instantiateQueuedInstance();    // keep filling the queue until reach threshold.
     }
     
-    private class EventManagerWorker implements Runnable {
+    private class EventManagerTask implements Runnable {
     
         @Override
         public void run() {

@@ -29,8 +29,7 @@ import client.MapleCharacter;
 import client.inventory.MaplePet;
 import client.inventory.manipulator.MapleInventoryManipulator;
 import config.YamlConfig;
-import constants.ItemConstants;
-import constants.ServerConstants;
+import constants.inventory.ItemConstants;
 import server.MapleItemInformationProvider;
 
 public class ItemCommand extends Command {

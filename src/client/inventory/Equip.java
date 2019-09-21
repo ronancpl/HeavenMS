@@ -23,9 +23,8 @@ package client.inventory;
 
 import client.MapleClient;
 import config.YamlConfig;
-import constants.ServerConstants;
-import constants.ExpTable;
-import constants.ItemConstants;
+import constants.game.ExpTable;
+import constants.inventory.ItemConstants;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;

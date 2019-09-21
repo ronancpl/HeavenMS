@@ -2136,3 +2136,11 @@ Corrigido inscrição de itens no MTS levando a certos atributos de itens sendo 
 Adicionado ganho de MaxHP extra da skill para Thunderbreakers, em ambos casos de aumento de nível e de MaxHP usando AP.
 Refatorado ação de autopots, permitindo o mesmo a agir imediatamente após detecção de perda suficiente de HP/MP ao usar itens ou skills.
 Adicionado efeito sonoro de portal ao atravessar Mystic Door.
+
+16 Setembro 2019,
+Adicionado checagem no uso de autopots ao usar HP/MP, limites são calculados baseado em estimativa detectada de uso dos autopots pelo lado cliente.
+
+20 Setembro 2019,
+Adicionado update de macros ao usar SP reset.
+Refatorado vários pacotes Java contendo classes diversificadas.
+Corrigido nomenclatura errônea de "worker" introduzida, querendo significar "task".

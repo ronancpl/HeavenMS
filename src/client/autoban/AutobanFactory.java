@@ -24,7 +24,6 @@ package client.autoban;
 
 import client.MapleCharacter;
 import config.YamlConfig;
-import constants.ServerConstants;
 import net.server.Server;
 import tools.FilePrinter;
 import tools.MapleLogger;

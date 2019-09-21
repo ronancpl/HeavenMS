@@ -7,7 +7,6 @@ package client.autoban;
 
 import client.MapleCharacter;
 import config.YamlConfig;
-import constants.ServerConstants;
 import java.util.HashMap;
 import java.util.Map;
 import net.server.Server;

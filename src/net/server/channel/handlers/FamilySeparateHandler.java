@@ -23,7 +23,6 @@ import client.MapleClient;
 import client.MapleFamily;
 import client.MapleFamilyEntry;
 import config.YamlConfig;
-import constants.ServerConstants;
 import net.AbstractMaplePacketHandler;
 import tools.MaplePacketCreator;
 import tools.data.input.SeekableLittleEndianAccessor;

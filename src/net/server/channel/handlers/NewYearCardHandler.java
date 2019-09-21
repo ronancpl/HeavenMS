@@ -19,7 +19,7 @@
 */
 package net.server.channel.handlers;
 
-import constants.ItemConstants;
+import constants.inventory.ItemConstants;
 
 import client.MapleCharacter;
 import client.MapleClient;

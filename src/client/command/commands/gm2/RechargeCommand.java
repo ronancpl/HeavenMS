@@ -28,7 +28,7 @@ import client.command.Command;
 import client.MapleClient;
 import client.inventory.Item;
 import client.inventory.MapleInventoryType;
-import constants.ItemConstants;
+import constants.inventory.ItemConstants;
 import server.MapleItemInformationProvider;
 
 public class RechargeCommand extends Command {

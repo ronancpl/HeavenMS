@@ -26,7 +26,7 @@ import client.MapleCharacter;
 import java.sql.SQLException;
 import java.util.Arrays;
 import client.MapleClient;
-import constants.GameConstants;
+import constants.game.GameConstants;
 import java.awt.Point;
 import net.AbstractMaplePacketHandler;
 import server.maps.MaplePortal;

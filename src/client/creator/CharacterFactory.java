@@ -26,7 +26,6 @@ import client.inventory.Item;
 import client.inventory.MapleInventory;
 import client.inventory.MapleInventoryType;
 import config.YamlConfig;
-import constants.ServerConstants;
 import net.server.Server;
 import server.MapleItemInformationProvider;
 import tools.FilePrinter;

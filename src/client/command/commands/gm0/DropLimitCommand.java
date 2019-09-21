@@ -26,7 +26,6 @@ package client.command.commands.gm0;
 import client.MapleClient;
 import client.command.Command;
 import config.YamlConfig;
-import constants.ServerConstants;
 
 public class DropLimitCommand extends Command {
     {

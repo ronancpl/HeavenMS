@@ -5,8 +5,8 @@ import java.net.UnknownHostException;
 
 import net.AbstractMaplePacketHandler;
 import net.server.Server;
-import net.server.coordinator.MapleSessionCoordinator;
-import net.server.coordinator.MapleSessionCoordinator.AntiMulticlientResult;
+import net.server.coordinator.session.MapleSessionCoordinator;
+import net.server.coordinator.session.MapleSessionCoordinator.AntiMulticlientResult;
 import net.server.world.World;
 import org.apache.mina.core.session.IoSession;
 import tools.MaplePacketCreator;

@@ -24,7 +24,6 @@ package net.server.handlers.login;
 import client.MapleCharacter;
 import client.MapleClient;
 import config.YamlConfig;
-import constants.ServerConstants;
 import java.util.List;
 import net.AbstractMaplePacketHandler;
 import net.server.Server;

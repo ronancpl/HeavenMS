@@ -26,7 +26,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import config.YamlConfig;
-import constants.ServerConstants;
 import net.AbstractMaplePacketHandler;
 import net.server.world.World;
 import tools.DatabaseConnection;

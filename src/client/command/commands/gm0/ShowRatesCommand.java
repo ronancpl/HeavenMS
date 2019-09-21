@@ -27,7 +27,6 @@ import client.MapleCharacter;
 import client.command.Command;
 import client.MapleClient;
 import config.YamlConfig;
-import constants.ServerConstants;
 
 public class ShowRatesCommand extends Command {
     {

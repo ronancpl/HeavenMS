@@ -28,7 +28,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 import config.YamlConfig;
-import constants.ServerConstants;
 import server.life.MapleMonster;
 import server.life.MapleMonsterInformationProvider;
 //import server.life.MobAttackInfo;

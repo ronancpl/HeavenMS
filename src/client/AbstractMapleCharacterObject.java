@@ -20,8 +20,8 @@
 package client;
 
 import config.YamlConfig;
-import constants.GameConstants;
-import constants.ServerConstants;
+import constants.game.GameConstants;
+import constants.net.ServerConstants;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;

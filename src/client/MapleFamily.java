@@ -216,7 +216,7 @@ public class MapleFamily {
                     int totalRep = rsEntries.getInt("totalreputation");
                     int repsToSenior = rsEntries.getInt("reptosenior");
                     String precepts = rsEntries.getString("precepts");
-                    //Timestamp lastResetTime = rsEntries.getTimestamp("lastresettime"); //taken care of by FamilyDailyResetWorker
+                    //Timestamp lastResetTime = rsEntries.getTimestamp("lastresettime"); //taken care of by FamilyDailyResetTask
                     World wserv = Server.getInstance().getWorld(world);
                     if (wserv == null) {
                         continue;
@@ -278,7 +278,7 @@ public class MapleFamily {
         }
     }
 
-    public void saveAllMembersRep() { //was used for autosave worker, but character autosave should be enough
+    public void saveAllMembersRep() { //was used for autosave task, but character autosave should be enough
         try(Connection con = DatabaseConnection.getConnection()) {
             con.setAutoCommit(false);
             boolean success = true;

@@ -26,7 +26,7 @@ import client.MapleClient;
 import client.inventory.Item;
 import client.inventory.MapleInventory;
 import client.inventory.MapleInventoryType;
-import constants.ItemConstants;
+import constants.inventory.ItemConstants;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;

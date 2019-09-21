@@ -28,7 +28,7 @@ import config.YamlConfig;
 import tools.Pair;
 
 import client.MapleCharacter;
-import constants.ServerConstants;
+import constants.net.ServerConstants;
 
 /**
  *

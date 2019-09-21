@@ -21,7 +21,7 @@
 */
 package client;
 
-import constants.GameConstants;
+import constants.game.GameConstants;
 
 public enum MapleDisease {
     NULL(0x0),

@@ -22,7 +22,6 @@
 package net.server.channel.handlers;
 
 import config.YamlConfig;
-import constants.ServerConstants;
 import net.AbstractMaplePacketHandler;
 import client.inventory.manipulator.MapleInventoryManipulator;
 import tools.MaplePacketCreator;

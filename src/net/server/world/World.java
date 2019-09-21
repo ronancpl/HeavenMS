@@ -28,10 +28,10 @@ import client.BuddylistEntry;
 import client.MapleCharacter;
 import client.MapleFamily;
 import config.YamlConfig;
-import constants.GameConstants;
-import constants.ServerConstants;
-import java.sql.Connection;
+import constants.game.GameConstants;
+import constants.net.ServerConstants;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -79,26 +79,26 @@ import net.server.audit.locks.MonitoredReentrantReadWriteLock;
 import net.server.audit.locks.factory.MonitoredReentrantLockFactory;
 import net.server.channel.Channel;
 import net.server.channel.CharacterIdChannelPair;
-import net.server.coordinator.MapleInviteCoordinator;
-import net.server.coordinator.MapleInviteCoordinator.InviteResult;
-import net.server.coordinator.MapleInviteCoordinator.InviteType;
-import net.server.coordinator.MapleMatchCheckerCoordinator;
-import net.server.coordinator.MaplePartySearchCoordinator;
+import net.server.coordinator.world.MapleInviteCoordinator;
+import net.server.coordinator.world.MapleInviteCoordinator.InviteResult;
+import net.server.coordinator.world.MapleInviteCoordinator.InviteType;
+import net.server.coordinator.matchchecker.MapleMatchCheckerCoordinator;
+import net.server.coordinator.partysearch.MaplePartySearchCoordinator;
 import net.server.guild.MapleGuild;
 import net.server.guild.MapleGuildCharacter;
 import net.server.guild.MapleGuildSummary;
-import net.server.worker.CharacterAutosaverWorker;
-import net.server.worker.FamilyDailyResetWorker;
-import net.server.worker.FishingWorker;
-import net.server.worker.HiredMerchantWorker;
-import net.server.worker.MapOwnershipWorker;
-import net.server.worker.MountTirednessWorker;
-import net.server.worker.PartySearchWorker;
-import net.server.worker.PetFullnessWorker;
-import net.server.worker.ServerMessageWorker;
-import net.server.worker.TimedMapObjectWorker;
-import net.server.worker.TimeoutWorker;
-import net.server.worker.WeddingReservationWorker;
+import net.server.task.CharacterAutosaverTask;
+import net.server.task.FamilyDailyResetTask;
+import net.server.task.FishingTask;
+import net.server.task.HiredMerchantTask;
+import net.server.task.MapOwnershipTask;
+import net.server.task.MountTirednessTask;
+import net.server.task.PartySearchTask;
+import net.server.task.PetFullnessTask;
+import net.server.task.ServerMessageTask;
+import net.server.task.TimedMapObjectTask;
+import net.server.task.TimeoutTask;
+import net.server.task.WeddingReservationTask;
 import tools.DatabaseConnection;
 import tools.MaplePacketCreator;
 import tools.Pair;
@@ -206,22 +206,22 @@ public class World {
         }
         
         TimerManager tman = TimerManager.getInstance();
-        petsSchedule = tman.register(new PetFullnessWorker(this), 60 * 1000, 60 * 1000);
-        srvMessagesSchedule = tman.register(new ServerMessageWorker(this), 10 * 1000, 10 * 1000);
-        mountsSchedule = tman.register(new MountTirednessWorker(this), 60 * 1000, 60 * 1000);
-        merchantSchedule = tman.register(new HiredMerchantWorker(this), 10 * 60 * 1000, 10 * 60 * 1000);
-        timedMapObjectsSchedule = tman.register(new TimedMapObjectWorker(this), 60 * 1000, 60 * 1000);
-        charactersSchedule = tman.register(new CharacterAutosaverWorker(this), 60 * 60 * 1000, 60 * 60 * 1000);
-        marriagesSchedule = tman.register(new WeddingReservationWorker(this), YamlConfig.config.server.WEDDING_RESERVATION_INTERVAL * 60 * 1000, YamlConfig.config.server.WEDDING_RESERVATION_INTERVAL * 60 * 1000);
-        mapOwnershipSchedule = tman.register(new MapOwnershipWorker(this), 20 * 1000, 20 * 1000);
-        fishingSchedule = tman.register(new FishingWorker(this), 10 * 1000, 10 * 1000);
-        partySearchSchedule = tman.register(new PartySearchWorker(this), 10 * 1000, 10 * 1000);
-        timeoutSchedule = tman.register(new TimeoutWorker(this), 10 * 1000, 10 * 1000);
+        petsSchedule = tman.register(new PetFullnessTask(this), 60 * 1000, 60 * 1000);
+        srvMessagesSchedule = tman.register(new ServerMessageTask(this), 10 * 1000, 10 * 1000);
+        mountsSchedule = tman.register(new MountTirednessTask(this), 60 * 1000, 60 * 1000);
+        merchantSchedule = tman.register(new HiredMerchantTask(this), 10 * 60 * 1000, 10 * 60 * 1000);
+        timedMapObjectsSchedule = tman.register(new TimedMapObjectTask(this), 60 * 1000, 60 * 1000);
+        charactersSchedule = tman.register(new CharacterAutosaverTask(this), 60 * 60 * 1000, 60 * 60 * 1000);
+        marriagesSchedule = tman.register(new WeddingReservationTask(this), ServerConstants.WEDDING_RESERVATION_INTERVAL * 60 * 1000, ServerConstants.WEDDING_RESERVATION_INTERVAL * 60 * 1000);
+        mapOwnershipSchedule = tman.register(new MapOwnershipTask(this), 20 * 1000, 20 * 1000);
+        fishingSchedule = tman.register(new FishingTask(this), 10 * 1000, 10 * 1000);
+        partySearchSchedule = tman.register(new PartySearchTask(this), 10 * 1000, 10 * 1000);
+        timeoutSchedule = tman.register(new TimeoutTask(this), 10 * 1000, 10 * 1000);
         
         if(YamlConfig.config.server.USE_FAMILY_SYSTEM) {
             long timeLeft = Server.getTimeLeftForNextDay();
-            FamilyDailyResetWorker.resetEntitlementUsage(this);
-            tman.register(new FamilyDailyResetWorker(this), 24 * 60 * 60 * 1000, timeLeft);
+            FamilyDailyResetTask.resetEntitlementUsage(this);
+            tman.register(new FamilyDailyResetTask(this), 24 * 60 * 60 * 1000, timeLeft);
         }
     }
 

@@ -48,8 +48,8 @@ import client.inventory.Item;
 import client.inventory.ItemFactory;
 import client.inventory.MapleInventoryType;
 import client.inventory.MaplePet;
-import constants.ItemConstants;
-import constants.ServerConstants;
+import constants.inventory.ItemConstants;
+import constants.net.ServerConstants;
 import java.util.Collections;
 import net.server.audit.locks.MonitoredLockType;
 

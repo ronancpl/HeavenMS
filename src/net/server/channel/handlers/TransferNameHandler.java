@@ -30,7 +30,6 @@ import java.sql.Connection;
 import client.MapleCharacter;
 import client.MapleClient;
 import config.YamlConfig;
-import constants.ServerConstants;
 import net.AbstractMaplePacketHandler;
 import tools.DatabaseConnection;
 import tools.MaplePacketCreator;

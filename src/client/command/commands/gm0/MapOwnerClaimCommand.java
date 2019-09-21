@@ -27,7 +27,6 @@ import client.command.Command;
 import client.MapleCharacter;
 import client.MapleClient;
 import config.YamlConfig;
-import constants.ServerConstants;
 import server.maps.MapleMap;
 
 public class MapOwnerClaimCommand extends Command {

@@ -26,7 +26,6 @@ package client.command.commands.gm5;
 import client.command.Command;
 import client.MapleClient;
 import config.YamlConfig;
-import constants.ServerConstants;
 
 public class ShowPacketsCommand extends Command {
     {

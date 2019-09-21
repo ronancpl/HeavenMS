@@ -37,7 +37,7 @@ import net.server.audit.locks.factory.MonitoredReentrantLockFactory;
 import tools.Pair;
 import client.MapleCharacter;
 import client.MapleClient;
-import constants.ItemConstants;
+import constants.inventory.ItemConstants;
 import server.MapleItemInformationProvider;
 import client.inventory.manipulator.MapleInventoryManipulator;
 import tools.FilePrinter;

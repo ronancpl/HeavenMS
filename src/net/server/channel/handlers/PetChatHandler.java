@@ -24,7 +24,6 @@ package net.server.channel.handlers;
 import client.MapleClient;
 import client.autoban.AutobanFactory;
 import config.YamlConfig;
-import constants.ServerConstants;
 import net.AbstractMaplePacketHandler;
 import tools.FilePrinter;
 import tools.LogHelper;

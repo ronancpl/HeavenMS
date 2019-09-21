@@ -32,7 +32,7 @@ import server.quest.MapleQuestRequirementType;
 import client.MapleCharacter;
 import client.inventory.Item;
 import client.inventory.MapleInventoryType;
-import constants.ItemConstants;
+import constants.inventory.ItemConstants;
 
 /**
  *

@@ -44,7 +44,7 @@ import client.MapleClient;
 import client.inventory.Equip;
 import client.inventory.Item;
 import client.inventory.MapleInventoryType;
-import constants.ItemConstants;
+import constants.inventory.ItemConstants;
 
 public final class MTSHandler extends AbstractMaplePacketHandler {
 

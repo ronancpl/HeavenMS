@@ -27,7 +27,6 @@ import java.sql.SQLException;
 import java.util.Calendar;
 
 import config.YamlConfig;
-import constants.ServerConstants;
 import net.MaplePacketHandler;
 import net.server.Server;
 import tools.BCrypt;
@@ -41,7 +40,7 @@ import java.sql.Statement;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import net.server.coordinator.MapleSessionCoordinator;
+import net.server.coordinator.session.MapleSessionCoordinator;
 import org.apache.mina.core.session.IoSession;
 
 public final class LoginPasswordHandler implements MaplePacketHandler {

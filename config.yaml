@@ -162,12 +162,13 @@ server:
     USE_THREAD_TRACKER: true        #[SEVERE] This deadlock auditing thing will bloat the memory as fast as the time frame one takes to lose track of a raindrop on a tempesting day. Only for debugging purposes.
 
     #Database Configuration
-    DB_URL: ""
-    DB_USER: ""
+    DB_URL: "jdbc:mysql://localhost:3306/heavenms"
+    DB_USER: "root"
     DB_PASS: ""
     DB_CONNECTION_POOL: true        #Installs a connection pool to hub DB connections. Set false to default.
 
     #Login Configuration
+    WORLDS: 1                           #Initial number of worlds on the server.
     WLDLIST_SIZE: 21                    #Max possible worlds on the server.
     CHANNEL_SIZE: 20                    #Max possible channels per world (which is 20, based on the channel list on login phase).
     CHANNEL_LOAD: 100                   #Max players per channel (limit actually used to calculate the World server capacity).

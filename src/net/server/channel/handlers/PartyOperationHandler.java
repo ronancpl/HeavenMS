@@ -31,11 +31,11 @@ import tools.MaplePacketCreator;
 import tools.data.input.SeekableLittleEndianAccessor;
 import client.MapleCharacter;
 import client.MapleClient;
-import constants.ServerConstants;
-import net.server.coordinator.MapleInviteCoordinator;
-import net.server.coordinator.MapleInviteCoordinator.InviteResult;
-import net.server.coordinator.MapleInviteCoordinator.InviteType;
-import net.server.coordinator.MapleInviteCoordinator.MapleInviteResult;
+import constants.net.ServerConstants;
+import net.server.coordinator.world.MapleInviteCoordinator;
+import net.server.coordinator.world.MapleInviteCoordinator.InviteResult;
+import net.server.coordinator.world.MapleInviteCoordinator.InviteType;
+import net.server.coordinator.world.MapleInviteCoordinator.MapleInviteResult;
 
 import java.util.List;
 

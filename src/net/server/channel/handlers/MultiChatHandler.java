@@ -25,7 +25,6 @@ import client.MapleCharacter;
 import client.MapleClient;
 import client.autoban.AutobanFactory;
 import config.YamlConfig;
-import constants.ServerConstants;
 import net.AbstractMaplePacketHandler;
 import net.server.Server;
 import net.server.world.World;
