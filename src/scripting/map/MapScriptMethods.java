@@ -94,13 +94,13 @@ public class MapScriptMethods extends AbstractPlayerInteraction {
                 return;
             }
         }
-        MapleQuestStatus q = getPlayer().getQuest(quest);
-        if (!q.addMedalMap(getPlayer().getMapId())) {
+        MapleQuestStatus qs = getPlayer().getQuest(quest);
+        if (!qs.addMedalMap(getPlayer().getMapId())) {
             return;
         }
-        String status = Integer.toString(q.getMedalProgress());
-        String infoex = quest.getInfoEx();
-        getPlayer().announceUpdateQuest(DelayedQuestUpdate.UPDATE, q, true);
+        String status = Integer.toString(qs.getMedalProgress());
+        String infoex = qs.getInfoEx(0);
+        getPlayer().announceUpdateQuest(DelayedQuestUpdate.UPDATE, qs, true);
         StringBuilder smp = new StringBuilder();
         StringBuilder etm = new StringBuilder();
         if (status.equals(infoex)) {
@@ -123,15 +123,15 @@ public class MapScriptMethods extends AbstractPlayerInteraction {
                 return;
             }
         }
-        MapleQuestStatus q = getPlayer().getQuest(quest);
-        if (!q.addMedalMap(getPlayer().getMapId())) {
+        MapleQuestStatus qs = getPlayer().getQuest(quest);
+        if (!qs.addMedalMap(getPlayer().getMapId())) {
             return;
         }
-        String status = Integer.toString(q.getMedalProgress());
-        getPlayer().announceUpdateQuest(DelayedQuestUpdate.UPDATE, q, true);
+        String status = Integer.toString(qs.getMedalProgress());
+        getPlayer().announceUpdateQuest(DelayedQuestUpdate.UPDATE, qs, true);
         getPlayer().announce(MaplePacketCreator.earnTitleMessage(status + "/5 Completed"));
         getPlayer().announce(MaplePacketCreator.earnTitleMessage("The One Who's Touched the Sky title in progress."));
-        if (Integer.toString(q.getMedalProgress()).equals(quest.getInfoEx())) {
+        if (Integer.toString(qs.getMedalProgress()).equals(qs.getInfoEx(0))) {
             showInfoText("The One Who's Touched the Sky" + rewardstring);
             getPlayer().announce(MaplePacketCreator.getShowQuestCompletion(quest.getId()));
         } else {

@@ -116,12 +116,15 @@ public final class PlayerLoggedinHandler extends AbstractMaplePacketHandler {
                 }
 
                 Channel cserv = wserv.getChannel(c.getChannel());
-                if(cserv == null) {
+                if(cserv == null || !cserv.isActive()) {
                     c.setChannel(1);
                     cserv = wserv.getChannel(c.getChannel());
 
                     if(cserv == null) {
                         c.disconnect(true, false);
+                        return;
+                    } else if (!cserv.isActive()) {
+                        c.announce(MaplePacketCreator.getAfterLoginError(7));
                         return;
                     }
                 }

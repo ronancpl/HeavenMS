@@ -43,12 +43,12 @@ public final class PetAutoPotHandler extends AbstractMaplePacketHandler {
         MapleStatEffect stat = MapleItemInformationProvider.getInstance().getItemEffect(itemId);
         if (stat.getHp() > 0 || stat.getHpRate() > 0.0) {
             float estimatedHp = ((float) chr.getHp()) / chr.getMaxHp();
-            chr.setAutopotHpAlert(estimatedHp);
+            chr.setAutopotHpAlert(estimatedHp + 0.05f);
         }
         
         if (stat.getMp() > 0 || stat.getMpRate() > 0.0) {
             float estimatedMp = ((float) chr.getMp()) / chr.getMaxMp();
-            chr.setAutopotMpAlert(estimatedMp);
+            chr.setAutopotMpAlert(estimatedMp + 0.05f);
         }
         
         PetAutopotProcessor.runAutopotAction(c, slot, itemId);

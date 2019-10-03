@@ -22,7 +22,7 @@
 importPackage(Packages.server.life);
 
 function enter(pi) {
-	if(pi.isQuestStarted(21301) && pi.getQuestProgress(21301, 9001013) == 0) {
+	if(pi.isQuestStarted(21301) && pi.getQuestProgressInt(21301, 9001013) == 0) {
 		if(pi.getPlayerCount(108010700) != 0) {
 			pi.message("The portal is blocked from the other side. I wonder if someone is already fighting the Thief Crow?");
 			return false;

@@ -24,8 +24,6 @@
 #include <stdbool.h>
 #include <pcre.h>
 
-#define SCRIPT_FILES_MAX_CONTENT_SIZE 1777777
-
 #include "method_list.h"
 #include "script_path.h"
 
@@ -63,29 +61,36 @@ JavaMethodList getBestSubstringsFromStringList(char *aStrRegex, JavaMethodList *
             }
 
             char *str = method->name;
-            int pcreExecRet = pcre_exec(reCompiled, pcreExtra, str, strlen(str), 0, 0, subStrVec, subStrVecLength);
-            if(pcreExecRet < 0) {
-                switch(pcreExecRet) {
-                    //case PCRE_ERROR_NOMATCH      : printf("String did not match the pattern\n");        break;
-                    case PCRE_ERROR_NULL         : printf("Something was null\n");                      break;
-                    case PCRE_ERROR_BADOPTION    : printf("A bad option was passed\n");                 break;
-                    case PCRE_ERROR_BADMAGIC     : printf("Magic number bad (compiled re corrupt?)\n"); break;
-                    case PCRE_ERROR_UNKNOWN_NODE : printf("Something kooky in the compiled re\n");      break;
-                    case PCRE_ERROR_NOMEMORY     : printf("Ran out of memory\n");                       break;
-                    //default                      : printf("Unknown error\n");                           break;
-                }
-            } else {
-                if(pcreExecRet == 0) {
-                    printf("But too many substrings were found to fit in subStrVec!\n");
-                    // Set rc to the max number of substring matches possible.
-                    pcreExecRet = 30 / 3;
-                }
+            int st = 0, en = strlen(str);
+            while (st < en) {
+                int pcreExecRet = pcre_exec(reCompiled, pcreExtra, str, en, st, 0, subStrVec, subStrVecLength);
+                if(pcreExecRet < 0) {
+                    switch(pcreExecRet) {
+                        //case PCRE_ERROR_NOMATCH      : printf("String did not match the pattern\n");        break;
+                        case PCRE_ERROR_NULL         : printf("Something was null\n");                      break;
+                        case PCRE_ERROR_BADOPTION    : printf("A bad option was passed\n");                 break;
+                        case PCRE_ERROR_BADMAGIC     : printf("Magic number bad (compiled re corrupt?)\n"); break;
+                        case PCRE_ERROR_UNKNOWN_NODE : printf("Something kooky in the compiled re\n");      break;
+                        case PCRE_ERROR_NOMEMORY     : printf("Ran out of memory\n");                       break;
+                        //default                      : printf("Unknown error\n");                           break;
+                    }
 
-                const char *psubStrMatchStr;
-                pcre_get_substring(str, subStrVec, pcreExecRet, 0, &(psubStrMatchStr));
+                    break;  // no more matches found
+                } else {
+                    if(pcreExecRet == 0) {
+                        printf("But too many substrings were found to fit in subStrVec!\n");
+                        // Set rc to the max number of substring matches possible.
+                        pcreExecRet = 30 / 3;
+                    }
 
-                insertJavaMethod(&ret, createJavaMethod(psubStrMatchStr));
-                pcre_free_substring(psubStrMatchStr);
+                    const char *psubStrMatchStr;
+                    pcre_get_substring(str, subStrVec, pcreExecRet, 0, &(psubStrMatchStr));
+
+                    insertJavaMethod(&ret, createJavaMethod(psubStrMatchStr));
+                    pcre_free_substring(psubStrMatchStr);
+
+                    st = subStrVec[1];
+                }
             }
         }
     }
@@ -204,7 +209,6 @@ JavaMethodList trackerFindSourceStaticMethods(JavaMethodList *lines, int lines_s
             continue;
         }
 
-        //printf("Java Method: %s\n", method->name);
         insertJavaMethod(&ret, createJavaMethod(method->name));
     }
 
@@ -214,17 +218,15 @@ JavaMethodList trackerFindSourceStaticMethods(JavaMethodList *lines, int lines_s
 }
 
 char *getContentFromFile(FILE *f) {
-    char str[10240];
+    fseek(f, 0, SEEK_END);  // implemented by user529758 @ StackOverflow
+    long fsize = ftell(f);
+    fseek(f, 0, SEEK_SET);  /* same as rewind(f); */
 
-    char *content = (char *)malloc(SCRIPT_FILES_MAX_CONTENT_SIZE * sizeof(char));
-    content[0] = 0;
+    char *string = malloc(fsize + 1);
+    fread(string, 1, fsize, f);
 
-    while (!feof(f)) {
-        fgets(str, 10240, f);
-        strcat(content, str);
-    }
-
-    return content;
+    string[fsize] = 0;
+    return string;
 }
 
 bool locateMethodCall(const char *method_name, char *file_path) {
@@ -246,6 +248,7 @@ bool locateMethodCall(const char *method_name, char *file_path) {
     JavaMethodList list = getBestSubstringsFromStringList(aStrRegex, file_content, 1);
     bool found = (list.size > 0);
 
+    freeJavaMethodList(&(file_content[0]));
     free(file_content);
     fclose(f);
 
@@ -263,7 +266,7 @@ void locateMethodCalls(const char *method_name, char **file_paths, int file_path
 }
 
 int trackerLocateScriptsStaticCalls(JavaMethodList method_names) {
-    ScriptFiles *files = createScriptFiles("../../HeavenMS/scripts");
+    ScriptFiles *files = createScriptFiles("../../scripts");
     if (files == NULL) {
         printf("ERROR: Could not initialize script files.\n");
         return -1;
@@ -289,7 +292,7 @@ typedef struct {
 } SourceFilesContent;
 
 SourceFilesContent* readSourceFileContents() {
-    ScriptFiles *srcFilePaths = createScriptFiles("../../HeavenMS/src");
+    ScriptFiles *srcFilePaths = createScriptFiles("../../src");
 
     SourceFilesContent *files = (SourceFilesContent *)malloc(sizeof(SourceFilesContent));
     files->file_content = (JavaMethodList *)malloc(srcFilePaths->file_paths_size * sizeof(JavaMethodList));
@@ -311,7 +314,6 @@ SourceFilesContent* readSourceFileContents() {
         insertJavaMethod(&(files->file_content[i]), createJavaMethod(content));
     }
 
-    //printf("len: %d\n", max_len);
     freeScriptFiles(srcFilePaths);
 
     return files;

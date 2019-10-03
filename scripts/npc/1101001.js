@@ -3,7 +3,7 @@
 	Map(s): 		Erev
 	Description: 		3rd job KoC Buff
 */
-importPackage(Packages.constants);
+importPackage(Packages.constants.game);
 
 function start() {
     if (cm.getPlayer().isCygnus() && GameConstants.getJobBranch(cm.getJob()) > 2) {

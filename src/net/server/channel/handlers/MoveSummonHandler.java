@@ -29,6 +29,7 @@ import client.MapleClient;
 import server.maps.MapleSummon;
 import tools.MaplePacketCreator;
 import tools.data.input.SeekableLittleEndianAccessor;
+import tools.exceptions.EmptyMovementException;
 
 public final class MoveSummonHandler extends AbstractMovementPacketHandler {
     @Override
@@ -45,11 +46,14 @@ public final class MoveSummonHandler extends AbstractMovementPacketHandler {
             }
         }
         if (summon != null) {
-            long movementDataStart = slea.getPosition();
-            updatePosition(slea, summon, 0);
-            long movementDataLength = slea.getPosition() - movementDataStart; //how many bytes were read by updatePosition
-            slea.seek(movementDataStart);
-            player.getMap().broadcastMessage(player, MaplePacketCreator.moveSummon(player.getId(), oid, startPos, slea, movementDataLength), summon.getPosition());
+            try {
+                long movementDataStart = slea.getPosition();
+                updatePosition(slea, summon, 0);
+                long movementDataLength = slea.getPosition() - movementDataStart; //how many bytes were read by updatePosition
+                slea.seek(movementDataStart);
+                
+                player.getMap().broadcastMessage(player, MaplePacketCreator.moveSummon(player.getId(), oid, startPos, slea, movementDataLength), summon.getPosition());
+            } catch (EmptyMovementException e) {}
         }
     }
 }

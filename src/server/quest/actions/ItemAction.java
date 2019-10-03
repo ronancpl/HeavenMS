@@ -195,7 +195,7 @@ public class ItemAction extends MapleQuestAction {
                                                 if(type.equals(MapleInventoryType.EQUIP) && chr.getInventory(MapleInventoryType.EQUIPPED).countById(item.getId()) > quantity)
                                                         continue;
                                                 
-                                                chr.dropMessage(1, "Please check if you have enough items in your inventory.");
+                                                announceInventoryLimit(Collections.singletonList(item.getId()), chr);
                                                 return false;
                                         } else {
                                                 int idx = type.getType() - 1;   // more slots available from the given items!
@@ -217,7 +217,7 @@ public class ItemAction extends MapleQuestAction {
                             
                                 result = MapleInventoryManipulator.checkSpaceProgressively(c, it.getLeft().getItemId(), it.getLeft().getQuantity(), "", rndUsed.get(idx), false);
                                 if(result % 2 == 0) {
-                                    chr.dropMessage(1, "Please check if you have enough space in your inventory.");
+                                    announceInventoryLimit(Collections.singletonList(it.getLeft().getItemId()), chr);
                                     return false;
                                 }
                                 
@@ -231,11 +231,27 @@ public class ItemAction extends MapleQuestAction {
                 }
                 
                 if (!canHold(chr, gainList)) {
-			chr.dropMessage(1, "Please check if you have enough space in your inventory.");
+                        List<Integer> gainItemids = new LinkedList<>();
+                        for (Pair<Item, MapleInventoryType> it : gainList) {
+                                gainItemids.add(it.getLeft().getItemId());
+                        }
+                    
+			announceInventoryLimit(gainItemids, chr);
 			return false;
 		}
 		return true;
 	}
+        
+        private void announceInventoryLimit(List<Integer> itemids, MapleCharacter chr) {
+                for (Integer id : itemids) {
+                        if (MapleItemInformationProvider.getInstance().isPickupRestricted(id) && chr.haveItemWithId(id, true)) {
+                                chr.dropMessage(1, "Please check if you already have a similar one-of-a-kind item in your inventory.");
+                                return;
+                        }
+                }
+                
+                chr.dropMessage(1, "Please check if you have enough space in your inventory.");
+        }
         
         private boolean canHold(MapleCharacter chr, List<Pair<Item, MapleInventoryType>> gainList) {
                 List<Integer> toAddItemids = new LinkedList<>();

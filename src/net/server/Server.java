@@ -862,7 +862,7 @@ public class Server {
         }
         applyAllNameChanges(); //name changes can be missed by INSTANT_NAME_CHANGE
         applyAllWorldTransfers();
-        MaplePet.clearMissingPetsFromDb();
+        //MaplePet.clearMissingPetsFromDb();    // thanks Optimist for noticing this taking too long to run
         MapleCashidGenerator.loadExistentCashIdsFromDb();
         
         IoBuffer.setUseDirectBuffer(false);
@@ -877,17 +877,17 @@ public class Server {
         disconnectIdlesOnLoginTask();
         
         long timeLeft = getTimeLeftForNextHour();
-        tMan.register(new CharacterDiseaseTask(), ServerConstants.UPDATE_INTERVAL, ServerConstants.UPDATE_INTERVAL);
+        tMan.register(new CharacterDiseaseTask(), YamlConfig.config.server.UPDATE_INTERVAL, YamlConfig.config.server.UPDATE_INTERVAL);
         tMan.register(new ReleaseLockTask(), 2 * 60 * 1000, 2 * 60 * 1000);
-        tMan.register(new CouponTask(), ServerConstants.COUPON_INTERVAL, timeLeft);
+        tMan.register(new CouponTask(), YamlConfig.config.server.COUPON_INTERVAL, timeLeft);
         tMan.register(new RankingCommandTask(), 5 * 60 * 1000, 5 * 60 * 1000);
-        tMan.register(new RankingLoginTask(), ServerConstants.RANKING_INTERVAL, timeLeft);
+        tMan.register(new RankingLoginTask(), YamlConfig.config.server.RANKING_INTERVAL, timeLeft);
         tMan.register(new LoginCoordinatorTask(), 60 * 60 * 1000, timeLeft);
         tMan.register(new EventRecallCoordinatorTask(), 60 * 60 * 1000, timeLeft);
         tMan.register(new LoginStorageTask(), 2 * 60 * 1000, 2 * 60 * 1000);
         tMan.register(new DueyFredrickTask(), 60 * 60 * 1000, timeLeft);
         tMan.register(new InvitationTask(), 30 * 1000, 30 * 1000);
-        tMan.register(new RespawnTask(), ServerConstants.RESPAWN_INTERVAL, ServerConstants.RESPAWN_INTERVAL);
+        tMan.register(new RespawnTask(), YamlConfig.config.server.RESPAWN_INTERVAL, YamlConfig.config.server.RESPAWN_INTERVAL);
         
         timeLeft = getTimeLeftForNextDay();
         MapleExpeditionBossLog.resetBossLogTable();
@@ -952,6 +952,10 @@ public class Server {
         MapleSkillbookInformationProvider.getInstance();
         OpcodeConstants.generateOpcodeNames();
         CommandsExecutor.getInstance();
+        
+        for (Channel ch : this.getAllChannels()) {
+            ch.reloadEventScriptManager();
+        }
     }
 
     public static void main(String args[]) {

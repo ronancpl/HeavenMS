@@ -58,7 +58,7 @@ public class QuestAction extends MapleQuestAction {
 	public void run(MapleCharacter chr, Integer extSelection) {
 		for(Integer questID : quests.keySet()) {
 			int stat = quests.get(questID);
-			chr.updateQuest(new MapleQuestStatus(MapleQuest.getInstance(questID), MapleQuestStatus.Status.getById(stat)));
+			chr.updateQuestStatus(new MapleQuestStatus(MapleQuest.getInstance(questID), MapleQuestStatus.Status.getById(stat)));
 		}
 	}
 } 

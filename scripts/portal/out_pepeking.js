@@ -5,7 +5,7 @@ function enter(pi) {
                 eim.dispose();
         }
 	
-	var questProgress = pi.getQuestProgress(2330, 3300005) + pi.getQuestProgress(2330, 3300006) + pi.getQuestProgress(2330, 3300007); //3 Yetis
+	var questProgress = pi.getQuestProgressInt(2330, 3300005) + pi.getQuestProgressInt(2330, 3300006) + pi.getQuestProgressInt(2330, 3300007); //3 Yetis
  	if(questProgress == 3 && !pi.hasItem(4032388)) {
  		if(pi.canHold(4032388)){
  			pi.getPlayer().message("You have aquired a key to the Wedding Hall. King Pepe must have dropped it.");

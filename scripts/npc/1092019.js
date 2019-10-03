@@ -64,7 +64,7 @@ function action(mode, type, selection) {
                                 cm.sendOk("Who are you talking to me? If you're just bored, go bother somebody else.");
                                 cm.dispose();
                         } else {
-                                seagullProgress = cm.getQuestProgress(6400, 0);
+                                seagullProgress = cm.getQuestProgressInt(6400, 1);
                             
                                 if (seagullProgress == 0) {
                                         seagullIdx = Math.floor(Math.random() * seagullQuestion.length);
@@ -90,7 +90,7 @@ function action(mode, type, selection) {
                                 var answer = cm.getText();
                                 if (answer == seagullAnswer[seagullIdx]) {
                                         cm.sendNext("What! I can't believe how incredibly smart you are! Incredible! In the seagull world, that kind of intellingence would give you a Ph.D. and then some. You're really amazing... I can't believe it... I simply can't believe it!");
-                                        cm.setQuestProgress(6400, 0, 1);
+                                        cm.setQuestProgress(6400, 1, 1);
                                         cm.dispose();
                                 } else {
                                         cm.sendOk("Hmm, that's not quite how I recall it. Try again!");
@@ -99,9 +99,11 @@ function action(mode, type, selection) {
                         } else if (seagullProgress != 2) {
                                 cm.sendNextPrev("Anyway, only one of 9 Barts is the real Bart. You know that Pirates are known for the strength of their friendships and camaraderie with their fellow pirates. If you're a true pirate, you should be able to find your own mate with ease. Alright then, I'll send you to the room where Bart is.");
                         } else {
-                                cm.gainExp(1000000);
-                                cm.teachSkill(5221003, 0, 10, -1);
-                                cm.forceCompleteQuest(6400);
+                                //cm.gainExp(1000000);
+                                //cm.teachSkill(5221003, 0, 10, -1);
+                                //cm.forceCompleteQuest(6400);
+
+                                cm.sendNextPrev("You have met all my challenges, and passed! Good job!");
                                 cm.dispose();
                         }
                 } else if (status == 3) {

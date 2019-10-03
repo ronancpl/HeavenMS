@@ -77,6 +77,7 @@ function writeFeatureTab_Quests() {
         addFeature("3rd job quiz with all 40-question pool available.");
         addFeature("Item raising functional.");
         addFeature("Cleared issue with player movement during NPC talk.");
+        addFeature("Reviewed usage of quest progress data as requirement.");
 }
 
 function writeFeatureTab_PlayerSocialNetwork() {

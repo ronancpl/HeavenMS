@@ -36,7 +36,7 @@ function action(mode, type, selection) {
     
     status++;
     if(status == 0) {
-        if(cm.isQuestStarted(6180)) {
+        if(cm.isQuestStarted(6180) && cm.getQuestProgressInt(6180, 9300096) < 200) {
             cm.sendYesNo("Pay attention: during the time you stay inside the training ground make sure you #bhave equipped your #t1092041##k, it is of the utmost importance. Are you ready to proceed to the training area?");
         }
         
@@ -47,10 +47,15 @@ function action(mode, type, selection) {
     }
     
     else if(status == 1) {
-	cm.warp(924000001, 0);
-	cm.sendOk("Have your shield equipped until the end of the quest, or else you will need to start all over again!");
-        
-        cm.resetQuestProgress(6180,9300096);
+        if (cm.getPlayer().haveItemEquipped(1092041)) {
+            cm.sendNext("Have your shield equipped until the end of the quest, or else you will need to start all over again!");
+        } else {
+            cm.sendOk("Please equip the #r#t1092041##k before entering the training ground.");
+            cm.dispose();
+        }
+    }
+    else {
+        cm.warp(924000001, 0);
         cm.dispose();
     }
 }

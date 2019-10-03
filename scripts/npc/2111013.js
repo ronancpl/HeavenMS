@@ -40,7 +40,17 @@ function action(mode, type, selection) {
     
                 if(status == 0) {
                         if(cm.isQuestStarted(3311)) {
-                                cm.setQuestProgress(3311, 0, 1);
+                                var slot = 2;
+                                var progress = cm.getQuestProgressInt(3311);
+                                
+                                if (progress == 4) {
+                                        progress = 7;
+                                } else {
+                                        progress = 5;
+                                }
+                                
+                                cm.setQuestProgress(3311, progress);
+                                
                                 cm.sendOk("This is a mug picture of Dr. De Lang. It seems he is adorning a locket with the emblem of the Alcadno academy, he is a retainer of the Alcadno society.", 2);
                         }
                     

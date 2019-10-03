@@ -21,8 +21,8 @@
 #ifndef SCRIPT_PATH_H_
 #define SCRIPT_PATH_H_
 
-#define SCRIPT_FILES_MAX_COUNT 20000
-#define SCRIPT_FILES_MAX_PATH_SIZE 1000
+#define SCRIPT_FILES_MAX_COUNT 70000
+#define SCRIPT_FILES_MAX_PATH_SIZE 40000
 
 typedef struct {
     char **file_paths;

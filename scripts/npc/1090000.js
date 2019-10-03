@@ -39,8 +39,7 @@ function start() {
         if (cm.getEventInstance() != null) {    // missing script for skill test found thanks to Lost(tm)
             advQuest = 5;                       // string visibility thanks to iPunchEm & Glvelturall
             cm.sendNext("Not bad at all. Let's discuss this outside!");
-            cm.setQuestProgress(6330, 0, 1);
-        } else if (cm.getQuestProgress(6330, 0) == 0) {
+        } else if (cm.getQuestProgressInt(6330, 6331) == 0) {
             advQuest = 1;
             cm.sendNext("You're ready, right? Now try to withstand my attacks for 2 minutes. I won't go easy on you. Good luck, because you will need it.");
         } else {
@@ -54,8 +53,7 @@ function start() {
         if (cm.getEventInstance() != null) {
             advQuest = 6;
             cm.sendNext("Not bad at all. Let's discuss this outside!");
-            cm.setQuestProgress(6370, 0, 1);
-        } else if (cm.getQuestProgress(6370, 0) == 0) {
+        } else if (cm.getQuestProgressInt(6370, 6371) == 0) {
             advQuest = 2;
             cm.sendNext("You're ready, right? Now try to withstand my attacks for 2 minutes. I won't go easy on you. Good luck, because you will need it.");
         } else {
@@ -65,7 +63,7 @@ function start() {
             
             cm.sendNext("Congratulations. You have managed to pass my test. I'll teach you a new skill called \"Battleship\".\r\n\r\n  #s5221006#    #b#q5221006##k");
         }
-    } else if (parseInt(cm.getJobId() / 100) == jobType && cm.canSpawnPlayerNpc(Packages.constants.GameConstants.getHallOfFameMapid(cm.getJob()))) {
+    } else if (parseInt(cm.getJobId() / 100) == jobType && cm.canSpawnPlayerNpc(Packages.constants.game.GameConstants.getHallOfFameMapid(cm.getJob()))) {
         spawnPnpc = true;
         
         var sendStr = "You have walked a long way to reach the power, wisdom and courage you hold today, haven't you? What do you say about having right now #ra NPC on the Hall of Fame holding the current image of your character#k? Do you like it?";
@@ -126,6 +124,12 @@ function action(mode, type, selection) {
                     cm.sendOk("Unlike most of the other skills you used as a Pirate, this one definitely is different. You can actually ride the 'Battleship' and attack enemies with it. Your DEF level will increase for the time you're on board, so that'll help you tremendously in combat situations. May you become the best Gunslinger out there...");
                 }
             } else {
+                if (advQuest < 6) {
+                    cm.setQuestProgress(6330, 6331, 2);
+                } else {
+                    cm.setQuestProgress(6370, 6371, 2);
+                }
+
                 cm.warp(120000101);
             }
             
@@ -138,7 +142,7 @@ function action(mode, type, selection) {
                     return;
                 }
                 
-                if(Packages.server.life.MaplePlayerNPC.spawnPlayerNPC(Packages.constants.GameConstants.getHallOfFameMapid(cm.getJob()), cm.getPlayer())) {
+                if(Packages.server.life.MaplePlayerNPC.spawnPlayerNPC(Packages.constants.game.GameConstants.getHallOfFameMapid(cm.getJob()), cm.getPlayer())) {
                     cm.sendOk("There you go! Hope you will like it.");
                     cm.gainMeso(-spawnPnpcFee);
                 } else {

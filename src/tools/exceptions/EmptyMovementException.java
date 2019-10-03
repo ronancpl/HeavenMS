@@ -17,34 +17,19 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+package tools.exceptions;
 
-var status = -1;
+import tools.data.input.LittleEndianAccessor;
 
-function end(mode, type, selection) {
-    if (mode == -1) {
-        qm.dispose();
-    } else {
-        if(mode == 0 && type > 0) {
-            qm.dispose();
-            return;
-        }
-        
-        if (mode == 1)
-            status++;
-        else
-            status--;
-        
-        if (status == 0) {
-            if(qm.getQuestProgress(3345, 0) == 4) {
-                qm.sendNext("So, you have succeeded. With this, Magatia's upfront demise has been averted, well done brave adventurer!");
-                qm.forceCompleteQuest();
-                
-                qm.gainExp(20000);
-            } else {
-                qm.sendNext("Did you not seal the #rmagic circle beneath Magatia#k yet? It is a matter of great importance, please haste yourself.");
-            }
-        } else if (status == 1) {
-            qm.dispose();
-        }
+
+/**
+ *
+ * @author Ronan
+ */
+public class EmptyMovementException extends Exception {
+    
+    public EmptyMovementException(LittleEndianAccessor lea) {
+        super("Empty movement: " + lea);
     }
+
 }

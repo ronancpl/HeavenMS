@@ -3261,9 +3261,9 @@ public class MapleMap {
     public MapleCharacter getCharacterById(int id) {
         chrRLock.lock();
         try {
-            for (MapleCharacter c : this.characters) {
-                if (c.getId() == id) {
-                    return c;
+            for (MapleCharacter chr : this.characters) {
+                if (chr.getId() == id) {
+                    return chr;
                 }
             }
         } finally {
@@ -3421,8 +3421,8 @@ public class MapleMap {
     public void broadcastNightEffect() {
         chrRLock.lock();
         try {
-            for (MapleCharacter c : characters) {
-                sendNightEffect(c);
+            for (MapleCharacter chr : this.characters) {
+                sendNightEffect(chr);
             }
         } finally {
             chrRLock.unlock();
@@ -3432,9 +3432,9 @@ public class MapleMap {
     public MapleCharacter getCharacterByName(String name) {
         chrRLock.lock();
         try {
-            for (MapleCharacter c : this.characters) {
-                if (c.getName().toLowerCase().equals(name.toLowerCase())) {
-                    return c;
+            for (MapleCharacter chr : this.characters) {
+                if (chr.getName().toLowerCase().equals(name.toLowerCase())) {
+                    return chr;
                 }
             }
         } finally {

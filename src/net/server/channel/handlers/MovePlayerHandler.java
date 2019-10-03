@@ -24,22 +24,24 @@ package net.server.channel.handlers;
 import client.MapleClient;
 import tools.MaplePacketCreator;
 import tools.data.input.SeekableLittleEndianAccessor;
+import tools.exceptions.EmptyMovementException;
 
 public final class MovePlayerHandler extends AbstractMovementPacketHandler {
     @Override
     public final void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
         slea.skip(9);
-        long movementDataStart = slea.getPosition();
-        updatePosition(slea, c.getPlayer(), 0);
-        long movementDataLength = slea.getPosition() - movementDataStart; //how many bytes were read by updatePosition
-        if (movementDataLength > 0) {
-        	slea.seek(movementDataStart);
+        try {   // thanks Sa for noticing empty movement sequences crashing players
+            long movementDataStart = slea.getPosition();
+            updatePosition(slea, c.getPlayer(), 0);
+            long movementDataLength = slea.getPosition() - movementDataStart; //how many bytes were read by updatePosition
+            slea.seek(movementDataStart);
+            
             c.getPlayer().getMap().movePlayer(c.getPlayer(), c.getPlayer().getPosition());
             if (c.getPlayer().isHidden()) {
                 c.getPlayer().getMap().broadcastGMMessage(c.getPlayer(), MaplePacketCreator.movePlayer(c.getPlayer().getId(), slea, movementDataLength), false);
             } else {
                 c.getPlayer().getMap().broadcastMessage(c.getPlayer(), MaplePacketCreator.movePlayer(c.getPlayer().getId(), slea, movementDataLength), false);
             }
-        }
+        } catch (EmptyMovementException e) {}
     }
 }

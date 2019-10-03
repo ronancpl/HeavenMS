@@ -212,7 +212,7 @@ public class World {
         merchantSchedule = tman.register(new HiredMerchantTask(this), 10 * 60 * 1000, 10 * 60 * 1000);
         timedMapObjectsSchedule = tman.register(new TimedMapObjectTask(this), 60 * 1000, 60 * 1000);
         charactersSchedule = tman.register(new CharacterAutosaverTask(this), 60 * 60 * 1000, 60 * 60 * 1000);
-        marriagesSchedule = tman.register(new WeddingReservationTask(this), ServerConstants.WEDDING_RESERVATION_INTERVAL * 60 * 1000, ServerConstants.WEDDING_RESERVATION_INTERVAL * 60 * 1000);
+        marriagesSchedule = tman.register(new WeddingReservationTask(this), YamlConfig.config.server.WEDDING_RESERVATION_INTERVAL * 60 * 1000, YamlConfig.config.server.WEDDING_RESERVATION_INTERVAL * 60 * 1000);
         mapOwnershipSchedule = tman.register(new MapOwnershipTask(this), 20 * 1000, 20 * 1000);
         fishingSchedule = tman.register(new FishingTask(this), 10 * 1000, 10 * 1000);
         partySearchSchedule = tman.register(new PartySearchTask(this), 10 * 1000, 10 * 1000);
@@ -730,14 +730,14 @@ public class World {
     }
 
     public void sendPacket(List<Integer> targetIds, final byte[] packet, int exception) {
-        MapleCharacter c;
+        MapleCharacter chr;
         for (int i : targetIds) {
             if (i == exception) {
                 continue;
             }
-            c = getPlayerStorage().getCharacterById(i);
-            if (c != null) {
-                c.getClient().announce(packet);
+            chr = getPlayerStorage().getCharacterById(i);
+            if (chr != null) {
+                chr.getClient().announce(packet);
             }
         }
     }

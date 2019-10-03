@@ -35,22 +35,22 @@ public class MapleGuildCharacter {
     private boolean online;
     private String name;
 
-    public MapleGuildCharacter(MapleCharacter c) {
-        this.character = c;
-        this.name = c.getName();
-        this.level = c.getLevel();
-        this.id = c.getId();
-        this.channel = c.getClient().getChannel();
-        this.world = c.getWorld();
-        this.jobid = c.getJob().getId();
-        this.guildrank = c.getGuildRank();
-        this.guildid = c.getGuildId();
+    public MapleGuildCharacter(MapleCharacter chr) {
+        this.character = chr;
+        this.name = chr.getName();
+        this.level = chr.getLevel();
+        this.id = chr.getId();
+        this.channel = chr.getClient().getChannel();
+        this.world = chr.getWorld();
+        this.jobid = chr.getJob().getId();
+        this.guildrank = chr.getGuildRank();
+        this.guildid = chr.getGuildId();
         this.online = true;
-        this.allianceRank = c.getAllianceRank();
+        this.allianceRank = chr.getAllianceRank();
     }
 
-    public MapleGuildCharacter(MapleCharacter c, int _id, int _lv, String _name, int _channel, int _world, int _job, int _rank, int _gid, boolean _on, int _allianceRank) {
-        this.character = c;
+    public MapleGuildCharacter(MapleCharacter chr, int _id, int _lv, String _name, int _channel, int _world, int _job, int _rank, int _gid, boolean _on, int _allianceRank) {
+        this.character = chr;
         this.level = _lv;
         this.id = _id;
         this.name = _name;

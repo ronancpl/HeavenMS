@@ -2144,3 +2144,40 @@ Adicionado checagem no uso de autopots ao usar HP/MP, limites são calculados ba
 Adicionado update de macros ao usar SP reset.
 Refatorado vários pacotes Java contendo classes diversificadas.
 Corrigido nomenclatura errônea de "worker" introduzida, querendo significar "task".
+
+21 - 24 Setembro 2019,
+Corrigido ferramenta detectora de métodos estáticos não realizando varredura completa em arquivos, parando em casos onde um método estático é encontrado em cada.
+Implementado ferramenta detectora de scripts de quest que estiveram sendo usados como paliativo.
+Refatorado amplamente métodos que lidam com atribuição de progresso de quests.
+Revisado uso de vários scripts de quest que estiveram sendo usados como paliativo.
+Alterado declaração de "MapleCharacter c", considerado ambíguo à de MapleClient.
+Revisado uso de progresso de quests feito pelos scripts, de forma a parear com o novo modelo.
+
+26 - 28 Setembro 2019,
+Corrigido casos no novo modelo onde algumas quests utilizando informações de progresso não conseguiriam ser completadas.
+Corrigido uso envio desnecessário de pacote ao atualizar progresso de quest causando popup inesperado de mensagens de quests para jogadores.
+Corrigido alguns scripts não levando a atualização dos endereços dos pacotes alterados na última refatoração.
+Corrigido script de quest de Magatia checando errado quantidade de livros adquiridos pelo jogador no progresso de quest.
+
+29 Setembro 2019,
+Revisado Raise UI, agora utilizando o novo sistema de progressão.
+Corrigido checagem por espaço no inventário, ao tentar ganhar itens via quest, não informando o jogador adequadamente sobre itens one-of-a-kind.
+Corrigido uso de itens na Raise UI, quando não atualizando progresso algum (nenhum pacote enviado ao jogador), não permitindo jogador acesso a certos recursos (como Cash Shop/MTS).
+Revisado aplicação geral do novo modelo de progressão de quests implementado.
+
+01 - 02 Outubro 2019,
+Corrigido caso de exceção de modificação concorrente dentro de módulo de incremento de progresso de mob em quests.
+Corrigido caixa de diálogo com conteúdo extra, ao terminar uma quest, não sendo enviada ao jogador.
+Corrigido retransmissão de pacotes de movimentos com sequência vazia crashando outros jogadores.
+Refatorado checagem por pacotes de movimentos com sequência vazia, agora atuando no módulo abstrato.
+Corrigido progresso de mobs em quests não atualizando o infoex devidamente ao jogador, levando à falta do balão de "quest completa".
+Corrigido quest de 1o job de Cygnus permitindo retornar para estado que tenta concluir quest, permitindo assim múltiplas instâncias de conclusão da mesma.
+Adicionado scripting atuante ao abrir Raise UI, permitindo assim utilizar ações elaboradas, tais como EXP de combate para Mimiana.
+Corrigido pets não sendo despawnados assim que se dá o tempo de expiração.
+Corrigido jogadores com "hide" controlando mobs em certas situações.
+Corrigido análise de alerta de HP/MP lado-servidor não contando com os atributos de HP/MP de equipamentos e buffs.
+
+03 Outubro 2019,
+Corrigido skill "Energy Charge" levando atualização de buff ao tocar em mobs, levando a casos onde o buff nos stats poderia inesperadamente ficar retido além do tempo de atuação previsto.
+Substituído utilização de "Jackson annotations + SnakeYaml" por "YamlBeans", utilizando-se assim menos artefatos JARs no processo (anteriormente 5, agora somente 1). Nota: na transição, fora constatado que a utilização da tecnologia anterior era mais permissiva perante o arquivo de configurações, porém estrutura do novo arquivo foi normalizado e está agora funcional.
+Refatorado inicialização de eventos ao iniciar o servidor, em busca de melhorar o tempo de startup.

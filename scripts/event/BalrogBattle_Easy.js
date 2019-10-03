@@ -244,7 +244,7 @@ function monsterKilled(mob, eim) {
                         eim.showClearEffect();
                         eim.clearPQ();
 
-                        eim.dispatchUpdateQuestMobCount(bossMobId, entryMap);
+                        eim.dispatchRaiseQuestMobCount(bossMobId, entryMap);
                         mob.getMap().broadcastBalrogVictory(eim.getLeader().getName());
                 } else {
                         if(count == 1) {

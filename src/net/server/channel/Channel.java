@@ -21,13 +21,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package net.server.channel;
 
-import net.server.channel.task.FaceExpressionScheduler;
-import net.server.channel.task.MobMistScheduler;
-import net.server.channel.task.OverallScheduler;
-import net.server.channel.task.MobAnimationScheduler;
-import net.server.channel.task.MobStatusScheduler;
-import net.server.channel.task.MobClearSkillScheduler;
-import net.server.channel.task.EventScheduler;
 import java.io.File;
 import java.net.InetSocketAddress;
 import java.util.ArrayList;
@@ -57,6 +50,7 @@ import net.mina.MapleCodecFactory;
 
 import net.server.PlayerStorage;
 import net.server.Server;
+import net.server.channel.task.*;
 
 import net.server.world.World;
 import net.server.world.MapleParty;
@@ -84,7 +78,6 @@ import tools.MaplePacketCreator;
 import tools.Pair;
 import client.MapleCharacter;
 import client.status.MonsterStatusEffect;
-import constants.net.ServerConstants;
 import server.maps.MapleMiniDungeonInfo;
 
 public final class Channel {
@@ -148,7 +141,6 @@ public final class Channel {
         this.ongoingStartTime = startTime + 10000;  // rude approach to a world's last channel boot time, placeholder for the 1st wedding reservation ever
         this.mapManager = new MapleMapManager(null, world, channel);
         try {
-            eventSM = new EventScriptManager(this, getEvents());
             port = 7575 + this.channel - 1;
             port += (world * 100);
             ip = YamlConfig.config.server.HOST + ":" + port;
@@ -163,7 +155,14 @@ public final class Channel {
             for (MapleExpeditionType exped : MapleExpeditionType.values()) {
             	expedType.add(exped);
             }
-            eventSM.init();
+            
+            if (Server.getInstance().isOnline()) {  // postpone event loading to improve boot time... thanks Riizade, daronhudson for noticing slow startup times
+                eventSM = new EventScriptManager(this, getEvents());
+                eventSM.init();
+            } else {
+                String[] ev = {};
+                eventSM = new EventScriptManager(null, ev);
+            }
             
             dojoStage = new int[20];
             dojoFinishTime = new long[20];
@@ -491,6 +490,11 @@ public final class Channel {
     
     public boolean isConnected(String name) {
         return getPlayerStorage().getCharacterByName(name) != null;
+    }
+    
+    public boolean isActive() {
+        EventScriptManager esm = this.getEventSM();
+        return esm != null && esm.isActive();
     }
     
     public boolean finishedShutdown() {

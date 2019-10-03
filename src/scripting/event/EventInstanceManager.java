@@ -898,7 +898,7 @@ public class EventInstanceManager {
                 }
         }
         
-        public void dispatchUpdateQuestMobCount(int mobid, int mapid) {
+        public void dispatchRaiseQuestMobCount(int mobid, int mapid) {
             Map<Integer, MapleCharacter> mapChars = getInstanceMap(mapid).getMapPlayers();
             if(!mapChars.isEmpty()) {
                 List<MapleCharacter> eventMembers = getPlayers();
@@ -907,7 +907,7 @@ public class EventInstanceManager {
                     MapleCharacter chr = mapChars.get(evChr.getId());
 
                     if(chr != null && chr.isLoggedinWorld()) {
-                        chr.updateQuestMobCount(mobid);
+                        chr.raiseQuestMobCount(mobid);
                     }
                 }
             }

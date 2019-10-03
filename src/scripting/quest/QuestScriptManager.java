@@ -59,10 +59,6 @@ public class QuestScriptManager extends AbstractScriptManager {
         
 	public void start(MapleClient c, short questid, int npc) {
                 MapleQuest quest = MapleQuest.getInstance(questid);
-                if (!quest.canStartWithoutRequirements(c.getPlayer())) {
-                        dispose(c);
-                        return;
-                }
                 try {
                         QuestActionManager qm = new QuestActionManager(c, questid, npc, true);
                         if (qms.containsKey(c)) {
@@ -167,6 +163,36 @@ public class QuestScriptManager extends AbstractScriptManager {
 				dispose(c);
 			}
 		}
+	}
+
+        public void raiseOpen(MapleClient c, short questid, int npc) {
+                try {
+                        QuestActionManager qm = new QuestActionManager(c, questid, npc, true);
+                        if (qms.containsKey(c)) {
+                                return;
+                        }
+                        if(c.canClickNPC()) {
+                                qms.put(c, qm);
+                                
+                                NashornScriptEngine iv = getQuestScriptEngine(c, questid);
+                                if (iv == null) {
+                                        //FilePrinter.printError(FilePrinter.QUEST_UNCODED, "RAISE Quest " + questid + " is uncoded.");
+                                        qm.dispose();
+                                        return;
+                                }
+                                
+                                iv.put("qm", qm);
+                                scripts.put(c, iv);
+                                c.setClickedNPC();
+                                iv.invokeFunction("raiseOpen");
+                        }
+                } catch (final UndeclaredThrowableException ute) {
+                        FilePrinter.printError(FilePrinter.QUEST + questid + ".txt", ute);
+                        dispose(c);
+                } catch (final Throwable t) {
+                        FilePrinter.printError(FilePrinter.QUEST + getQM(c).getQuest() + ".txt", t);
+                        dispose(c);
+                }
 	}
 
 	public void dispose(QuestActionManager qm, MapleClient c) {

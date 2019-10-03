@@ -42,8 +42,8 @@ public class MobRequirement extends MapleQuestRequirement {
 	
 	public MobRequirement(MapleQuest quest, MapleData data) {
 		super(MapleQuestRequirementType.MOB);
-		processData(data);
 		questID = quest.getId();
+                processData(data);
 	}
 	
 	/**

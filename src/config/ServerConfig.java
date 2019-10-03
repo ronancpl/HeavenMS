@@ -301,6 +301,4 @@ public class ServerConfig {
     //Event End Timestamp
     public long EVENT_END_TIMESTAMP;
 
-    //Debug Variables
-    public int DEBUG_VALUES[];
 }

@@ -1,6 +1,6 @@
 /*
     This file is part of the HeavenMS MapleStory Server
-    Copyleft (L) 2016 - 2018 RonanLana
+    Copyleft (L) 2016 - 2019 RonanLana
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Affero General Public License as
@@ -18,32 +18,26 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-var status = -1;
+#ifndef QUEST_LIST_H_
+#define QUEST_LIST_H_
 
-function end(mode, type, selection) {
-    if (mode == -1) {
-        qm.dispose();
-    } else {
-        if(mode == 0 && type > 0) {
-            qm.dispose();
-            return;
-        }
-        
-        if (mode == 1)
-            status++;
-        else
-            status--;
-        
-        if (status == 0) {
-            if(qm.getQuestProgress(21728, 0) == 0) {
-                qm.sendNext("You haven't found the #rPuppeteer's cave#k yet, did you?");
-            } else {
-                qm.sendNext("Hm, so the entrance is blocked by a powerful force? I see, gimme a time to think now...");
-                qm.gainExp(200);
-                qm.forceCompleteQuest();
-            }
-        } else if (status == 1) {
-            qm.dispose();
-        }
-    }
-}
+typedef struct {
+    char *name;
+} ScriptedQuest;
+
+typedef struct ScriptedQuestListItem {
+    ScriptedQuest *method;
+    struct ScriptedQuestListItem *prox;
+} ScriptedQuestListItem;
+
+typedef struct {
+    ScriptedQuestListItem *first;
+    ScriptedQuestListItem *last;
+    ScriptedQuestListItem *cursor;
+
+    int size;
+} ScriptedQuestList;
+
+#include "quest_list.c"
+
+#endif /* QUEST_LIST_H_ */

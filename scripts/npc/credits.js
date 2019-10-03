@@ -93,6 +93,9 @@ function writeServerStaff_OdinMS() {
 }
 
 function writeServerStaff_Contributors() {
+        addPerson("IxianMace", "Contributor");
+        addPerson("Conrad", "Contributor");
+        addPerson("inhyuk", "Contributor");
         addPerson("Jayd", "Contributor");
         addPerson("Dragohe4rt", "Contributor");
         addPerson("Jvlaple", "Contributor");

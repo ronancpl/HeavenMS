@@ -365,28 +365,7 @@ public class AbstractPlayerInteraction {
 		NPCScriptManager.getInstance().start(c, npcid, script, null);
 	}
 
-        public void updateQuest(int questid, int data) {
-            MapleQuestStatus status = c.getPlayer().getQuest(MapleQuest.getInstance(questid));
-            updateQuest(questid, status.getAnyProgressKey(), data);
-        }
-        
-        public void updateQuest(int questid, String data) {
-            MapleQuestStatus status = c.getPlayer().getQuest(MapleQuest.getInstance(questid));
-            updateQuest(questid, status.getAnyProgressKey(), data);
-        }
-        
-        public void updateQuest(int questid, int pid, int data) {
-            updateQuest(questid, pid, String.valueOf(data));
-        }
-        
-	public void updateQuest(int questid, int pid, String data) {
-		MapleQuestStatus status = c.getPlayer().getQuest(MapleQuest.getInstance(questid));
-		status.setStatus(MapleQuestStatus.Status.STARTED);
-		status.setProgress(pid, data);//override old if exists
-		c.getPlayer().updateQuest(status);
-	}
-
-	public int getQuestStatus(int id) {
+        public int getQuestStatus(int id) {
 		return c.getPlayer().getQuest(MapleQuest.getInstance(id)).getStatus().getId();
 	}
         
@@ -394,75 +373,93 @@ public class AbstractPlayerInteraction {
                 return c.getPlayer().getQuest(MapleQuest.getInstance(id)).getStatus();
         }
         
-	public boolean isQuestCompleted(int quest) {
+	public boolean isQuestCompleted(int id) {
 		try {
-			return getQuestStat(quest) == MapleQuestStatus.Status.COMPLETED;
+			return getQuestStat(id) == MapleQuestStatus.Status.COMPLETED;
 		} catch (NullPointerException e) {
                         e.printStackTrace();
 			return false;
 		}
 	}
 
-        public boolean isQuestActive(int quest) {
-            return isQuestStarted(quest);
+        public boolean isQuestActive(int id) {
+            return isQuestStarted(id);
         }
         
-	public boolean isQuestStarted(int quest) {
+	public boolean isQuestStarted(int id) {
 		try {
-			return getQuestStat(quest) == MapleQuestStatus.Status.STARTED;
+			return getQuestStat(id) == MapleQuestStatus.Status.STARTED;
 		} catch (NullPointerException e) {
                         e.printStackTrace();
 			return false;
 		}
 	}
         
-        public void setQuestProgress(int qid, int progress) {
-                MapleQuestStatus status = c.getPlayer().getQuest(MapleQuest.getInstance(qid));
-                status.setProgress(status.getAnyProgressKey(), String.valueOf(progress));
+        public void setQuestProgress(int id, String progress) {
+                setQuestProgress(id, 0, progress);
         }
         
-        public void setQuestProgress(int qid, int pid, int progress) {
-                MapleQuestStatus status = c.getPlayer().getQuest(MapleQuest.getInstance(qid));
-                status.setProgress(pid, String.valueOf(progress));
-	}
-        
-        public void setStringQuestProgress(int qid, int pid, String progress) {
-                MapleQuestStatus status = c.getPlayer().getQuest(MapleQuest.getInstance(qid));
-                status.setProgress(pid, progress);
+        public void setQuestProgress(int id, int progress) {
+                setQuestProgress(id, 0, "" + progress);
         }
         
-        public int getQuestProgress(int qid) {
-                MapleQuestStatus status = c.getPlayer().getQuest(MapleQuest.getInstance(qid));
-                String progress = status.getProgress(status.getAnyProgressKey());
-            
-                if (progress.isEmpty()) {
+        public void setQuestProgress(int id, int infoNumber, int progress) {
+                setQuestProgress(id, infoNumber, "" + progress);
+        }
+        
+        public void setQuestProgress(int id, int infoNumber, String progress) {
+                c.getPlayer().setQuestProgress(id, infoNumber, progress);
+        }
+        
+        public String getQuestProgress(int id) {
+                return getQuestProgress(id, 0);
+        }
+        
+        public String getQuestProgress(int id, int infoNumber) {
+                MapleQuestStatus qs = getPlayer().getQuest(MapleQuest.getInstance(id));
+                
+                if (qs.getInfoNumber() == infoNumber && infoNumber > 0) {
+                        qs = getPlayer().getQuest(MapleQuest.getInstance(infoNumber));
+                        infoNumber = 0;
+                }
+                
+                if (qs != null) {
+                        return qs.getProgress(infoNumber);
+                } else {
+                        return "";
+                }
+        }
+        
+        public int getQuestProgressInt(int id) {
+                try {
+                        return Integer.valueOf(getQuestProgress(id));
+                } catch (NumberFormatException nfe) {
                         return 0;
                 }
-                return Integer.parseInt(progress);
         }
         
-        public int getQuestProgress(int qid, int pid) {
-                if (getPlayer().getQuest(MapleQuest.getInstance(qid)).getProgress(pid).isEmpty()) {
-                    return 0;
+        public int getQuestProgressInt(int id, int infoNumber) {
+                try {
+                        return Integer.valueOf(getQuestProgress(id, infoNumber));
+                } catch (NumberFormatException nfe) {
+                        return 0;
                 }
-		return Integer.parseInt(getPlayer().getQuest(MapleQuest.getInstance(qid)).getProgress(pid));
-	}
+        }
         
-        public String getStringQuestProgress(int qid, int pid) {
-                if (getPlayer().getQuest(MapleQuest.getInstance(qid)).getProgress(pid).isEmpty()) {
-                    return "";
+        public void resetAllQuestProgress(int id) {
+                MapleQuestStatus qs = getPlayer().getQuest(MapleQuest.getInstance(id));
+                if (qs != null) {
+                        qs.resetAllProgress();
+                        getPlayer().announceUpdateQuest(DelayedQuestUpdate.UPDATE, qs, false);
                 }
-                return getPlayer().getQuest(MapleQuest.getInstance(qid)).getProgress(pid);
         }
         
-        public void resetAllQuestProgress(int qid) {
-                getPlayer().getQuest(MapleQuest.getInstance(qid)).resetAllProgress();
-                getPlayer().announceUpdateQuest(DelayedQuestUpdate.UPDATE, getPlayer().getQuest(MapleQuest.getInstance(qid)), false);
-        }
-        
-        public void resetQuestProgress(int qid, int pid) {
-                getPlayer().getQuest(MapleQuest.getInstance(qid)).resetProgress(pid);
-                getPlayer().announceUpdateQuest(DelayedQuestUpdate.UPDATE, getPlayer().getQuest(MapleQuest.getInstance(qid)), false);
+        public void resetQuestProgress(int id, int infoNumber) {
+                MapleQuestStatus qs = getPlayer().getQuest(MapleQuest.getInstance(id));
+                if (qs != null) {
+                        qs.resetProgress(infoNumber);
+                        getPlayer().announceUpdateQuest(DelayedQuestUpdate.UPDATE, qs, false);
+                }
         }
         
         public boolean forceStartQuest(int id) {
@@ -497,26 +494,26 @@ public class AbstractPlayerInteraction {
                 return completeQuest(id, 9010000);
         }
         
-        public boolean startQuest(short id, int npcId) {
-                return startQuest((int) id, npcId);
+        public boolean startQuest(short id, int npc) {
+                return startQuest((int) id, npc);
         }
         
-        public boolean completeQuest(short id, int npcId) {
-                return completeQuest((int) id, npcId);
+        public boolean completeQuest(short id, int npc) {
+                return completeQuest((int) id, npc);
         }
         
-        public boolean startQuest(int id, int npcId) {
+        public boolean startQuest(int id, int npc) {
                 try {
-                        return MapleQuest.getInstance(id).forceStart(getPlayer(), npcId);
+                        return MapleQuest.getInstance(id).forceStart(getPlayer(), npc);
                 } catch (NullPointerException ex) {
                         ex.printStackTrace();
                         return false;
                 }
         }
         
-        public boolean completeQuest(int id, int npcId) {
+        public boolean completeQuest(int id, int npc) {
                 try {
-                        return MapleQuest.getInstance(id).forceComplete(getPlayer(), npcId);
+                        return MapleQuest.getInstance(id).forceComplete(getPlayer(), npc);
                 } catch (NullPointerException ex) {
                         ex.printStackTrace();
                         return false;
@@ -681,6 +678,10 @@ public class AbstractPlayerInteraction {
 
 	public void message(String message) {
 		getPlayer().message(message);
+	}
+        
+        public void dropMessage(int type, String message) {
+		getPlayer().dropMessage(type, message);
 	}
 
 	public void mapMessage(int type, String message) {

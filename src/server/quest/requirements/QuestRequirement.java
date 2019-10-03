@@ -58,12 +58,12 @@ public class QuestRequirement extends MapleQuestRequirement {
 	public boolean check(MapleCharacter chr, Integer npcid) {
 		for(Integer questID : quests.keySet()) {
 			int stateReq = quests.get(questID);
-			MapleQuestStatus q = chr.getQuest(MapleQuest.getInstance(questID));
+			MapleQuestStatus qs = chr.getQuest(MapleQuest.getInstance(questID));
 			
-			if(q == null && MapleQuestStatus.Status.getById(stateReq).equals(MapleQuestStatus.Status.NOT_STARTED))
+			if(qs == null && MapleQuestStatus.Status.getById(stateReq).equals(MapleQuestStatus.Status.NOT_STARTED))
 				continue;
 			
-			if(q == null || !q.getStatus().equals(MapleQuestStatus.Status.getById(stateReq))) {
+			if(qs == null || !qs.getStatus().equals(MapleQuestStatus.Status.getById(stateReq))) {
 				return false;
 			}
 			

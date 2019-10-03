@@ -1,9 +1,11 @@
 package net.server.channel.handlers;
 
 import client.MapleCharacter.DelayedQuestUpdate;
+import client.MapleCharacter;
 import client.MapleClient;
 import client.MapleQuestStatus;
 import net.AbstractMaplePacketHandler;
+import scripting.quest.QuestScriptManager;
 import server.quest.MapleQuest;
 import tools.data.input.SeekableLittleEndianAccessor;
 
@@ -15,19 +17,21 @@ public class RaiseUIStateHandler extends AbstractMaplePacketHandler {
 
     @Override
     public final void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
-        int questid = slea.readShort();
+        int infoNumber = slea.readShort();
         
         if (c.tryacquireClient()) {
             try {
-                MapleQuest quest = MapleQuest.getInstance(questid);
-                MapleQuestStatus mqs = c.getPlayer().getQuest(quest);
+                MapleCharacter chr = c.getPlayer();
+                MapleQuest quest = MapleQuest.getInstanceFromInfoNumber(infoNumber);
+                MapleQuestStatus mqs = chr.getQuest(quest);
+                
+                QuestScriptManager.getInstance().raiseOpen(c, (short) infoNumber, mqs.getNpc());
+                
                 if (mqs.getStatus() == MapleQuestStatus.Status.NOT_STARTED) {
-                    quest.forceStart(c.getPlayer(), 22000);
-                    c.getPlayer().updateQuestInfo(quest.getId(), "0"); 
+                    quest.forceStart(chr, 22000);
+                    c.getAbstractPlayerInteraction().setQuestProgress(quest.getId(), infoNumber, 0);
                 } else if (mqs.getStatus() == MapleQuestStatus.Status.STARTED) {
-                    c.getPlayer().announceUpdateQuest(DelayedQuestUpdate.UPDATE, mqs, false);
-                } else {
-                    //c.announce(MaplePacketCreator.updateQuestInfo(mqs.getQuestID(), 22000, "0"));
+                    chr.announceUpdateQuest(DelayedQuestUpdate.UPDATE, mqs, mqs.getInfoNumber() > 0);
                 }
             } finally {
                 c.releaseClient();

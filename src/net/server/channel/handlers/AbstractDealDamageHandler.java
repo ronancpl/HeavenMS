@@ -163,9 +163,11 @@ public abstract class AbstractDealDamageHandler extends AbstractMaplePacketHandl
                 int mobCount = attackEffect.getMobCount();
                 if (attack.skill != Cleric.HEAL) {
                     if (player.isAlive()) {
-                        if(attack.skill == NightWalker.POISON_BOMB) {// Poison Bomb
+                        if(attack.skill == Aran.BODY_PRESSURE || attack.skill == Marauder.ENERGY_CHARGE || attack.skill == ThunderBreaker.ENERGY_CHARGE) {  // thanks IxianMace for noticing Energy Charge skills refreshing on touch, leading to misleading buff applies
+                            // prevent touch dmg skills refreshing
+                        } else if(attack.skill == NightWalker.POISON_BOMB) {// Poison Bomb
                             attackEffect.applyTo(player, new Point(attack.position.x, attack.position.y));
-                        } else if(attack.skill != Aran.BODY_PRESSURE) {// prevent BP refreshing
+                        } else {
                             attackEffect.applyTo(player);
                             
                             if (attack.skill == DawnWarrior.FINAL_ATTACK || attack.skill == Page.FINAL_ATTACK_BW || attack.skill == Page.FINAL_ATTACK_SWORD || attack.skill == Fighter.FINAL_ATTACK_SWORD

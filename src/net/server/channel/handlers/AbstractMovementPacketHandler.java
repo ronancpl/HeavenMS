@@ -34,10 +34,11 @@ import server.movement.LifeMovementFragment;
 import server.movement.RelativeLifeMovement;
 import server.movement.TeleportMovement;
 import tools.data.input.LittleEndianAccessor;
+import tools.exceptions.EmptyMovementException;
 
 public abstract class AbstractMovementPacketHandler extends AbstractMaplePacketHandler {
 
-    protected List<LifeMovementFragment> parseMovement(LittleEndianAccessor lea) {
+    protected List<LifeMovementFragment> parseMovement(LittleEndianAccessor lea) throws EmptyMovementException {
         List<LifeMovementFragment> res = new ArrayList<>();
         byte numCommands = lea.readByte();
         for (byte i = 0; i < numCommands; i++) {
@@ -138,15 +139,20 @@ public abstract class AbstractMovementPacketHandler extends AbstractMaplePacketH
                 }
                 default:
                     System.out.println("Unhandled Case:" + command);
-                    return null;
+                    throw new EmptyMovementException(lea);
             }
+        }
+        
+        if (res.isEmpty()) {
+            throw new EmptyMovementException(lea);
         }
         return res;
     }
     
-    protected void updatePosition(LittleEndianAccessor lea, AnimatedMapleMapObject target, int yOffset) {
+    protected void updatePosition(LittleEndianAccessor lea, AnimatedMapleMapObject target, int yOffset) throws EmptyMovementException {
     	
         byte numCommands = lea.readByte();
+        if (numCommands < 1) throw new EmptyMovementException(lea);
         for (byte i = 0; i < numCommands; i++) {
             byte command = lea.readByte();
             switch (command) {
@@ -233,6 +239,5 @@ public abstract class AbstractMovementPacketHandler extends AbstractMaplePacketH
                     return;
             }
         }
-        return;
     }
 }

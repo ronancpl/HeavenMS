@@ -2156,11 +2156,10 @@ public class MapleItemInformationProvider {
             return questItemConsCache.get(itemId);
         }
         MapleData data = getItemData(itemId);
+        QuestConsItem qcItem = null;
         
         MapleData infoData = data.getChildByPath("info");
-        MapleData ciData = infoData.getChildByPath("consumeItem");
-        QuestConsItem qcItem = null;
-        if (ciData != null) {
+        if (infoData.getChildByPath("uiData") != null) {
             qcItem = new QuestConsItem();
             qcItem.exp = MapleDataTool.getInt("exp", infoData);
             qcItem.grade = MapleDataTool.getInt("grade", infoData);
@@ -2168,11 +2167,14 @@ public class MapleItemInformationProvider {
             qcItem.items = new HashMap<>(2);
             
             Map<Integer, Integer> cItems = qcItem.items;
-            for (MapleData ciItem : ciData.getChildren()) {
-                int itemid = MapleDataTool.getInt("0", ciItem);
-                int qty = MapleDataTool.getInt("1", ciItem);
-                
-                cItems.put(itemid, qty);
+            MapleData ciData = infoData.getChildByPath("consumeItem");
+            if (ciData != null) {
+                for (MapleData ciItem : ciData.getChildren()) {
+                    int itemid = MapleDataTool.getInt("0", ciItem);
+                    int qty = MapleDataTool.getInt("1", ciItem);
+
+                    cItems.put(itemid, qty);
+                }
             }
         }
         

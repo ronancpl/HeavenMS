@@ -18,7 +18,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-importPackage(Packages.constants);
+importPackage(Packages.constants.game);
 
 var status = -1;
 

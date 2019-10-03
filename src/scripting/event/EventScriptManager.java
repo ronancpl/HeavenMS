@@ -27,7 +27,6 @@ import java.util.Map.Entry;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.script.ScriptEngine;
 import jdk.nashorn.api.scripting.NashornScriptEngine;
 
 import net.server.channel.Channel;
@@ -48,7 +47,9 @@ public class EventScriptManager extends AbstractScriptManager {
         public NashornScriptEngine iv;
         public EventManager em;
     }
+    
     private Map<String, EventEntry> events = new LinkedHashMap<>();
+    private boolean active = false;
 
     public EventScriptManager(Channel cserv, String[] scripts) {
         super();
@@ -67,6 +68,10 @@ public class EventScriptManager extends AbstractScriptManager {
         }
         return entry.em;
     }
+    
+    public boolean isActive() {
+        return active;
+    }
 
     public void init() {
         for (EventEntry entry : events.values()) {
@@ -78,6 +83,8 @@ public class EventScriptManager extends AbstractScriptManager {
                 System.out.println("Error on script: " + entry.em.getName());
             }
         }
+        
+        active = true;
     }
 
     private void reloadScripts() {
@@ -100,6 +107,7 @@ public class EventScriptManager extends AbstractScriptManager {
     }
 
     public void cancel() {
+        active = false;
         for (EventEntry entry : events.values()) {
             entry.em.cancel();
         }

@@ -41,6 +41,7 @@ import tools.MaplePacketCreator;
 import tools.Pair;
 import tools.Randomizer;
 import tools.data.input.SeekableLittleEndianAccessor;
+import tools.exceptions.EmptyMovementException;
 
 /**
  * @author Danny (Leifde)
@@ -142,11 +143,7 @@ public final class MoveLifeHandler extends AbstractMovementPacketHandler {
 		short start_y = slea.readShort(); // hmm...
 		Point startPos = new Point(start_x, start_y - 2);
 		Point serverStartPos = new Point(monster.getPosition());
-		long movementDataStart = slea.getPosition();
                 
-                updatePosition(slea, monster, -2);  // Thanks Doodle and ZERO傑洛 for noticing sponge-based bosses moving out of stage in case of no-offset applied
-                long movementDataLength = slea.getPosition() - movementDataStart; //how many bytes were read by updatePosition
-
                 Boolean aggro = monster.aggroMoveLifeUpdate(player);
                 if (aggro == null) return;
 
@@ -156,15 +153,21 @@ public final class MoveLifeHandler extends AbstractMovementPacketHandler {
 			c.announce(MaplePacketCreator.moveMonsterResponse(objectid, moveid, mobMp, aggro));
 		}
                 
-		if (movementDataLength > 0) {
-            if (YamlConfig.config.server.USE_DEBUG_SHOW_RCVD_MVLIFE) {
-                System.out.println((isSkill ? "SKILL " : (isAttack ? "ATTCK " : " ")) + "castPos: " + castPos + " rawAct: " + rawActivity + " opt: " + pOption + " skillID: " + useSkillId + " skillLV: " + useSkillLevel + " " + "allowSkill: " + nextMovementCouldBeSkill + " mobMp: " + mobMp);
-            }
-            slea.seek(movementDataStart);
-            map.broadcastMessage(player, MaplePacketCreator.moveMonster(objectid, nextMovementCouldBeSkill, rawActivity, useSkillId, useSkillLevel, pOption, startPos, slea, movementDataLength), serverStartPos);
-			//updatePosition(res, monster, -2); //does this need to be done after the packet is broadcast?
-			map.moveMonster(monster, monster.getPosition());
-		}
+                
+                try {
+                        long movementDataStart = slea.getPosition();
+                        updatePosition(slea, monster, -2);  // Thanks Doodle and ZERO傑洛 for noticing sponge-based bosses moving out of stage in case of no-offset applied
+                        long movementDataLength = slea.getPosition() - movementDataStart; //how many bytes were read by updatePosition
+                        slea.seek(movementDataStart);
+                        
+                        if (YamlConfig.config.server.USE_DEBUG_SHOW_RCVD_MVLIFE) {
+                                System.out.println((isSkill ? "SKILL " : (isAttack ? "ATTCK " : " ")) + "castPos: " + castPos + " rawAct: " + rawActivity + " opt: " + pOption + " skillID: " + useSkillId + " skillLV: " + useSkillLevel + " " + "allowSkill: " + nextMovementCouldBeSkill + " mobMp: " + mobMp);
+                        }
+                        
+                        map.broadcastMessage(player, MaplePacketCreator.moveMonster(objectid, nextMovementCouldBeSkill, rawActivity, useSkillId, useSkillLevel, pOption, startPos, slea, movementDataLength), serverStartPos);
+                        //updatePosition(res, monster, -2); //does this need to be done after the packet is broadcast?
+                        map.moveMonster(monster, monster.getPosition());
+                } catch (EmptyMovementException e) {}
                 
                 if (banishPlayers != null) {
                         for (MapleCharacter chr : banishPlayers) {
