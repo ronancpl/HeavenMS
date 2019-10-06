@@ -4581,7 +4581,7 @@ You can now begin the &quot;Manji&apos;s Request&quot; quest.
   <imgdir name="20718">
     <string name="name" value="Maybe it&apos;s Grendel!"/>
     <string name="0" value="I better talk to Agent #b#p1103003##k of #m101000000# about a new assignment."/>
-    <string name="1" value="#p1103003# told me #p1032001# looked very suspicious. She said she always had #p1032001# in mind every since she found out about his past, which involved dabbling with dangerous black magic. She then assigned me to visit #b#m101000003##k, where #p1032001# lives, and wanted me to conduct a #bfull search in his house#k while #p1032001# is away."/>
+    <string name="1" value="#p1103003# told me #p1032001# looked very suspicious. She said she always had #p1032001# in mind ever since she found out about his past, which involved dabbling with dangerous black magic. She then assigned me to visit #b#m101000003##k, where #p1032001# lives, and wanted me to conduct a #bfull search in his house#k while #p1032001# is away."/>
     <string name="2" value="While conducting a full search in #p1032001#&apos;s house, I was ambushed by a black shadow. Thankfully, I came out alive. After telling her what happened, #p1103003# stopped and started thinking about something..."/>
     <int name="area" value="15"/>
   </imgdir>
@@ -12719,7 +12719,7 @@ Can proceed to the &quot;The Secrets Behind the Ring?&quot; quest.
   <imgdir name="3330">
     <string name="name" value="Keeny&apos;s Research on Neo Huroid!"/>
     <string name="0" value="#b#p2111005##k is the little Fairy who studies alchemy. She seems to be in need of help..."/>
-    <string name="1" value="#p2111005#&apos;s studies have now taken her ahead of #o5110301# and onto #o5110302#. #p2111005# said in order to thoroughly investigate #r#o5110302##k, she&apos;ll need #b#t4000365##k... \n\n#i4000365##t4000365# #b#c4000365##k/160 "/>
+    <string name="1" value="#p2111005#&apos;s studies have now taken her ahead of #o5110301# and on to #o5110302#. #p2111005# said in order to thoroughly investigate #r#o5110302##k, she&apos;ll need #b#t4000365##k... \n\n#i4000365##t4000365# #b#c4000365##k/160 "/>
     <string name="2" value="I gave #p2111005# all the #t4000365#s she asked for. She revealed that she learned alchemy from the Zenumist alchemists, but slowly found Alcadno&apos;s work fascinating, and is now conducting studies secret from the alchemists that have taught her."/>
     <int name="area" value="44"/>
   </imgdir>
@@ -13511,7 +13511,7 @@ Can proceed to the &quot;The Secrets Behind the Ring?&quot; quest.
     <string name="name" value="A Chat with Nara the Tour Guide"/>
     <string name="parent" value="VIP Ticket to Florina Beach"/>
     <int name="order" value="2"/>
-    <string name="1" value="Nara said a Ripped VIP pass will not work, nor can it be re-published, but the way to leave may be easier by paying a visit to Shuri, the the Tour Guide at Orbis."/>
+    <string name="1" value="Nara said a Ripped VIP pass will not work, nor can it be re-published, but the way to leave may be easier by paying a visit to Shuri, the tour guide at Orbis."/>
     <string name="2" value="Hmmm ... so something as simple as making a new ticket cannot be done, huh. Alright, since I&apos;m here and all, why don&apos;t I just take a crack at it til the very end?"/>
     <int name="area" value="37"/>
   </imgdir>
@@ -13520,7 +13520,7 @@ Can proceed to the &quot;The Secrets Behind the Ring?&quot; quest.
     <string name="parent" value="VIP Ticket to Florina Beach"/>
     <int name="order" value="3"/>
     <string name="1" value="I visited Shuri, and she mentioned that the VIP ticket cannot be re-issued, but it can be recovered. To recover the ripped VIP ticket, I&apos;ll need a few items... \n\n #t04000059# #b#c04000059##k/50 \n #t04000060# #b#c04000060##k/30 \n #t04021007# #b#c04021007##k/3"/>
-    <string name="2" value="After recovering the ripped VIP Ticket to Florina Beach, I was given the VIP Ticket to Florina Beach, a lifetime pass, as a sign of thanks.nNow it&apos;s a matter of taking a vacation whenever I want."/>
+    <string name="2" value="After recovering the ripped VIP Ticket to Florina Beach, I was given the VIP Ticket to Florina Beach, a lifetime pass, as a sign of thanks. Now it&apos;s a matter of taking a vacation whenever I want."/>
     <int name="area" value="37"/>
   </imgdir>
   <imgdir name="3444">
@@ -15338,7 +15338,7 @@ Can proceed to the &quot;The Secrets Behind the Ring?&quot; quest.
     <int name="order" value="2"/>
     <string name="0" value="After listening to #p2101000#, I realized they may be another secret organization besides Sand Bandits. Red Scorpions... who are they?"/>
     <string name="1" value="#p2101000# said that since the ring is from the Red Scorpions, who bully around people in the neighborhood, he stole it from them and gave it to others. What? So #p2101012# is a Red Scorpion? But he told me he&apos;s a Sand Bandit..."/>
-    <string name="2" value="#p2101000# said #p2101012# is fake, and I may want to find the hideaway spot of the Red Scorpions, which should be nearby. He said only a special password can open the door, and the only revenge for me to them would be to steal their stolen treasures and give them to others... by the way, what did he mean by &quot;I already know the password?&quot;"/>
+    <string name="2" value="#p2101000# said #p2101012# is fake, and I may want to find the hideaway spot of the Red Scorpions, which should be nearby. He said only a special password can open the door, and the only revenge for me to them would be to steal their stolen treasures and give them to others... By the way, what did he mean by &quot;I already know the password?&quot;"/>
     <int name="area" value="44"/>
   </imgdir>
   <imgdir name="3926">
@@ -16163,26 +16163,26 @@ Can proceed to the &quot;The Secrets Behind the Ring?&quot; quest.
     <string name="name" value="Angie&apos;s Beloved Costume 1"/>
     <string name="parent" value="Angie&apos;s Beloved Costume"/>
     <int name="order" value="1"/>
-    <string name="0" value="I think I just saw a Fashionable lady, #p9270032# in CBD waiving her hands at me!  Am I that Attractive?"/>
+    <string name="0" value="I think I just saw a Fashionable lady, #p9270032#, in CBD waving her hands at me! Am I that attractive?"/>
     <string name="1" value="#p9270032# has asked me to gather #b#t4000035##k and #b#t4000021##k in order to make a fashionable brand new Indian Costume.\n\n#t4000035#  #r#c4000035#/20#k\n#t4000021#  #r#c4000021#/20#k"/>
-    <string name="2" value="Now that I have brought all the required items to #p9270032#, I never have seen someboy so obssessed with her fashion that much.  Talking about the fashion, there is no one that dresses better than me in MapleS.E.A."/>
+    <string name="2" value="Now that I have brought all the required items to #p9270032#, I never have seen someboy so obsessed with her fashion that much. Talking about the fashion, there is no one who dresses better than me in MapleS.E.A."/>
     <int name="area" value="48"/>
   </imgdir>
   <imgdir name="4508">
     <string name="name" value="Angie&apos;s Beloved Costume 2"/>
     <string name="parent" value="Angie&apos;s Beloved Costume"/>
     <int name="order" value="2"/>
-    <string name="0" value="#p9270032# who is ossesed with fashion is looking for help once more.  What should it be this time?"/>
-    <string name="1" value="She is definately obssessed with fashion! She wants another dress. Wonder how many dresses she has in her closet.  Is she a fashion model or something?  Well, let&apos;s just give her what she needs.\n\n#t4000035#  #r#c4000035#/25#k\n#t4000021#  #r#c4000021#/25#k\n#t4021003#  #r#c4021003#/5"/>
-    <string name="2" value="Angie rewarded with carrot cake to me to show her appreciation for gathering her the items for her new clothes.  It looks so delicious."/>
+    <string name="0" value="#p9270032#, who is obsessed with fashion, is looking for help once more. What should it be this time?"/>
+    <string name="1" value="She is definitely obsessed with fashion! She wants another dress. Wonder how many dresses she has in her closet. Is she a fashion model or something? Well, let&apos;s just give her what she needs.\n\n#t4000035#  #r#c4000035#/25#k\n#t4000021#  #r#c4000021#/25#k\n#t4021003#  #r#c4021003#/5"/>
+    <string name="2" value="Angie rewarded carrot cake to me to show her appreciation for gathering the items for her new clothes. It looks so delicious."/>
     <int name="area" value="48"/>
   </imgdir>
   <imgdir name="4509">
     <string name="name" value="Angie&apos;s Beloved Costume 3"/>
     <string name="parent" value="Angie&apos;s Beloved Costume"/>
     <int name="order" value="3"/>
-    <string name="0" value="What?  #p9270032# in CBD is looking for me again?  I wonder what could it be this time!"/>
-    <string name="1" value="No surprise to find out that she wants a new dress!  She asked me to gather 50 #t4000035#, 50 #t4000021#, and 10 #t4021003# this time.  I really hope that she is satisfied with her dress!\n\n#t4000035#  #r#c4000035#/50#k\n#t4000021#  #r#c4000021#/50#k\n#t4021003#  #r#c4021003#/10#k"/>
+    <string name="0" value="What? #p9270032# in CBD is looking for me again? I wonder what could it be this time!"/>
+    <string name="1" value="No surprise to find out that she wants a new dress! She asked me to gather 50 #t4000035#, 50 #t4000021#, and 10 #t4021003# this time.  I really hope that she is satisfied with her dress!\n\n#t4000035#  #r#c4000035#/50#k\n#t4000021#  #r#c4000021#/50#k\n#t4021003#  #r#c4021003#/10#k"/>
     <string name="2" value="Phew... Finally, #p9270032# was able to get all dresses she ever wanted! But speaking of fashion, I am sure that I look much better!"/>
     <int name="area" value="48"/>
   </imgdir>
@@ -16190,9 +16190,9 @@ Can proceed to the &quot;The Secrets Behind the Ring?&quot; quest.
     <string name="name" value="The secret of the past"/>
     <string name="parent" value="The Secret of Ghostship"/>
     <int name="order" value="1"/>
-    <string name="0" value="#b#p9270030##k in Boat Quay looks like he could use some help of mine.  He seems very scared of something.  Let&apos;s go find out."/>
+    <string name="0" value="#b#p9270030##k in Boat Quay looks like he could use some help of mine. He seems very scared of something. Let&apos;s go find out."/>
     <string name="1" value="#p9270030# told me this weird story about a ghost ship and ghosts along the coast line. Shall I believe him? He is just a nameless wanderer in town, but he seemed to be serious about the story. Let&apos;s go and find out if he is telling me the truth. There should be #b#o9420509##k and #b#o9420510##k somewhere around Boat Quay and I am about to eliminate them!\n\n#o9420509#  #r#a45101##k\n#o9420510#  #r#a45102##k"/>
-    <string name="2" value="What a surprise!  #p9270030# was telling me the truth!  I should go see him again since I feel that there are more stories he wants to tell me!"/>
+    <string name="2" value="What a surprise! #p9270030# was telling me the truth! I should go see him again since I feel that there are more stories he wants to tell me!"/>
     <int name="area" value="48"/>
   </imgdir>
   <imgdir name="4511">
@@ -16200,40 +16200,40 @@ Can proceed to the &quot;The Secrets Behind the Ring?&quot; quest.
     <string name="parent" value="The Secret of Ghostship"/>
     <int name="order" value="2"/>
     <string name="0" value="#b#p9270030##k has more secrets to reveal!  Let&apos;s go see him again!"/>
-    <string name="1" value="#b#p9270030##k has told me that he wishes to sail again with his crew.  However, he isn&apos;t sure if he can go out to the sea like the old days because of the Ghosts along the coast line.  I really want to help him get his dream back by eliminating #b#o9420510# and #o9420511##k.\n\n#o9420510#  #r#a45111##k\n#o9420511#  #r#a45112##k"/>
-    <string name="2" value="Yes indeed!  I did help #p9270030# to get back to the sea again.  But I wonder, he has something more worried about.  I think I should go see him again."/>
+    <string name="1" value="#b#p9270030##k has told me that he wishes to sail again with his crew. However, he isn&apos;t sure if he can go out to the sea like the old days because of the Ghosts along the coast line.  I really want to help him get his dream back by eliminating #b#o9420510# and #o9420511##k.\n\n#o9420510#  #r#a45111##k\n#o9420511#  #r#a45112##k"/>
+    <string name="2" value="Yes indeed!  I did help #p9270030# to get back to the sea again. But I wonder, he has something more worried about.  I think I should go see him again."/>
     <int name="area" value="48"/>
   </imgdir>
   <imgdir name="4512">
     <string name="name" value="The great secret reveals"/>
     <string name="parent" value="The Secret of Ghostship"/>
     <int name="order" value="3"/>
-    <string name="0" value="#b#p9270030##k is about to reveal more about his secrets!  Let&apos;s go find him Boat Quay."/>
-    <string name="1" value="The most strongest ghost, #b#o9420512##k is the one that #p9270030# was so afraid of...  Well I am not afraid of anything!  He asked me to help him get back to the sea by eliminating #b300 #o9420512##k.  He told me to bring my friends with me since this ghost is the most powerful one in town.  Follow me my fellow Maplers!\n\n#o9420512#  #r#a45121##k"/>
-    <string name="2" value="Eliminating #o9420512# was not a easy task for me but I did it!  Now, I should go see #p9270030# and see if he has left to the sea.  Or.. does he have another serious secret, something Big?"/>
+    <string name="0" value="#b#p9270030##k is about to reveal more about his secrets! Let&apos;s go find him at Boat Quay."/>
+    <string name="1" value="The most strongest ghost, #b#o9420512##k is the one that #p9270030# was so afraid of... Well I am not afraid of anything!  He asked me to help him get back to the sea by eliminating #b300 #o9420512##k.  He told me to bring my friends with me since this ghost is the most powerful one in town.  Follow me my fellow Maplers!\n\n#o9420512#  #r#a45121##k"/>
+    <string name="2" value="Eliminating #o9420512# was not a easy task for me but I did it! Now, I should go see #p9270030# and see if he has left to the sea.  Or.. does he have another serious secret, something Big?"/>
     <int name="area" value="48"/>
   </imgdir>
   <imgdir name="4513">
     <string name="name" value="Fight for the future"/>
     <string name="parent" value="The Secret of Ghostship"/>
     <int name="order" value="4"/>
-    <string name="0" value="I sense something that #p9270030# has not told me all of his secrets.  There is still something about this Ghosthip.  Let&apos;s go find out."/>
-    <string name="1" value="Believe or not, #p9270030# told me that there is this Boss Ghost, #r#o9420513##k who controlls all other ghosts in town.  Without defeating this monster, the boat quay will never be the same.  Let go investigate the Ghostship now.  But I must be cautious since he also said theGhostship itself is a big maze...  I will have to eliminate #o9420513# and collect #t4000384# as a proof of elimination.\n\n#o9420513#  #r#a45131##k\n#t4000384#  #r#c4000384#/1#k"/>
-    <string name="2" value="What an exprience!  I am glad that I brought peace to this town and to the sailors!  However, I feel that the ghost has not been perfectly disappeared.  I should go check every once in a while."/>
+    <string name="0" value="I sense something that #p9270030# has not told me all of his secrets. There is still something about this Ghostship. Let&apos;s go find out."/>
+    <string name="1" value="Believe it or not, #p9270030# told me that there is this Boss Ghost, #r#o9420513##k, who controls all other ghosts in town. Without defeating this monster, the boat quay will never be the same. Let go investigate the Ghostship now. But I must be cautious since he also said the Ghostship itself is a big maze... I will have to eliminate #o9420513# and collect #t4000384# as proof of elimination.\n\n#o9420513#  #r#a45131##k\n#t4000384#  #r#c4000384#/1#k"/>
+    <string name="2" value="What an experience! I am glad that I brought peace to this town and to the sailors! However, I feel that the ghost has not completely disappeared. I should go check every once in a while."/>
     <int name="area" value="48"/>
   </imgdir>
   <imgdir name="4522">
     <string name="name" value="The Lost White Essence"/>
     <string name="0" value="If I lost the #bwhite essence#k, I should go visit #bRalph the wanderer#k again."/>
-    <string name="1" value="I should go eliminate Mr. Anchor once more and gather the red essence.  I should really take care of the White Essence this time if Ralph the wanderer gives me the item this time.\n\n#o9420512#  #r#a45221##k\n#t4000383#  #r#c4000383#/300"/>
+    <string name="1" value="I should go eliminate Mr. Anchor once more and gather the red essence. I should really take care of the White Essence this time if Ralph the wanderer gives me the item this time.\n\n#o9420512#  #r#a45221##k\n#t4000383#  #r#c4000383#/300"/>
     <string name="2" value="Phew... I really should go take care of the #bCapt. Latanica#k this time and bring peace to the Boat Quay Town."/>
     <int name="area" value="48"/>
   </imgdir>
   <imgdir name="4523">
     <string name="name" value="Return of Capt. Latanica"/>
-    <string name="0" value="#bRalph the wanderer#k is sensing dark force around the Ghostship Area...  I have to check him out once again."/>
-    <string name="1" value="#bRalph the wanderer#k believes that #rCapt. Latanica#k is back!!!  He wanted me to enter the engine room once again, but he needs to find out that I am still in shape. I will have to prove to him that I have been training myself and am prepared.\n\n"/>
-    <string name="2" value="I was finally able to prove to him that I am still prepared to enter the engine room.  Now, Capt. Latanica is all mine!"/>
+    <string name="0" value="#bRalph the wanderer#k is sensing dark force around the Ghostship Area... I have to check him out once again."/>
+    <string name="1" value="#bRalph the wanderer#k believes that #rCapt. Latanica#k is back!!! He wanted me to enter the engine room once again, but he needs to find out that I am still in shape. I will have to prove to him that I have been training myself and am prepared.\n\n"/>
+    <string name="2" value="I was finally able to prove to him that I am still prepared to enter the engine room. Now, Capt. Latanica is all mine!"/>
     <int name="area" value="48"/>
   </imgdir>
   <imgdir name="4541">
@@ -16241,7 +16241,7 @@ Can proceed to the &quot;The Secrets Behind the Ring?&quot; quest.
     <string name="parent" value="Malek&apos;s Joy of Music"/>
     <int name="order" value="1"/>
     <string name="0" value="It is such a sunny day! I really need something to cool down!"/>
-    <string name="1" value="#b#p9270061##k says that with the #b#o9420527#s#k running outside the village, we won&apos;t be able to go out of the Kampung.They want me to help get rid of them and collect #b50 #t4000465#s#k. \n\n#t4000465# #r#c4000465#/50#k"/>
+    <string name="1" value="#b#p9270061##k says that with the #b#o9420527#s#k running outside the village, we won&apos;t be able to go out of the Kampung. They want me to help get rid of them and collect #b50 #t4000465#s#k. \n\n#t4000465# #r#c4000465#/50#k"/>
     <string name="2" value="After getting the #b#t4000465##k they felt less heaty."/>
     <int name="area" value="49"/>
     <string name="demandSummary" value="#i4000465:# #t4000465:# #c4000465# / 50
@@ -17605,7 +17605,7 @@ Able to proceed to &apos;Merry-go-round in Kampung&apos; as next quest.
   <imgdir name="6031">
     <string name="name" value="Hughes the Fuse&apos;s Basic Theory of Science"/>
     <string name="0" value="When I visited Meren to learn his new method, he instructed me to attend a class on the Basic Theory of Science taught by that eccentric scientist Hughes the Fuse. This worries me quite a bit..."/>
-    <string name="1" value="Meren said in order to attend the class on the Fundamentals of Alchemy, I must visit #bHughes the Fuse#k, who is holed up somehwere inside Orbis Tower, doing his own thing."/>
+    <string name="1" value="Meren said in order to attend the class on the Fundamentals of Alchemy, I must visit #bHughes the Fuse#k, who is holed up somewhere inside Orbis Tower, doing his own thing."/>
     <string name="2" value="I was able to keep track of Hughes the Fuse&apos;s disorienting science class. Yay!!"/>
     <int name="area" value="10"/>
   </imgdir>
