@@ -1,4 +1,4 @@
-#EXECUTE THIS FIRST, THEN NEXT SQL: 'db_drops.sql'
+﻿#EXECUTE THIS FIRST, THEN NEXT SQL: 'db_drops.sql'
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -8,9 +8,9 @@ SET time_zone = "+00:00";
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
 /*!40101 SET NAMES utf8 */;
 
-DROP DATABASE IF EXISTS `heavenms`;
-CREATE DATABASE `heavenms` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
-USE `heavenms`;
+DROP DATABASE IF EXISTS `heavenms2`;
+CREATE DATABASE `heavenms2` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+USE `heavenms2`;
 
 CREATE TABLE IF NOT EXISTS `accounts` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -12968,7 +12968,7 @@ CREATE TABLE IF NOT EXISTS `inventoryitems` (
   `position` int(11) NOT NULL DEFAULT '0',
   `quantity` int(11) NOT NULL DEFAULT '0',
   `owner` tinytext NOT NULL,
-  `petid` int(11) NOT NULL DEFAULT '-1',
+  `petid` int(11) unsigned UNIQUE DEFAULT NULL,
   `flag` int(11) NOT NULL,
   `expiration` bigint(20) NOT NULL DEFAULT '-1',
   `giftFrom` varchar(26) NOT NULL,
@@ -16463,7 +16463,7 @@ INSERT INTO `nxcoupons` (`id`, `couponid`, `rate`, `activeday`, `starthour`, `en
 (40,5360042,2,254,0,24);
 
 CREATE TABLE IF NOT EXISTS `pets` (
-  `petid` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `petid` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(13) DEFAULT NULL,
   `level` int(10) unsigned NOT NULL,
   `closeness` int(10) unsigned NOT NULL,
@@ -16473,11 +16473,14 @@ CREATE TABLE IF NOT EXISTS `pets` (
   PRIMARY KEY (`petid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
+ALTER TABLE `inventoryitems` ADD CONSTRAINT `fk_itempetid` FOREIGN KEY (`petid`) REFERENCES `pets` (`petid`) ON DELETE SET NULL ;
+
 CREATE TABLE IF NOT EXISTS `petignores` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `petid` int(10) unsigned NOT NULL ,
+  `petid` int(11) unsigned NOT NULL ,
   `itemid` int(10) unsigned NOT NULL ,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  CONSTRAINT `fk_petignorepetid` FOREIGN KEY (`petid`) REFERENCES `pets` (`petid`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 CREATE TABLE IF NOT EXISTS `playerdiseases` (
@@ -20859,6 +20862,25 @@ INSERT INTO `shopitems` (`shopitemid`, `shopid`, `itemid`, `price`, `pitch`, `po
 (6531, 1337, 2040711, 1, 0, 62),
 (6532, 1337, 2340000, 1, 0, 63),
 (20020, 1337, 1082149, 1, 0, 64),
+(20255, 1337, 2044503, 1, 0, 86),	# 20255~20273: thanks to ozanrijen
+(20256, 1337, 2044703, 1, 0, 87),
+(20257, 1337, 2044603, 1, 0, 88),
+(20258, 1337, 2043303, 1, 0, 89),
+(20259, 1337, 2043103, 1, 0, 90),
+(20260, 1337, 2043203, 1, 0, 91),
+(20261, 1337, 2043003, 1, 0, 92),
+(20262, 1337, 2044403, 1, 0, 93),
+(20263, 1337, 2044303, 1, 0, 94),
+(20264, 1337, 2043803, 1, 0, 95),
+(20265, 1337, 2044103, 1, 0, 96),
+(20266, 1337, 2044203, 1, 0, 97),
+(20267, 1337, 2044003, 1, 0, 98),
+(20268, 1337, 2043703, 1, 0, 99),
+(20269, 1337, 2040806, 1, 0, 100),
+(20270, 1337, 2040007, 1, 0, 101),
+(20271, 1337, 2040506, 1, 0, 102),
+(20272, 1337, 2040710, 1, 0, 103),
+(20273, 1337, 2040711, 1, 0, 104),
 (6533, 9000069, 2022503, 0, 5, 1),
 (6534, 9000069, 2000004, 0, 5, 2),
 (6535, 9000069, 2022514, 0, 10, 3),

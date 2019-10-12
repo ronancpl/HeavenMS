@@ -26,10 +26,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import config.YamlConfig;
-import server.MapleStatEffect;
-import tools.MaplePacketCreator;
-import tools.Pair;
-import tools.data.input.SeekableLittleEndianAccessor;
 import client.MapleBuffStat;
 import client.MapleCharacter;
 import client.MapleClient;
@@ -37,7 +33,6 @@ import client.MapleJob;
 import client.Skill;
 import client.SkillFactory;
 import constants.game.GameConstants;
-import constants.net.ServerConstants;
 import constants.skills.Crusader;
 import constants.skills.DawnWarrior;
 import constants.skills.DragonKnight;
@@ -45,13 +40,16 @@ import constants.skills.Hero;
 import constants.skills.NightWalker;
 import constants.skills.Rogue;
 import constants.skills.WindArcher;
+import server.MapleStatEffect;
+import tools.MaplePacketCreator;
+import tools.Pair;
+import tools.data.input.SeekableLittleEndianAccessor;
 
 public final class CloseRangeDamageHandler extends AbstractDealDamageHandler {
     
     @Override
     public final void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
         MapleCharacter chr = c.getPlayer();
-        //chr.setPetLootCd(currentServerTime());
         
         /*long timeElapsed = currentServerTime() - chr.getAutobanManager().getLastSpam(8);
         if(timeElapsed < 300) {

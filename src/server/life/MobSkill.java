@@ -32,6 +32,8 @@ import client.status.MonsterStatus;
 import constants.game.GameConstants;
 import java.util.LinkedList;
 import java.util.Map;
+import net.server.channel.services.ServiceType;
+import net.server.channel.services.task.OverallService;
 import tools.Randomizer;
 import server.maps.MapleMap;
 import server.maps.MapleMapObject;
@@ -115,7 +117,8 @@ public class MobSkill {
             }
         };
 
-        monster.getMap().getChannelServer().registerOverallAction(monster.getMap().getId(), toRun, animationTime);
+        OverallService service = (OverallService) monster.getMap().getChannelServer().getServiceAccess(ServiceType.OVERALL);
+        service.registerOverallAction(monster.getMap().getId(), toRun, animationTime);
     }
 
     public void applyEffect(MapleCharacter player, MapleMonster monster, boolean skill, List<MapleCharacter> banishPlayers) {

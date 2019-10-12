@@ -65,6 +65,10 @@ import java.lang.ref.WeakReference;
 import net.server.Server;
 import net.server.coordinator.world.MapleMonsterAggroCoordinator;
 import net.server.channel.Channel;
+import net.server.channel.services.ServiceType;
+import net.server.channel.services.task.FaceExpressionService;
+import net.server.channel.services.task.MobMistService;
+import net.server.channel.services.task.OverallService;
 import net.server.world.World;
 import scripting.map.MapScriptManager;
 import server.MapleItemInformationProvider;
@@ -1942,7 +1946,8 @@ public class MapleMap {
     public void dismissRemoveAfter(final MapleMonster monster) {
         Runnable removeAfterAction = monster.popRemoveAfterAction();
         if (removeAfterAction != null) {
-            this.getChannelServer().forceRunOverallAction(mapid, removeAfterAction);
+            OverallService service = (OverallService) this.getChannelServer().getServiceAccess(ServiceType.OVERALL);
+            service.forceRunOverallAction(mapid, removeAfterAction);
         }
     }
     
@@ -2203,7 +2208,8 @@ public class MapleMap {
             }
         };
         
-        this.getChannelServer().registerMobMistCancelAction(mapid, mistSchedule, duration);
+        MobMistService service = (MobMistService) this.getChannelServer().getServiceAccess(ServiceType.MOB_MIST);
+        service.registerMobMistCancelAction(mapid, mistSchedule, duration);
     }
     
     public void spawnKite(final MapleKite kite) {
@@ -2302,7 +2308,8 @@ public class MapleMap {
     }
 
     private void registerMapSchedule(Runnable r, long delay) {
-        this.getChannelServer().registerOverallAction(mapid, r, delay);
+        OverallService service = (OverallService) this.getChannelServer().getServiceAccess(ServiceType.OVERALL);
+        service.registerOverallAction(mapid, r, delay);
     }
     
     private void activateItemReactors(final MapleMapItem drop, final MapleClient c) {
@@ -2788,7 +2795,8 @@ public class MapleMap {
     public void removePlayer(MapleCharacter chr) {
         Channel cserv = chr.getClient().getChannelServer();
         
-        cserv.unregisterFaceExpression(mapid, chr);
+        FaceExpressionService service = (FaceExpressionService) this.getChannelServer().getServiceAccess(ServiceType.FACE_EXPRESSION);
+        service.unregisterFaceExpression(mapid, chr);
         chr.unregisterChairBuff();
         
         chrWLock.lock();
@@ -3548,7 +3556,8 @@ public class MapleMap {
                             if (reactor.getDelay() > 0) {
                                 MapleMap reactorMap = reactor.getMap();
                                 
-                                reactorMap.getChannelServer().registerOverallAction(reactorMap.getId(), new Runnable() {
+                                OverallService service = (OverallService) reactorMap.getChannelServer().getServiceAccess(ServiceType.OVERALL);
+                                service.registerOverallAction(reactorMap.getId(), new Runnable() {
                                     @Override
                                     public void run() {
                                         reactor.lockReactor();

@@ -21,6 +21,9 @@
 */
 var status = -1;
 
+/*
+Custom Quest 100300
+*/
 function activateShamanRock(slot,progress) {
     var ch = progress[slot];
     if(ch == '0') {
@@ -45,10 +48,10 @@ function start() {
         else if(map == 105070000) activateShamanRock(2,progress);
         
         else if(map == 105090000) { // workaround... TWO SAME NPC ID ON SAME MAP
-            var npcOid = cm.getQuestProgressInt(2236, 1);
+            var npcOid = cm.getQuestProgressInt(100300, 1);
             if (npcOid == 0) {
                 activateShamanRock(3,progress);
-                cm.setQuestProgress(2236, 1, cm.getNpcObjectId());
+                cm.setQuestProgress(100300, 1, cm.getNpcObjectId());
             } else if (cm.getNpcObjectId() != npcOid) {
                 activateShamanRock(4,progress);
             }

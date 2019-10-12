@@ -310,7 +310,6 @@ server:
     MAX_AP: 32767                               #Max AP allotted on the auto-assigner.
     MAX_EVENT_LEVELS: 8                         #Event has different levels of rewarding system.
     BLOCK_NPC_RACE_CONDT: 500   # (0.5 * 1000) Time the player client must wait before reopening a conversation with an NPC.
-    PET_LOOT_UPON_ATTACK: 700   # (0.7 * 1000) Time the pet must wait before trying to pick items up.
     TOT_MOB_QUEST_REQUIREMENT: 77               #Overwrites old 999-mobs requirement for the ToT questline with new requirement value, set 0 for default.
     MOB_REACTOR_REFRESH_TIME: 30000         # (30 * 1000) Overwrites refresh time for those reactors oriented to inflict damage to bosses (Ice Queen, Riche), set 0 for default.
     PARTY_SEARCH_REENTRY_LIMIT: 10              #Max amount of times a party leader is allowed to persist on the Party Search before entry expiration (thus needing to manually restart the Party Search to be able to search for members).

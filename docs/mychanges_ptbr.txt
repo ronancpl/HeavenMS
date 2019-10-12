@@ -2181,3 +2181,19 @@ Corrigido análise de alerta de HP/MP lado-servidor não contando com os atribut
 Corrigido skill "Energy Charge" levando atualização de buff ao tocar em mobs, levando a casos onde o buff nos stats poderia inesperadamente ficar retido além do tempo de atuação previsto.
 Substituído utilização de "Jackson annotations + SnakeYaml" por "YamlBeans", utilizando-se assim menos artefatos JARs no processo (anteriormente 5, agora somente 1). Nota: na transição, fora constatado que a utilização da tecnologia anterior era mais permissiva perante o arquivo de configurações, porém estrutura do novo arquivo foi normalizado e está agora funcional.
 Refatorado inicialização de eventos ao iniciar o servidor, em busca de melhorar o tempo de startup.
+
+05 - 08 Outubro 2019,
+Refatorado os diversos schedulers que estavam presentes na classe de canais, agora abstraídas e atuando dentro de serviços.
+Corrigido circunstância onde movimentos de mobs poderiam estar sendo processados enquanto jogador está transitando mapas, levando a possível inconsistência na aplicação de movimento do mob na área acessada.
+
+10 - 12 Outubro 2019,
+Modificado uso de "default" de petid nos itens de inventário armazenados na DB (de -1 para nulo), assim permitindo criar chaves únicas.
+Adicionado uso de chaves estrangeiras para o petid.
+Implementado código de suporte para cupons de "associação" de cosméticos de cabelo.
+Corrigido bug recente em bosses com atributo "link" sem HPbar sendo detectados como possuindo HPbar, se o mob base possui.
+Corrigido bug recente na skill "Body Pressure" não aplicando a sua passiva com chance de neutralizar ao tocar mobs.
+Corrigido quest com NPC "Shaman Rock" aplicando progresso que não corresponde com o esperado (progresso extra agora movido para um novo questid).
+Adicionado método que permite executar scripts de mapa no sistema de scripts de portal.
+Corrigido problema recente ao referenciar script com progresso "Touch the Sky" (script de portal utilizando métodos de scripts de mapa).
+Adicionado fallback para scripts de NPC MapleTV.
+Revisado aplicação e abordagem deste código-base nos arquivos XML legado.

@@ -18,6 +18,7 @@ Known issues:
 - Reportedly, there are cases where mob positions fail to sync between player's client-view.
 - Visual equip EXP watch value will present stuttering for early levels requirement (EXP needed less than 100), and requirement at level 200 will not progress at all due to the level cap in client.
 - Monster Magnet will crash the player when trying to pull fixed monsters.
+- Some magic skills such as "Energy Bolt" or "Holy Arrow" doesn't display damage to other players when the attacks come from close range to the targeted mob. Oddly enough, using "closeRangeAttack" packet seems to clear the issue on most skills, however in others "Error 5" crash renders this unusable.
 ---------------------------
 
 ---------------------------

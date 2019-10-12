@@ -1,6 +1,6 @@
 /*
-    This file is part of the HeavenMS MapleStory Server
-    Copyleft (L) 2016 - 2018 RonanLana
+    This file is part of the HeavenMS MapleStory Server, commands OdinMS-based
+    Copyleft (L) 2016 - 2019 RonanLana
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Affero General Public License as
@@ -17,26 +17,36 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-package net.server.channel.task;
+package net.server.channel.services;
 
-import java.util.Collections;
-import net.server.audit.locks.MonitoredLockType;
-import net.server.audit.locks.MonitoredReentrantLock;
+import net.server.channel.services.task.BaseService;
 
 /**
  *
  * @author Ronan
  */
-public class FaceExpressionScheduler extends BaseScheduler {
-    public FaceExpressionScheduler(final MonitoredReentrantLock channelFaceLock) {
-        super(MonitoredLockType.CHANNEL_FACESCHDL, Collections.singletonList(channelFaceLock));
+public class Service <T extends BaseService> {
+    
+    private Class<T> cls;
+    private BaseService service;
+    
+    public Service(Class<T> s) {
+        try {
+            cls = s;
+            service = (BaseService) cls.getConstructor().newInstance();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
     
-    public void registerFaceExpression(Integer characterId, Runnable runAction) {
-        registerEntry(characterId, runAction, 5000);
+    public T getService() {
+        return cls.cast(service);
     }
     
-    public void unregisterFaceExpression(Integer characterId) {
-        interruptEntry(characterId);
+    public void dispose() {
+        service.dispose();
+        service = null;
     }
+    
 }
+

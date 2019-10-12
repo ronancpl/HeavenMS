@@ -142,7 +142,6 @@ import client.processor.action.PetAutopotProcessor;
 import constants.game.ExpTable;
 import constants.game.GameConstants;
 import constants.inventory.ItemConstants;
-import constants.net.ServerConstants;
 import constants.skills.Aran;
 import constants.skills.Beginner;
 import constants.skills.Bishop;
@@ -172,6 +171,9 @@ import constants.skills.Shadower;
 import constants.skills.Sniper;
 import constants.skills.Warrior;
 import constants.skills.ThunderBreaker;
+import net.server.channel.services.ServiceType;
+import net.server.channel.services.task.BaseService;
+import net.server.channel.services.task.FaceExpressionService;
 import org.apache.mina.util.ConcurrentHashSet;
 
 public class MapleCharacter extends AbstractMapleCharacterObject {
@@ -320,7 +322,6 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
     private boolean loggedIn = false;
     private boolean useCS;  //chaos scroll upon crafting item.
     private long npcCd;
-    private long petLootCd;
     private long lastHpDec = 0;
     private int newWarpMap = -1;
     private boolean canWarpMap = true;  //only one "warp" must be used per call, and this will define the right one.
@@ -398,8 +399,6 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
         }
         quests = new LinkedHashMap<>();
         setPosition(new Point(0, 0));
-        
-        petLootCd = Server.getInstance().getCurrentTime();
     }
     
     private static MapleJob getJobStyleInternal(int jobid, byte opt) {
@@ -439,7 +438,7 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
     public static MapleCharacter getDefault(MapleClient c) {
         MapleCharacter ret = new MapleCharacter();
         ret.client = c;
-        ret.gmLevel = 0;
+        ret.setGMLevel(0);
         ret.hp = 50;
         ret.setMaxHp(50);
         ret.mp = 5;
@@ -567,14 +566,6 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
     
     public void setSessionTransitionState() {
         client.getSession().setAttribute(MapleClient.CLIENT_TRANSITION);
-    }
-    
-    public long getPetLootCd() {
-        return petLootCd;
-    }
-    
-    public void setPetLootCd(long cd) {
-        petLootCd = cd;
     }
     
     public boolean getCS() {
@@ -822,7 +813,7 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
             mainstat = localstr;
             secondarystat = localdex;
         }
-        return (int) (((weapon.getMaxDamageMultiplier() * mainstat + secondarystat) / 100.0) * watk);
+        return (int) Math.ceil(((weapon.getMaxDamageMultiplier() * mainstat + secondarystat) / 100.0) * watk);
     }
 
     public int calculateMaxBaseDamage(int watk) {
@@ -838,7 +829,7 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
                 }
 
                 int attack = (int) Math.min(Math.floor((2 * getLevel() + 31) / 3), 31);
-                maxbasedamage = (int) (localstr * weapMulti + localdex) * attack / 100;
+                maxbasedamage = (int) Math.ceil((localstr * weapMulti + localdex) * attack / 100.0);
             } else {
                 maxbasedamage = 1;
             }
@@ -2346,6 +2337,10 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
                             ps.setInt(1, cid);
                             ps.executeUpdate();
                     }
+                    try (PreparedStatement ps = con.prepareStatement("DELETE FROM family_character WHERE cid = ?")) {
+                            ps.setInt(1, cid);
+                            ps.executeUpdate();
+                    }
                     try (PreparedStatement ps = con.prepareStatement("DELETE FROM famelog WHERE characterid_to = ?")) {
                             ps.setInt(1, cid);
                             ps.executeUpdate();
@@ -2383,7 +2378,7 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
                                             }
                                             
                                             int petid = rs.getInt("petid");
-                                            if(petid > -1) {
+                                            if(!rs.wasNull()) {
                                                     try (PreparedStatement ps2 = con.prepareStatement("DELETE FROM pets WHERE petid = ?")) {
                                                             ps2.setInt(1, petid);
                                                             ps2.executeUpdate();
@@ -2850,7 +2845,9 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
         long timeNow = Server.getInstance().getCurrentTime();
         if(timeNow - lastExpression > 2000) {
             lastExpression = timeNow;
-            client.getChannelServer().registerFaceExpression(map, this, emote);
+            
+            FaceExpressionService service = (FaceExpressionService) client.getChannelServer().getServiceAccess(ServiceType.FACE_EXPRESSION);
+            service.registerFaceExpression(map, this, emote);
         }
     }
 
@@ -5614,6 +5611,8 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
     public void setGMLevel(int level) {
         this.gmLevel = Math.min(level, 6);
         this.gmLevel = Math.max(level, 0);
+        
+        whiteChat = gmLevel >= 4;   // thanks ozanrijen for suggesting default white chat
     }
     
     public void closePartySearchInteractions() {
@@ -6975,8 +6974,7 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
             ret.gachaexp.set(rs.getInt("gachaexp"));
             ret.mapid = rs.getInt("map");
             ret.initialSpawnPoint = rs.getInt("spawnpoint");
-            
-            ret.gmLevel = rs.getInt("gm");
+            ret.setGMLevel(rs.getInt("gm"));
             ret.world = rs.getByte("world");
             ret.rank = rs.getInt("rank");
             ret.rankMove = rs.getInt("rankMove");
@@ -7029,7 +7027,7 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
         
         ret.inventory[MapleInventoryType.EQUIPPED.ordinal()] = this.getInventory(MapleInventoryType.EQUIPPED);
         
-        ret.gmLevel = this.gmLevel();
+        ret.setGMLevel(this.gmLevel());
         ret.world = this.getWorld();
         ret.rank = this.getRank();
         ret.rankMove = this.getRankMove();
@@ -7091,7 +7089,7 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
             ret.loadCharSkillPoints(rs.getString("sp").split(","));
             ret.meso.set(rs.getInt("meso"));
             ret.merchantmeso = rs.getInt("MerchantMesos");
-            ret.gmLevel = rs.getInt("gm");
+            ret.setGMLevel(rs.getInt("gm"));
             ret.skinColor = MapleSkinColor.getById(rs.getInt("skincolor"));
             ret.gender = rs.getInt("gender");
             ret.job = MapleJob.getById(rs.getInt("job"));
@@ -7187,11 +7185,14 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
             PreparedStatement ps2, ps3;
             ResultSet rs2, rs3;
             
-            ps3 = con.prepareStatement("SELECT petid FROM inventoryitems WHERE characterid = ? AND petid > -1");
+            ps3 = con.prepareStatement("SELECT petid FROM inventoryitems WHERE characterid = ? AND petid IS NOT NULL");
             ps3.setInt(1, charid);
             rs3 = ps3.executeQuery();
             while(rs3.next()) {
                 int petId = rs3.getInt("petid");
+                if (rs3.wasNull()) {
+                    petId = -1;
+                }
 
                 ps2 = con.prepareStatement("SELECT itemid FROM petignores WHERE petid = ?");
                 ps2.setInt(1, petId);
@@ -7371,7 +7372,11 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
                 ps.setInt(1, charid);
                 rs = ps.executeQuery();
                 while (rs.next()) {
-                    ret.skills.put(SkillFactory.getSkill(rs.getInt("skillid")), new SkillEntry(rs.getByte("skilllevel"), rs.getInt("masterlevel"), rs.getLong("expiration")));
+                    Skill pSkill = SkillFactory.getSkill(rs.getInt("skillid"));
+                    if(pSkill != null)  // edit reported by shavit, thanks Zein for noticing an NPE here
+                    {
+                        ret.skills.put(pSkill, new SkillEntry(rs.getByte("skilllevel"), rs.getInt("masterlevel"), rs.getLong("expiration")));
+                    }
                 }
                 rs.close();
                 ps.close();

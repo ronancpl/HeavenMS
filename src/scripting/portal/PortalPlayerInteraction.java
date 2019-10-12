@@ -27,8 +27,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import scripting.AbstractPlayerInteraction;
+import scripting.map.MapScriptManager;
 import server.maps.MaplePortal;
-import server.quest.MapleQuest;
 import tools.DatabaseConnection;
 import tools.MaplePacketCreator;
 
@@ -43,6 +43,11 @@ public class PortalPlayerInteraction extends AbstractPlayerInteraction {
 
     public MaplePortal getPortal() {
         return portal;
+    }
+    
+    public void runMapScript() {
+        MapScriptManager msm = MapScriptManager.getInstance();
+        msm.runMapScript(c, "onUserEnter/" + portal.getScriptName(), false);
     }
 
     public boolean hasLevel30Character() {

@@ -98,75 +98,11 @@ public class MaplePet extends Item {
         }
     }
     
-    private static void unreferenceMissingPetsFromInventoryDb() {
-        PreparedStatement ps = null;
-        Connection con = null;
-        try {
-            con = DatabaseConnection.getConnection();
-            
-            ps = con.prepareStatement("UPDATE inventoryitems SET petid = -1, expiration = 0 WHERE petid != -1 AND petid NOT IN (SELECT petid FROM pets)");
-            ps.executeUpdate();
-            
-            ps.close();
-            con.close();
-        } catch(SQLException ex) {
-            ex.printStackTrace();
-        } finally {
-            try {
-                if(ps != null && !ps.isClosed()) {
-                    ps.close();
-                }
-                if(con != null && !con.isClosed()) {
-                    con.close();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-    
-    private static void deleteMissingPetsFromDb() {
-        PreparedStatement ps = null;
-        Connection con = null;
-        try {
-            con = DatabaseConnection.getConnection();
-            
-            ps = con.prepareStatement("DELETE FROM pets WHERE petid NOT IN (SELECT petid FROM inventoryitems WHERE petid != -1)");
-            ps.executeUpdate();
-            
-            ps.close();
-            con.close();
-        } catch(SQLException ex) {
-            ex.printStackTrace();
-        } finally {
-            try {
-                if(ps != null && !ps.isClosed()) {
-                    ps.close();
-                }
-                if(con != null && !con.isClosed()) {
-                    con.close();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-    
-    public static void clearMissingPetsFromDb() {
-        unreferenceMissingPetsFromInventoryDb();
-        deleteMissingPetsFromDb();
-    }
-    
     public static void deleteFromDb(MapleCharacter owner, int petid) {
         try {
             Connection con = DatabaseConnection.getConnection();
             
-            PreparedStatement ps = con.prepareStatement("DELETE FROM pets WHERE `petid` = ?");
-            ps.setInt(1, petid);
-            ps.executeUpdate();
-            ps.close();
-            
-            ps = con.prepareStatement("DELETE FROM petignores WHERE `petid` = ?");  // thanks Vcoc for detecting petignores remaining after deletion
+            PreparedStatement ps = con.prepareStatement("DELETE FROM pets WHERE `petid` = ?");  // thanks Vcoc for detecting petignores remaining after deletion
             ps.setInt(1, petid);
             ps.executeUpdate();
             ps.close();

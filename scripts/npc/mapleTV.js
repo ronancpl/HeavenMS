@@ -17,20 +17,33 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-package net.server.channel.task;
-
-import net.server.audit.locks.MonitoredLockType;
-
-/**
- *
- * @author Ronan
+/* 
+	Default Maple TV
  */
-public class MobMistScheduler extends BaseScheduler {
-    public MobMistScheduler() {
-        super(MonitoredLockType.CHANNEL_MOBMIST);
-    }
+
+var status;
+ 
+function start() {
+        status = -1;
+        action(1, 0, 0);
+}
+
+function action(mode, type, selection) {
+        if (mode == -1) {
+                cm.dispose();
+        } else {
+                if (mode == 0 && type > 0) {
+                        cm.dispose();
+                        return;
+                }
+                if (mode == 1)
+                        status++;
+                else
+                        status--;
     
-    public void registerMistCancelAction(Runnable runAction, long delay) {
-        registerEntry(runAction, runAction, delay);
-    }
+                if(status == 0) {
+                        // do nothing
+                        cm.dispose();
+                }
+        }
 }

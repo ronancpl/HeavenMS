@@ -59,16 +59,19 @@ public final class NPCTalkHandler extends AbstractMaplePacketHandler {
                     c.announce(MaplePacketCreator.enableActions());
                     return;
                 }
-                if(npc.getId() >= 9100100 && npc.getId() <= 9100200) {
-                    // Custom handling for gachapon scripts to reduce the amount of scripts needed.
+                
+                // Custom handling to reduce the amount of scripts needed.
+                if (npc.getId() >= 9100100 && npc.getId() <= 9100200) {
                     NPCScriptManager.getInstance().start(c, npc.getId(), "gachapon", null);
+                } else if (npc.getName().endsWith("Maple TV")) {
+                    NPCScriptManager.getInstance().start(c, npc.getId(), "mapleTV", null);
                 } else {
                     boolean hasNpcScript = NPCScriptManager.getInstance().start(c, npc.getId(), oid, null);
                     if (!hasNpcScript) {
                         if (!npc.hasShop()) {
                             FilePrinter.printError(FilePrinter.NPC_UNCODED, "NPC " + npc.getName() + "(" + npc.getId() + ") is not coded.");
                             return;
-                        } else if(c.getPlayer().getShop() != null) {
+                        } else if (c.getPlayer().getShop() != null) {
                             c.announce(MaplePacketCreator.enableActions());
                             return;
                         }

@@ -28,7 +28,8 @@ import config.YamlConfig;
 import tools.Pair;
 
 import client.MapleCharacter;
-import constants.net.ServerConstants;
+import net.server.channel.services.ServiceType;
+import net.server.channel.services.task.OverallService;
 
 /**
  *
@@ -131,7 +132,9 @@ public class MapleDoor {
             long effectTimeLeft = 3000 - destroyDoor.getElapsedDeployTime();   // portal deployment effect duration
             if (effectTimeLeft > 0) {
                 MapleMap town = destroyDoor.getTown();
-                town.getChannelServer().registerOverallAction(town.getId(), new Runnable() {
+                
+                OverallService service = (OverallService) town.getChannelServer().getServiceAccess(ServiceType.OVERALL);
+                service.registerOverallAction(town.getId(), new Runnable() {
                     @Override
                     public void run() {
                         destroyDoor.broadcastRemoveDoor(owner);   // thanks BHB88 for noticing doors crashing players when instantly cancelling buff

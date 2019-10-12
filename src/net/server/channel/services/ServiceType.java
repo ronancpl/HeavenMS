@@ -1,6 +1,6 @@
 /*
-    This file is part of the HeavenMS MapleStory Server
-    Copyleft (L) 2016 - 2018 RonanLana
+    This file is part of the HeavenMS MapleStory Server, commands OdinMS-based
+    Copyleft (L) 2016 - 2019 RonanLana
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Affero General Public License as
@@ -17,20 +17,32 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-package net.server.channel.task;
+package net.server.channel.services;
 
-import net.server.audit.locks.MonitoredLockType;
+import net.server.channel.services.task.*;
 
 /**
  *
  * @author Ronan
  */
-public class MobClearSkillScheduler extends BaseScheduler {
-    public MobClearSkillScheduler() {
-        super(MonitoredLockType.CHANNEL_MOBSKILL);
+public enum ServiceType {
+    
+    MOB_STATUS(MobStatusService.class),
+    MOB_ANIMATION(MobAnimationService.class),
+    MOB_CLEAR_SKILL(MobClearSkillService.class),
+    MOB_MIST(MobMistService.class),
+    FACE_EXPRESSION(FaceExpressionService.class),
+    EVENT(EventService.class),
+    OVERALL(OverallService.class);
+    
+    private Class<? extends BaseService> s;
+    
+    private ServiceType(Class<? extends BaseService> service) {
+        s = service;
     }
     
-    public void registerClearSkillAction(Runnable runAction, long delay) {
-        registerEntry(runAction, runAction, delay);
+    public Service createService() {
+        return new Service(s);
     }
+    
 }

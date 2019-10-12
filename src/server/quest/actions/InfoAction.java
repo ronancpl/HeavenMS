@@ -20,6 +20,7 @@
 package server.quest.actions;
 
 import client.MapleCharacter;
+import client.MapleQuestStatus;
 import provider.MapleData;
 import provider.MapleDataTool;
 import server.quest.MapleQuest;

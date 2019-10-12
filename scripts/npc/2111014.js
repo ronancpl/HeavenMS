@@ -40,7 +40,6 @@ function action(mode, type, selection) {
     
                 if(status == 0) {
                         if(cm.isQuestStarted(3311)) {
-                                var slot = 0;
                                 var progress = cm.getQuestProgressInt(3311);
                                 
                                 if (progress == 4) {

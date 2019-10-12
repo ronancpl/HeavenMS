@@ -163,11 +163,11 @@ public class MapleLifeFactory {
         }
         stats.setFirstAttack(firstAttack > 0);
         stats.setDropPeriod(MapleDataTool.getIntConvert("dropItemPeriod", monsterInfoData, stats.getDropPeriod() / 10000) * 10000);
-
-        if (!(stats.isBoss() && !hpbarBosses.contains(mid))) {  // thanks Riizade, Z1peR, Anesthetic for noticing some bosses crashing players due to missing requirements
-            stats.setTagColor(MapleDataTool.getIntConvert("hpTagColor", monsterInfoData, 0));
-            stats.setTagBgColor(MapleDataTool.getIntConvert("hpTagBgcolor", monsterInfoData, 0));
-        }
+        
+        // thanks yuxaij, Riizade, Z1peR, Anesthetic for noticing some bosses crashing players due to missing requirements
+        boolean hpbarBoss = stats.isBoss() && hpbarBosses.contains(mid);
+        stats.setTagColor(hpbarBoss ? MapleDataTool.getIntConvert("hpTagColor", monsterInfoData, 0) : 0);
+        stats.setTagBgColor(hpbarBoss ? MapleDataTool.getIntConvert("hpTagBgcolor", monsterInfoData, 0) : 0);
         
         for (MapleData idata : monsterData) {
             if (!idata.getName().equals("info")) {

@@ -21,25 +21,24 @@
  */
 package net.server.channel.handlers;
 
-import config.YamlConfig;
-import server.MapleStatEffect;
-import tools.MaplePacketCreator;
-import tools.data.input.SeekableLittleEndianAccessor;
 import client.MapleBuffStat;
 import client.MapleCharacter;
 import client.MapleClient;
 import client.Skill;
 import client.SkillFactory;
+import config.YamlConfig;
 import constants.skills.Bishop;
 import constants.skills.Evan;
 import constants.skills.FPArchMage;
 import constants.skills.ILArchMage;
+import server.MapleStatEffect;
+import tools.MaplePacketCreator;
+import tools.data.input.SeekableLittleEndianAccessor;
 
 public final class MagicDamageHandler extends AbstractDealDamageHandler {
 	@Override
 	public final void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
 		MapleCharacter chr = c.getPlayer();
-                //chr.setPetLootCd(currentServerTime());
 
 		/*long timeElapsed = currentServerTime() - chr.getAutobanManager().getLastSpam(8);
 		if(timeElapsed < 300) {

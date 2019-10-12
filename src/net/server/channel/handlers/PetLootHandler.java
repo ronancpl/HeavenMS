@@ -26,13 +26,11 @@ import java.util.Set;
 import client.MapleCharacter;
 import client.MapleClient;
 import client.inventory.MaplePet;
-import config.YamlConfig;
 import net.AbstractMaplePacketHandler;
 import server.maps.MapleMapItem;
 import server.maps.MapleMapObject;
 import tools.MaplePacketCreator;
 import tools.data.input.SeekableLittleEndianAccessor;
-import constants.net.ServerConstants;
 
 /**
  * @author TheRamon
@@ -42,10 +40,6 @@ public final class PetLootHandler extends AbstractMaplePacketHandler {
     @Override
     public final void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
         MapleCharacter chr = c.getPlayer();
-        if(currentServerTime() - chr.getPetLootCd() < YamlConfig.config.server.PET_LOOT_UPON_ATTACK) {
-            c.announce(MaplePacketCreator.enableActions());
-            return;
-        }
         
         int petIndex = chr.getPetIndex(slea.readInt());
         MaplePet pet = chr.getPet(petIndex);

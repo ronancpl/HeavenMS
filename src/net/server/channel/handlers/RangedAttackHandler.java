@@ -21,13 +21,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package net.server.channel.handlers;
 
-import client.inventory.manipulator.MapleInventoryManipulator;
-import config.YamlConfig;
-import server.MapleItemInformationProvider;
-import server.MapleStatEffect;
-import tools.MaplePacketCreator;
-import tools.Randomizer;
-import tools.data.input.SeekableLittleEndianAccessor;
 import client.MapleBuffStat;
 import client.MapleCharacter;
 import client.MapleClient;
@@ -37,8 +30,9 @@ import client.inventory.Item;
 import client.inventory.MapleInventory;
 import client.inventory.MapleInventoryType;
 import client.inventory.MapleWeaponType;
+import client.inventory.manipulator.MapleInventoryManipulator;
+import config.YamlConfig;
 import constants.inventory.ItemConstants;
-import constants.net.ServerConstants;
 import constants.skills.Aran;
 import constants.skills.Buccaneer;
 import constants.skills.NightLord;
@@ -46,13 +40,18 @@ import constants.skills.NightWalker;
 import constants.skills.Shadower;
 import constants.skills.ThunderBreaker;
 import constants.skills.WindArcher;
+import server.MapleItemInformationProvider;
+import server.MapleStatEffect;
+import tools.MaplePacketCreator;
+import tools.Randomizer;
+import tools.data.input.SeekableLittleEndianAccessor;
+
 
 public final class RangedAttackHandler extends AbstractDealDamageHandler {
 
     @Override
     public final void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
         MapleCharacter chr = c.getPlayer();
-        //chr.setPetLootCd(currentServerTime());
         
         /*long timeElapsed = currentServerTime() - chr.getAutobanManager().getLastSpam(8);
         if(timeElapsed < 300) {

@@ -656,7 +656,7 @@ public abstract class AbstractDealDamageHandler extends AbstractMaplePacketHandl
         
         // Find the base damage to base futher calculations on.
         // Several skills have their own formula in this section.
-        long calcDmgMax = 0;
+        long calcDmgMax;
         
         if(magic && ret.skill != 0) {   // thanks onechord for noticing a few false positives stemming from maxdmg as 0
             calcDmgMax = (long) (Math.ceil((chr.getTotalMagic() * Math.ceil(chr.getTotalMagic() / 1000.0) + chr.getTotalMagic()) / 30.0) + Math.ceil(chr.getTotalInt() / 200.0));
@@ -846,7 +846,7 @@ public abstract class AbstractDealDamageHandler extends AbstractMaplePacketHandl
                             }
                     } else if (ret.skill == Aran.BODY_PRESSURE) {
                         if (monster != null) {
-                            int bodyPressureDmg = monster.getMaxHp() * SkillFactory.getSkill(Aran.BODY_PRESSURE).getEffect(ret.skilllevel).getDamage() / 100;
+                            int bodyPressureDmg = (int) Math.ceil(monster.getMaxHp() * SkillFactory.getSkill(Aran.BODY_PRESSURE).getEffect(ret.skilllevel).getDamage() / 100.0);
                             if (bodyPressureDmg > calcDmgMax) {
                                 calcDmgMax = bodyPressureDmg;
                             }
