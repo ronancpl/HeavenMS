@@ -41,6 +41,7 @@ public abstract class AbstractMovementPacketHandler extends AbstractMaplePacketH
     protected List<LifeMovementFragment> parseMovement(LittleEndianAccessor lea) throws EmptyMovementException {
         List<LifeMovementFragment> res = new ArrayList<>();
         byte numCommands = lea.readByte();
+        if (numCommands < 1) throw new EmptyMovementException(lea);
         for (byte i = 0; i < numCommands; i++) {
             byte command = lea.readByte();
             switch (command) {
@@ -236,7 +237,7 @@ public abstract class AbstractMovementPacketHandler extends AbstractMaplePacketH
                 }
                 default:
                     System.out.println("Unhandled Case:" + command);
-                    return;
+                    throw new EmptyMovementException(lea);
             }
         }
     }
