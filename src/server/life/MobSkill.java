@@ -32,8 +32,8 @@ import client.status.MonsterStatus;
 import constants.game.GameConstants;
 import java.util.LinkedList;
 import java.util.Map;
-import net.server.channel.services.ServiceType;
-import net.server.channel.services.task.OverallService;
+import net.server.services.type.ChannelServices;
+import net.server.services.task.channel.OverallService;
 import tools.Randomizer;
 import server.maps.MapleMap;
 import server.maps.MapleMapObject;
@@ -117,7 +117,7 @@ public class MobSkill {
             }
         };
 
-        OverallService service = (OverallService) monster.getMap().getChannelServer().getServiceAccess(ServiceType.OVERALL);
+        OverallService service = (OverallService) monster.getMap().getChannelServer().getServiceAccess(ChannelServices.OVERALL);
         service.registerOverallAction(monster.getMap().getId(), toRun, animationTime);
     }
 

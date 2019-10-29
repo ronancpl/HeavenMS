@@ -17,11 +17,12 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-package net.server.channel.services.task;
+package net.server.services.task.channel;
 
+import net.server.services.BaseService;
 import config.YamlConfig;
 import net.server.audit.locks.MonitoredLockType;
-import net.server.channel.services.BaseScheduler;
+import net.server.services.BaseScheduler;
 
 /**
  *
@@ -37,6 +38,7 @@ public class MobClearSkillService extends BaseService {
         }
     }
     
+    @Override
     public void dispose() {
         for(int i = 0; i < YamlConfig.config.server.CHANNEL_LOCKS; i++) {
             if(mobClearSkillSchedulers[i] != null) {

@@ -127,10 +127,6 @@ public class Item implements Comparable<Item> {
         return petid;
     }
     
-    public Integer getPetIdForDb() {
-        return petid > -1 ? petid : null;
-    }
-    
     @Override
     public int compareTo(Item other) {
         if (this.id < other.getItemId()) {

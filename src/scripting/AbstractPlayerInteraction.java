@@ -56,6 +56,7 @@ import tools.MaplePacketCreator;
 import client.MapleCharacter;
 import client.MapleCharacter.DelayedQuestUpdate;
 import client.MapleClient;
+import client.MapleJob;
 import client.MapleQuestStatus;
 import client.SkillFactory;
 import client.inventory.Equip;
@@ -92,6 +93,18 @@ public class AbstractPlayerInteraction {
         
         public MapleCharacter getChar() {
 		return c.getPlayer();
+	}
+        
+        public int getJobId() {
+		return getPlayer().getJob().getId();
+	}
+        
+	public MapleJob getJob(){
+		return getPlayer().getJob();
+	}
+        
+	public int getLevel() {
+		return getPlayer().getLevel();
 	}
         
         public MapleMap getMap() {

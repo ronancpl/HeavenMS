@@ -44,7 +44,7 @@ public final class CharlistRequestHandler extends AbstractMaplePacketHandler {
         
         int channel = slea.readByte() + 1;
         Channel ch = wserv.getChannel(channel);
-        if(ch == null || !ch.isActive()) {
+        if(ch == null) {
             c.announce(MaplePacketCreator.getServerStatus(2));
             return;
         }

@@ -64,7 +64,6 @@ import org.apache.mina.core.session.IoSession;
 
 import client.inventory.MapleInventoryType;
 import constants.game.GameConstants;
-import constants.net.ServerConstants;
 import scripting.AbstractPlayerInteraction;
 import scripting.event.EventInstanceManager;
 import scripting.event.EventManager;
@@ -120,7 +119,8 @@ public class MapleClient {
 	private final Lock lock = MonitoredReentrantLockFactory.createLock(MonitoredLockType.CLIENT, true);
         private final Lock encoderLock = MonitoredReentrantLockFactory.createLock(MonitoredLockType.CLIENT_ENCODER, true);
         private final Lock announcerLock = MonitoredReentrantLockFactory.createLock(MonitoredLockType.CLIENT_ANNOUNCER, true);
-        private static final Lock loginLocks[] = new Lock[200];  // thanks Masterrulax & try2hack for pointing out a bottleneck issue here
+        private static final int lockCount = 200;
+        private static final Lock loginLocks[] = new Lock[lockCount];  // thanks Masterrulax & try2hack for pointing out a bottleneck issue here
         private Calendar tempBanCalendar;
 	private int votePoints;
 	private int voteTime = -1;
@@ -131,7 +131,7 @@ public class MapleClient {
         private int lang = 0;
         
         static {
-            for (int i = 0; i < 200; i++) {
+            for (int i = 0; i < lockCount; i++) {
                 loginLocks[i] = MonitoredReentrantLockFactory.createLock(MonitoredLockType.CLIENT_LOGIN, true);
             }
         }
@@ -454,14 +454,14 @@ public class MapleClient {
 	}
 
 	public int finishLogin() {
-                Lock loginLock = loginLocks[this.getAccID() % 200];
+                Lock loginLock = loginLocks[this.getAccID() % lockCount];
                 loginLock.lock();
                 try {
                     if (getLoginState() > LOGIN_NOTLOGGEDIN) { // 0 = LOGIN_NOTLOGGEDIN, 1= LOGIN_SERVER_TRANSITION, 2 = LOGIN_LOGGEDIN
                         loggedIn = false;
                         return 7;
                     }
-                    updateLoginState(LOGIN_LOGGEDIN);
+                    updateLoginState(MapleClient.LOGIN_LOGGEDIN);
                 } finally {
                     loginLock.unlock();
                 }
@@ -851,7 +851,7 @@ public class MapleClient {
 				if (rs.getTimestamp("lastlogin").getTime() + 30000 < Server.getInstance().getCurrentTime()) {
                                         int accountId = accId;
 					state = LOGIN_NOTLOGGEDIN;
-					updateLoginState(LOGIN_NOTLOGGEDIN);   // ACCID = 0, issue found thanks to Tochi & K u ssss o & Thora & Omo Oppa
+					updateLoginState(MapleClient.LOGIN_NOTLOGGEDIN);   // ACCID = 0, issue found thanks to Tochi & K u ssss o & Thora & Omo Oppa
                                         this.setAccID(accountId);
 				}
 			}
@@ -1231,6 +1231,22 @@ public class MapleClient {
 		}
 		return disconnectForBeingAFaggot;
 	}
+        
+        public void checkChar(int accid) {  /// issue with multiple chars from same account login found by shavit, resinate
+            if (true) {
+                return;
+            }
+            
+            for (World w : Server.getInstance().getWorlds()) {
+                for (MapleCharacter chr : w.getPlayerStorage().getAllCharacters()) {
+                    if (accid == chr.getAccountID()) {
+                        FilePrinter.print(FilePrinter.EXPLOITS, "Player:  " + chr.getName() + " has been removed from " + GameConstants.WORLD_NAMES[w.getId()] + ". Possible Dupe attempt.");
+                        chr.getClient().forceDisconnect();
+                        w.getPlayerStorage().removePlayer(chr.getId());
+                    }
+                }
+            }
+        }
 
 	public int getVotePoints(){
 		int points = 0;

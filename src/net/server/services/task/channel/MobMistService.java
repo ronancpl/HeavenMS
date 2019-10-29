@@ -17,46 +17,48 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-package net.server.channel.services.task;
+package net.server.services.task.channel;
 
+import net.server.services.BaseService;
 import config.YamlConfig;
 import net.server.audit.locks.MonitoredLockType;
-import net.server.channel.services.BaseScheduler;
+import net.server.services.BaseScheduler;
 
 /**
  *
  * @author Ronan
  */
-public class EventService extends BaseService {
+public class MobMistService extends BaseService {
     
-    private EventScheduler eventSchedulers[] = new EventScheduler[YamlConfig.config.server.CHANNEL_LOCKS];
+    private MobMistScheduler mobMistSchedulers[] = new MobMistScheduler[YamlConfig.config.server.CHANNEL_LOCKS];
     
-    public EventService() {
+    public MobMistService() {
         for(int i = 0; i < YamlConfig.config.server.CHANNEL_LOCKS; i++) {
-            eventSchedulers[i] = new EventScheduler();
+            mobMistSchedulers[i] = new MobMistScheduler();
         }
     }
     
+    @Override
     public void dispose() {
         for(int i = 0; i < YamlConfig.config.server.CHANNEL_LOCKS; i++) {
-            if(eventSchedulers[i] != null) {
-                eventSchedulers[i].dispose();
-                eventSchedulers[i] = null;
+            if(mobMistSchedulers[i] != null) {
+                mobMistSchedulers[i].dispose();
+                mobMistSchedulers[i] = null;
             }
-        }
+        }    
     }
     
-    public void registerEventAction(int mapid, Runnable runAction, long delay) {
-        eventSchedulers[getChannelSchedulerIndex(mapid)].registerDelayedAction(runAction, delay);
+    public void registerMobMistCancelAction(int mapid, Runnable runAction, long delay) {
+        mobMistSchedulers[getChannelSchedulerIndex(mapid)].registerMistCancelAction(runAction, delay);
     }
     
-    private class EventScheduler extends BaseScheduler {
-        
-        public EventScheduler() {
-            super(MonitoredLockType.CHANNEL_EVENTS);
+    private class MobMistScheduler extends BaseScheduler {
+
+        public MobMistScheduler() {
+            super(MonitoredLockType.CHANNEL_MOBMIST);
         }
 
-        public void registerDelayedAction(Runnable runAction, long delay) {
+        public void registerMistCancelAction(Runnable runAction, long delay) {
             registerEntry(runAction, runAction, delay);
         }
         

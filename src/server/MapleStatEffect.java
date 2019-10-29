@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.HashMap;
 import java.util.Map;
 
 import config.YamlConfig;
@@ -60,7 +61,6 @@ import client.inventory.manipulator.MapleInventoryManipulator;
 import client.status.MonsterStatus;
 import client.status.MonsterStatusEffect;
 import constants.inventory.ItemConstants;
-import constants.net.ServerConstants;
 import constants.skills.Aran;
 import constants.skills.Assassin;
 import constants.skills.Bandit;
@@ -933,7 +933,7 @@ public class MapleStatEffect {
             applyto.toggleHide(false);
             return true;
         }
-
+        
         if (primary && isHeal()) {
             affectedPlayers = applyBuff(applyfrom, useMaxRange);
         }
@@ -1162,7 +1162,7 @@ public class MapleStatEffect {
 
     private int applyBuff(MapleCharacter applyfrom, boolean useMaxRange) {
         int affectedc = 1;
-
+        
         if (isPartyBuff() && (applyfrom.getParty() != null || isGmBuff())) {
             Rectangle bounds = (!useMaxRange) ? calculateBoundingBox(applyfrom.getPosition(), applyfrom.isFacingLeft()) : new Rectangle(Integer.MIN_VALUE / 2, Integer.MIN_VALUE / 2, Integer.MAX_VALUE, Integer.MAX_VALUE);
             List<MapleMapObject> affecteds = applyfrom.getMap().getMapObjectsInRect(bounds, Arrays.asList(MapleMapObjectType.PLAYER));
@@ -1181,7 +1181,7 @@ public class MapleStatEffect {
                     }
                 }
             }
-
+            
             affectedc += affectedp.size();   // used for heal
             for (MapleCharacter affected : affectedp) {
                 applyTo(applyfrom, affected, false, null, useMaxRange, affectedc);
@@ -1281,7 +1281,11 @@ public class MapleStatEffect {
 
         long leftDuration = (starttime + localDuration) - Server.getInstance().getCurrentTime();
         if (leftDuration > 0) {
-            target.announce(MaplePacketCreator.giveBuff((skill ? sourceid : -sourceid), (int) leftDuration, activeStats));
+            if (isDash() || isInfusion()) {
+                target.announce(MaplePacketCreator.givePirateBuff(activeStats, (skill ? sourceid : -sourceid), (int) leftDuration));
+            } else {
+                target.announce(MaplePacketCreator.giveBuff((skill ? sourceid : -sourceid), (int) leftDuration, activeStats));
+            }
         }
     }
     
@@ -1289,7 +1293,7 @@ public class MapleStatEffect {
         if (!isMonsterRiding() && !isCouponBuff() && !isMysticDoor() && !isHyperBody() && !isCombo()) {     // last mystic door already dispelled if it has been used before.
             applyto.cancelEffect(this, true, -1);
         }
-
+        
         List<Pair<MapleBuffStat, Integer>> localstatups = statups;
         int localDuration = getBuffLocalDuration();
         int localsourceid = sourceid;
@@ -1393,12 +1397,11 @@ public class MapleStatEffect {
                 
                 applyto.announce(buff);
             }
-
+            
             long starttime = Server.getInstance().getCurrentTime();
             //CancelEffectAction cancelAction = new CancelEffectAction(applyto, this, starttime);
             //ScheduledFuture<?> schedule = TimerManager.getInstance().schedule(cancelAction, localDuration);
             applyto.registerEffect(this, starttime, starttime + localDuration, false);
-
             if (mbuff != null) {
                 applyto.getMap().broadcastMessage(applyto, mbuff, false);
             }

@@ -96,11 +96,12 @@ public class ItemRequirement extends MapleQuestRequirement {
 		return true;
 	}
 	
-	public int getItemAmountNeeded(int itemid) {
-                if(items.containsKey(itemid)) {
-			return items.get(itemid);
-		}
-		
-		return 0;
+	public int getItemAmountNeeded(int itemid, boolean complete) {
+                Integer amount = items.get(itemid);
+                if (amount != null) {
+			return amount;
+		} else {
+                        return complete ? Integer.MAX_VALUE : Integer.MIN_VALUE;
+                }
 	}
 }

@@ -17,8 +17,9 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-package net.server.channel.services.task;
+package net.server.services.task.channel;
 
+import net.server.services.BaseService;
 import client.MapleCharacter;
 import config.YamlConfig;
 import java.util.Collections;
@@ -26,7 +27,7 @@ import net.server.audit.LockCollector;
 import net.server.audit.locks.MonitoredLockType;
 import net.server.audit.locks.MonitoredReentrantLock;
 import net.server.audit.locks.factory.MonitoredReentrantLockFactory;
-import net.server.channel.services.BaseScheduler;
+import net.server.services.BaseScheduler;
 import server.maps.MapleMap;
 import tools.MaplePacketCreator;
 
@@ -61,6 +62,7 @@ public class FaceExpressionService extends BaseService {
         });
     }
     
+    @Override
     public void dispose() {
         for(int i = 0; i < YamlConfig.config.server.CHANNEL_LOCKS; i++) {
             if(faceExpressionSchedulers[i] != null) {

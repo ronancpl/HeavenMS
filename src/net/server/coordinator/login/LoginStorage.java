@@ -37,21 +37,20 @@ public class LoginStorage {
     private ConcurrentHashMap<Integer, List<Long>> loginHistory = new ConcurrentHashMap<>();
     
     public boolean registerLogin(int accountId) {
-        List<Long> accHist = loginHistory.putIfAbsent(accountId, new LinkedList<Long>());
-        if (accHist != null) {
-            synchronized (accHist) {
-                if (accHist.size() > YamlConfig.config.server.MAX_ACCOUNT_LOGIN_ATTEMPT) {
-                    long blockExpiration = Server.getInstance().getCurrentTime() + YamlConfig.config.server.LOGIN_ATTEMPT_DURATION;
-                    Collections.fill(accHist, blockExpiration);
-                    
-                    return false;
-                }
-            }
-        } else {
-            accHist = loginHistory.get(accountId);
+        List<Long> accHist = loginHistory.get(accountId);
+        if (accHist == null) {
+            accHist = new LinkedList<Long>();
+            loginHistory.put(accountId, accHist);
         }
         
         synchronized (accHist) {
+            if (accHist.size() > YamlConfig.config.server.MAX_ACCOUNT_LOGIN_ATTEMPT) {
+                long blockExpiration = Server.getInstance().getCurrentTime() + YamlConfig.config.server.LOGIN_ATTEMPT_DURATION;
+                Collections.fill(accHist, blockExpiration);
+
+                return false;
+            }
+            
             accHist.add(Server.getInstance().getCurrentTime() + YamlConfig.config.server.LOGIN_ATTEMPT_DURATION);
             return true;
         }

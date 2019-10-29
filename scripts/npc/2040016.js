@@ -172,19 +172,7 @@ function action(mode, type, selection) {
             matQty = matQtySet[selectedItem];
             cost = costSet[selectedItem];
         }
-		
-        if (selectedType == 5){ //arrow refine
-            var itemSet = new Array(2060000,2061000,2060001,2061001,2060002,2061002);
-            var matSet = new Array(new Array (4003001,4003004),new Array (4003001,4003004),new Array (4011000,4003001,4003004),new Array (4011000,4003001,4003004),
-                new Array (4011001,4003001,4003005),new Array (4011001,4003001,4003005));
-            var matQtySet = new Array (new Array (1,1),new Array (1,1),new Array (1,3,10),new Array (1,3,10),new Array (1,5,15),new Array (1,5,15));
-            var costSet = new Array (0,0,0,0,0,0);
-            item = itemSet[selectedItem];
-            mats = matSet[selectedItem];
-            matQty = matQtySet[selectedItem];
-            cost = costSet[selectedItem];
-        }
-                
+	        
         var prompt = "So, you want me to make some #t" + item + "#s? In that case, how many do you want me to make?";
 		
         cm.sendGetNumber(prompt,1,1,100)
@@ -197,6 +185,19 @@ function action(mode, type, selection) {
         }
         else
             qty = (selection > 0) ? selection : (selection < 0 ? -selection : 1);
+
+        // thanks kvmba for noticing arrow selection crashing players
+        if (selectedType == 5){ //arrow refine
+            var itemSet = new Array(2060000,2061000,2060001,2061001,2060002,2061002);
+            var matSet = new Array(new Array (4003001,4003004),new Array (4003001,4003004),new Array (4011000,4003001,4003004),new Array (4011000,4003001,4003004),
+                new Array (4011001,4003001,4003005),new Array (4011001,4003001,4003005));
+            var matQtySet = new Array (new Array (1,1),new Array (1,1),new Array (1,3,10),new Array (1,3,10),new Array (1,5,15),new Array (1,5,15));
+            var costSet = new Array (0,0,0,0,0,0);
+            item = itemSet[selectedItem];
+            mats = matSet[selectedItem];
+            matQty = matQtySet[selectedItem];
+            cost = costSet[selectedItem];
+        }
 		
         var prompt = "You want me to make ";
         if (qty == 1)

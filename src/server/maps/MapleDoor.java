@@ -28,8 +28,8 @@ import config.YamlConfig;
 import tools.Pair;
 
 import client.MapleCharacter;
-import net.server.channel.services.ServiceType;
-import net.server.channel.services.task.OverallService;
+import net.server.services.type.ChannelServices;
+import net.server.services.task.channel.OverallService;
 
 /**
  *
@@ -133,7 +133,7 @@ public class MapleDoor {
             if (effectTimeLeft > 0) {
                 MapleMap town = destroyDoor.getTown();
                 
-                OverallService service = (OverallService) town.getChannelServer().getServiceAccess(ServiceType.OVERALL);
+                OverallService service = (OverallService) town.getChannelServer().getServiceAccess(ChannelServices.OVERALL);
                 service.registerOverallAction(town.getId(), new Runnable() {
                     @Override
                     public void run() {

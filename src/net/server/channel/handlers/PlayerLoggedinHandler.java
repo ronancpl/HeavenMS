@@ -63,7 +63,6 @@ import client.inventory.MapleInventoryType;
 import client.inventory.MaplePet;
 import constants.game.GameConstants;
 import constants.game.ScriptableNPCConstants;
-import constants.net.ServerConstants;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
@@ -116,30 +115,27 @@ public final class PlayerLoggedinHandler extends AbstractMaplePacketHandler {
                 }
 
                 Channel cserv = wserv.getChannel(c.getChannel());
-                if(cserv == null || !cserv.isActive()) {
+                if(cserv == null) {
                     c.setChannel(1);
                     cserv = wserv.getChannel(c.getChannel());
 
                     if(cserv == null) {
                         c.disconnect(true, false);
                         return;
-                    } else if (!cserv.isActive()) {
-                        c.announce(MaplePacketCreator.getAfterLoginError(7));
-                        return;
                     }
                 }
 
                 MapleCharacter player = wserv.getPlayerStorage().getCharacterById(cid);
                 boolean newcomer = false;
-
+                
                 IoSession session = c.getSession();
+                if (!server.validateCharacteridInTransition(session, cid)) {
+                    c.disconnect(true, false);
+                    return;
+                }
+                
                 String remoteHwid;
                 if (player == null) {
-                    if (!server.validateCharacteridInTransition(session, cid)) {
-                        c.disconnect(true, false);
-                        return;
-                    }
-
                     remoteHwid = MapleSessionCoordinator.getInstance().getGameSessionHwid(session);
                     if (remoteHwid == null) {
                         c.disconnect(true, false);

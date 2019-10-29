@@ -17,7 +17,7 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-package net.server.channel.services;
+package net.server.services;
 
 /**
  *
@@ -27,12 +27,12 @@ public class ServicesManager {
     
     private Service[] services;
     
-    public ServicesManager() {
-        ServiceType[] serviceTypes = ServiceType.values();
+    public ServicesManager(ServiceType serviceBundle) {
+        Enum[] serviceTypes = serviceBundle.enumValues();
         
         services = new Service[serviceTypes.length];
-        for (ServiceType type : serviceTypes) {
-            services[type.ordinal()] = type.createService();
+        for (Enum type : serviceTypes) {
+            services[type.ordinal()] = ((ServiceType) type).createService();
         }
     }
     
@@ -41,7 +41,7 @@ public class ServicesManager {
     }
     
     public void shutdown() {
-        for (int i = 0; i < ServiceType.values().length; i++) {
+        for (int i = 0; i < services.length; i++) {
             services[i].dispose();
         }
         services = null;

@@ -12968,7 +12968,7 @@ CREATE TABLE IF NOT EXISTS `inventoryitems` (
   `position` int(11) NOT NULL DEFAULT '0',
   `quantity` int(11) NOT NULL DEFAULT '0',
   `owner` tinytext NOT NULL,
-  `petid` int(11) unsigned UNIQUE DEFAULT NULL,
+  `petid` int(11) NOT NULL DEFAULT '-1',
   `flag` int(11) NOT NULL,
   `expiration` bigint(20) NOT NULL DEFAULT '-1',
   `giftFrom` varchar(26) NOT NULL,
@@ -16473,7 +16473,7 @@ CREATE TABLE IF NOT EXISTS `pets` (
   PRIMARY KEY (`petid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
-ALTER TABLE `inventoryitems` ADD CONSTRAINT `fk_itempetid` FOREIGN KEY (`petid`) REFERENCES `pets` (`petid`) ON DELETE SET NULL ;
+ALTER TABLE `inventoryitems` ADD CONSTRAINT `fk_itempetid` FOREIGN KEY (`petid`) REFERENCES `pets` (`petid`) ON DELETE SET NULL ;  # thanks Optimist for noticing queries over petid taking too long, shavit for pointing out an improvement using foreign key
 
 CREATE TABLE IF NOT EXISTS `petignores` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,

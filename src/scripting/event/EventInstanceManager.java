@@ -36,8 +36,12 @@ import config.YamlConfig;
 import net.server.audit.LockCollector;
 import net.server.audit.locks.MonitoredLockType;
 import net.server.audit.locks.MonitoredReentrantLock;
+import net.server.audit.locks.MonitoredReadLock;
 import net.server.audit.locks.MonitoredReentrantReadWriteLock;
+import net.server.audit.locks.MonitoredWriteLock;
+import net.server.audit.locks.factory.MonitoredReadLockFactory;
 import net.server.audit.locks.factory.MonitoredReentrantLockFactory;
+import net.server.audit.locks.factory.MonitoredWriteLockFactory;
 import net.server.world.MapleParty;
 import net.server.world.MaplePartyCharacter;
 import server.maps.MaplePortal;
@@ -55,9 +59,6 @@ import constants.inventory.ItemConstants;
 import constants.net.ServerConstants;
 import java.awt.Point;
 import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
-import java.util.concurrent.locks.ReentrantReadWriteLock.ReadLock;
-import java.util.concurrent.locks.ReentrantReadWriteLock.WriteLock;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import net.server.coordinator.world.MapleEventRecallCoordinator;
@@ -91,9 +92,9 @@ public class EventInstanceManager {
 	private MapleExpedition expedition = null;
         private List<Integer> mapIds = new LinkedList<>();
         
-        private final ReentrantReadWriteLock lock = new MonitoredReentrantReadWriteLock(MonitoredLockType.EIM, true);
-        private ReadLock rL = lock.readLock();
-        private WriteLock wL = lock.writeLock();
+        private final MonitoredReentrantReadWriteLock lock = new MonitoredReentrantReadWriteLock(MonitoredLockType.EIM, true);
+        private MonitoredReadLock rL = MonitoredReadLockFactory.createLock(lock);
+        private MonitoredWriteLock wL = MonitoredWriteLockFactory.createLock(lock);
         
         private MonitoredReentrantLock pL = MonitoredReentrantLockFactory.createLock(MonitoredLockType.EIM_PARTY, true);
         private MonitoredReentrantLock sL = MonitoredReentrantLockFactory.createLock(MonitoredLockType.EIM_SCRIPT, true);

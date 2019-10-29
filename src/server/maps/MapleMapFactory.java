@@ -54,7 +54,7 @@ public class MapleMapFactory {
         nameData = MapleDataProviderFactory.getDataProvider(new File(System.getProperty("wzpath") + "/String.wz")).getData("Map.img");
         mapSource = MapleDataProviderFactory.getDataProvider(new File(System.getProperty("wzpath") + "/Map.wz"));
     }
-
+    
     private static void loadLifeFromWz(MapleMap map, MapleData mapData) {
         for (MapleData life : mapData.getChildByPath("life")) {
             life.getName();
@@ -309,9 +309,10 @@ public class MapleMapFactory {
                 }
             }
         }
+        
         try {
-            map.setMapName(MapleDataTool.getString("mapName", nameData.getChildByPath(getMapStringName(mapid)), ""));
-            map.setStreetName(MapleDataTool.getString("streetName", nameData.getChildByPath(getMapStringName(mapid)), ""));
+            map.setMapName(loadPlaceName(mapid));
+            map.setStreetName(loadStreetName(mapid));
         } catch (Exception e) {
             if (mapid / 1000 != 1020) {     // explorer job introduction scenes
                 e.printStackTrace();
@@ -432,6 +433,22 @@ public class MapleMapFactory {
         }
         builder.append("/").append(mapid);
         return builder.toString();
+    }
+    
+    public static String loadPlaceName(int mapid) throws Exception {
+        try {
+            return MapleDataTool.getString("mapName", nameData.getChildByPath(getMapStringName(mapid)), "");
+        } catch (Exception e) {
+            return "";
+        }
+    }
+    
+    public static String loadStreetName(int mapid) throws Exception {
+        try {
+            return MapleDataTool.getString("streetName", nameData.getChildByPath(getMapStringName(mapid)), "");
+        } catch (Exception e) {
+            return "";
+        }
     }
     
 }

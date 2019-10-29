@@ -25,8 +25,6 @@ import config.YamlConfig;
 import java.io.File;
 import net.server.world.MapleParty;
 import net.server.coordinator.world.MapleInviteCoordinator.InviteType;
-import net.server.coordinator.partysearch.PartySearchEchelon;
-import net.server.coordinator.partysearch.PartySearchStorage;
 import tools.MaplePacketCreator;
 import tools.Pair;
 
@@ -38,11 +36,12 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
-import java.util.concurrent.locks.ReentrantReadWriteLock.ReadLock;
-import java.util.concurrent.locks.ReentrantReadWriteLock.WriteLock;
 import net.server.audit.locks.MonitoredLockType;
+import net.server.audit.locks.MonitoredReadLock;
 import net.server.audit.locks.MonitoredReentrantReadWriteLock;
+import net.server.audit.locks.MonitoredWriteLock;
+import net.server.audit.locks.factory.MonitoredReadLockFactory;
+import net.server.audit.locks.factory.MonitoredWriteLockFactory;
 import net.server.coordinator.world.MapleInviteCoordinator;
 import provider.MapleData;
 import provider.MapleDataProviderFactory;
@@ -58,9 +57,9 @@ public class MaplePartySearchCoordinator {
     private Map<MapleJob, PartySearchEchelon> upcomers = new HashMap<>();
     
     private List<MapleCharacter> leaderQueue = new LinkedList<>();
-    private final ReentrantReadWriteLock leaderQueueLock = new MonitoredReentrantReadWriteLock(MonitoredLockType.WORLD_PARTY_SEARCH_QUEUE, true);
-    private final ReadLock leaderQueueRLock = leaderQueueLock.readLock();
-    private final WriteLock leaderQueueWLock = leaderQueueLock.writeLock();
+    private final MonitoredReentrantReadWriteLock leaderQueueLock = new MonitoredReentrantReadWriteLock(MonitoredLockType.WORLD_PARTY_SEARCH_QUEUE, true);
+    private final MonitoredReadLock leaderQueueRLock = MonitoredReadLockFactory.createLock(leaderQueueLock);
+    private final MonitoredWriteLock leaderQueueWLock = MonitoredWriteLockFactory.createLock(leaderQueueLock);
     
     private Map<Integer, MapleCharacter> searchLeaders = new HashMap<>();
     private Map<Integer, LeaderSearchMetadata> searchSettings = new HashMap<>();

@@ -102,21 +102,19 @@ public class MapleLifeFactory {
         MapleData monsterInfoData = monsterData.getChildByPath("info");
         
         List<MobAttackInfoHolder> attackInfos = new LinkedList<>();
-        MapleMonsterStats stats;
+        MapleMonsterStats stats = new MapleMonsterStats();
         
         int linkMid = MapleDataTool.getIntConvert("link", monsterInfoData, 0);
-        if (linkMid == 0) {
-            stats = new MapleMonsterStats();
-        } else {
+        if (linkMid != 0) {
             Pair<MapleMonsterStats, List<MobAttackInfoHolder>> linkStats = getMonsterStats(linkMid);
             if (linkStats == null) {
                 return null;
             }
             
-            stats = linkStats.getLeft();
+            // thanks resinate for noticing non-propagable infos such as revives getting retrieved
             attackInfos.addAll(linkStats.getRight());
         }
-
+        
         stats.setHp(MapleDataTool.getIntConvert("maxHP", monsterInfoData));
         stats.setFriendly(MapleDataTool.getIntConvert("damagedByMob", monsterInfoData, stats.isFriendly() ? 1 : 0) == 1);
         stats.setPADamage(MapleDataTool.getIntConvert("PADamage", monsterInfoData));

@@ -72,7 +72,7 @@ function action(mode, type, selection) {
         } else if (status == 2){
             cm.dispose();
             if (beauty == 1){
-                if (cm.haveItem(5420002)){
+                if (cm.haveItem(5420002)){  // thanks MedicOP for noticing uncoded functionality for Hair Membership coupons
                     cm.setHair(hairnew[selection]);
                     cm.sendOk("Enjoy your new and improved hairstyle!");
                 } else if (cm.haveItem(5150001)){

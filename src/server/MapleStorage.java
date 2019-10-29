@@ -22,6 +22,7 @@ import client.MapleClient;
 import client.inventory.Item;
 import client.inventory.ItemFactory;
 import client.inventory.MapleInventoryType;
+import constants.game.GameConstants;
 import java.io.File;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -44,6 +45,7 @@ import tools.DatabaseConnection;
 import tools.MaplePacketCreator;
 import tools.Pair;
 import net.server.audit.locks.MonitoredLockType;
+import tools.FilePrinter;
 
 /**
  *
@@ -67,51 +69,45 @@ public class MapleStorage {
         this.meso = meso;
     }
 
-    private static MapleStorage create(int id, int world) {
-        try {
-            Connection con = DatabaseConnection.getConnection();
-            try (PreparedStatement ps = con.prepareStatement("INSERT INTO storages (accountid, world, slots, meso) VALUES (?, ?, 4, 0)")) {
-                ps.setInt(1, id);
-                ps.setInt(2, world);
-                ps.executeUpdate();
-            }
-            
-            con.close();
-        } catch (Exception e) {
-            e.printStackTrace();
+    private static MapleStorage create(int id, int world) throws SQLException {
+        Connection con = DatabaseConnection.getConnection();
+        try (PreparedStatement ps = con.prepareStatement("INSERT INTO storages (accountid, world, slots, meso) VALUES (?, ?, 4, 0)")) {
+            ps.setInt(1, id);
+            ps.setInt(2, world);
+            ps.executeUpdate();
         }
+        con.close();
+        
         return loadOrCreateFromDB(id, world);
     }
 
     public static MapleStorage loadOrCreateFromDB(int id, int world) {
-        MapleStorage ret = null;
-        int storeId;
         try {
+            MapleStorage ret;
             Connection con = DatabaseConnection.getConnection();
             PreparedStatement ps = con.prepareStatement("SELECT storageid, slots, meso FROM storages WHERE accountid = ? AND world = ?");
             ps.setInt(1, id);
             ps.setInt(2, world);
+            
             ResultSet rs = ps.executeQuery();
-            if (!rs.next()) {
-                rs.close();
-                ps.close();
-                con.close();
-                return create(id, world);
-            } else {
-                storeId = rs.getInt("storageid");
-                ret = new MapleStorage(storeId, (byte) rs.getInt("slots"), rs.getInt("meso"));
-                rs.close();
-                ps.close();
+            if (rs.next()) {
+                ret = new MapleStorage(rs.getInt("storageid"), (byte) rs.getInt("slots"), rs.getInt("meso"));
                 for (Pair<Item, MapleInventoryType> item : ItemFactory.STORAGE.loadItems(ret.id, false)) {
                     ret.items.add(item.getLeft());
                 }
+            } else {
+                ret = create(id, world);
             }
             
+            rs.close();
+            ps.close();
             con.close();
-        } catch (SQLException ex) {
-            ex.printStackTrace();
+            
+            return ret;
+        } catch (SQLException ex) { // exceptions leading to deploy null storages found thanks to Jefe
+            FilePrinter.printError(FilePrinter.STORAGE, ex, "SQL error occurred when trying to load storage for accountid " + id + ", world " + GameConstants.WORLD_NAMES[world]);
+            throw new RuntimeException(ex);
         }
-        return ret;
     }
 
     public byte getSlots() {

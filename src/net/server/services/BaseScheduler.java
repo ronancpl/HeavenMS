@@ -17,7 +17,7 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-package net.server.channel.services;
+package net.server.services;
 
 import config.YamlConfig;
 import java.util.Collections;

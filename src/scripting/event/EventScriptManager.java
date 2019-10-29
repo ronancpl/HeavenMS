@@ -21,9 +21,11 @@
  */
 package scripting.event;
 
-import java.util.LinkedHashMap;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -48,9 +50,10 @@ public class EventScriptManager extends AbstractScriptManager {
         public EventManager em;
     }
     
-    private Map<String, EventEntry> events = new LinkedHashMap<>();
+    private static EventEntry fallback;
+    private Map<String, EventEntry> events = new ConcurrentHashMap<>();
     private boolean active = false;
-
+    
     public EventScriptManager(Channel cserv, String[] scripts) {
         super();
         for (String script : scripts) {
@@ -59,12 +62,15 @@ public class EventScriptManager extends AbstractScriptManager {
                 events.put(script, new EventEntry(iv, new EventManager(cserv, iv, script)));
             }
         }
+        
+        init();
+        fallback = events.remove("0_EXAMPLE");
     }
 
     public EventManager getEventManager(String event) {
         EventEntry entry = events.get(event);
         if (entry == null) {
-            return null;
+            return fallback.em;
         }
         return entry.em;
     }
@@ -72,8 +78,8 @@ public class EventScriptManager extends AbstractScriptManager {
     public boolean isActive() {
         return active;
     }
-
-    public void init() {
+    
+    public final void init() {
         for (EventEntry entry : events.values()) {
             try {
                 entry.iv.put("em", entry.em);
@@ -84,16 +90,17 @@ public class EventScriptManager extends AbstractScriptManager {
             }
         }
         
-        active = true;
+        active = events.size() > 1; // bootup loads only 1 script
     }
 
     private void reloadScripts() {
-        if (events.isEmpty()) {
+        Set<Entry<String, EventEntry>> eventEntries = new HashSet<>(events.entrySet());
+        if (eventEntries.isEmpty()) {
             return;
         }
 
-        Channel cserv = events.values().iterator().next().em.getChannelServer();
-        for (Entry<String, EventEntry> entry : events.entrySet()) {
+        Channel cserv = eventEntries.iterator().next().getValue().em.getChannelServer();
+        for (Entry<String, EventEntry> entry : eventEntries) {
             String script = entry.getKey();
             NashornScriptEngine iv = getScriptEngine("event/" + script + ".js");
             events.put(script, new EventEntry(iv, new EventManager(cserv, iv, script)));
@@ -109,6 +116,20 @@ public class EventScriptManager extends AbstractScriptManager {
     public void cancel() {
         active = false;
         for (EventEntry entry : events.values()) {
+            entry.em.cancel();
+        }
+    }
+    
+    public void dispose() {
+        if (events.isEmpty()) {
+            return;
+        }
+        
+        Set<EventEntry> eventEntries = new HashSet<>(events.values());
+        events.clear();
+        
+        active = false;
+        for (EventEntry entry : eventEntries) {
             entry.em.cancel();
         }
     }

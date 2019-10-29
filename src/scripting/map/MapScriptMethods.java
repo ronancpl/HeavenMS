@@ -35,7 +35,35 @@ public class MapScriptMethods extends AbstractPlayerInteraction {
 	public MapScriptMethods(MapleClient c) {
         super(c);
     }
-
+    
+    public void displayCygnusIntro() {
+        switch (c.getPlayer().getMapId()) {
+            case 913040100:
+                lockUI();
+                c.announce(MaplePacketCreator.showIntro("Effect/Direction.img/cygnusJobTutorial/Scene0"));
+                break;
+            case 913040101:
+                c.announce(MaplePacketCreator.showIntro("Effect/Direction.img/cygnusJobTutorial/Scene1"));
+                break;
+            case 913040102:
+                c.announce(MaplePacketCreator.showIntro("Effect/Direction.img/cygnusJobTutorial/Scene2"));
+                break;
+            case 913040103:
+                c.announce(MaplePacketCreator.showIntro("Effect/Direction.img/cygnusJobTutorial/Scene3"));
+                break;
+            case 913040104:
+                c.announce(MaplePacketCreator.showIntro("Effect/Direction.img/cygnusJobTutorial/Scene4"));
+                break;
+            case 913040105:
+                c.announce(MaplePacketCreator.showIntro("Effect/Direction.img/cygnusJobTutorial/Scene5"));
+                break;
+            case 913040106:
+                lockUI();
+                c.announce(MaplePacketCreator.showIntro("Effect/Direction.img/cygnusJobTutorial/Scene6"));
+                break;
+        }
+    }
+    
     public void displayAranIntro() {
         switch (c.getPlayer().getMapId()) {
             case 914090010:

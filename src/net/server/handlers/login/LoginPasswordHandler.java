@@ -150,6 +150,7 @@ public final class LoginPasswordHandler implements MaplePacketHandler {
             return;
         }
         if (c.finishLogin() == 0) {
+            c.checkChar(c.getAccID());
             login(c);
         } else {
             c.announce(MaplePacketCreator.getLoginFailed(7));

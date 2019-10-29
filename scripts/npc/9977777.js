@@ -77,7 +77,7 @@ function writeFeatureTab_Quests() {
         addFeature("3rd job quiz with all 40-question pool available.");
         addFeature("Item raising functional.");
         addFeature("Cleared issue with player movement during NPC talk.");
-        addFeature("Reviewed usage of quest progress data as requirement.");
+        addFeature("Reviewed usage of quest progress data as requisite.");
 }
 
 function writeFeatureTab_PlayerSocialNetwork() {
@@ -287,6 +287,7 @@ function writeFeatureTab_Project() {
         addFeature("Remodeled item scripts, properly using NPC dialogs.");
         addFeature("ThreadTracker: runtime tool for deadlock detection.");
         addFeature("Channel, World and Server-wide timer management.");
+        addFeature("Developed services as preemptive task scheduler.");
         addFeature("Thoroughly reviewed encapsulation for player stats.");
         addFeature("Heavily reviewed future task management, spawning much less threads and relieving task overload on the TimerManager.");
 }
@@ -327,7 +328,7 @@ function action(mode, type, selection) {
                         status--;
                     
                 if (status == 0) {
-                        var sendStr = "HeavenMS was developed on the timespan of 3 years, based on where Solaxia left. I'm glad to say the development itself had continuously been agraciated by dozens of contributors and cheerers (truly thanks for the trusting vow, guys & gals!).\r\n\r\nTalking about results: many nice features emerged, development aimed to get back the old GMS experience. Now many of these so-long missing features are gracefully presented to you in the shape of this server. Long live MapleStory!!\r\n\r\nThese are the features from #bHeavenMS#k:\r\n\r\n";
+                        var sendStr = "HeavenMS was developed on the timespan of 4 years, based on where Solaxia left. I'm glad to say the development itself had continuously been agraciated by dozens of contributors and cheerers (truly thanks for the trusting vow, guys & gals!).\r\n\r\nTalking about results: many nice features emerged, development aimed to get back the old GMS experience. Now many of these so-long missing features are gracefully presented to you in the shape of this server. Long live MapleStory!!\r\n\r\nThese are the features from #bHeavenMS#k:\r\n\r\n";
                         for(var i = 0; i < tabs.length; i++) {
                             sendStr += "#L" + i + "##b" + tabs[i] + "#k#l\r\n";
                         }

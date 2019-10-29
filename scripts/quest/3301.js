@@ -28,32 +28,39 @@
 var status = -1;
 var oreArray;
 
-function start(mode, type, selection) {
-}
-
 function end(mode, type, selection) {
-    if (mode == -1 || (mode == 0 && type > 0)) {
-	qm.dispose();
+    if (mode == -1) {
+        qm.dispose();
     } else {
-	oreArray = getOreArray();
-	if (status == -1) {
+        if (mode == 0 && type > 0) {
+            qm.dispose();
+            return;
+        }
+        if (mode == 1)
+            status++;
+        else
+            status--;
+
+        if (status == 0) {
+            oreArray = getOreArray();
 	    if (oreArray.length > 0) {
-		status++;
 		qm.sendSimple("Oh, looks like someone's ready to make a deal. You want to join Zenumist so badly, huh? I really don't understand you, but that's just fine. What will you give me in return?\r\n" + getOreString(oreArray));
 	    } else {
-		qm.sendOk("What is this, you don't have the ores with you. No ore, no deal.");
+		qm.sendOk("What is this, you don't have the #rjewel ores#k with you. No ore, no deal.");
 		qm.dispose();
+                return;
 	    }
-	} else if (status == 0) {
+	} else if (status == 1) {
             if (!qm.haveItem(oreArray[selection], 2)) {
-                qm.sendNext("What's this, you haven't got the ores. No ores no deal!");
+                qm.sendNext("What's this, you haven't got the #rjewel ores#k. No ores no deal!");
+                qm.dispose();
                 return;
             }
 
 	    qm.gainItem(oreArray[selection], -2); // Take 2 ores
 	    qm.sendNext("Then wait for awhile. I'll go and get the stuff to help you pass the test of Chief Zenumist.");
 	    qm.forceCompleteQuest();
-	} else if (status == 1) {
+	} else if (status == 2) {
 	    qm.dispose();
 	}
     }

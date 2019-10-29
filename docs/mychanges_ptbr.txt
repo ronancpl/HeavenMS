@@ -2197,3 +2197,40 @@ Adicionado método que permite executar scripts de mapa no sistema de scripts de
 Corrigido problema recente ao referenciar script com progresso "Touch the Sky" (script de portal utilizando métodos de scripts de mapa).
 Adicionado fallback para scripts de NPC MapleTV.
 Revisado aplicação e abordagem deste código-base nos arquivos XML legado.
+
+15 - 16 Outubro 2019,
+Corrigido caso inconsistente onde objeto de jogador seria mantido no storage de jogadores caso o jogador tentasse se deregistrar de um canal (sem desconectar) e não mais retornando na mesma sessão.
+Adicionado código para funcionalidade de "Safety Charm", que permite jogadores curar 30% MaxHP/MaxMP ao retornar em campo.
+Implementado extensão das facilidades de serviços, agora atuando desjuntamente de canais.
+Implementado serviço de mundo para salvar jogadores, assim evitando geração de novas threads para cada jogador que está sendo persistido na DB.
+
+18 Outubro 2019,
+Revisado abordagem de inicialização de scripts de eventos em canais. Usuários não são mais bloqueados ao tentar logar devido ao canal não ter todos os eventos carregados.
+
+19 Outubro 2019,
+Corrigido certos itens de quest não aparecendo de mobs em casos onde o mesmo não é requisito para iniciar/completar.
+Corrigido NPC Pi crashando jogadores ao tentar criar flechas.
+Corrigido script de reevolução de pets não atuando em pet Robos, além de agora evitar repetir pets na conversão.
+
+21 - 22 Outubro 2019,
+Corrigido boss HPbar não desaparecendo em certos cenários. O mesmo deveria ocorrer assim que mob é retirado do mapa.
+Revisado informações de mob, que não são propagáveis, sendo repassados à definição do novo mob.
+Revisado carregamento de storages ao inicializar informações de conta podendo retornar nulo indevidamente em caso de exceção lançada.
+Corrigido dois casos de deadlock ocorrendo ao tentar cancelar efeito de stat de jogador.
+Adicionado auditoria de locks para os componentes que travam para leitura e escrita.
+Adicionado clip de introdução de Cygnus.
+Revisado updateBuffEffect, agora checando por determinados buffs de pirata e usando pacotes específicos para os mesmos.
+Revisado geração desnecessária de objetos de mapa ao carregar nomes para comando "goto".
+Corrigido buffs de mob em fakes desaparecendo assim que o mesmo muda de estado para real.
+
+24 Outubro 2019,
+Revisado uso de scriptids na geração de PlayerNPCs. Agora somente ids existentes na base especificada vai adiante.
+
+27 Outubro 2019,
+Revisado lógica booleana na detecção de foothold abaixo, não realizando múltiplas checagens sobre um mesmo atributo.
+
+28 Outubro 2019,
+Revisado lógica recente de uso de petid único levando a lançamento de exceção (transações de DB implica retirada de item de pet do CS storage na DB antes de colocar o mesmo no inventário).
+Corrigido portal relacionado a quest em Ariant inesperadamente levando jogadores à passagem secreta de Sleepywood, em caso de conclusão de questline da mesma.
+Corrigido loop em scripts de quest de associação a Alcadno/Zenumist em Magatia.
+Adicionado utilização de dispose em quest scripts para o comando homônimo.

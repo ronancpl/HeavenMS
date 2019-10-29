@@ -272,7 +272,7 @@ public class ItemAction extends MapleQuestAction {
                 }
                 
                 // thanks onechord for noticing quests unnecessarily giving out "full inventory" from quests that also takes items from players
-                return chr.getClient().getAbstractPlayerInteraction().canHoldAllAfterRemoving(toAddItemids, toAddQuantity, toRemoveItemids, toRemoveQuantity);
+                return chr.getAbstractPlayerInteraction().canHoldAllAfterRemoving(toAddItemids, toAddQuantity, toRemoveItemids, toRemoveQuantity);
         }
 	
 	private boolean canGetItem(ItemData item, MapleCharacter chr) {

@@ -78,6 +78,7 @@ public enum MonitoredLockType {
     WORLD_PSHOPS,
     WORLD_MERCHS,
     WORLD_MAPOBJS,
+    WORLD_SAVECHARS,
     WORLD_SUGGEST,
     EIM,
     EIM_PARTY,

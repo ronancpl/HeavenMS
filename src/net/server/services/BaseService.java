@@ -17,32 +17,21 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-package net.server.channel.services;
+package net.server.services;
 
-import net.server.channel.services.task.*;
+import config.YamlConfig;
 
 /**
  *
  * @author Ronan
  */
-public enum ServiceType {
+public abstract class BaseService {
     
-    MOB_STATUS(MobStatusService.class),
-    MOB_ANIMATION(MobAnimationService.class),
-    MOB_CLEAR_SKILL(MobClearSkillService.class),
-    MOB_MIST(MobMistService.class),
-    FACE_EXPRESSION(FaceExpressionService.class),
-    EVENT(EventService.class),
-    OVERALL(OverallService.class);
-    
-    private Class<? extends BaseService> s;
-    
-    private ServiceType(Class<? extends BaseService> service) {
-        s = service;
+    protected static int getChannelSchedulerIndex(int mapid) {
+        int section = 1000000000 / YamlConfig.config.server.CHANNEL_LOCKS;
+        return mapid / section;
     }
     
-    public Service createService() {
-        return new Service(s);
-    }
+    public abstract void dispose();
     
 }

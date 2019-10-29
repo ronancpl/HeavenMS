@@ -253,14 +253,6 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
 		return this.getText;
 	}
 
-	public int getJobId() {
-		return getPlayer().getJob().getId();
-	}
-
-	public MapleJob getJob(){
-		return getPlayer().getJob();
-	}
-
 	@Override
         public boolean forceStartQuest(int id) {
                 return forceStartQuest(id, npc);
@@ -301,10 +293,6 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
 
 	public void gainExp(int gain) {
 		getPlayer().gainExp(gain, true, true);
-	}
-
-	public int getLevel() {
-		return getPlayer().getLevel();
 	}
 
         @Override

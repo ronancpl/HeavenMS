@@ -17,8 +17,9 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-package net.server.channel.services.task;
+package net.server.services.task.channel;
 
+import net.server.services.BaseService;
 import config.YamlConfig;
 import net.server.audit.locks.MonitoredLockType;
 
@@ -28,8 +29,8 @@ import java.util.Set;
 import net.server.audit.LockCollector;
 import net.server.audit.locks.MonitoredReentrantLock;
 import net.server.audit.locks.factory.MonitoredReentrantLockFactory;
-import net.server.channel.services.BaseScheduler;
-import net.server.channel.services.SchedulerListener;
+import net.server.services.BaseScheduler;
+import net.server.services.SchedulerListener;
 
 /**
  *
@@ -45,6 +46,7 @@ public class MobAnimationService extends BaseService {
         }
     }
     
+    @Override
     public void dispose() {
         for(int i = 0; i < YamlConfig.config.server.CHANNEL_LOCKS; i++) {
             if(mobAnimationSchedulers[i] != null) {

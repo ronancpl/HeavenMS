@@ -225,7 +225,7 @@ public class MapleQuest {
             
             int ixSize = ix.size();
             for (int i = 0; i < ixSize; i++) {
-                String progress = chr.getClient().getAbstractPlayerInteraction().getQuestProgress(infoNumber, i);
+                String progress = chr.getAbstractPlayerInteraction().getQuestProgress(infoNumber, i);
                 String ixProgress = ix.get(i);
                 
                 if (!progress.contentEquals(ixProgress)) {
@@ -387,19 +387,19 @@ public class MapleQuest {
     public int getStartItemAmountNeeded(int itemid) {
         MapleQuestRequirement req = startReqs.get(MapleQuestRequirementType.ITEM);
         if(req == null)
-                return 0;
+                return Integer.MIN_VALUE;
 		
         ItemRequirement ireq = (ItemRequirement) req;
-        return ireq.getItemAmountNeeded(itemid);
+        return ireq.getItemAmountNeeded(itemid, false);
     }
     
     public int getCompleteItemAmountNeeded(int itemid) {
         MapleQuestRequirement req = completeReqs.get(MapleQuestRequirementType.ITEM);
         if(req == null)
-                return 0;
+                return Integer.MAX_VALUE;
 		
         ItemRequirement ireq = (ItemRequirement) req;
-        return ireq.getItemAmountNeeded(itemid);
+        return ireq.getItemAmountNeeded(itemid, true);
     }
 
     public int getMobAmountNeeded(int mid) {

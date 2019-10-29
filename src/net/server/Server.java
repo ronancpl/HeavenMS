@@ -41,15 +41,16 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
-import java.util.concurrent.locks.ReentrantReadWriteLock.ReadLock;
-import java.util.concurrent.locks.ReentrantReadWriteLock.WriteLock;
 
 import config.YamlConfig;
 import net.server.audit.ThreadTracker;
 import net.server.audit.locks.MonitoredLockType;
+import net.server.audit.locks.MonitoredReadLock;
 import net.server.audit.locks.MonitoredReentrantReadWriteLock;
+import net.server.audit.locks.MonitoredWriteLock;
+import net.server.audit.locks.factory.MonitoredReadLockFactory;
 import net.server.audit.locks.factory.MonitoredReentrantLockFactory;
+import net.server.audit.locks.factory.MonitoredWriteLockFactory;
 
 import net.MapleServerHandler;
 import net.mina.MapleCodecFactory;
@@ -87,7 +88,6 @@ import client.SkillFactory;
 import client.command.CommandsExecutor;
 import client.inventory.Item;
 import client.inventory.ItemFactory;
-import client.inventory.MaplePet;
 import client.inventory.manipulator.MapleCashidGenerator;
 import client.newyear.NewYearCardRecord;
 import constants.inventory.ItemConstants;
@@ -146,13 +146,13 @@ public class Server {
     private final Lock srvLock = MonitoredReentrantLockFactory.createLock(MonitoredLockType.SERVER);
     private final Lock disLock = MonitoredReentrantLockFactory.createLock(MonitoredLockType.SERVER_DISEASES);
     
-    private final ReentrantReadWriteLock wldLock = new MonitoredReentrantReadWriteLock(MonitoredLockType.SERVER_WORLDS, true);
-    private final ReadLock wldRLock = wldLock.readLock();
-    private final WriteLock wldWLock = wldLock.writeLock();
+    private final MonitoredReentrantReadWriteLock wldLock = new MonitoredReentrantReadWriteLock(MonitoredLockType.SERVER_WORLDS, true);
+    private final MonitoredReadLock wldRLock = MonitoredReadLockFactory.createLock(wldLock);
+    private final MonitoredWriteLock wldWLock = MonitoredWriteLockFactory.createLock(wldLock);
     
-    private final ReentrantReadWriteLock lgnLock = new MonitoredReentrantReadWriteLock(MonitoredLockType.SERVER_LOGIN, true);
-    private final ReadLock lgnRLock = lgnLock.readLock();
-    private final WriteLock lgnWLock = lgnLock.writeLock();
+    private final MonitoredReentrantReadWriteLock lgnLock = new MonitoredReentrantReadWriteLock(MonitoredLockType.SERVER_LOGIN, true);
+    private final MonitoredReadLock lgnRLock = MonitoredReadLockFactory.createLock(lgnLock);
+    private final MonitoredWriteLock lgnWLock = MonitoredWriteLockFactory.createLock(lgnLock);
     
     private final AtomicLong currentTime = new AtomicLong(0);
     private long serverCurrentTime = 0;
@@ -1896,12 +1896,12 @@ public class Server {
                 }
             }
         }
-
+        
+        resetServerWorlds();
+        
         ThreadManager.getInstance().stop();
         TimerManager.getInstance().purge();
         TimerManager.getInstance().stop();
-        
-        resetServerWorlds();
         
         System.out.println("Worlds + Channels are offline.");
         acceptor.unbind();
