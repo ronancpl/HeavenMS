@@ -1233,7 +1233,7 @@ public class MapleClient {
 	}
         
         public void checkChar(int accid) {  /// issue with multiple chars from same account login found by shavit, resinate
-            if (true) {
+            if (!YamlConfig.config.server.USE_CHARACTER_ACCOUNT_CHECK) {
                 return;
             }
             

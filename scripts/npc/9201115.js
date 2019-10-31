@@ -35,11 +35,11 @@ function action(mode, type, selection) {
                                 cm.mapMessage(6, "Engarde! Master Guardians approach!");
                                 for (var i = 0; i < 10; i++) {
                                         var mob = eim.getMonster(9400594);
-                                        cm.getMap().spawnMonsterOnGroundBelow(mob, new java.awt.Point(-1337 + (java.lang.Math.random() * 1337), 276));
+                                        cm.getMap().spawnMonsterOnGroundBelow(mob, new java.awt.Point(-1337 + (Math.random() * 1337), 276));
                                 }
                                 for (var i = 0; i < 20; i++) {
                                         var mob = eim.getMonster(9400582);
-                                        cm.getMap().spawnMonsterOnGroundBelow(mob, new java.awt.Point(-1337 + (java.lang.Math.random() * 1337), 276));
+                                        cm.getMap().spawnMonsterOnGroundBelow(mob, new java.awt.Point(-1337 + (Math.random() * 1337), 276));
                                 }
                                 eim.setIntProperty("glpq6", 1);
                                 cm.dispose();

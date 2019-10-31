@@ -2234,3 +2234,7 @@ Revisado lógica recente de uso de petid único levando a lançamento de exceç�
 Corrigido portal relacionado a quest em Ariant inesperadamente levando jogadores à passagem secreta de Sleepywood, em caso de conclusão de questline da mesma.
 Corrigido loop em scripts de quest de associação a Alcadno/Zenumist em Magatia.
 Adicionado utilização de dispose em quest scripts para o comando homônimo.
+
+30 Outubro 2019,
+Corrigido bug em scripts (que possivelmente passou a ocorrer ao utilizar Java8) relacionado ao tentar utilizar métodos da biblioteca Math sem corresponder parâmetros com a assinatura adequada.
+Corrigido entrega de itemid inesperado em script relacionado a EllinPQ.

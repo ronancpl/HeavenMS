@@ -214,6 +214,7 @@ server:
     USE_DEBUG_SHOW_PACKET: false
     USE_SUPPLY_RATE_COUPONS: true       #Allows rate coupons to be sold through the Cash Shop.
     USE_IP_VALIDATION: true             #Enables IP checking when logging in.
+    USE_CHARACTER_ACCOUNT_CHECK: false  #Enables one-character-per-account check when logging in. This might be resource intensive.
 
     USE_MAXRANGE: true                  #Will send and receive packets from all events on a map, rather than those of only view range.
     USE_MAXRANGE_ECHO_OF_HERO: true

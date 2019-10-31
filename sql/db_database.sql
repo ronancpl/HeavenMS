@@ -16473,14 +16473,13 @@ CREATE TABLE IF NOT EXISTS `pets` (
   PRIMARY KEY (`petid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
-ALTER TABLE `inventoryitems` ADD CONSTRAINT `fk_itempetid` FOREIGN KEY (`petid`) REFERENCES `pets` (`petid`) ON DELETE SET NULL ;  # thanks Optimist for noticing queries over petid taking too long, shavit for pointing out an improvement using foreign key
 
 CREATE TABLE IF NOT EXISTS `petignores` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `petid` int(11) unsigned NOT NULL ,
   `itemid` int(10) unsigned NOT NULL ,
   PRIMARY KEY (`id`),
-  CONSTRAINT `fk_petignorepetid` FOREIGN KEY (`petid`) REFERENCES `pets` (`petid`) ON DELETE CASCADE
+  CONSTRAINT `fk_petignorepetid` FOREIGN KEY (`petid`) REFERENCES `pets` (`petid`) ON DELETE CASCADE    # thanks Optimist for noticing queries over petid taking too long, shavit for pointing out an improvement using foreign key
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 CREATE TABLE IF NOT EXISTS `playerdiseases` (
