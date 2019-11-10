@@ -21,10 +21,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package net.mina;
 
-import constants.ServerConstants;
+import config.YamlConfig;
 import client.MapleClient;
-import constants.OpcodeConstants;
-import net.server.coordinator.MapleSessionCoordinator;
+import constants.net.OpcodeConstants;
+import net.server.coordinator.session.MapleSessionCoordinator;
 import org.apache.mina.core.buffer.IoBuffer;
 import org.apache.mina.core.session.IoSession;
 import org.apache.mina.filter.codec.ProtocolEncoder;
@@ -46,7 +46,7 @@ public class MaplePacketEncoder implements ProtocolEncoder {
                 try {
                     final MapleAESOFB send_crypto = client.getSendCrypto();
                     final byte[] input = (byte[]) message;
-                    if (ServerConstants.USE_DEBUG_SHOW_PACKET) {
+                    if (YamlConfig.config.server.USE_DEBUG_SHOW_PACKET) {
                         int packetLen = input.length;
                         int pHeader = readFirstShort(input);
                         String pHeaderStr = Integer.toHexString(pHeader).toUpperCase();

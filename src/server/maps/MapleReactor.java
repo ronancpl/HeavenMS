@@ -22,8 +22,7 @@
 package server.maps;
 
 import client.MapleClient;
-import client.status.MonsterStatus;
-import constants.ServerConstants;
+import config.YamlConfig;
 
 import java.awt.Rectangle;
 import java.util.List;
@@ -37,6 +36,8 @@ import server.TimerManager;
 import tools.MaplePacketCreator;
 import tools.Pair;
 import net.server.audit.locks.MonitoredLockType;
+import net.server.services.type.ChannelServices;
+import net.server.services.task.channel.OverallService;
 import server.partyquest.GuardianSpawnPoint;
 
 /**
@@ -256,7 +257,7 @@ public class MapleReactor extends AbstractMapleMapObject {
                     cancelReactorTimeout();
                     attackHit = wHit;
 
-                    if (ServerConstants.USE_DEBUG == true) {
+                    if (YamlConfig.config.server.USE_DEBUG == true) {
                         c.getPlayer().dropMessage(5, "Hitted REACTOR " + this.getId() + " with POS " + charPos + " , STANCE " + stance + " , SkillID " + skillid + " , STATE " + stats.getType(state) + " STATESIZE " + stats.getStateSize(state));
                     }
                     ReactorScriptManager.getInstance().onHit(c, this);
@@ -369,14 +370,17 @@ public class MapleReactor extends AbstractMapleMapObject {
         };
         
         delayedRespawnRun = r;
-        map.getChannelServer().registerOverallAction(map.getId(), r, this.getDelay());
+        
+        OverallService service = (OverallService) map.getChannelServer().getServiceAccess(ChannelServices.OVERALL);
+        service.registerOverallAction(map.getId(), r, this.getDelay());
     }
     
     public boolean forceDelayedRespawn() {
         Runnable r = delayedRespawnRun;
         
         if (r != null) {
-            map.getChannelServer().forceRunOverallAction(map.getId(), r);
+            OverallService service = (OverallService) map.getChannelServer().getServiceAccess(ChannelServices.OVERALL);
+            service.forceRunOverallAction(map.getId(), r);
             return true;
         } else {
             return false;

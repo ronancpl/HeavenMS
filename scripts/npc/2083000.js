@@ -45,7 +45,7 @@ function action(mode, type, selection) {
         if (status == 0) {
             if(cm.haveItem(4001086)) {
                 cm.sendYesNo("Do you want to access #b#m240050400##k right now?");
-            } else if(Packages.constants.ServerConstants.USE_ENABLE_SOLO_EXPEDITIONS) {
+            } else if(Packages.config.YamlConfig.config.server.USE_ENABLE_SOLO_EXPEDITIONS) {
                 if(canBypassHTPQ()) {
                     cm.sendYesNo("Do you want to access #b#m240050400##k right now?");
                 } else {

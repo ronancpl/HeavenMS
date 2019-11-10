@@ -23,6 +23,7 @@ import client.MapleJob;
 import client.Skill;
 import client.inventory.Item;
 import client.inventory.MapleInventoryType;
+import config.YamlConfig;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
@@ -54,6 +55,15 @@ public class CharacterFactoryRecipe {
         this.bottom = bottom;
         this.shoes = shoes;
         this.weapon = weapon;
+        
+        if (!YamlConfig.config.server.USE_STARTING_AP_4) {
+            if (YamlConfig.config.server.USE_AUTOASSIGN_STARTERS_AP) {
+                str = 12;
+                dex = 5;
+            } else {
+                ap = 9;
+            }
+        }
     }
     
     public void setStr(int v) {

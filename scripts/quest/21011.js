@@ -48,8 +48,9 @@ function start(mode, type, selection) {
     } else if (status == 4) {
 	qm.forceStartQuest();
 	qm.sendOk("My brother #bPuir #kis just down the street, and he's been dying to meet you! I know you're busy, but could you please stop by and say hello to Puir? Please...");
+    } else if (status == 5) {
 	qm.dispose();
-	}
+    }
 }
 
 function end(mode, type, selection) {
@@ -83,7 +84,7 @@ function end(mode, type, selection) {
 		qm.sendNext("#b(Your skills are nowhere close to being hero-like... But a sword? Have you ever even held a sword in your lifetime? You can't remember... How do you even equip it?)", 3);
 	}else
 		qm.dropMessage(1,"Your inventory is full");   
-	} else if (status == 6) {
+    } else if (status == 6) {
 		qm.guideHint(16); 
 		qm.dispose();
     }

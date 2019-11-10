@@ -8,7 +8,7 @@ import java.sql.SQLException;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
-import constants.ServerConstants;
+import config.YamlConfig;
 
 /**
  * @author Frz - Big Daddy
@@ -30,7 +30,7 @@ public class DatabaseConnection {
         int denies = 0;
         while(true) {   // There is no way it can pass with a null out of here?
             try {
-                return DriverManager.getConnection(ServerConstants.DB_URL, ServerConstants.DB_USER, ServerConstants.DB_PASS);
+                return DriverManager.getConnection(YamlConfig.config.server.DB_URL, YamlConfig.config.server.DB_USER, YamlConfig.config.server.DB_PASS);
             } catch (SQLException sqle) {
                 denies++;
                 
@@ -45,7 +45,7 @@ public class DatabaseConnection {
     
     private static int getNumberOfAccounts() {
         try {
-            Connection con = DriverManager.getConnection(ServerConstants.DB_URL, ServerConstants.DB_USER, ServerConstants.DB_PASS);
+            Connection con = DriverManager.getConnection(YamlConfig.config.server.DB_URL, YamlConfig.config.server.DB_USER, YamlConfig.config.server.DB_PASS);
             try (PreparedStatement ps = con.prepareStatement("SELECT count(*) FROM accounts")) {
                 try (ResultSet rs = ps.executeQuery()) {
                     rs.next();
@@ -69,14 +69,14 @@ public class DatabaseConnection {
         
         ds = null;
         
-        if(ServerConstants.DB_CONNECTION_POOL) {
+        if(YamlConfig.config.server.DB_CONNECTION_POOL) {
             // Connection Pool on database ftw!
             
             HikariConfig config = new HikariConfig();
-            config.setJdbcUrl(ServerConstants.DB_URL);
+            config.setJdbcUrl(YamlConfig.config.server.DB_URL);
             
-            config.setUsername(ServerConstants.DB_USER);
-            config.setPassword(ServerConstants.DB_PASS);
+            config.setUsername(YamlConfig.config.server.DB_USER);
+            config.setPassword(YamlConfig.config.server.DB_PASS);
             
             // Make sure pool size is comfortable for the worst case scenario.
             // Under 100 accounts? Make it 10. Over 10000 accounts? Make it 30.

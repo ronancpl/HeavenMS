@@ -29,7 +29,7 @@ import client.MapleCharacter;
 import client.inventory.Equip;
 import client.inventory.MapleInventory;
 import client.inventory.MapleInventoryType;
-import constants.ItemConstants;
+import constants.inventory.ItemConstants;
 
 public class SetEqStatCommand extends Command {
     {

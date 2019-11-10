@@ -48,20 +48,18 @@ function start(mode, type, selection) {
             nPSP = (qm.getPlayer().getLevel() - 70) * 3;
             if (qm.getPlayer().getRemainingSp() > nPSP) {
                 qm.sendNext("You still have way too much #bSP#k with you. You can't earn a new title like that, I strongly urge you to use more SP on your 1st and 2nd level skills.");
-                qm.dispose();
             } else {
                 if (!qm.canHold(1142068)) {
                     qm.sendNext("If you wish to receive the medal befitting the title, you may want to make some room in your equipment inventory.");
-                    qm.dispose();
                 } else {
+                    qm.completeQuest();
                     qm.gainItem(1142068, 1);
                     qm.getPlayer().changeJob(Packages.client.MapleJob.WINDARCHER3);
                     qm.sendOk("#h #, as of this moment, you are an Advanced Knight. From this moment on, you will be carrying a while lot of responsibility befitting your new title as an Advanced Knight of Cygnus Knights. You may view the world in a carefree mode, but please remember what your mission is.");
-                    qm.completeQuest();
-                    qm.dispose();
                 }
             }
-
+        } else if (status == 3) {
+            qm.dispose();
         }
     }
 }

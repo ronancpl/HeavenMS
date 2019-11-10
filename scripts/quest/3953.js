@@ -43,12 +43,12 @@ function end(mode, type, selection) {
         } else if (status == 3) {
             qm.sendSimple("They have departed on an expedition to get rid of some major threats in the desert that were ravaging Ariant, for quite some time now... It's strange, they should have already returned... Thinking about it now, the last attack on the merchants was around the direction the Guardians departed... No, that can't be... Can it?\r\n\r\n#L0##bPerhaps Deo has already turned into a monster.#k");
         } else if (status == 4) {
-            qm.gainItem(4011008, -1);
-            
-            qm.sendNext("We're in great trouble, if it is like this. And it really seems like it. If the Royal Cactus Deo has gone insane, Ariant is done for. You, can you do something to defeat Deo? We really need your help now.");
-            qm.gainExp(20000);
-            
             qm.forceCompleteQuest();
+            qm.gainItem(4011008, -1);
+            qm.gainExp(20000);
+
+            qm.sendNext("We're in great trouble, if it is like this. And it really seems like it. If the Royal Cactus Deo has gone insane, Ariant is done for. You, can you do something to defeat Deo? We really need your help now.");
+        } else if (status == 5) {
             qm.dispose();
         }
     }

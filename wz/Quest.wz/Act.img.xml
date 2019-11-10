@@ -12775,8 +12775,16 @@
   </imgdir>
   <imgdir name="2236">
     <imgdir name="0">
+      <string name="info" value="000000"/>
+      <imgdir name="item">
+        <imgdir name="0">
+          <int name="id" value="4032263"/>
+          <int name="count" value="6"/>
+        </imgdir>
+      </imgdir>
     </imgdir>
     <imgdir name="1">
+      <int name="exp" value="60000"/>
     </imgdir>
   </imgdir>
   <imgdir name="2237">
@@ -20077,6 +20085,7 @@
       </imgdir>
     </imgdir>
     <imgdir name="1">
+      <int name="pop" value="20"/>
     </imgdir>
   </imgdir>
   <imgdir name="3115">

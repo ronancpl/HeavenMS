@@ -36,8 +36,9 @@ function start(mode, type, selection) {
         
         if (status == 0) {
             qm.sendNext("Hey, did you notice already, it looks like some awful stench is emanating from the sewers... Ewww");
-            qm.gainExp(7000);
+        } else if (status == 1) {
             qm.forceCompleteQuest();
+            qm.gainExp(7000);
             
             if(isAllSubquestsDone() && qm.haveItem(4031894)) {
                 qm.gainItem(4031894, -1);

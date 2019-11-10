@@ -24,8 +24,9 @@ function end(mode, type, selection) {
 	} else if (status == 5) {
 		qm.sendNextPrev("...No hope, no dreams... Nooooo!!");
 	} else if (status == 6) {
-		qm.sendNextPrev("#b(Maha is beginning to really get hysterical. I better leave right this minute. Maybe Lirin can do something about it.)", 2);
 		qm.completeQuest();
-		qm.dispose();
-	}
+                qm.sendNextPrev("#b(Maha is beginning to really get hysterical. I better leave right this minute. Maybe Lilin can do something about it.)", 2);
+	} else if (status == 7) {
+            qm.dispose();
+        }
 }

@@ -1,4 +1,4 @@
-#EXECUTE THIS FIRST, THEN NEXT SQL: 'db_drops.sql'
+﻿#EXECUTE THIS FIRST, THEN NEXT SQL: 'db_drops.sql'
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -12828,7 +12828,7 @@ CREATE TABLE IF NOT EXISTS `dueypackages` (
   `SenderName` varchar(13) NOT NULL,
   `Mesos` int(10) unsigned DEFAULT '0',
   `TimeStamp` timestamp NOT NULL DEFAULT '2015-01-01 05:00:00',
-  `Message` varchar(200) NOT NULL DEFAULT "",
+  `Message` varchar(200) NULL,
   `Checked` tinyint(1) unsigned DEFAULT '1',
   `Type` tinyint(1) unsigned DEFAULT '0',
   PRIMARY KEY (`PackageId`)
@@ -12853,15 +12853,24 @@ CREATE TABLE IF NOT EXISTS `famelog` (
 CREATE TABLE IF NOT EXISTS `family_character` (
   `cid` int(11) NOT NULL,
   `familyid` int(11) NOT NULL,
-  `rank` int(11) NOT NULL,
-  `reputation` int(11) NOT NULL,
-  `todaysrep` int(11) NOT NULL,
-  `totaljuniors` int(11) NOT NULL,
-  `name` varchar(255) NOT NULL,
-  `juniorsadded` int(11) NOT NULL,
-  `totalreputation` int(11) NOT NULL,
+  `seniorid` int(11) NOT NULL,
+  `reputation` int(11) NOT NULL DEFAULT '0',
+  `todaysrep` int(11) NOT NULL DEFAULT '0',
+  `totalreputation` int(11) NOT NULL DEFAULT '0',
+  `reptosenior` int(11) NOT NULL DEFAULT '0',
+  `precepts` varchar(200) DEFAULT NULL,
+  `lastresettime` BIGINT(20) NOT NULL DEFAULT '0',
   PRIMARY KEY (`cid`),
   INDEX (cid, familyid)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+CREATE TABLE IF NOT EXISTS `family_entitlement` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `charid` int(11) NOT NULL,
+  `entitlementid` int(11) NOT NULL,
+  `timestamp` BIGINT(20) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
+  INDEX (charid)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE IF NOT EXISTS `fredstorage` (
@@ -16316,6 +16325,9 @@ CREATE TABLE IF NOT EXISTS `mts_items` (
   `position` int(11) DEFAULT '0',
   `upgradeslots` int(11) DEFAULT '0',
   `level` int(11) DEFAULT '0',
+  `itemlevel` int(11) NOT NULL DEFAULT '1',
+  `itemexp` int(11) unsigned NOT NULL DEFAULT '0',
+  `ringid` int(11) NOT NULL DEFAULT '-1',
   `str` int(11) DEFAULT '0',
   `dex` int(11) DEFAULT '0',
   `int` int(11) DEFAULT '0',
@@ -16339,6 +16351,8 @@ CREATE TABLE IF NOT EXISTS `mts_items` (
   `transfer` int(2) DEFAULT '0',
   `vicious` int(2) unsigned NOT NULL DEFAULT '0',
   `flag` int(2) unsigned NOT NULL DEFAULT '0',
+  `expiration` bigint(20) NOT NULL DEFAULT '-1',
+  `giftFrom` varchar(26) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
@@ -16449,7 +16463,7 @@ INSERT INTO `nxcoupons` (`id`, `couponid`, `rate`, `activeday`, `starthour`, `en
 (40,5360042,2,254,0,24);
 
 CREATE TABLE IF NOT EXISTS `pets` (
-  `petid` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `petid` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(13) DEFAULT NULL,
   `level` int(10) unsigned NOT NULL,
   `closeness` int(10) unsigned NOT NULL,
@@ -16459,11 +16473,13 @@ CREATE TABLE IF NOT EXISTS `pets` (
   PRIMARY KEY (`petid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
+
 CREATE TABLE IF NOT EXISTS `petignores` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `petid` int(10) unsigned NOT NULL ,
+  `petid` int(11) unsigned NOT NULL ,
   `itemid` int(10) unsigned NOT NULL ,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  CONSTRAINT `fk_petignorepetid` FOREIGN KEY (`petid`) REFERENCES `pets` (`petid`) ON DELETE CASCADE    # thanks Optimist for noticing queries over petid taking too long, shavit for pointing out an improvement using foreign key
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 CREATE TABLE IF NOT EXISTS `playerdiseases` (
@@ -20845,6 +20861,25 @@ INSERT INTO `shopitems` (`shopitemid`, `shopid`, `itemid`, `price`, `pitch`, `po
 (6531, 1337, 2040711, 1, 0, 62),
 (6532, 1337, 2340000, 1, 0, 63),
 (20020, 1337, 1082149, 1, 0, 64),
+(20255, 1337, 2044503, 1, 0, 86),	# 20255~20273: thanks to ozanrijen
+(20256, 1337, 2044703, 1, 0, 87),
+(20257, 1337, 2044603, 1, 0, 88),
+(20258, 1337, 2043303, 1, 0, 89),
+(20259, 1337, 2043103, 1, 0, 90),
+(20260, 1337, 2043203, 1, 0, 91),
+(20261, 1337, 2043003, 1, 0, 92),
+(20262, 1337, 2044403, 1, 0, 93),
+(20263, 1337, 2044303, 1, 0, 94),
+(20264, 1337, 2043803, 1, 0, 95),
+(20265, 1337, 2044103, 1, 0, 96),
+(20266, 1337, 2044203, 1, 0, 97),
+(20267, 1337, 2044003, 1, 0, 98),
+(20268, 1337, 2043703, 1, 0, 99),
+(20269, 1337, 2040806, 1, 0, 100),
+(20270, 1337, 2040007, 1, 0, 101),
+(20271, 1337, 2040506, 1, 0, 102),
+(20272, 1337, 2040710, 1, 0, 103),
+(20273, 1337, 2040711, 1, 0, 104),
 (6533, 9000069, 2022503, 0, 5, 1),
 (6534, 9000069, 2000004, 0, 5, 2),
 (6535, 9000069, 2022514, 0, 10, 3),
@@ -21391,7 +21426,8 @@ CREATE TABLE IF NOT EXISTS `skills` (
   `skilllevel` int(11) NOT NULL DEFAULT '0',
   `masterlevel` int(11) NOT NULL DEFAULT '0',
   `expiration` bigint(20) NOT NULL DEFAULT '-1',
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `skillpair` (`skillid`, `characterid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 CREATE TABLE IF NOT EXISTS `specialcashitems` (
@@ -21446,6 +21482,12 @@ ALTER TABLE `dueyitems`
 
 ALTER TABLE `famelog`
   ADD CONSTRAINT `famelog_ibfk_1` FOREIGN KEY (`characterid`) REFERENCES `characters` (`id`) ON DELETE CASCADE;
+  
+ALTER TABLE `family_character`
+  ADD CONSTRAINT `family_character_ibfk_1` FOREIGN KEY (`cid`) REFERENCES `characters` (`id`) ON DELETE CASCADE;
+
+ALTER TABLE `skills`
+  ADD CONSTRAINT `skills_chrid_fk` FOREIGN KEY (`characterid`) REFERENCES `characters` (`id`) ON DELETE CASCADE;	# thanks Shavit
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

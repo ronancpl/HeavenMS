@@ -28,7 +28,7 @@ import java.sql.Timestamp;
 
 import client.MapleCharacter;
 import client.MapleClient;
-import constants.ServerConstants;
+import config.YamlConfig;
 import net.AbstractMaplePacketHandler;
 import net.server.Server;
 import tools.DatabaseConnection;
@@ -52,7 +52,7 @@ public final class TransferWorldHandler extends AbstractMaplePacketHandler {
             return;
         }
         MapleCharacter chr = c.getPlayer();
-        if(!ServerConstants.ALLOW_CASHSHOP_WORLD_TRANSFER || Server.getInstance().getWorldsSize() <= 1) {
+        if(!YamlConfig.config.server.ALLOW_CASHSHOP_WORLD_TRANSFER || Server.getInstance().getWorldsSize() <= 1) {
             c.announce(MaplePacketCreator.sendWorldTransferRules(9, c));
             return;
         }
@@ -70,7 +70,7 @@ public final class TransferWorldHandler extends AbstractMaplePacketHandler {
                 if(completedTimestamp == null) { //has pending world transfer
                     c.announce(MaplePacketCreator.sendWorldTransferRules(6, c));
                     return;
-                } else if(completedTimestamp.getTime() + ServerConstants.WORLD_TRANSFER_COOLDOWN > System.currentTimeMillis()) {
+                } else if(completedTimestamp.getTime() + YamlConfig.config.server.WORLD_TRANSFER_COOLDOWN > System.currentTimeMillis()) {
                     c.announce(MaplePacketCreator.sendWorldTransferRules(7, c));
                     return;
                 };

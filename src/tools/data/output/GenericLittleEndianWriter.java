@@ -23,7 +23,7 @@ package tools.data.output;
 
 import java.awt.Point;
 import java.nio.charset.Charset;
-import constants.CharsetConstants.MapleLanguageType;
+import constants.string.CharsetConstants.MapleLanguageType;
 
 /**
  * Provides a generic writer of a little-endian sequence of bytes.

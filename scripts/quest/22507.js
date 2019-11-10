@@ -53,6 +53,7 @@ function start(mode, type, selection) {
 		qm.sendNextPrev("#b(You're a bit confused, but you are now traveling with Mir the Dragon. Perhaps you'll go on an adventure together, like he said.)", 2);
 	} else if (status == 17) {	
 		qm.sendPrev("#b#b(You still have an errand to run. Your dad needs to talk to you, so go and see him now.)");
-		qm.dispose();
-	}
+	} else if (status == 18) {
+                qm.dispose();
+        }
 }

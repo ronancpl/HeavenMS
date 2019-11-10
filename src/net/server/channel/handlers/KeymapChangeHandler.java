@@ -21,7 +21,7 @@
  */
 package net.server.channel.handlers;
 
-import constants.GameConstants;
+import constants.game.GameConstants;
 import client.MapleClient;
 import client.MapleKeyBinding;
 import client.Skill;

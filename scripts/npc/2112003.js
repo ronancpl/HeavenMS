@@ -50,7 +50,7 @@ function action(mode, type, selection) {
                         if(status == 0) {
                                 cm.sendYesNo("We must keep fighting to save Romeo, please keep your pace. If you are not feeling so well to continue, your companions and I will understand... So, are you going to retreat?");
                         } else if(status == 1) {
-                                cm.warp(926110700);
+                                cm.warp(926110700, 0);
                                 cm.dispose();
                         }
                 } else {

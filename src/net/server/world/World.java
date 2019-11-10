@@ -27,10 +27,10 @@ import client.BuddyList.BuddyOperation;
 import client.BuddylistEntry;
 import client.MapleCharacter;
 import client.MapleFamily;
-import constants.GameConstants;
-import constants.ServerConstants;
-import java.sql.Connection;
+import config.YamlConfig;
+import constants.game.GameConstants;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -49,9 +49,6 @@ import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
-import java.util.concurrent.locks.ReentrantReadWriteLock.ReadLock;
-import java.util.concurrent.locks.ReentrantReadWriteLock.WriteLock;
 
 import java.util.Set;
 import java.util.HashSet;
@@ -60,45 +57,55 @@ import java.util.WeakHashMap;
 import java.util.concurrent.ScheduledFuture;
 
 import scripting.event.EventInstanceManager;
+import server.MapleStorage;
 import server.TimerManager;
+import server.maps.AbstractMapleMapObject;
 import server.maps.MapleHiredMerchant;
 import server.maps.MapleMap;
+import server.maps.MapleMiniDungeon;
+import server.maps.MapleMiniDungeonInfo;
 import server.maps.MaplePlayerShop;
 import server.maps.MaplePlayerShopItem;
-import server.maps.AbstractMapleMapObject;
-import net.server.worker.CharacterAutosaverWorker;
-import net.server.worker.FishingWorker;
-import net.server.worker.HiredMerchantWorker;
-import net.server.worker.MapOwnershipWorker;
-import net.server.worker.MountTirednessWorker;
-import net.server.worker.PartySearchWorker;
-import net.server.worker.PetFullnessWorker;
-import net.server.worker.ServerMessageWorker;
-import net.server.worker.TimedMapObjectWorker;
-import net.server.worker.WeddingReservationWorker;
 import net.server.PlayerStorage;
 import net.server.Server;
 import net.server.audit.LockCollector;
+import net.server.audit.locks.MonitoredLockType;
+import net.server.audit.locks.MonitoredReadLock;
+import net.server.audit.locks.MonitoredReentrantLock;
+import net.server.audit.locks.MonitoredReentrantReadWriteLock;
+import net.server.audit.locks.MonitoredWriteLock;
+import net.server.audit.locks.factory.MonitoredReadLockFactory;
+import net.server.audit.locks.factory.MonitoredReentrantLockFactory;
+import net.server.audit.locks.factory.MonitoredWriteLockFactory;
 import net.server.channel.Channel;
 import net.server.channel.CharacterIdChannelPair;
+import net.server.coordinator.world.MapleInviteCoordinator;
+import net.server.coordinator.world.MapleInviteCoordinator.InviteResult;
+import net.server.coordinator.world.MapleInviteCoordinator.InviteType;
+import net.server.coordinator.matchchecker.MapleMatchCheckerCoordinator;
+import net.server.coordinator.partysearch.MaplePartySearchCoordinator;
 import net.server.guild.MapleGuild;
 import net.server.guild.MapleGuildCharacter;
 import net.server.guild.MapleGuildSummary;
+import net.server.services.BaseService;
+import net.server.services.ServicesManager;
+import net.server.services.type.WorldServices;
+import net.server.task.CharacterAutosaverTask;
+import net.server.task.FamilyDailyResetTask;
+import net.server.task.FishingTask;
+import net.server.task.HiredMerchantTask;
+import net.server.task.MapOwnershipTask;
+import net.server.task.MountTirednessTask;
+import net.server.task.PartySearchTask;
+import net.server.task.PetFullnessTask;
+import net.server.task.ServerMessageTask;
+import net.server.task.TimedMapObjectTask;
+import net.server.task.TimeoutTask;
+import net.server.task.WeddingReservationTask;
 import tools.DatabaseConnection;
 import tools.MaplePacketCreator;
 import tools.Pair;
 import tools.packets.Fishing;
-import net.server.audit.locks.MonitoredLockType;
-import net.server.audit.locks.MonitoredReentrantLock;
-import net.server.audit.locks.MonitoredReentrantReadWriteLock;
-import net.server.audit.locks.factory.MonitoredReentrantLockFactory;
-import net.server.coordinator.MapleInviteCoordinator;
-import net.server.coordinator.MapleInviteCoordinator.InviteResult;
-import net.server.coordinator.MapleInviteCoordinator.InviteType;
-import net.server.coordinator.MapleMatchCheckerCoordinator;
-import net.server.coordinator.MaplePartySearchCoordinator;
-import server.maps.MapleMiniDungeon;
-import server.maps.MapleMiniDungeonInfo;
 
 /**
  *
@@ -119,14 +126,16 @@ public class World {
     private Map<Integer, Pair<Integer, Integer>> relationshipCouples = new HashMap<>();
     private Map<Integer, MapleGuildSummary> gsStore = new HashMap<>();
     private PlayerStorage players = new PlayerStorage();
+    private ServicesManager services = new ServicesManager(WorldServices.SAVE_CHARACTER);
     private MapleMatchCheckerCoordinator matchChecker = new MapleMatchCheckerCoordinator();
     private MaplePartySearchCoordinator partySearch = new MaplePartySearchCoordinator();
     
-    private final ReentrantReadWriteLock chnLock = new MonitoredReentrantReadWriteLock(MonitoredLockType.WORLD_CHANNELS, true);
-    private ReadLock chnRLock = chnLock.readLock();
-    private WriteLock chnWLock = chnLock.writeLock();
+    private final MonitoredReentrantReadWriteLock chnLock = new MonitoredReentrantReadWriteLock(MonitoredLockType.WORLD_CHANNELS, true);
+    private MonitoredReadLock chnRLock = MonitoredReadLockFactory.createLock(chnLock);
+    private MonitoredWriteLock chnWLock = MonitoredWriteLockFactory.createLock(chnLock);
     
     private Map<Integer, SortedMap<Integer, MapleCharacter>> accountChars = new HashMap<>();
+    private Map<Integer, MapleStorage> accountStorages = new HashMap<>();
     private MonitoredReentrantLock accountCharsLock = MonitoredReentrantLockFactory.createLock(MonitoredLockType.WORLD_CHARS, true);
     
     private Set<Integer> queuedGuilds = new HashSet<>();
@@ -140,9 +149,9 @@ public class World {
     
     private Map<Integer, Integer> owlSearched = new LinkedHashMap<>();
     private List<Map<Integer, Integer>> cashItemBought = new ArrayList<>(9);
-    private final ReentrantReadWriteLock suggestLock = new MonitoredReentrantReadWriteLock(MonitoredLockType.WORLD_SUGGEST, true);
-    private ReadLock suggestRLock = suggestLock.readLock();
-    private WriteLock suggestWLock = suggestLock.writeLock();
+    private final MonitoredReentrantReadWriteLock suggestLock = new MonitoredReentrantReadWriteLock(MonitoredLockType.WORLD_SUGGEST, true);
+    private MonitoredReadLock suggestRLock = MonitoredReadLockFactory.createLock(suggestLock);
+    private MonitoredWriteLock suggestWLock = MonitoredWriteLockFactory.createLock(suggestLock);
     
     private Map<Integer, Integer> disabledServerMessages = new HashMap<>();    // reuse owl lock
     private MonitoredReentrantLock srvMessagesLock = MonitoredReentrantLockFactory.createLock(MonitoredLockType.WORLD_SRVMESSAGES);
@@ -177,6 +186,7 @@ public class World {
     private ScheduledFuture<?> mapOwnershipSchedule;
     private ScheduledFuture<?> fishingSchedule;
     private ScheduledFuture<?> partySearchSchedule;
+    private ScheduledFuture<?> timeoutSchedule;
     
     public World(int world, int flag, String eventmsg, int exprate, int droprate, int bossdroprate, int mesorate, int questrate, int travelrate, int fishingrate) {
         this.id = world;
@@ -200,17 +210,23 @@ public class World {
         }
         
         TimerManager tman = TimerManager.getInstance();
-        petsSchedule = tman.register(new PetFullnessWorker(this), 60 * 1000, 60 * 1000);
-        srvMessagesSchedule = tman.register(new ServerMessageWorker(this), 10 * 1000, 10 * 1000);
-        mountsSchedule = tman.register(new MountTirednessWorker(this), 60 * 1000, 60 * 1000);
-        merchantSchedule = tman.register(new HiredMerchantWorker(this), 10 * 60 * 1000, 10 * 60 * 1000);
-        timedMapObjectsSchedule = tman.register(new TimedMapObjectWorker(this), 60 * 1000, 60 * 1000);
-        charactersSchedule = tman.register(new CharacterAutosaverWorker(this), 60 * 60 * 1000, 60 * 60 * 1000);
-        marriagesSchedule = tman.register(new WeddingReservationWorker(this), ServerConstants.WEDDING_RESERVATION_INTERVAL * 60 * 1000, ServerConstants.WEDDING_RESERVATION_INTERVAL * 60 * 1000);
-        mapOwnershipSchedule = tman.register(new MapOwnershipWorker(this), 20 * 1000, 20 * 1000);
-        fishingSchedule = tman.register(new FishingWorker(this), 10 * 1000, 10 * 1000);
-        partySearchSchedule = tman.register(new PartySearchWorker(this), 10 * 1000, 10 * 1000);
+        petsSchedule = tman.register(new PetFullnessTask(this), 60 * 1000, 60 * 1000);
+        srvMessagesSchedule = tman.register(new ServerMessageTask(this), 10 * 1000, 10 * 1000);
+        mountsSchedule = tman.register(new MountTirednessTask(this), 60 * 1000, 60 * 1000);
+        merchantSchedule = tman.register(new HiredMerchantTask(this), 10 * 60 * 1000, 10 * 60 * 1000);
+        timedMapObjectsSchedule = tman.register(new TimedMapObjectTask(this), 60 * 1000, 60 * 1000);
+        charactersSchedule = tman.register(new CharacterAutosaverTask(this), 60 * 60 * 1000, 60 * 60 * 1000);
+        marriagesSchedule = tman.register(new WeddingReservationTask(this), YamlConfig.config.server.WEDDING_RESERVATION_INTERVAL * 60 * 1000, YamlConfig.config.server.WEDDING_RESERVATION_INTERVAL * 60 * 1000);
+        mapOwnershipSchedule = tman.register(new MapOwnershipTask(this), 20 * 1000, 20 * 1000);
+        fishingSchedule = tman.register(new FishingTask(this), 10 * 1000, 10 * 1000);
+        partySearchSchedule = tman.register(new PartySearchTask(this), 10 * 1000, 10 * 1000);
+        timeoutSchedule = tman.register(new TimeoutTask(this), 10 * 1000, 10 * 1000);
         
+        if(YamlConfig.config.server.USE_FAMILY_SYSTEM) {
+            long timeLeft = Server.getTimeLeftForNextDay();
+            FamilyDailyResetTask.resetEntitlementUsage(this);
+            tman.register(new FamilyDailyResetTask(this), 24 * 60 * 60 * 1000, timeLeft);
+        }
     }
 
     public int getChannelsSize() {
@@ -434,6 +450,41 @@ public class World {
         }
     }
     
+    public void clearAccountCharacterView(Integer accountId) {
+        accountCharsLock.lock();
+        try {
+            SortedMap<Integer, MapleCharacter> accChars = accountChars.remove(accountId);
+            if (accChars != null) {
+                accChars.clear();
+            }
+        } finally {
+            accountCharsLock.unlock();
+        }
+    }
+    
+    public void registerAccountStorage(Integer accountId) {
+        MapleStorage storage = MapleStorage.loadOrCreateFromDB(accountId, this.id);
+        accountCharsLock.lock();
+        try {
+            accountStorages.put(accountId, storage);
+        } finally {
+            accountCharsLock.unlock();
+        }
+    }
+    
+    public void unregisterAccountStorage(Integer accountId) {
+        accountCharsLock.lock();
+        try {
+            accountStorages.remove(accountId);
+        } finally {
+            accountCharsLock.unlock();
+        }
+    }
+    
+    public MapleStorage getAccountStorage(Integer accountId) {
+        return accountStorages.get(accountId);
+    }
+    
     private static List<Entry<Integer, SortedMap<Integer, MapleCharacter>>> getSortedAccountCharacterView(Map<Integer, SortedMap<Integer, MapleCharacter>> map) {
         List<Entry<Integer, SortedMap<Integer, MapleCharacter>>> list = new ArrayList<>(map.size());
         for(Entry<Integer, SortedMap<Integer, MapleCharacter>> e : map.entrySet()) {
@@ -506,7 +557,7 @@ public class World {
     public MaplePartySearchCoordinator getPartySearchCoordinator() {
         return partySearch;
     }
-
+    
     public void addPlayer(MapleCharacter chr) {
         players.addPlayer(chr);
     }
@@ -540,6 +591,12 @@ public class World {
             }
         }
     }
+    
+    public void removeFamily(int id) {
+        synchronized (families) {
+            families.remove(id);
+        }
+    }
 
     public MapleFamily getFamily(int id) {
         synchronized (families) {
@@ -547,6 +604,12 @@ public class World {
                 return families.get(id);
             }
             return null;
+        }
+    }
+    
+    public Collection<MapleFamily> getFamilies() {
+        synchronized(families) {
+            return Collections.unmodifiableCollection((Collection<MapleFamily>) families.values());
         }
     }
 
@@ -566,7 +629,7 @@ public class World {
     }
     
     public int getWorldCapacityStatus() {
-        int worldCap = getChannelsSize() * ServerConstants.CHANNEL_LOAD;
+        int worldCap = getChannelsSize() * YamlConfig.config.server.CHANNEL_LOAD;
         int num = players.getSize();
         
         int status;
@@ -671,14 +734,14 @@ public class World {
     }
 
     public void sendPacket(List<Integer> targetIds, final byte[] packet, int exception) {
-        MapleCharacter c;
+        MapleCharacter chr;
         for (int i : targetIds) {
             if (i == exception) {
                 continue;
             }
-            c = getPlayerStorage().getCharacterById(i);
-            if (c != null) {
-                c.getClient().announce(packet);
+            chr = getPlayerStorage().getCharacterById(i);
+            if (chr != null) {
+                chr.getClient().announce(packet);
             }
         }
     }
@@ -891,7 +954,7 @@ public class World {
                     chr.setParty(party);
                     chr.setMPC(partychar);
                 }
-                chr.getClient().announce(MaplePacketCreator.updateParty(chr.getClient().getChannel(), party, operation, target));
+                chr.announce(MaplePacketCreator.updateParty(chr.getClient().getChannel(), party, operation, target));
             }
         }
         switch (operation) {
@@ -899,7 +962,7 @@ public class World {
             case EXPEL:
                 MapleCharacter chr = getPlayerStorage().getCharacterById(target.getId());
                 if (chr != null) {
-                    chr.getClient().announce(MaplePacketCreator.updateParty(chr.getClient().getChannel(), party, operation, target));
+                    chr.announce(MaplePacketCreator.updateParty(chr.getClient().getChannel(), party, operation, target));
                     chr.setParty(null);
                     chr.setMPC(null);
                 }
@@ -930,25 +993,25 @@ public class World {
                 break;
             case CHANGE_LEADER:
                 MapleCharacter mc = party.getLeader().getPlayer();
-                MapleCharacter newLeader = target.getPlayer();
-                
-                EventInstanceManager eim = mc.getEventInstance();
-                
-                if(eim != null && eim.isEventLeader(mc)) {
-                    eim.changedLeader(newLeader);
-                } else {
-                    int oldLeaderMapid = mc.getMapId();
-                    
-                    if (MapleMiniDungeonInfo.isDungeonMap(oldLeaderMapid)) {
-                        if (oldLeaderMapid != newLeader.getMapId()) {
-                            MapleMiniDungeon mmd = newLeader.getClient().getChannelServer().getMiniDungeon(oldLeaderMapid);
-                            if(mmd != null) {
-                                mmd.close();
+                if (mc != null) {
+                    EventInstanceManager eim = mc.getEventInstance();
+
+                    if(eim != null && eim.isEventLeader(mc)) {
+                        eim.changedLeader(target);
+                    } else {
+                        int oldLeaderMapid = mc.getMapId();
+
+                        if (MapleMiniDungeonInfo.isDungeonMap(oldLeaderMapid)) {
+                            if (oldLeaderMapid != target.getMapId()) {
+                                MapleMiniDungeon mmd = mc.getClient().getChannelServer().getMiniDungeon(oldLeaderMapid);
+                                if(mmd != null) {
+                                    mmd.close();
+                                }
                             }
                         }
                     }
+                    party.setLeader(target);
                 }
-                party.setLeader(target);
                 break;
             default:
                 System.out.println("Unhandled updateParty operation " + operation.name());
@@ -1109,7 +1172,7 @@ public class World {
         if (isConnected(sender)) {
             MapleCharacter senderChr = getPlayerStorage().getCharacterByName(sender);
             if (senderChr != null && senderChr.getMessenger() != null) {
-                if (MapleInviteCoordinator.answerInvite(InviteType.MESSENGER, player.getId(), senderChr.getMessenger().getId(), false).getLeft() == InviteResult.DENIED) {
+                if (MapleInviteCoordinator.answerInvite(InviteType.MESSENGER, player.getId(), senderChr.getMessenger().getId(), false).result == InviteResult.DENIED) {
                     senderChr.getClient().announce(MaplePacketCreator.messengerNote(player.getName(), 5, 0));
                 }
             }
@@ -1262,7 +1325,7 @@ public class World {
     }
     
     public List<Pair<Integer, Integer>> getOwlSearchedItems() {
-        if(ServerConstants.USE_ENFORCE_ITEM_SUGGESTION) {
+        if(YamlConfig.config.server.USE_ENFORCE_ITEM_SUGGESTION) {
             return new ArrayList<>(0);
         }
         
@@ -1297,7 +1360,7 @@ public class World {
     }
     
     private List<List<Pair<Integer, Integer>>> getBoughtCashItems() {
-        if (ServerConstants.USE_ENFORCE_ITEM_SUGGESTION) {
+        if (YamlConfig.config.server.USE_ENFORCE_ITEM_SUGGESTION) {
             List<List<Pair<Integer, Integer>>> boughtCounts = new ArrayList<>(9);
             
             // thanks GabrielSin for pointing out an issue here
@@ -1387,7 +1450,7 @@ public class World {
     }
     
     public void registerPetHunger(MapleCharacter chr, byte petSlot) {
-        if(chr.isGM() && ServerConstants.GM_PETS_NEVER_HUNGRY || ServerConstants.PETS_NEVER_HUNGRY) {
+        if(chr.isGM() && YamlConfig.config.server.GM_PETS_NEVER_HUNGRY || YamlConfig.config.server.PETS_NEVER_HUNGRY) {
             return;
         }
         
@@ -1396,8 +1459,8 @@ public class World {
         activePetsLock.lock();
         try {
             int initProc;
-            if(Server.getInstance().getCurrentTime() - petUpdate > 55000) initProc = ServerConstants.PET_EXHAUST_COUNT - 2;
-            else initProc = ServerConstants.PET_EXHAUST_COUNT - 1;
+            if(Server.getInstance().getCurrentTime() - petUpdate > 55000) initProc = YamlConfig.config.server.PET_EXHAUST_COUNT - 2;
+            else initProc = YamlConfig.config.server.PET_EXHAUST_COUNT - 1;
             
             activePets.put(key, initProc);
         } finally {
@@ -1432,7 +1495,7 @@ public class World {
             if(chr == null || !chr.isLoggedinWorld()) continue;
             
             Integer dpVal = dp.getValue() + 1;
-            if(dpVal == ServerConstants.PET_EXHAUST_COUNT) {
+            if(dpVal == YamlConfig.config.server.PET_EXHAUST_COUNT) {
                 chr.runFullnessSchedule(dp.getKey() % 4);
                 dpVal = 0;
             }
@@ -1447,7 +1510,7 @@ public class World {
     }
     
     public void registerMountHunger(MapleCharacter chr) {
-        if(chr.isGM() && ServerConstants.GM_PETS_NEVER_HUNGRY || ServerConstants.PETS_NEVER_HUNGRY) {
+        if(chr.isGM() && YamlConfig.config.server.GM_PETS_NEVER_HUNGRY || YamlConfig.config.server.PETS_NEVER_HUNGRY) {
             return;
         }
         
@@ -1455,8 +1518,8 @@ public class World {
         activeMountsLock.lock();
         try {
             int initProc;
-            if(Server.getInstance().getCurrentTime() - mountUpdate > 45000) initProc = ServerConstants.MOUNT_EXHAUST_COUNT - 2;
-            else initProc = ServerConstants.MOUNT_EXHAUST_COUNT - 1;
+            if(Server.getInstance().getCurrentTime() - mountUpdate > 45000) initProc = YamlConfig.config.server.MOUNT_EXHAUST_COUNT - 2;
+            else initProc = YamlConfig.config.server.MOUNT_EXHAUST_COUNT - 1;
             
             activeMounts.put(key, initProc);
         } finally {
@@ -1490,7 +1553,7 @@ public class World {
             if(chr == null || !chr.isLoggedinWorld()) continue;
             
             int dpVal = dp.getValue() + 1;
-            if(dpVal == ServerConstants.MOUNT_EXHAUST_COUNT) {
+            if(dpVal == YamlConfig.config.server.MOUNT_EXHAUST_COUNT) {
                 if (!chr.runTirednessSchedule()) {
                     continue;
                 }
@@ -2005,6 +2068,14 @@ public class World {
         partySearch.runPartySearch();
     }
     
+    public BaseService getServiceAccess(WorldServices sv) {
+        return services.getAccess(sv).getService();
+    }
+    
+    private void closeWorldServices() {
+        services.shutdown();
+    }
+    
     private void clearWorldData() {
         List<MapleParty> pList;
         partyLock.lock();
@@ -2018,6 +2089,7 @@ public class World {
             p.disposeLocks();
         }
         
+        closeWorldServices();
         disposeLocks();
     }
     
@@ -2094,6 +2166,11 @@ public class World {
         if(partySearchSchedule != null) {
             partySearchSchedule.cancel(false);
             partySearchSchedule = null;
+        }
+        
+        if(timeoutSchedule != null) {
+            timeoutSchedule.cancel(false);
+            timeoutSchedule = null;
         }
         
         players.disconnectAll();

@@ -93,7 +93,7 @@ function action(mode, type, selection) {
                                         cm.sendYesNo("We must keep fighting to save Juliet, please keep your pace. If you are not feeling so well to continue, your companions and I will understand... So, are you going to retreat?");
                                 }
                         } else {
-                                cm.warp(926100700);
+                                cm.warp(926100700, 0);
                                 cm.dispose();
                         }
                 } else {
@@ -111,15 +111,15 @@ function action(mode, type, selection) {
                                 if(cm.canHold(4001159)) {
                                         cm.gainItem(4001159, 1);
                                         
-                                        if(eim.getIntProperty("normalClear") == 1) cm.warp(926100600);
-                                        else cm.warp(926100500);
+                                        if(eim.getIntProperty("normalClear") == 1) cm.warp(926100600, 0);
+                                        else cm.warp(926100500, 0);
                                 } else {
                                         cm.sendOk("Make sure you have a space on your ETC inventory.");
                                 }
                                 
                                 cm.dispose();
                         } else {
-                                cm.warp(926100600);
+                                cm.warp(926100600, 0);
                                 cm.dispose();
                         }
                 }

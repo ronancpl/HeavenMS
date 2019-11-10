@@ -19,7 +19,7 @@
 */
 package server.life.positioner;
 
-import constants.ServerConstants;
+import config.YamlConfig;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -85,7 +85,7 @@ public class MaplePlayerNPCPodium {
     
     private static Point reorganizePlayerNpcs(MapleMap map, int newStep, List<MapleMapObject> mmoList) {
         if(!mmoList.isEmpty()) {
-            if(ServerConstants.USE_DEBUG) System.out.println("Reorganizing pnpc map, step " + newStep);
+            if(YamlConfig.config.server.USE_DEBUG) System.out.println("Reorganizing pnpc map, step " + newStep);
             
             List<MaplePlayerNPC> playerNpcs = new ArrayList<>(mmoList.size());
             for(MapleMapObject mmo : mmoList) {
@@ -135,7 +135,7 @@ public class MaplePlayerNPCPodium {
         int podiumStep = podiumData % (1 << 5), podiumCount = (podiumData / (1 << 5));
         
         if(podiumCount >= 3 * podiumStep) {
-            if(podiumStep >= ServerConstants.PLAYERNPC_AREA_STEPS) return null;
+            if(podiumStep >= YamlConfig.config.server.PLAYERNPC_AREA_STEPS) return null;
             
             List<MapleMapObject> mmoList = map.getMapObjectsInRange(new Point(0, 0), Double.POSITIVE_INFINITY, Arrays.asList(MapleMapObjectType.PLAYER_NPC));
             map.getWorldServer().setPlayerNpcMapPodiumData(map.getId(), encodePodiumData(podiumStep + 1, podiumCount + 1));

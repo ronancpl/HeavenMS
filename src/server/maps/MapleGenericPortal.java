@@ -23,10 +23,9 @@ package server.maps;
 
 import client.MapleClient;
 import client.MapleCharacter;
-import constants.GameConstants;
+import constants.game.GameConstants;
 import java.awt.Point;
 import scripting.portal.PortalScriptManager;
-import server.MaplePortal;
 import tools.MaplePacketCreator;
 import net.server.audit.locks.MonitoredLockType;
 import net.server.audit.locks.MonitoredReentrantLock;

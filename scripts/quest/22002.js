@@ -40,10 +40,10 @@ function end(mode, type, selection) {
 	if (status == 0) {
 		qm.sendNext("Did you eat your breakfast, Evan? Then, will you do me a favor?  \r\n\r\n#fUI/UIWindow.img/QuestIcon/4/0# \r\n#i1003028# 1 #t1003028#  \r\n#i2022621# 5 #t2022621#s \r\n#i2022622# 5 #t2022622# \r\n#fUI/UIWindow.img/QuestIcon/8/0# 60 exp");
 	} else if (status == 1) {
-		qm.gainItem(1003028, 1, true);
+		qm.forceCompleteQuest();
+                qm.gainItem(1003028, 1, true);
 		qm.gainItem(2022621, 5, true);
 		qm.gainItem(2022622, 5, true);
-		qm.forceCompleteQuest();
 		qm.gainExp(60);
 		qm.sendImage("UI/tutorial/evan/4/0");
 		qm.dispose();

@@ -43,10 +43,8 @@ public abstract class MapleQuestAction {
 	public abstract void run(MapleCharacter chr, Integer extSelection);
 	public abstract void processData(MapleData data);
 	
-	
 	public boolean check(MapleCharacter chr, Integer extSelection) {
-		MapleQuestStatus status = chr.getQuest(MapleQuest.getInstance(questID));
-		return !(status.getStatus() == MapleQuestStatus.Status.NOT_STARTED && status.getForfeited() > 0);
+		return true;
 	}
 	
 	public MapleQuestActionType getType() {

@@ -21,6 +21,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package scripting.map;
 
+import client.MapleCharacter.DelayedQuestUpdate;
 import client.MapleClient;
 import client.MapleQuestStatus;
 import scripting.AbstractPlayerInteraction;
@@ -34,7 +35,35 @@ public class MapScriptMethods extends AbstractPlayerInteraction {
 	public MapScriptMethods(MapleClient c) {
         super(c);
     }
-
+    
+    public void displayCygnusIntro() {
+        switch (c.getPlayer().getMapId()) {
+            case 913040100:
+                lockUI();
+                c.announce(MaplePacketCreator.showIntro("Effect/Direction.img/cygnusJobTutorial/Scene0"));
+                break;
+            case 913040101:
+                c.announce(MaplePacketCreator.showIntro("Effect/Direction.img/cygnusJobTutorial/Scene1"));
+                break;
+            case 913040102:
+                c.announce(MaplePacketCreator.showIntro("Effect/Direction.img/cygnusJobTutorial/Scene2"));
+                break;
+            case 913040103:
+                c.announce(MaplePacketCreator.showIntro("Effect/Direction.img/cygnusJobTutorial/Scene3"));
+                break;
+            case 913040104:
+                c.announce(MaplePacketCreator.showIntro("Effect/Direction.img/cygnusJobTutorial/Scene4"));
+                break;
+            case 913040105:
+                c.announce(MaplePacketCreator.showIntro("Effect/Direction.img/cygnusJobTutorial/Scene5"));
+                break;
+            case 913040106:
+                lockUI();
+                c.announce(MaplePacketCreator.showIntro("Effect/Direction.img/cygnusJobTutorial/Scene6"));
+                break;
+        }
+    }
+    
     public void displayAranIntro() {
         switch (c.getPlayer().getMapId()) {
             case 914090010:
@@ -93,13 +122,13 @@ public class MapScriptMethods extends AbstractPlayerInteraction {
                 return;
             }
         }
-        MapleQuestStatus q = getPlayer().getQuest(quest);
-        if (!q.addMedalMap(getPlayer().getMapId())) {
+        MapleQuestStatus qs = getPlayer().getQuest(quest);
+        if (!qs.addMedalMap(getPlayer().getMapId())) {
             return;
         }
-        String status = Integer.toString(q.getMedalProgress());
-        String infoex = quest.getInfoEx();
-        getPlayer().announce(MaplePacketCreator.updateQuest(q, true));
+        String status = Integer.toString(qs.getMedalProgress());
+        String infoex = qs.getInfoEx(0);
+        getPlayer().announceUpdateQuest(DelayedQuestUpdate.UPDATE, qs, true);
         StringBuilder smp = new StringBuilder();
         StringBuilder etm = new StringBuilder();
         if (status.equals(infoex)) {
@@ -122,15 +151,15 @@ public class MapScriptMethods extends AbstractPlayerInteraction {
                 return;
             }
         }
-        MapleQuestStatus q = getPlayer().getQuest(quest);
-        if (!q.addMedalMap(getPlayer().getMapId())) {
+        MapleQuestStatus qs = getPlayer().getQuest(quest);
+        if (!qs.addMedalMap(getPlayer().getMapId())) {
             return;
         }
-        String status = Integer.toString(q.getMedalProgress());
-        getPlayer().announce(MaplePacketCreator.updateQuest(q, true));
+        String status = Integer.toString(qs.getMedalProgress());
+        getPlayer().announceUpdateQuest(DelayedQuestUpdate.UPDATE, qs, true);
         getPlayer().announce(MaplePacketCreator.earnTitleMessage(status + "/5 Completed"));
         getPlayer().announce(MaplePacketCreator.earnTitleMessage("The One Who's Touched the Sky title in progress."));
-        if (Integer.toString(q.getMedalProgress()).equals(quest.getInfoEx())) {
+        if (Integer.toString(qs.getMedalProgress()).equals(qs.getInfoEx(0))) {
             showInfoText("The One Who's Touched the Sky" + rewardstring);
             getPlayer().announce(MaplePacketCreator.getShowQuestCompletion(quest.getId()));
         } else {

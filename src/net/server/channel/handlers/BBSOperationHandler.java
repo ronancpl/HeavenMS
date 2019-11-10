@@ -56,7 +56,7 @@ public final class BBSOperationHandler extends AbstractMaplePacketHandler {
                 String text = correctLength(slea.readMapleAsciiString(), 600);
                 int icon = slea.readInt();
                 if (icon >= 0x64 && icon <= 0x6a) {
-                    if (c.getPlayer().haveItemWithId(5290000 + icon - 0x64, false)) {
+                    if (!c.getPlayer().haveItemWithId(5290000 + icon - 0x64, false)) {
                         return;
                     }
                 } else if (icon < 0 || icon > 3) {
@@ -149,8 +149,8 @@ public final class BBSOperationHandler extends AbstractMaplePacketHandler {
     }
 
     private static void editBBSThread(MapleClient client, String title, String text, int icon, int localthreadid) {
-        MapleCharacter c = client.getPlayer();
-        if (c.getGuildId() < 1) {
+        MapleCharacter chr = client.getPlayer();
+        if (chr.getGuildId() < 1) {
             return;
         }
         try {
@@ -160,10 +160,10 @@ public final class BBSOperationHandler extends AbstractMaplePacketHandler {
                 ps.setLong(2, currentServerTime());
                 ps.setInt(3, icon);
                 ps.setString(4, text);
-                ps.setInt(5, c.getGuildId());
+                ps.setInt(5, chr.getGuildId());
                 ps.setInt(6, localthreadid);
-                ps.setInt(7, c.getId());
-                ps.setBoolean(8, c.getGuildRank() < 3);
+                ps.setInt(7, chr.getId());
+                ps.setBoolean(8, chr.getGuildRank() < 3);
                 ps.execute();
             }
             con.close();
@@ -174,8 +174,8 @@ public final class BBSOperationHandler extends AbstractMaplePacketHandler {
     }
 
     private static void newBBSThread(MapleClient client, String title, String text, int icon, boolean bNotice) {
-        MapleCharacter c = client.getPlayer();
-        if (c.getGuildId() <= 0) {
+        MapleCharacter chr = client.getPlayer();
+        if (chr.getGuildId() <= 0) {
             return;
         }
         int nextId = 0;
@@ -184,7 +184,7 @@ public final class BBSOperationHandler extends AbstractMaplePacketHandler {
             PreparedStatement ps;
             if (!bNotice) {
                 ps = con.prepareStatement("SELECT MAX(localthreadid) AS lastLocalId FROM bbs_threads WHERE guildid = ?");
-                ps.setInt(1, c.getGuildId());
+                ps.setInt(1, chr.getGuildId());
                 try (ResultSet rs = ps.executeQuery()) {
                     rs.next();
                     nextId = rs.getInt("lastLocalId") + 1;
@@ -192,12 +192,12 @@ public final class BBSOperationHandler extends AbstractMaplePacketHandler {
                 ps.close();
             }
             ps = con.prepareStatement("INSERT INTO bbs_threads " + "(`postercid`, `name`, `timestamp`, `icon`, `startpost`, " + "`guildid`, `localthreadid`) " + "VALUES(?, ?, ?, ?, ?, ?, ?)");
-            ps.setInt(1, c.getId());
+            ps.setInt(1, chr.getId());
             ps.setString(2, title);
             ps.setLong(3, currentServerTime());
             ps.setInt(4, icon);
             ps.setString(5, text);
-            ps.setInt(6, c.getGuildId());
+            ps.setInt(6, chr.getGuildId());
             ps.setInt(7, nextId);
             ps.execute();
             ps.close();

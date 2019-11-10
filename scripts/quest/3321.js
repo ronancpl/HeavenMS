@@ -48,8 +48,8 @@ function start(mode, type, selection) {
             qm.sendNext("Oh, and I have a personal favor to ask, if it's not too much. I am worried about my wife, #b#p2111004##k. Since the incident with the Huroids I could send a word to her, that must have made a toll on her... Please, if you could, could you get the #bSilver Pendant#k I left #bback at home#k, and give it to her in my stead? I regret not giving the item right away to her, it was her birthday... Maybe giving it now to her can get her a good sleeping night, at least.");
         } else if (status == 5) {
             qm.sendNext("#rMake sure to remember this pattern!#k I've hid the pendant in my house, in a container #bbehind the water pipes#k. The pipes must be turned #bin order#k: top, bottom, middle. And then, enter the secret password: '#rmy love Phyllia#k'.");
-            
             qm.forceStartQuest();
+        } else if (status == 6) {
             qm.dispose();
         }
     }

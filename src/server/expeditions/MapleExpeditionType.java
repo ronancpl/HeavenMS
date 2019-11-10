@@ -22,7 +22,7 @@
 
 package server.expeditions;
 
-import constants.ServerConstants;
+import config.YamlConfig;
 
 /**
 *
@@ -60,7 +60,7 @@ public enum MapleExpeditionType {
     }
 
     public int getMinSize() {
-    	return !ServerConstants.USE_ENABLE_SOLO_EXPEDITIONS ? minSize : 1;
+    	return !YamlConfig.config.server.USE_ENABLE_SOLO_EXPEDITIONS ? minSize : 1;
     }
     
     public int getMaxSize() {

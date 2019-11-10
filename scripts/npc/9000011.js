@@ -127,7 +127,7 @@ function action(mode, type, selection) {
 					cm.dispose();
 					return;
 			}
-			var rand = java.lang.Math.floor(java.lang.Math.random() * pri.length);
+			var rand = Math.floor(Math.random() * pri.length);
 			if (!cm.haveItem(ite, quan)) {
 				cm.sendOk("You need #b" + quan + " #t" + ite + "##k to exchange it with item.");
 			} else if (cm.getInventory(1).getNextFreeSlot() <= -1 || cm.getInventory(2).getNextFreeSlot() <= -1 || cm.getInventory(3).getNextFreeSlot() <= -1 || cm.getInventory(4).getNextFreeSlot() <= -1) {

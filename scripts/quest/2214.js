@@ -26,6 +26,7 @@
 */
 
 var status = -1;
+var canComplete;
 
 function end(mode, type, selection) {
     if (mode == -1) {
@@ -45,20 +46,24 @@ function end(mode, type, selection) {
             var hourDay = qm.getHourOfDay();
             if(!(hourDay >= 17 && hourDay < 20)) {
                 qm.sendNext("(Hmm, I'm searching the trash can but can't find the #t4031894# JM was talking about, maybe it's not time yet...)");
-                qm.dispose();
+                canComplete = false;
                 return;
             }
             
             if(!qm.canHold(4031894, 1)) {
                 qm.sendNext("(Eh, I can't hold the #t4031894# right now, I need an ETC slot available.)");
-                qm.dispose();
+                canComplete = false;
                 return;
             }
             
+            canComplete = true;
             qm.sendNext("(Ah, there is a crumbled note here... Hm, it contains details about some scheme that is about to happen, that must be what #r#p1052002##k was talking about.)");
-            qm.gainItem(4031894, 1);
-            qm.gainExp(20000);
-            qm.forceCompleteQuest();
+        } else if (status == 1) {
+            if (canComplete) {
+                qm.forceCompleteQuest();
+                qm.gainItem(4031894, 1);
+                qm.gainExp(20000);
+            }
             
             qm.dispose();
         }

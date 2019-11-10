@@ -26,7 +26,7 @@ package client.command.commands.gm0;
 import client.MapleCharacter;
 import client.command.Command;
 import client.MapleClient;
-import constants.ServerConstants;
+import config.YamlConfig;
 
 public class RatesCommand extends Command {
     {
@@ -43,7 +43,7 @@ public class RatesCommand extends Command {
         showMsg_ += "MESO Rate: #e#b" + player.getMesoRate() + "x#k#n" + "\r\n";
         showMsg_ += "DROP Rate: #e#b" + player.getDropRate() + "x#k#n" + "\r\n";
         showMsg_ += "BOSS DROP Rate: #e#b" + player.getBossDropRate() + "x#k#n" + "\r\n";
-        if(ServerConstants.USE_QUEST_RATE) showMsg_ += "QUEST Rate: #e#b" + c.getWorldServer().getQuestRate() + "x#k#n" + "\r\n";
+        if(YamlConfig.config.server.USE_QUEST_RATE) showMsg_ += "QUEST Rate: #e#b" + c.getWorldServer().getQuestRate() + "x#k#n" + "\r\n";
 
         player.showHint(showMsg_, 300);
     }

@@ -22,8 +22,8 @@
 package net.server.channel.handlers;
 
 import client.MapleClient;
-import client.processor.DueyProcessor;
-import constants.ServerConstants;
+import client.processor.npc.DueyProcessor;
+import config.YamlConfig;
 
 import net.AbstractMaplePacketHandler;
 import tools.MaplePacketCreator;
@@ -33,20 +33,22 @@ public final class DueyHandler extends AbstractMaplePacketHandler {
     
     @Override
     public final void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
-    	if (!ServerConstants.USE_DUEY){
+    	if (!YamlConfig.config.server.USE_DUEY){
             c.announce(MaplePacketCreator.enableActions());
             return;
     	}
-            
+        
         byte operation = slea.readByte();
-        if (operation == DueyProcessor.Actions.TOSERVER_SEND_ITEM.getCode()) {
+        if (operation == DueyProcessor.Actions.TOSERVER_RECV_ITEM.getCode()) { // on click 'O' Button, thanks inhyuk
+            DueyProcessor.dueySendTalk(c, false);
+        } else if (operation == DueyProcessor.Actions.TOSERVER_SEND_ITEM.getCode()) {
             byte inventId = slea.readByte();
             short itemPos = slea.readShort();
             short amount = slea.readShort();
             int mesos = slea.readInt();
             String recipient = slea.readMapleAsciiString();
             boolean quick = slea.readByte() != 0;
-            String message = quick ? slea.readMapleAsciiString() : "";
+            String message = quick ? slea.readMapleAsciiString() : null;
             
             DueyProcessor.dueySendItem(c, inventId, itemPos, amount, mesos, message, recipient, quick);
         } else if (operation == DueyProcessor.Actions.TOSERVER_REMOVE_PACKAGE.getCode()) {

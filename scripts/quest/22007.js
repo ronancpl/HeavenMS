@@ -22,6 +22,7 @@ function end(mode, type, selection) {
 			qm.gainExp(360);
 			qm.sendImage("UI/tutorial/evan/9/0");
 		}
-		qm.dispose();
-	}
+	} else if (status == 3) {
+                qm.dispose();
+        }
 }

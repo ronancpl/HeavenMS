@@ -31,8 +31,8 @@ import client.inventory.MapleInventoryType;
 import client.inventory.MaplePet;
 import client.inventory.ModifyInventory;
 import client.newyear.NewYearCardRecord;
-import constants.ItemConstants;
-import constants.ServerConstants;
+import config.YamlConfig;
+import constants.inventory.ItemConstants;
 
 import java.awt.Point;
 import java.util.ArrayList;
@@ -683,9 +683,27 @@ public class MapleInventoryManipulator {
         c.announce(MaplePacketCreator.modifyInventory(true, Collections.singletonList(new ModifyInventory(2, source, src))));
         chr.equipChanged();
     }
+    
+    private static boolean isDisappearingItemDrop(Item it) {
+        MapleItemInformationProvider ii = MapleItemInformationProvider.getInstance();
+        if (ii.isDropRestricted(it.getItemId())) {
+            return true;
+        } else if (ii.isCash(it.getItemId())) {
+            if (YamlConfig.config.server.USE_ENFORCE_UNMERCHABLE_CASH) {     // thanks Ari for noticing cash drops not available server-side
+                return true;
+            } else if (ItemConstants.isPet(it.getItemId()) && YamlConfig.config.server.USE_ENFORCE_UNMERCHABLE_PET) {
+                return true;
+            }
+        } else if (isDroppedItemRestricted(it)) {
+            return true;
+        } else if (ItemConstants.isWeddingRing(it.getItemId())) {
+            return true;
+        }
+        
+        return false;
+    }
 
     public static void drop(MapleClient c, MapleInventoryType type, short src, short quantity) {
-        MapleItemInformationProvider ii = MapleItemInformationProvider.getInstance();
         if (src < 0) {
             type = MapleInventoryType.EQUIPPED;
         }
@@ -698,14 +716,21 @@ public class MapleInventoryManipulator {
         	return;
         }
         int itemId = source.getItemId();
-        if (ItemConstants.isPet(itemId)) {
-            return;
-        }
         
         MapleMap map = chr.getMap();
         if ((!ItemConstants.isRechargeable(itemId) && source.getQuantity() < quantity) || quantity < 0) {
             return;
         }
+        
+        int petid = source.getPetId();
+        if (petid > -1) {
+            int petIdx = chr.getPetIndex(petid);
+            if(petIdx > -1) {
+                MaplePet pet = chr.getPet(petIdx);
+                chr.unequipPet(pet, true);
+            }
+        }
+        
         Point dropPos = new Point(chr.getPosition());
         if (quantity < source.getQuantity() && !ItemConstants.isRechargeable(itemId)) {
             Item target = source.copy();
@@ -721,11 +746,9 @@ public class MapleInventoryManipulator {
                     NewYearCardRecord.removeAllNewYearCard(false, chr);
                     c.getAbstractPlayerInteraction().removeAll(4301000);
                 }
-            } else if (ItemConstants.isWeddingRing(source.getItemId())) {
-                map.disappearingItemDrop(chr, chr, target, dropPos);
             }
             
-            if (ii.isDropRestricted(target.getItemId()) || ii.isCash(target.getItemId()) || isDroppedItemRestricted(target)) {
+            if (isDisappearingItemDrop(target)) {
                 map.disappearingItemDrop(chr, chr, target, dropPos);
             } else {
                 map.spawnItemDrop(chr, chr, target, dropPos, true, true);
@@ -754,11 +777,9 @@ public class MapleInventoryManipulator {
                     NewYearCardRecord.removeAllNewYearCard(false, chr);
                     c.getAbstractPlayerInteraction().removeAll(4301000);
                 }
-            } else if (ItemConstants.isWeddingRing(source.getItemId())) {
-                map.disappearingItemDrop(chr, chr, source, dropPos);
             }
             
-            if (ii.isDropRestricted(itemId) || ii.isCash(itemId) || isDroppedItemRestricted(source)) {
+            if (isDisappearingItemDrop(source)) {
                 map.disappearingItemDrop(chr, chr, source, dropPos);
             } else {
                 map.spawnItemDrop(chr, chr, source, dropPos, true, true);
@@ -781,7 +802,7 @@ public class MapleInventoryManipulator {
     }
 
     private static boolean isDroppedItemRestricted(Item it) {
-        return ServerConstants.USE_ERASE_UNTRADEABLE_DROP && it.isUntradeable();
+        return YamlConfig.config.server.USE_ERASE_UNTRADEABLE_DROP && it.isUntradeable();
     }
     
     public static boolean isSandboxItem(Item it) {

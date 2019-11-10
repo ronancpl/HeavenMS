@@ -21,15 +21,16 @@
  */
 package server;
 
-import client.inventory.manipulator.MapleInventoryManipulator;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.HashMap;
 import java.util.Map;
 
+import config.YamlConfig;
 import net.server.Server;
 import provider.MapleData;
 import provider.MapleDataTool;
@@ -40,6 +41,7 @@ import server.maps.MapleMap;
 import server.maps.MapleMapObject;
 import server.maps.MapleMapObjectType;
 import server.maps.MapleMist;
+import server.maps.MaplePortal;
 import server.maps.MapleSummon;
 import server.maps.SummonMovementType;
 import tools.ArrayMap;
@@ -55,10 +57,10 @@ import client.SkillFactory;
 import client.inventory.Item;
 import client.inventory.MapleInventory;
 import client.inventory.MapleInventoryType;
+import client.inventory.manipulator.MapleInventoryManipulator;
 import client.status.MonsterStatus;
 import client.status.MonsterStatusEffect;
-import constants.ItemConstants;
-import constants.ServerConstants;
+import constants.inventory.ItemConstants;
 import constants.skills.Aran;
 import constants.skills.Assassin;
 import constants.skills.Bandit;
@@ -443,7 +445,7 @@ public class MapleStatEffect {
             } else {
                 if (isMapChair(sourceid)) {
                     addBuffStatPairToListIfNotZero(statups, MapleBuffStat.MAP_CHAIR, 1);
-                } else if ((sourceid == Beginner.NIMBLE_FEET || sourceid == Noblesse.NIMBLE_FEET || sourceid == Evan.NIMBLE_FEET || sourceid == Legend.AGILE_BODY) && ServerConstants.USE_ULTRA_NIMBLE_FEET == true) {
+                } else if ((sourceid == Beginner.NIMBLE_FEET || sourceid == Noblesse.NIMBLE_FEET || sourceid == Evan.NIMBLE_FEET || sourceid == Legend.AGILE_BODY) && YamlConfig.config.server.USE_ULTRA_NIMBLE_FEET == true) {
                     ret.jump = (short) (ret.speed * 4);
                     ret.speed *= 15;
                 }
@@ -464,7 +466,7 @@ public class MapleStatEffect {
             ret.lt = (Point) ltd.getData();
             ret.rb = (Point) source.getChildByPath("rb").getData();
 
-            if (ServerConstants.USE_MAXRANGE_ECHO_OF_HERO && (sourceid == Beginner.ECHO_OF_HERO || sourceid == Noblesse.ECHO_OF_HERO || sourceid == Legend.ECHO_OF_HERO || sourceid == Evan.ECHO_OF_HERO)) {
+            if (YamlConfig.config.server.USE_MAXRANGE_ECHO_OF_HERO && (sourceid == Beginner.ECHO_OF_HERO || sourceid == Noblesse.ECHO_OF_HERO || sourceid == Legend.ECHO_OF_HERO || sourceid == Evan.ECHO_OF_HERO)) {
                 ret.lt = new Point(Integer.MIN_VALUE, Integer.MIN_VALUE);
                 ret.rb = new Point(Integer.MAX_VALUE, Integer.MAX_VALUE);
             }
@@ -472,7 +474,7 @@ public class MapleStatEffect {
 
         int x = MapleDataTool.getInt("x", source, 0);
 
-        if ((sourceid == Beginner.RECOVERY || sourceid == Noblesse.RECOVERY || sourceid == Evan.RECOVERY || sourceid == Legend.RECOVERY) && ServerConstants.USE_ULTRA_RECOVERY == true) {
+        if ((sourceid == Beginner.RECOVERY || sourceid == Noblesse.RECOVERY || sourceid == Evan.RECOVERY || sourceid == Legend.RECOVERY) && YamlConfig.config.server.USE_ULTRA_RECOVERY == true) {
             x *= 10;
         }
         ret.x = x;
@@ -823,6 +825,7 @@ public class MapleStatEffect {
                     break;
                 case ILMage.SEAL:
                 case FPMage.SEAL:
+                case BlazeWizard.SEAL:
                     monsterStatus.put(MonsterStatus.SEAL, Integer.valueOf(1));
                     break;
                 case Hermit.SHADOW_WEB: // shadow web
@@ -930,7 +933,7 @@ public class MapleStatEffect {
             applyto.toggleHide(false);
             return true;
         }
-
+        
         if (primary && isHeal()) {
             affectedPlayers = applyBuff(applyfrom, useMaxRange);
         }
@@ -1004,21 +1007,26 @@ public class MapleStatEffect {
             }
         }
         if (isShadowClaw()) {
-            int projectile = 0;
             MapleInventory use = applyto.getInventory(MapleInventoryType.USE);
-            for (int i = 1; i <= use.getSlotLimit(); i++) { // impose order...
-                Item item = use.getItem((short) i);
-                if (item != null) {
-                    if (ItemConstants.isThrowingStar(item.getItemId()) && item.getQuantity() >= 200) {
-                        projectile = item.getItemId();
-                        break;
+            use.lockInventory();
+            try {
+                Item projectile = null;
+                for (int i = 1; i <= use.getSlotLimit(); i++) { // impose order...
+                    Item item = use.getItem((short) i);
+                    if (item != null) {
+                        if (ItemConstants.isThrowingStar(item.getItemId()) && item.getQuantity() >= 200) {
+                            projectile = item;
+                            break;
+                        }
                     }
                 }
-            }
-            if (projectile == 0) {
-                return false;
-            } else {
-                MapleInventoryManipulator.removeById(applyto.getClient(), MapleInventoryType.USE, projectile, 200, false, true);
+                if (projectile == null) {
+                    return false;
+                } else {
+                    MapleInventoryManipulator.removeFromSlot(applyto.getClient(), MapleInventoryType.USE, projectile.getPosition(), (short) 200, false, true);
+                }
+            } finally {
+                use.unlockInventory();
             }
         }
         SummonMovementType summonMovementType = getSummonMovementType();
@@ -1125,8 +1133,11 @@ public class MapleStatEffect {
         } else if (cureDebuffs.size() > 0) { // by Drago-Dragohe4rt
             for (final MapleDisease debuff : cureDebuffs) {
                 if (applyfrom.getParty() != null) {
-                    for (MaplePartyCharacter chrs : applyfrom.getParty().getPartyMembers()) {
-                        chrs.getPlayer().dispelDebuff(debuff);
+                    for (MaplePartyCharacter mpc : applyfrom.getParty().getPartyMembers()) {
+                        MapleCharacter chr = mpc.getPlayer();
+                        if (chr != null) {
+                            chr.dispelDebuff(debuff);
+                        }
                     }
                 } else {
                     applyfrom.dispelDebuff(debuff);
@@ -1151,7 +1162,7 @@ public class MapleStatEffect {
 
     private int applyBuff(MapleCharacter applyfrom, boolean useMaxRange) {
         int affectedc = 1;
-
+        
         if (isPartyBuff() && (applyfrom.getParty() != null || isGmBuff())) {
             Rectangle bounds = (!useMaxRange) ? calculateBoundingBox(applyfrom.getPosition(), applyfrom.isFacingLeft()) : new Rectangle(Integer.MIN_VALUE / 2, Integer.MIN_VALUE / 2, Integer.MAX_VALUE, Integer.MAX_VALUE);
             List<MapleMapObject> affecteds = applyfrom.getMap().getMapObjectsInRect(bounds, Arrays.asList(MapleMapObjectType.PLAYER));
@@ -1170,7 +1181,7 @@ public class MapleStatEffect {
                     }
                 }
             }
-
+            
             affectedc += affectedp.size();   // used for heal
             for (MapleCharacter affected : affectedp) {
                 applyTo(applyfrom, affected, false, null, useMaxRange, affectedc);
@@ -1191,6 +1202,8 @@ public class MapleStatEffect {
             MapleMonster monster = (MapleMonster) mo;
             if (isDispel()) {
                 monster.debuffMob(skill_.getId());
+            } else if (isSeal() && monster.isBoss()) {  // thanks IxianMace for noticing seal working on bosses
+                // do nothing
             } else {
                 if (makeChanceResult()) {
                     monster.applyStatus(applyfrom, new MonsterStatusEffect(getMonsterStati(), skill_, null, false), isPoison(), getDuration());
@@ -1221,7 +1234,7 @@ public class MapleStatEffect {
     }
 
     public int getBuffLocalDuration() {
-        return !ServerConstants.USE_BUFF_EVERLASTING ? duration : Integer.MAX_VALUE;
+        return !YamlConfig.config.server.USE_BUFF_EVERLASTING ? duration : Integer.MAX_VALUE;
     }
 
     public void silentApplyBuff(MapleCharacter chr, long localStartTime) {
@@ -1268,7 +1281,11 @@ public class MapleStatEffect {
 
         long leftDuration = (starttime + localDuration) - Server.getInstance().getCurrentTime();
         if (leftDuration > 0) {
-            target.announce(MaplePacketCreator.giveBuff((skill ? sourceid : -sourceid), (int) leftDuration, activeStats));
+            if (isDash() || isInfusion()) {
+                target.announce(MaplePacketCreator.givePirateBuff(activeStats, (skill ? sourceid : -sourceid), (int) leftDuration));
+            } else {
+                target.announce(MaplePacketCreator.giveBuff((skill ? sourceid : -sourceid), (int) leftDuration, activeStats));
+            }
         }
     }
     
@@ -1276,7 +1293,7 @@ public class MapleStatEffect {
         if (!isMonsterRiding() && !isCouponBuff() && !isMysticDoor() && !isHyperBody() && !isCombo()) {     // last mystic door already dispelled if it has been used before.
             applyto.cancelEffect(this, true, -1);
         }
-
+        
         List<Pair<MapleBuffStat, Integer>> localstatups = statups;
         int localDuration = getBuffLocalDuration();
         int localsourceid = sourceid;
@@ -1288,6 +1305,7 @@ public class MapleStatEffect {
             if (mount != null) {
                 ridingMountId = mount.getItemId();
             }
+            
             if (sourceid == Corsair.BATTLE_SHIP) {
                 ridingMountId = 1932000;
             } else if (sourceid == Beginner.SPACESHIP || sourceid == Noblesse.SPACESHIP) {
@@ -1300,28 +1318,12 @@ public class MapleStatEffect {
                 ridingMountId = 1932005;
             } else if (sourceid == Beginner.BALROG_MOUNT || sourceid == Noblesse.BALROG_MOUNT || sourceid == Legend.BALROG_MOUNT) {
                 ridingMountId = 1932010;
-            } else {
-                if (applyto.getMount() == null) {
-                    applyto.mount(ridingMountId, sourceid);
-                }
-
-                applyto.getClient().getWorldServer().registerMountHunger(applyto);
             }
-            if (sourceid == Corsair.BATTLE_SHIP) {
-                givemount = new MapleMount(applyto, 1932000, sourceid);
-            } else if (sourceid == Beginner.SPACESHIP || sourceid == Noblesse.SPACESHIP) {
-                givemount = new MapleMount(applyto, 1932000 + applyto.getSkillLevel(sourceid), sourceid);
-            } else if (sourceid == Beginner.YETI_MOUNT1 || sourceid == Noblesse.YETI_MOUNT1 || sourceid == Legend.YETI_MOUNT1) {
-                givemount = new MapleMount(applyto, 1932003, sourceid);
-            } else if (sourceid == Beginner.YETI_MOUNT2 || sourceid == Noblesse.YETI_MOUNT2 || sourceid == Legend.YETI_MOUNT2) {
-                givemount = new MapleMount(applyto, 1932004, sourceid);
-            } else if (sourceid == Beginner.WITCH_BROOMSTICK || sourceid == Noblesse.WITCH_BROOMSTICK || sourceid == Legend.WITCH_BROOMSTICK) {
-                givemount = new MapleMount(applyto, 1932005, sourceid);
-            } else if (sourceid == Beginner.BALROG_MOUNT || sourceid == Noblesse.BALROG_MOUNT || sourceid == Legend.BALROG_MOUNT) {
-                givemount = new MapleMount(applyto, 1932010, sourceid);
-            } else {
-                givemount = applyto.getMount();
-            }
+            
+            // thanks inhyuk for noticing some skill mounts not acting properly for other players when changing maps
+            givemount = applyto.mount(ridingMountId, sourceid);
+            applyto.getClient().getWorldServer().registerMountHunger(applyto);
+            
             localDuration = sourceid;
             localsourceid = ridingMountId;
             localstatups = Collections.singletonList(new Pair<>(MapleBuffStat.MONSTER_RIDING, 0));
@@ -1395,12 +1397,11 @@ public class MapleStatEffect {
                 
                 applyto.announce(buff);
             }
-
+            
             long starttime = Server.getInstance().getCurrentTime();
             //CancelEffectAction cancelAction = new CancelEffectAction(applyto, this, starttime);
             //ScheduledFuture<?> schedule = TimerManager.getInstance().schedule(cancelAction, localDuration);
             applyto.registerEffect(this, starttime, starttime + localDuration, false);
-
             if (mbuff != null) {
                 applyto.getMap().broadcastMessage(applyto, mbuff, false);
             }
@@ -1711,6 +1712,10 @@ public class MapleStatEffect {
     private boolean isCrash() {
         return skill && (sourceid == DragonKnight.POWER_CRASH || sourceid == Crusader.ARMOR_CRASH || sourceid == WhiteKnight.MAGIC_CRASH);
     }
+    
+    private boolean isSeal() {
+        return skill && (sourceid == ILMage.SEAL || sourceid == FPMage.SEAL || sourceid == BlazeWizard.SEAL);
+    }
 
     private boolean isDispel() {
         return skill && (sourceid == Priest.DISPEL || sourceid == SuperGM.HEAL_PLUS_DISPEL);
@@ -1780,10 +1785,10 @@ public class MapleStatEffect {
     }
 
     private int getMorph(MapleCharacter chr) {
-        if (morphId % 10 == 0) {
-            return morphId + chr.getGender();
-        }
-        return morphId + 100 * chr.getGender();
+        if (morphId == 1000 || morphId == 1001 || morphId == 1003) { // morph skill
+            return chr.getGender() == 0 ? morphId : morphId + 100;
+        } 
+        return morphId;
     }
 
     private SummonMovementType getSummonMovementType() {

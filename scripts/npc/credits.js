@@ -93,6 +93,9 @@ function writeServerStaff_OdinMS() {
 }
 
 function writeServerStaff_Contributors() {
+        addPerson("IxianMace", "Contributor");
+        addPerson("Conrad", "Contributor");
+        addPerson("inhyuk", "Contributor");
         addPerson("Jayd", "Contributor");
         addPerson("Dragohe4rt", "Contributor");
         addPerson("Jvlaple", "Contributor");
@@ -115,7 +118,7 @@ function writeAllServerStaffs() {
                 role_cursor = [];
 
                 var srvName = servers[i];
-                eval("writeServerStaff_" + srvName)();
+                this["writeServerStaff_" + srvName]();
         
                 name_tree.push(name_cursor);
                 role_tree.push(role_cursor);

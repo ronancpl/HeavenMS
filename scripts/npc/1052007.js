@@ -66,7 +66,7 @@ function action(mode, type, selection) {
     		ticketSelection = selection;
             if (ticketSelection > -1) {
                 cm.gainItem(4031035 + ticketSelection, -1);
-                cm.warp(103000897 + (ticketSelection * 3));
+                cm.warp(103000897 + (ticketSelection * 3), "st00");  // thanks IxianMace for noticing a few scripts having misplaced warp SP's
                 hasTicket = false;
                 cm.dispose();
                 return;

@@ -25,6 +25,7 @@ import client.MapleCharacter;
 import client.MapleClient;
 import client.Skill;
 import client.SkillFactory;
+import client.SkillMacro;
 import client.creator.veteran.*;
 import client.inventory.Equip;
 import client.inventory.Equip.ScrollResult;
@@ -35,11 +36,12 @@ import client.inventory.MaplePet;
 import client.inventory.ModifyInventory;
 import client.inventory.manipulator.MapleInventoryManipulator;
 import client.inventory.manipulator.MapleKarmaManipulator;
-import client.processor.AssignAPProcessor;
-import client.processor.DueyProcessor;
-import constants.GameConstants;
-import constants.ItemConstants;
-import constants.ServerConstants;
+import client.processor.stat.AssignAPProcessor;
+import client.processor.stat.AssignSPProcessor;
+import client.processor.npc.DueyProcessor;
+import config.YamlConfig;
+import constants.game.GameConstants;
+import constants.inventory.ItemConstants;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -156,6 +158,10 @@ public final class UseCashItemHandler extends AbstractMaplePacketHandler {
             
             if (itemId > 5050000) {
                 int SPTo = slea.readInt();
+                if (!AssignSPProcessor.canSPAssign(c, SPTo)) {  // exploit found thanks to Arnah
+                    return;
+                }
+                
                 int SPFrom = slea.readInt();
                 Skill skillSPTo = SkillFactory.getSkill(SPTo);
                 Skill skillSPFrom = SkillFactory.getSkill(SPFrom);
@@ -164,6 +170,33 @@ public final class UseCashItemHandler extends AbstractMaplePacketHandler {
                 if ((curLevel < skillSPTo.getMaxLevel()) && curLevelSPFrom > 0) {
                     player.changeSkillLevel(skillSPFrom, (byte) (curLevelSPFrom - 1), player.getMasterLevel(skillSPFrom), -1);
                     player.changeSkillLevel(skillSPTo, (byte) (curLevel + 1), player.getMasterLevel(skillSPTo), -1);
+                    
+                    // update macros, thanks to Arnah
+                    if((curLevelSPFrom - 1) == 0){
+                        boolean updated = false;
+                        for(SkillMacro macro : player.getMacros()){
+                            if(macro == null) continue;
+                            
+                            boolean update = false;// cleaner?
+                            if(macro.getSkill1() == SPFrom){
+                                update = true;
+                                macro.setSkill1(0);
+                            }
+                            if(macro.getSkill2() == SPFrom){
+                                update = true;
+                                macro.setSkill2(0);
+                            }
+                            if(macro.getSkill3() == SPFrom){
+                                update = true;
+                                macro.setSkill3(0);
+                            }
+                            if(update){
+                                updated = true;
+                                player.updateMacros(macro.getPosition(), macro);
+                            }
+                        }
+                        if(updated) player.sendMacros();
+                    }
                 }
             } else {
                 int APTo = slea.readInt();
@@ -368,7 +401,7 @@ public final class UseCashItemHandler extends AbstractMaplePacketHandler {
         } else if (itemType == 523) {
             int itemid = slea.readInt();
             
-            if(!ServerConstants.USE_ENFORCE_ITEM_SUGGESTION) c.getWorldServer().addOwlItemSearch(itemid);
+            if(!YamlConfig.config.server.USE_ENFORCE_ITEM_SUGGESTION) c.getWorldServer().addOwlItemSearch(itemid);
             player.setOwlSearch(itemid);
             List<Pair<MaplePlayerShopItem, AbstractMapleMapObject>> hmsAvailable = c.getWorldServer().getAvailableItemBundles(itemid);
             if(!hmsAvailable.isEmpty()) remove(c, position, itemId);
@@ -427,17 +460,9 @@ public final class UseCashItemHandler extends AbstractMaplePacketHandler {
             slea.readByte();
             slea.readInt();
             if(itemId == 5400000) { //name change
-                if(player.cancelPendingNameChange()) {
-                    player.dropMessage(1, "Successfully canceled pending name change.");
-                } else {
-                    player.dropMessage(1, "You do not have a pending name change.");
-                }
+                c.announce(MaplePacketCreator.showNameChangeCancel(player.cancelPendingNameChange()));
             } else if(itemId == 5401000) { //world transfer
-                if(player.cancelPendingWorldTranfer()) {
-                    player.dropMessage(1, "Successfully canceled pending world transfer.");
-                } else {
-                    player.dropMessage(1, "You do not have a pending world transfer.");
-                }
+                c.announce(MaplePacketCreator.showWorldTransferCancel(player.cancelPendingWorldTranfer()));
             }
             remove(c, position, itemId);
             c.announce(MaplePacketCreator.enableActions());

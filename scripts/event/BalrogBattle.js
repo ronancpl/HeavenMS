@@ -244,7 +244,8 @@ function monsterKilled(mob, eim) {
                         eim.showClearEffect();
                         eim.clearPQ();
 
-                        eim.dispatchUpdateQuestMobCount(bossMobId, entryMap);
+                        eim.dispatchRaiseQuestMobCount(bossMobId, entryMap);
+                        eim.dispatchRaiseQuestMobCount(9101003, entryMap); // thanks Atoot for noticing quest not getting updated after boss kill
                         mob.getMap().broadcastBalrogVictory(eim.getLeader().getName());
                 } else {
                         if(count == 1) {

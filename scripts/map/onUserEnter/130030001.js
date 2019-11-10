@@ -21,5 +21,5 @@
 */
 
 function start(ms) {   	       
-	ms.getPlayer().updateQuestInfo(20010, "1");
+	ms.setQuestProgress(20010, 20022, 1);
 }

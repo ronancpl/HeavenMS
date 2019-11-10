@@ -25,7 +25,7 @@ package client.command.commands.gm0;
 
 import client.MapleClient;
 import client.command.Command;
-import client.processor.BuybackProcessor;
+import client.processor.action.BuybackProcessor;
 
 public class BuyBackCommand extends Command {
     {

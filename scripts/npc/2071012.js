@@ -23,7 +23,7 @@ function action(mode, type, selection) {
                 status--;
 
             if(status == 0) {
-                if(cm.getQuestProgress(23647, 0) != 0) {
+                if(cm.getQuestProgressInt(23647, 1) != 0) {
                     cm.dispose();
                     return;
                 }
@@ -39,7 +39,7 @@ function action(mode, type, selection) {
                 cm.sendNext("Teehehee~ That's your reward for taking it from me, serves you well.");
                 cm.gainItem(4031793, -1);
                 cm.gainFame(-5);
-                cm.setQuestProgress(23647, 0, 1);
+                cm.setQuestProgress(23647, 1, 1);
                 
                 cm.dispose();
             }

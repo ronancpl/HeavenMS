@@ -22,7 +22,7 @@
 package net.server.handlers.login;
 
 import client.MapleClient;
-import constants.GameConstants;
+import constants.game.GameConstants;
 import java.util.List;
 import net.AbstractMaplePacketHandler;
 import net.server.Server;

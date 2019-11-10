@@ -22,7 +22,6 @@
 package server.maps;
 
 import java.util.concurrent.ScheduledFuture;
-import server.MaplePortal;
 import server.TimerManager;
 
 public class MapMonitor {

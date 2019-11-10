@@ -20,8 +20,8 @@
  */
 package server.life;
 
-import constants.ItemConstants;
-import constants.ServerConstants;
+import config.YamlConfig;
+import constants.inventory.ItemConstants;
 import java.io.File;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -138,7 +138,7 @@ public class MapleMonsterInformationProvider {
         // this reads the drop entries searching for multi-equip, properly processing them
 
         List<MonsterDropEntry> list = retrieveDrop(monsterId);
-        if (hasNoMultiEquipDrops.contains(monsterId) || !ServerConstants.USE_MULTIPLE_SAME_EQUIP_DROP) {
+        if (hasNoMultiEquipDrops.contains(monsterId) || !YamlConfig.config.server.USE_MULTIPLE_SAME_EQUIP_DROP) {
             return list;
         }
 
@@ -152,7 +152,7 @@ public class MapleMonsterInformationProvider {
 
                     int rnd = Randomizer.rand(mde.Minimum, mde.Maximum);
                     for (int i = 0; i < rnd - 1; i++) {
-                        extra.add(mde);   // this passes copies of the equips' MDE with min/max quantity > 1, but idc it'll be unused anyways
+                        extra.add(mde);   // this passes copies of the equips' MDE with min/max quantity > 1, but idc on equips they are unused anyways
                     }
                 }
             }

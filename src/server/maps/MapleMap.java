@@ -31,9 +31,9 @@ import client.inventory.MapleInventoryType;
 import client.inventory.MaplePet;
 import client.status.MonsterStatus;
 import client.status.MonsterStatusEffect;
-import constants.GameConstants;
-import constants.ItemConstants;
-import constants.ServerConstants;
+import config.YamlConfig;
+import constants.game.GameConstants;
+import constants.inventory.ItemConstants;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.ArrayList;
@@ -55,20 +55,24 @@ import java.util.Random;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
-import java.util.concurrent.locks.ReentrantReadWriteLock.ReadLock;
-import java.util.concurrent.locks.ReentrantReadWriteLock.WriteLock;
 import net.server.audit.locks.MonitoredLockType;
+import net.server.audit.locks.MonitoredReadLock;
 import net.server.audit.locks.MonitoredReentrantReadWriteLock;
+import net.server.audit.locks.MonitoredWriteLock;
+import net.server.audit.locks.factory.MonitoredReadLockFactory;
 import net.server.audit.locks.factory.MonitoredReentrantLockFactory;
+import net.server.audit.locks.factory.MonitoredWriteLockFactory;
 import java.lang.ref.WeakReference;
 import net.server.Server;
-import net.server.coordinator.MapleMonsterAggroCoordinator;
+import net.server.coordinator.world.MapleMonsterAggroCoordinator;
 import net.server.channel.Channel;
+import net.server.services.type.ChannelServices;
+import net.server.services.task.channel.FaceExpressionService;
+import net.server.services.task.channel.MobMistService;
+import net.server.services.task.channel.OverallService;
 import net.server.world.World;
 import scripting.map.MapScriptManager;
 import server.MapleItemInformationProvider;
-import server.MaplePortal;
 import server.MapleStatEffect;
 import server.TimerManager;
 import server.events.gm.MapleCoconut;
@@ -137,6 +141,7 @@ public class MapleMap {
     private int timeLimit;
     private long mapTimer;
     private int decHP = 0;
+    private float recovery = 1.0f;
     private int protectItem = 0;
     private boolean town;
     private MapleOxQuiz ox;
@@ -173,10 +178,10 @@ public class MapleMap {
     private int timeExpand;
 
     //locks
-    private ReadLock chrRLock;
-    private WriteLock chrWLock;
-    private ReadLock objectRLock;
-    private WriteLock objectWLock;
+    private MonitoredReadLock chrRLock;
+    private MonitoredWriteLock chrWLock;
+    private MonitoredReadLock objectRLock;
+    private MonitoredWriteLock objectWLock;
 
     private Lock lootLock = MonitoredReentrantLockFactory.createLock(MonitoredLockType.MAP_LOOT, true);
     
@@ -192,13 +197,13 @@ public class MapleMap {
         if (this.monsterRate == 0) {
             this.monsterRate = 1;
         }
-        final ReentrantReadWriteLock chrLock = new MonitoredReentrantReadWriteLock(MonitoredLockType.MAP_CHRS, true);
-        chrRLock = chrLock.readLock();
-        chrWLock = chrLock.writeLock();
+        final MonitoredReentrantReadWriteLock chrLock = new MonitoredReentrantReadWriteLock(MonitoredLockType.MAP_CHRS, true);
+        chrRLock = MonitoredReadLockFactory.createLock(chrLock);
+        chrWLock = MonitoredWriteLockFactory.createLock(chrLock);
 
-        final ReentrantReadWriteLock objectLock = new MonitoredReentrantReadWriteLock(MonitoredLockType.MAP_OBJS, true);
-        objectRLock = objectLock.readLock();
-        objectWLock = objectLock.writeLock();
+        final MonitoredReentrantReadWriteLock objectLock = new MonitoredReentrantReadWriteLock(MonitoredLockType.MAP_OBJS, true);
+        objectRLock = MonitoredReadLockFactory.createLock(objectLock);
+        objectWLock = MonitoredWriteLockFactory.createLock(objectLock);
         
         aggroMonitor = new MapleMonsterAggroCoordinator();
     }
@@ -251,7 +256,7 @@ public class MapleMap {
     
     
     private static double getRangedDistance() {
-        return(ServerConstants.USE_MAXRANGE ? Double.POSITIVE_INFINITY : 722500);
+        return(YamlConfig.config.server.USE_MAXRANGE ? Double.POSITIVE_INFINITY : 722500);
     }
 
     public List<MapleMapObject> getMapObjectsInRect(Rectangle box, List<MapleMapObjectType> types) {
@@ -566,7 +571,7 @@ public class MapleMap {
             initial.x = xLimits.right;
         }
         
-        Point ret = calcPointBelow(new Point(initial.x, initial.y - 85));
+        Point ret = calcPointBelow(new Point(initial.x, initial.y - 85));   // actual drop ranges: default - 120, explosive - 360
         if (ret == null) {
             ret = bsearchDropPos(initial, fallback);
         }
@@ -752,7 +757,11 @@ public class MapleMap {
         final List<MonsterDropEntry>  dropEntry = new ArrayList<>();
         final List<MonsterDropEntry> visibleQuestEntry = new ArrayList<>();
         final List<MonsterDropEntry> otherQuestEntry = new ArrayList<>();
-        sortDropEntries(ServerConstants.USE_SPAWN_RELEVANT_LOOT ? mob.retrieveRelevantDrops() : mi.retrieveEffectiveDrop(mob.getId()), dropEntry, visibleQuestEntry, otherQuestEntry, chr);
+        sortDropEntries(YamlConfig.config.server.USE_SPAWN_RELEVANT_LOOT ? mob.retrieveRelevantDrops() : mi.retrieveEffectiveDrop(mob.getId()), dropEntry, visibleQuestEntry, otherQuestEntry, chr);
+        
+        if (dropEntry.isEmpty() && visibleQuestEntry.isEmpty()) {   // thanks resinate
+            return;
+        }
         
         registerMobItemDrops(droptype, mobpos, chRate, pos, dropEntry, visibleQuestEntry, otherQuestEntry, globalEntry, chr, mob);
     }
@@ -786,7 +795,7 @@ public class MapleMap {
         expireItemsTask.cancel(false);
         expireItemsTask = null;
 
-        if(ServerConstants.USE_SPAWN_LOOT_ON_ANIMATION) {
+        if(YamlConfig.config.server.USE_SPAWN_LOOT_ON_ANIMATION) {
             mobSpawnLootTask.cancel(false);
             mobSpawnLootTask = null;
         }
@@ -846,16 +855,16 @@ public class MapleMap {
                         cleanItemMonitor();
                     }
                 }
-            }, ServerConstants.ITEM_MONITOR_TIME, ServerConstants.ITEM_MONITOR_TIME);
+            }, YamlConfig.config.server.ITEM_MONITOR_TIME, YamlConfig.config.server.ITEM_MONITOR_TIME);
             
             expireItemsTask = TimerManager.getInstance().register(new Runnable() {
                 @Override
                 public void run() {
                     makeDisappearExpiredItemDrops();
                 }
-            }, ServerConstants.ITEM_EXPIRE_CHECK, ServerConstants.ITEM_EXPIRE_CHECK);
+            }, YamlConfig.config.server.ITEM_EXPIRE_CHECK, YamlConfig.config.server.ITEM_EXPIRE_CHECK);
             
-            if(ServerConstants.USE_SPAWN_LOOT_ON_ANIMATION) {
+            if(YamlConfig.config.server.USE_SPAWN_LOOT_ON_ANIMATION) {
                 lootLock.lock();
                 try {
                     mobLootEntries.clear();
@@ -898,7 +907,7 @@ public class MapleMap {
     }
     
     private void instantiateItemDrop(MapleMapItem mdrop) {
-        if(droppedItemCount.get() >= ServerConstants.ITEM_LIMIT_ON_MAP) {
+        if(droppedItemCount.get() >= YamlConfig.config.server.ITEM_LIMIT_ON_MAP) {
             MapleMapObject mapobj;
             
             do {
@@ -930,7 +939,7 @@ public class MapleMap {
     }
     
     private void registerItemDrop(MapleMapItem mdrop) {
-        droppedItems.put(mdrop, !everlast ? Server.getInstance().getCurrentTime() + ServerConstants.ITEM_EXPIRE_TIME : Long.MAX_VALUE);
+        droppedItems.put(mdrop, !everlast ? Server.getInstance().getCurrentTime() + YamlConfig.config.server.ITEM_EXPIRE_TIME : Long.MAX_VALUE);
     }
     
     private void unregisterItemDrop(MapleMapItem mdrop) {
@@ -975,7 +984,7 @@ public class MapleMap {
     private void registerMobItemDrops(byte droptype, int mobpos, int chRate, Point pos, List<MonsterDropEntry> dropEntry, List<MonsterDropEntry> visibleQuestEntry, List<MonsterDropEntry> otherQuestEntry, List<MonsterGlobalDropEntry> globalEntry, MapleCharacter chr, MapleMonster mob) {
         MobLootEntry mle = new MobLootEntry(droptype, mobpos, chRate, pos, dropEntry, visibleQuestEntry, otherQuestEntry, globalEntry, chr, mob);
         
-        if(ServerConstants.USE_SPAWN_LOOT_ON_ANIMATION) {
+        if(YamlConfig.config.server.USE_SPAWN_LOOT_ON_ANIMATION) {
             int animationTime = mob.getAnimationTime("die1");
 
             lootLock.lock();
@@ -1329,6 +1338,18 @@ public class MapleMap {
         return count;
     }
     
+    public int countBosses() {
+        int count = 0;
+        
+        for(MapleMonster mob: getAllMonsters()) {
+            if (mob.isBoss()) {
+                count++;
+            }
+        }
+        
+        return count;
+    }
+    
     public boolean damageMonster(final MapleCharacter chr, final MapleMonster monster, final int damage) {
         if (monster.getId() == 8800000) {
             for (MapleMapObject object : chr.getMap().getMapObjects()) {
@@ -1384,6 +1405,9 @@ public class MapleMap {
             spawnedMonstersOnMap.decrementAndGet();
             removeMapObject(monster);
             monster.disposeMapObject();
+            if (monster.hasBossHPBar()) {   // thanks resinate for noticing boss HPbar not clearing after mob defeat in certain scenarios
+                broadcastBossHpMessage(monster, monster.hashCode(), monster.makeBossHPBarPacket(), monster.getPosition());
+            }
             
             return true;
         } finally {
@@ -1408,81 +1432,84 @@ public class MapleMap {
             }
         } else {
             if (removeKilledMonsterObject(monster)) {
-                if (monster.getStats().getLevel() >= chr.getLevel() + 30 && !chr.isGM()) {
-                    AutobanFactory.GENERAL.alert(chr, " for killing a " + monster.getName() + " which is over 30 levels higher.");
-                }
-                
-                /*if (chr.getQuest(MapleQuest.getInstance(29400)).getStatus().equals(MapleQuestStatus.Status.STARTED)) {
-                 if (chr.getLevel() >= 120 && monster.getStats().getLevel() >= 120) {
-                 //FIX MEDAL SHET
-                 } else if (monster.getStats().getLevel() >= chr.getLevel()) {
-                 }
-                 }*/
-                
-                if (monster.getCP() > 0 && chr.getMap().isCPQMap()) {
-                    chr.gainCP(monster.getCP());
-                }
-                
-                int buff = monster.getBuffToGive();
-                if (buff > -1) {
-                    MapleItemInformationProvider mii = MapleItemInformationProvider.getInstance();
-                    for (MapleMapObject mmo : this.getPlayers()) {
-                        MapleCharacter character = (MapleCharacter) mmo;
-                        if (character.isAlive()) {
-                            MapleStatEffect statEffect = mii.getItemEffect(buff);
-                            character.getClient().announce(MaplePacketCreator.showOwnBuffEffect(buff, 1));
-                            broadcastMessage(character, MaplePacketCreator.showBuffeffect(character.getId(), buff, 1), false);
-                            statEffect.applyTo(character);
-                        }
+                try {
+                    if (monster.getStats().getLevel() >= chr.getLevel() + 30 && !chr.isGM()) {
+                        AutobanFactory.GENERAL.alert(chr, " for killing a " + monster.getName() + " which is over 30 levels higher.");
                     }
-                }
-                
-                if (monster.getId() >= 8800003 && monster.getId() <= 8800010) {
-                    boolean makeZakReal = true;
-                    Collection<MapleMapObject> objects = getMapObjects();
-                    for (MapleMapObject object : objects) {
-                        MapleMonster mons = getMonsterByOid(object.getObjectId());
-                        if (mons != null) {
-                            if (mons.getId() >= 8800003 && mons.getId() <= 8800010) {
-                                makeZakReal = false;
-                                break;
+
+                    /*if (chr.getQuest(MapleQuest.getInstance(29400)).getStatus().equals(MapleQuestStatus.Status.STARTED)) {
+                     if (chr.getLevel() >= 120 && monster.getStats().getLevel() >= 120) {
+                     //FIX MEDAL SHET
+                     } else if (monster.getStats().getLevel() >= chr.getLevel()) {
+                     }
+                     }*/
+
+                    if (monster.getCP() > 0 && chr.getMap().isCPQMap()) {
+                        chr.gainCP(monster.getCP());
+                    }
+
+                    int buff = monster.getBuffToGive();
+                    if (buff > -1) {
+                        MapleItemInformationProvider mii = MapleItemInformationProvider.getInstance();
+                        for (MapleMapObject mmo : this.getPlayers()) {
+                            MapleCharacter character = (MapleCharacter) mmo;
+                            if (character.isAlive()) {
+                                MapleStatEffect statEffect = mii.getItemEffect(buff);
+                                character.getClient().announce(MaplePacketCreator.showOwnBuffEffect(buff, 1));
+                                broadcastMessage(character, MaplePacketCreator.showBuffeffect(character.getId(), buff, 1), false);
+                                statEffect.applyTo(character);
                             }
                         }
                     }
-                    if (makeZakReal) {
-                        MapleMap map = chr.getMap();
 
+                    if (monster.getId() >= 8800003 && monster.getId() <= 8800010) {
+                        boolean makeZakReal = true;
+                        Collection<MapleMapObject> objects = getMapObjects();
                         for (MapleMapObject object : objects) {
-                            MapleMonster mons = map.getMonsterByOid(object.getObjectId());
+                            MapleMonster mons = getMonsterByOid(object.getObjectId());
                             if (mons != null) {
-                                if (mons.getId() == 8800000) {
-                                    makeMonsterReal(mons);
-                                    mons.aggroUpdateController();
+                                if (mons.getId() >= 8800003 && mons.getId() <= 8800010) {
+                                    makeZakReal = false;
                                     break;
                                 }
                             }
                         }
-                    }
-                }
+                        if (makeZakReal) {
+                            MapleMap map = chr.getMap();
 
-                MapleCharacter dropOwner = monster.killBy(chr);
-                if (withDrops && !monster.dropsDisabled()) {
-                    if (dropOwner == null) {
-                        dropOwner = chr;
-                    }
-                    dropFromMonster(dropOwner, monster, false);
-                }
-
-                if (monster.hasBossHPBar()) {
-                    for(MapleCharacter mc : this.getAllPlayers()) {
-                        if(mc.getTargetHpBarHash() == monster.hashCode()) {
-                            mc.resetPlayerAggro();
+                            for (MapleMapObject object : objects) {
+                                MapleMonster mons = map.getMonsterByOid(object.getObjectId());
+                                if (mons != null) {
+                                    if (mons.getId() == 8800000) {
+                                        makeMonsterReal(mons);
+                                        break;
+                                    }
+                                }
+                            }
                         }
                     }
-                }
+                    
+                    MapleCharacter dropOwner = monster.killBy(chr);
+                    if (withDrops && !monster.dropsDisabled()) {
+                        if (dropOwner == null) {
+                            dropOwner = chr;
+                        }
+                        dropFromMonster(dropOwner, monster, false);
+                    }
 
-                monster.dispatchMonsterKilled(true);
-                broadcastMessage(MaplePacketCreator.killMonster(monster.getObjectId(), animation), monster.getPosition());
+                    if (monster.hasBossHPBar()) {
+                        for(MapleCharacter mc : this.getAllPlayers()) {
+                            if(mc.getTargetHpBarHash() == monster.hashCode()) {
+                                mc.resetPlayerAggro();
+                            }
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                } finally {     // thanks resinate for pointing out a memory leak possibly from an exception thrown
+                    monster.dispatchMonsterKilled(true);
+                    broadcastMessage(MaplePacketCreator.killMonster(monster.getObjectId(), animation), monster.getPosition());
+                }
             }
         }
     }
@@ -1896,10 +1923,7 @@ public class MapleMap {
         });
         
         monster.aggroUpdateController();
-        
-        if (monster.hasBossHPBar()) {
-            broadcastBossHpMessage(monster, monster.hashCode(), monster.makeBossHPBarPacket(), monster.getPosition());
-        }
+        updateBossSpawn(monster);
         
         spawnedMonstersOnMap.incrementAndGet();
         addSelfDestructive(monster);
@@ -1938,7 +1962,8 @@ public class MapleMap {
     public void dismissRemoveAfter(final MapleMonster monster) {
         Runnable removeAfterAction = monster.popRemoveAfterAction();
         if (removeAfterAction != null) {
-            this.getChannelServer().forceRunOverallAction(mapid, removeAfterAction);
+            OverallService service = (OverallService) this.getChannelServer().getServiceAccess(ChannelServices.OVERALL);
+            service.forceRunOverallAction(mapid, removeAfterAction);
         }
     }
     
@@ -2000,6 +2025,7 @@ public class MapleMap {
         }, null);
         
         monster.aggroUpdateController();
+        updateBossSpawn(monster);
         
         if ((monster.getTeam() == 1 || monster.getTeam() == 0) && (isCPQMap() || isCPQMap2())) {
             List<MCSkill> teamS = null;
@@ -2015,10 +2041,6 @@ public class MapleMap {
                     }
                 }
             }
-        }
-        
-        if (monster.hasBossHPBar()) {
-            broadcastBossHpMessage(monster, monster.hashCode(), monster.makeBossHPBarPacket(), monster.getPosition());
         }
 
         if (monster.getDropPeriodTime() > 0) { //9300102 - Watchhog, 9300061 - Moon Bunny (HPQ), 9300093 - Tylus
@@ -2059,6 +2081,8 @@ public class MapleMap {
         
         spos.y--;
         monster.setPosition(spos);
+        monster.setSpawnEffect(effect);
+        
         spawnAndAddRangedMapObject(monster, new DelayedPacketCreation() {
             @Override
             public void sendPackets(MapleClient c) {
@@ -2067,10 +2091,7 @@ public class MapleMap {
         });
         
         monster.aggroUpdateController();
-        
-        if (monster.hasBossHPBar()) {
-            broadcastBossHpMessage(monster, monster.hashCode(), monster.makeBossHPBarPacket(), monster.getPosition());
-        }
+        updateBossSpawn(monster);
 
         spawnedMonstersOnMap.incrementAndGet();
         addSelfDestructive(monster);
@@ -2094,8 +2115,9 @@ public class MapleMap {
     public void makeMonsterReal(final MapleMonster monster) {
         monster.setFake(false);
         broadcastMessage(MaplePacketCreator.makeMonsterReal(monster));
-        
+        monster.broadcastMonsterStatus();
         monster.aggroUpdateController();
+        updateBossSpawn(monster);
     }
 
     public void spawnReactor(final MapleReactor reactor) {
@@ -2112,7 +2134,11 @@ public class MapleMap {
         spawnAndAddRangedMapObject(door, new DelayedPacketCreation() {
             @Override
             public void sendPackets(MapleClient c) {
-                door.sendSpawnData(c, false);
+                MapleCharacter chr = c.getPlayer();
+                if (chr != null) {
+                    door.sendSpawnData(c, false);
+                    chr.addVisibleMapObject(door);
+                }
             }
         }, new SpawnCondition() {
             @Override
@@ -2193,7 +2219,8 @@ public class MapleMap {
             }
         };
         
-        this.getChannelServer().registerMobMistCancelAction(mapid, mistSchedule, duration);
+        MobMistService service = (MobMistService) this.getChannelServer().getServiceAccess(ChannelServices.MOB_MIST);
+        service.registerMobMistCancelAction(mapid, mistSchedule, duration);
     }
     
     public void spawnKite(final MapleKite kite) {
@@ -2208,7 +2235,7 @@ public class MapleMap {
             }
         };
         
-        getWorldServer().registerTimedMapObject(expireKite, ServerConstants.KITE_EXPIRE_TIME);
+        getWorldServer().registerTimedMapObject(expireKite, YamlConfig.config.server.KITE_EXPIRE_TIME);
     }
     
     public final void spawnItemDrop(final MapleMapObject dropper, final MapleCharacter owner, final Item item, Point pos, final boolean ffaDrop, final boolean playerDrop) {
@@ -2292,7 +2319,8 @@ public class MapleMap {
     }
 
     private void registerMapSchedule(Runnable r, long delay) {
-        this.getChannelServer().registerOverallAction(mapid, r, delay);
+        OverallService service = (OverallService) this.getChannelServer().getServiceAccess(ChannelServices.OVERALL);
+        service.registerOverallAction(mapid, r, delay);
     }
     
     private void activateItemReactors(final MapleMapItem drop, final MapleClient c) {
@@ -2461,22 +2489,23 @@ public class MapleMap {
         chr.setMapId(mapid);
         chr.updateActiveEffects();
         
+        MapScriptManager msm = MapScriptManager.getInstance();
         if (chrSize == 1) {
             if(!hasItemMonitor()) {
                 startItemMonitor();
                 aggroMonitor.startAggroCoordinator();
             }
             
-            if (onFirstUserEnter.length() != 0 && !chr.hasEntered(onFirstUserEnter, mapid) && MapScriptManager.getInstance().scriptExists(onFirstUserEnter, true)) {
-                chr.enteredScript(onFirstUserEnter, mapid);
-                MapScriptManager.getInstance().runMapScript(chr.getClient(), onFirstUserEnter, true);
+            if (onFirstUserEnter.length() != 0) {
+                msm.runMapScript(chr.getClient(), "onFirstUserEnter/" + onFirstUserEnter, true);
             }
         }
         if (onUserEnter.length() != 0) {
             if (onUserEnter.equals("cygnusTest") && (mapid < 913040000 || mapid > 913040006)) {
                 chr.saveLocation("INTRO");
             }
-            MapScriptManager.getInstance().runMapScript(chr.getClient(), onUserEnter, false);
+            
+            msm.runMapScript(chr.getClient(), "onUserEnter/" + onUserEnter, false);
         }
         if (FieldLimit.CANNOTUSEMOUNTS.check(fieldLimit) && chr.getBuffedValue(MapleBuffStat.MONSTER_RIDING) != null) {
             chr.cancelEffectFromBuffStat(MapleBuffStat.MONSTER_RIDING);
@@ -2707,12 +2736,12 @@ public class MapleMap {
         return portal != null ? portal : getPortal(0);
     }
     
-    public MaplePortal findClosestWarpPortal(Point from) {
+    public MaplePortal findClosestTeleportPortal(Point from) {
         MaplePortal closest = null;
         double shortestDistance = Double.POSITIVE_INFINITY;
         for (MaplePortal portal : portals.values()) {
             double distance = portal.getPosition().distanceSq(from);
-            if (portal.getType() == MaplePortal.MAP_PORTAL && distance < shortestDistance && portal.getTargetMapId() == 999999999) {
+            if (portal.getType() == MaplePortal.TELEPORT_PORTAL && distance < shortestDistance && portal.getTargetMapId() != 999999999) {
                 closest = portal;
                 shortestDistance = distance;
             }
@@ -2777,7 +2806,8 @@ public class MapleMap {
     public void removePlayer(MapleCharacter chr) {
         Channel cserv = chr.getClient().getChannelServer();
         
-        cserv.unregisterFaceExpression(mapid, chr);
+        FaceExpressionService service = (FaceExpressionService) this.getChannelServer().getServiceAccess(ChannelServices.FACE_EXPRESSION);
+        service.unregisterFaceExpression(mapid, chr);
         chr.unregisterChairBuff();
         
         chrWLock.lock();
@@ -2892,6 +2922,21 @@ public class MapleMap {
             }
         } finally {
             chrRLock.unlock();
+        }
+    }
+    
+    private void updateBossSpawn(MapleMonster monster) {
+        if (monster.hasBossHPBar()) {
+            broadcastBossHpMessage(monster, monster.hashCode(), monster.makeBossHPBarPacket(), monster.getPosition());
+        }
+        if (monster.isBoss()) {
+            if (unclaimOwnership() != null) {
+                String mobName = MapleMonsterInformationProvider.getInstance().getMobNameFromId(monster.getId());
+                if (mobName != null) {
+                    mobName = mobName.trim();
+                    this.dropMessage(5, "This lawn has been taken siege by " + mobName + "'s forces and will be kept hold until their defeat.");
+                }
+            }
         }
     }
     
@@ -3016,8 +3061,8 @@ public class MapleMap {
         }
     }
 
-    private void sendObjectPlacement(MapleClient mapleClient) {
-        MapleCharacter chr = mapleClient.getPlayer();
+    private void sendObjectPlacement(MapleClient c) {
+        MapleCharacter chr = c.getPlayer();
         Collection<MapleMapObject> objects;
         
         objectRLock.lock();
@@ -3029,7 +3074,7 @@ public class MapleMap {
         
         for (MapleMapObject o : objects) {
             if (isNonRangedType(o.getType())) {
-                o.sendSpawnData(mapleClient);
+                o.sendSpawnData(c);
             } else if (o.getType() == MapleMapObjectType.MONSTER) {
                 ((MapleMonster) o).aggroUpdateController();
             } else if (o.getType() == MapleMapObjectType.SUMMON) {
@@ -3250,9 +3295,9 @@ public class MapleMap {
     public MapleCharacter getCharacterById(int id) {
         chrRLock.lock();
         try {
-            for (MapleCharacter c : this.characters) {
-                if (c.getId() == id) {
-                    return c;
+            for (MapleCharacter chr : this.characters) {
+                if (chr.getId() == id) {
+                    return chr;
                 }
             }
         } finally {
@@ -3410,8 +3455,8 @@ public class MapleMap {
     public void broadcastNightEffect() {
         chrRLock.lock();
         try {
-            for (MapleCharacter c : characters) {
-                sendNightEffect(c);
+            for (MapleCharacter chr : this.characters) {
+                sendNightEffect(chr);
             }
         } finally {
             chrRLock.unlock();
@@ -3421,9 +3466,9 @@ public class MapleMap {
     public MapleCharacter getCharacterByName(String name) {
         chrRLock.lock();
         try {
-            for (MapleCharacter c : this.characters) {
-                if (c.getName().toLowerCase().equals(name.toLowerCase())) {
-                    return c;
+            for (MapleCharacter chr : this.characters) {
+                if (chr.getName().toLowerCase().equals(name.toLowerCase())) {
+                    return chr;
                 }
             }
         } finally {
@@ -3537,7 +3582,8 @@ public class MapleMap {
                             if (reactor.getDelay() > 0) {
                                 MapleMap reactorMap = reactor.getMap();
                                 
-                                reactorMap.getChannelServer().registerOverallAction(reactorMap.getId(), new Runnable() {
+                                OverallService service = (OverallService) reactorMap.getChannelServer().getServiceAccess(ChannelServices.OVERALL);
+                                service.registerOverallAction(reactorMap.getId(), new Runnable() {
                                     @Override
                                     public void run() {
                                         reactor.lockReactor();
@@ -3669,7 +3715,7 @@ public class MapleMap {
         System.out.println("----------------------------------");
         */
         
-        if(ServerConstants.USE_ENABLE_FULL_RESPAWN) {
+        if(YamlConfig.config.server.USE_ENABLE_FULL_RESPAWN) {
             return (monsterSpawn.size() - spawnedMonstersOnMap.get());
         }
         
@@ -3776,6 +3822,14 @@ public class MapleMap {
 
     public void setHPDecProtect(int delta) {
         this.protectItem = delta;
+    }
+    
+    public float getRecovery() {
+        return recovery;
+    }
+
+    public void setRecovery(float recRate) {
+        recovery = recRate;
     }
 
     private int hasBoat() {
@@ -4191,8 +4245,13 @@ public class MapleMap {
         }
     }
     
+    public MapleCharacter unclaimOwnership() {
+        MapleCharacter lastOwner = this.mapOwner;
+        return unclaimOwnership(lastOwner) ? lastOwner : null;
+    }
+    
     public boolean unclaimOwnership(MapleCharacter chr) {
-        if (mapOwner == chr) {
+        if (chr != null && mapOwner == chr) {
             this.mapOwner = null;
             chr.setOwnedMap(null);
             
@@ -4227,7 +4286,7 @@ public class MapleMap {
     public void checkMapOwnerActivity() {
         long timeNow = Server.getInstance().getCurrentTime();
         if (timeNow - mapOwnerLastActivityTime > 60000) {
-            if (unclaimOwnership(mapOwner)) {
+            if (unclaimOwnership() != null) {
                 this.dropMessage(5, "This lawn is now free real estate.");
             }
         }

@@ -21,7 +21,7 @@ package client.command.commands.gm5;
 
 import client.MapleClient;
 import client.command.Command;
-import net.server.coordinator.MapleSessionCoordinator;
+import net.server.coordinator.session.MapleSessionCoordinator;
 
 /**
  *

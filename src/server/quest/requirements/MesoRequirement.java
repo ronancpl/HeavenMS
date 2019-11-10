@@ -45,6 +45,11 @@ public class MesoRequirement extends MapleQuestRequirement {
 	
 	@Override
 	public boolean check(MapleCharacter chr, Integer npcid) {
-		return chr.getMeso() >= meso;
+                if (chr.getMeso() >= meso) {
+                        return true;
+                } else {
+                        chr.dropMessage(5, "You don't have enough mesos to complete this quest.");
+                        return false;
+                }
 	}
 }

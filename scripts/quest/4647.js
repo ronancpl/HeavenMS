@@ -40,16 +40,14 @@ function end(mode, type, selection) {
 			status--;
 		if (status == 0) {
 			if(qm.haveItem(5460000)) {
-				qm.sendOk("You got the Pet Snack! Thanks! You can use these to feed multiple pets at once!");
+				qm.completeQuest();
 				qm.teachSkill(8, 1, 1, -1);
 				qm.gainItem(5460000, -1, false);
-				qm.completeQuest();
-				qm.dispose();
+				qm.sendOk("You got the Pet Snack! Thanks! You can use these to feed multiple pets at once!");
 			} else {
 				qm.sendOk("Get me the Pet Snack! It can be found in a very big shop....");
-				qm.dispose();
 			}
-		} else {
+		} else if (status == 1) {
 			qm.dispose();
 		}
 	}

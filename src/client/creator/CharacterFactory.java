@@ -25,7 +25,7 @@ import client.MapleSkinColor;
 import client.inventory.Item;
 import client.inventory.MapleInventory;
 import client.inventory.MapleInventoryType;
-import constants.ServerConstants;
+import config.YamlConfig;
 import net.server.Server;
 import server.MapleItemInformationProvider;
 import tools.FilePrinter;
@@ -38,7 +38,7 @@ import tools.MaplePacketCreator;
 public abstract class CharacterFactory {
         
         protected synchronized static int createNewCharacter(MapleClient c, String name, int face, int hair, int skin, int gender, CharacterFactoryRecipe recipe) {
-                if (ServerConstants.COLLECTIVE_CHARSLOT ? c.getAvailableCharacterSlots() <= 0 : c.getAvailableCharacterWorldSlots() <= 0) {
+                if (YamlConfig.config.server.COLLECTIVE_CHARSLOT ? c.getAvailableCharacterSlots() <= 0 : c.getAvailableCharacterWorldSlots() <= 0) {
                         return -3;
                 }
             

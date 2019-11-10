@@ -82,7 +82,9 @@ public final class MonsterBook {
         }
         
         if(qty < 5) {
-            calculateLevel();   // current leveling system only accounts unique cards...
+            if (qty == 0) {     // leveling system only accounts unique cards
+                calculateLevel();
+            }
             
             c.announce(MaplePacketCreator.addCard(false, cardid, qty + 1));
             c.announce(MaplePacketCreator.showGainCard());
@@ -94,7 +96,15 @@ public final class MonsterBook {
     private void calculateLevel() {
         lock.lock();
         try {
-            bookLevel = (int) Math.max(1, Math.sqrt((normalCard + specialCard) / 5));
+            int collectionExp = (normalCard + specialCard);
+            
+            int level = 0, expToNextlevel = 1;
+            do {
+                level++;
+                expToNextlevel += level * 10;
+            } while (collectionExp >= expToNextlevel);
+            
+            bookLevel = level;  // thanks IxianMace for noticing book level differing between book UI and character info UI
         } finally {
             lock.unlock();
         }

@@ -26,7 +26,7 @@ import client.MapleClient;
 import client.inventory.Item;
 import client.inventory.MapleInventoryType;
 import client.inventory.MaplePet;
-import constants.ItemConstants;
+import constants.inventory.ItemConstants;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

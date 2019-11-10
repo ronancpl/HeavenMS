@@ -43,15 +43,15 @@ function start(mode, type, selection) {
             qm.sendAcceptDecline("To truly see your strength, I'll have to face you myself. Don't worry, I'll summon my other self to face off against you. Are you ready?");
         } else if (status == 2) {
             qm.sendNext("Good, I like your confidence.");
-        } else {
+        } else if (status == 3) {
             if(qm.getWarpMap(926000000).getCharacters().size() > 0) {
                 qm.sendOk("There is someone currently in this map, come back later.");
+                qm.dispose();
             } else {
-                qm.warp(926000000);
+                qm.warp(926000000, "st00");
                 qm.forceStartQuest();
+                qm.dispose();
             }
-            
-            qm.dispose();
         }
     }
 }

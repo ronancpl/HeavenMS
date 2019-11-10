@@ -63,7 +63,7 @@ function respawn(eim) {
 
 function playerEntry(eim, player) {
 	var amplifierMap = eim.getMapInstance(entryMap.getId());
-	player.changeMap(amplifierMap);
+	player.changeMap(amplifierMap, 1);
         eim.schedule("timeOut", timer);
 }
 

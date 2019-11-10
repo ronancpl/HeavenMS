@@ -23,7 +23,7 @@ package net.server.world;
 
 import client.MapleCharacter;
 import client.MapleClient;
-import constants.ServerConstants;
+import config.YamlConfig;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
@@ -36,7 +36,7 @@ import net.server.audit.LockCollector;
 import net.server.audit.locks.MonitoredReentrantLock;
 import net.server.audit.locks.MonitoredLockType;
 import net.server.audit.locks.factory.MonitoredReentrantLockFactory;
-import net.server.coordinator.MapleMatchCheckerCoordinator;
+import net.server.coordinator.matchchecker.MapleMatchCheckerCoordinator;
 import net.server.coordinator.matchchecker.MatchCheckerListenerFactory.MatchCheckerType;
 import scripting.event.EventInstanceManager;
 import server.maps.MapleDoor;
@@ -130,7 +130,7 @@ public class MapleParty {
     public Collection<MaplePartyCharacter> getMembers() {
         lock.lock();
         try {
-            return Collections.unmodifiableList(members);
+            return new LinkedList<>(members);
         } finally {
             lock.unlock();
         }
@@ -139,7 +139,24 @@ public class MapleParty {
     public List<MaplePartyCharacter> getPartyMembers() {
         lock.lock();
         try {
-            return Collections.unmodifiableList(members);
+            return new LinkedList<>(members);
+        } finally {
+            lock.unlock();
+        }
+    }
+    
+    public List<MaplePartyCharacter> getPartyMembersOnline() {
+        lock.lock();
+        try {
+            List<MaplePartyCharacter> ret = new LinkedList<>();
+            
+            for (MaplePartyCharacter mpc : members) {
+                if (mpc.isOnline()) {
+                    ret.add(mpc);
+                }
+            }
+            
+            return ret;
         } finally {
             lock.unlock();
         }
@@ -327,7 +344,7 @@ public class MapleParty {
     public static boolean createParty(MapleCharacter player, boolean silentCheck) {
         MapleParty party = player.getParty();
         if (party == null) {
-            if (player.getLevel() < 10 && !ServerConstants.USE_PARTY_FOR_STARTERS) {
+            if (player.getLevel() < 10 && !YamlConfig.config.server.USE_PARTY_FOR_STARTERS) {
                 player.announce(MaplePacketCreator.partyStatusMessage(10));
                 return false;
             } else if (player.getAriantColiseum() != null) {
@@ -452,7 +469,7 @@ public class MapleParty {
                 if (expelled != null) {
                     MapleCharacter emc = expelled.getPlayer();
                     if(emc != null) {
-                        List<MapleCharacter> partyMembers = emc.getPartyMembers();
+                        List<MapleCharacter> partyMembers = emc.getPartyMembersOnline();
 
                         MapleMap map = emc.getMap();
                         if(map != null) map.removePartyMember(emc);

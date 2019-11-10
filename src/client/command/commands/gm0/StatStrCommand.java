@@ -26,7 +26,7 @@ package client.command.commands.gm0;
 import client.command.Command;
 import client.MapleClient;
 import client.MapleCharacter;
-import constants.ServerConstants;
+import config.YamlConfig;
 
 public class StatStrCommand extends Command {
     {
@@ -46,11 +46,11 @@ public class StatStrCommand extends Command {
                 return;
             }
         } else {
-            amount = Math.min(remainingAp, ServerConstants.MAX_AP - player.getStr());
+            amount = Math.min(remainingAp, YamlConfig.config.server.MAX_AP - player.getStr());
         }
         
         if (!player.assignStr(Math.max(amount, 0))) {
-            player.dropMessage("Please make sure your AP is not over " + ServerConstants.MAX_AP + " and you have enough to distribute.");
+            player.dropMessage("Please make sure your AP is not over " + YamlConfig.config.server.MAX_AP + " and you have enough to distribute.");
         }
     }
 }

@@ -29,9 +29,11 @@ import java.util.List;
 import client.MapleCharacter;
 import client.MapleDisease;
 import client.status.MonsterStatus;
-import constants.GameConstants;
+import constants.game.GameConstants;
 import java.util.LinkedList;
 import java.util.Map;
+import net.server.services.type.ChannelServices;
+import net.server.services.task.channel.OverallService;
 import tools.Randomizer;
 import server.maps.MapleMap;
 import server.maps.MapleMapObject;
@@ -115,7 +117,8 @@ public class MobSkill {
             }
         };
 
-        monster.getMap().getChannelServer().registerOverallAction(monster.getMap().getId(), toRun, animationTime);
+        OverallService service = (OverallService) monster.getMap().getChannelServer().getServiceAccess(ChannelServices.OVERALL);
+        service.registerOverallAction(monster.getMap().getId(), toRun, animationTime);
     }
 
     public void applyEffect(MapleCharacter player, MapleMonster monster, boolean skill, List<MapleCharacter> banishPlayers) {
@@ -331,7 +334,7 @@ public class MobSkill {
             if (lt != null && rb != null && skill) {
                 int i = 0;
                 for (MapleCharacter character : getPlayersInRange(monster, player)) {
-                    if (!character.isActiveBuffedValue(2321005)) {  // holy shield
+                    if (!character.hasActiveBuff(2321005)) {  // holy shield
                         if (disease.equals(MapleDisease.SEDUCE)) {
                             if (i < 10) {
                                 character.giveDebuff(MapleDisease.SEDUCE, this);

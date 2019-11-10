@@ -28,7 +28,8 @@ import client.inventory.Equip;
 import client.inventory.Item;
 import client.inventory.MapleInventory;
 import client.inventory.MapleInventoryType;
-import constants.ItemConstants;
+import config.YamlConfig;
+import constants.inventory.ItemConstants;
 import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.List;
@@ -39,7 +40,7 @@ import server.CashShop;
 import server.CashShop.CashItem;
 import server.CashShop.CashItemFactory;
 import client.inventory.manipulator.MapleInventoryManipulator;
-import constants.ServerConstants;
+import constants.net.ServerConstants;
 import server.MapleItemInformationProvider;
 import tools.FilePrinter;
 import tools.MaplePacketCreator;
@@ -76,7 +77,7 @@ public final class CashOperationHandler extends AbstractMaplePacketHandler {
                         if (ItemConstants.isCashStore(cItem.getItemId()) && chr.getLevel() < 16) {
                             c.enableCSActions();
                             return;
-                        } else if (ItemConstants.isRateCoupon(cItem.getItemId()) && !ServerConstants.USE_SUPPLY_RATE_COUPONS) {
+                        } else if (ItemConstants.isRateCoupon(cItem.getItemId()) && !YamlConfig.config.server.USE_SUPPLY_RATE_COUPONS) {
                             chr.dropMessage(1, "Rate coupons are currently unavailable to purchase.");
                             c.enableCSActions();
                             return;
@@ -376,7 +377,7 @@ public final class CashOperationHandler extends AbstractMaplePacketHandler {
                         c.enableCSActions();
                         return;
                     }
-                    if(cItem.getSN() == 50600000 && ServerConstants.ALLOW_CASHSHOP_NAME_CHANGE) {
+                    if(cItem.getSN() == 50600000 && YamlConfig.config.server.ALLOW_CASHSHOP_NAME_CHANGE) {
                         slea.readMapleAsciiString(); //old name
                         String newName = slea.readMapleAsciiString();
                         if(!MapleCharacter.canCreateChar(newName) || chr.getLevel() < 10) { //(longest ban duration isn't tracked currently)
@@ -405,7 +406,7 @@ public final class CashOperationHandler extends AbstractMaplePacketHandler {
                         c.enableCSActions();
                         return;
                     }
-                    if(cItem.getSN() == 50600001 && ServerConstants.ALLOW_CASHSHOP_WORLD_TRANSFER) {
+                    if(cItem.getSN() == 50600001 && YamlConfig.config.server.ALLOW_CASHSHOP_WORLD_TRANSFER) {
                         int newWorldSelection = slea.readInt();
                         
                         int worldTransferError = chr.checkWorldTransferEligibility();

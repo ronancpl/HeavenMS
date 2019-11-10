@@ -23,7 +23,7 @@ package net.server.channel.handlers;
 
 import client.MapleClient;
 import client.autoban.AutobanFactory;
-import constants.ItemConstants;
+import constants.inventory.ItemConstants;
 import net.AbstractMaplePacketHandler;
 import tools.FilePrinter;
 import tools.data.input.SeekableLittleEndianAccessor;

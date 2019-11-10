@@ -101,16 +101,19 @@ public final class MonsterCarnivalHandler extends AbstractMaplePacketHandler {
                         final MapleDisease dis = skill.getDisease();
                         MapleParty enemies = c.getPlayer().getParty().getEnemy();
                         if (skill.targetsAll) {
-                            int chanceAcerto = 0;
+                            int hitChance = 0;
                             if (dis.getDisease() == 121 || dis.getDisease() == 122 || dis.getDisease() == 125 || dis.getDisease() == 126) {
-                                chanceAcerto = (int) (Math.random() * 100);
+                                hitChance = (int) (Math.random() * 100);
                             }
-                            if (chanceAcerto <= 80) {
-                                for (MaplePartyCharacter chrS : enemies.getPartyMembers()) {
-                                    if (dis == null) {
-                                        chrS.getPlayer().dispel();
-                                    } else {
-                                        chrS.getPlayer().giveDebuff(dis, skill.getSkill());
+                            if (hitChance <= 80) {
+                                for (MaplePartyCharacter mpc : enemies.getPartyMembers()) {
+                                    MapleCharacter mc = mpc.getPlayer();
+                                    if (mc != null) {
+                                        if (dis == null) {
+                                            mc.dispel();
+                                        } else {
+                                            mc.giveDebuff(dis, skill.getSkill());
+                                        }
                                     }
                                 }
                             }

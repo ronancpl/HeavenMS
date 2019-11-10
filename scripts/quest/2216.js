@@ -36,8 +36,9 @@ function start(mode, type, selection) {
         
         if (status == 0) {
             qm.sendNext("I've just gathered an interesting information, #rDyle looks just like regular Ligators#k, but bigger.");
-            qm.gainExp(7000);
+        } else if (status == 1) {
             qm.forceCompleteQuest();
+            qm.gainExp(7000);
             
             if(isAllSubquestsDone() && qm.haveItem(4031894)) {
                 qm.gainItem(4031894, -1);

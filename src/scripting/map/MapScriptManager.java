@@ -21,23 +21,19 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package scripting.map;
 
+import client.MapleCharacter;
 import client.MapleClient;
-import constants.ServerConstants;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
 import java.lang.reflect.UndeclaredThrowableException;
 import java.util.HashMap;
 import java.util.Map;
-import javax.script.Compilable;
-import javax.script.Invocable;
-import javax.script.ScriptEngine;
 import javax.script.ScriptEngineFactory;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
+import jdk.nashorn.api.scripting.NashornScriptEngine;
+import scripting.AbstractScriptManager;
 import tools.FilePrinter;
 
-public class MapScriptManager {
+public class MapScriptManager extends AbstractScriptManager {
 
     private static MapScriptManager instance = new MapScriptManager();
     
@@ -45,7 +41,7 @@ public class MapScriptManager {
         return instance;
     }
     
-    private Map<String, Invocable> scripts = new HashMap<>();
+    private Map<String, NashornScriptEngine> scripts = new HashMap<>();
     private ScriptEngineFactory sef;
 
     private MapScriptManager() {
@@ -57,53 +53,42 @@ public class MapScriptManager {
         scripts.clear();
     }
 
-    public boolean scriptExists(String scriptName, boolean firstUser) {
-        File scriptFile = new File("scripts/map/" + (firstUser ? "onFirstUserEnter/" : "onUserEnter/") + scriptName + ".js");
-        return scriptFile.exists();
-    }
-
-    public void runMapScript(MapleClient c, String scriptName, boolean firstUser) {
-        if (scripts.containsKey(scriptName)) {
+    public boolean runMapScript(MapleClient c, String mapScriptPath, boolean firstUser) {
+        if (firstUser) {
+            MapleCharacter chr = c.getPlayer();
+            int mapid = chr.getMapId();
+            if (chr.hasEntered(mapScriptPath, mapid)) {
+                return false;
+            } else {
+                chr.enteredScript(mapScriptPath, mapid);
+            }
+        }
+        
+        NashornScriptEngine iv = scripts.get(mapScriptPath);
+        if (iv != null) {
             try {
-                scripts.get(scriptName).invokeFunction("start", new MapScriptMethods(c));
+                iv.invokeFunction("start", new MapScriptMethods(c));
+                return true;
             } catch (final ScriptException | NoSuchMethodException e) {
                 e.printStackTrace();
             }
-            return;
         }
-        String type = firstUser ? "onFirstUserEnter/" : "onUserEnter/";
-
-        File scriptFile = new File("scripts/map/" + type + scriptName + ".js");
-        if (!scriptExists(scriptName, firstUser)) {
-            return;
-        }
-        FileReader fr = null;
-        ScriptEngine se = sef.getScriptEngine();
+        
         try {
-            fr = new FileReader(scriptFile);
-            
-            // java 8 support here thanks to Arufonsu
-            if (ServerConstants.JAVA_8){
-                    se.eval("load('nashorn:mozilla_compat.js');" + System.lineSeparator());
+            iv = getScriptEngine("map/" + mapScriptPath + ".js");
+            if (iv == null) {
+                return false;
             }
             
-            ((Compilable) se).compile(fr).eval();
-            
-            final Invocable script = ((Invocable) se);
-            scripts.put(scriptName, script);
-            script.invokeFunction("start", new MapScriptMethods(c));
+            scripts.put(mapScriptPath, iv);
+            iv.invokeFunction("start", new MapScriptMethods(c));
+            return true;
         } catch (final UndeclaredThrowableException | ScriptException ute) {
-            FilePrinter.printError(FilePrinter.MAP_SCRIPT + type + scriptName + ".txt", ute);
+            FilePrinter.printError(FilePrinter.MAP_SCRIPT + mapScriptPath + ".txt", ute);
         } catch (final Exception e) {
-            FilePrinter.printError(FilePrinter.MAP_SCRIPT + type + scriptName + ".txt", e);
-        } finally {
-            if (fr != null) {
-                try {
-                    fr.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
+            FilePrinter.printError(FilePrinter.MAP_SCRIPT + mapScriptPath + ".txt", e);
         }
+        
+        return false;
     }
 }

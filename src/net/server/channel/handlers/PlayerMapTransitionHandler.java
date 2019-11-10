@@ -26,6 +26,8 @@ import client.MapleClient;
 import java.util.Collections;
 import java.util.List;
 import net.AbstractMaplePacketHandler;
+import server.life.MapleMonster;
+import server.maps.MapleMapObject;
 import tools.MaplePacketCreator;
 import tools.Pair;
 import tools.data.input.SeekableLittleEndianAccessor;
@@ -47,6 +49,24 @@ public final class PlayerMapTransitionHandler extends AbstractMaplePacketHandler
             
             final List<Pair<MapleBuffStat, Integer>> stat = Collections.singletonList(new Pair<>(MapleBuffStat.HOMING_BEACON, 0));
             chr.announce(MaplePacketCreator.giveBuff(1, beaconid, stat));
+        }
+        
+        if (!chr.isHidden()) {  // thanks Lame for noticing hidden characters controlling mobs
+            for (MapleMapObject mo : chr.getMap().getMonsters()) {    // thanks BHB, IxianMace, Jefe for noticing several issues regarding mob statuses (such as freeze)
+                MapleMonster m = (MapleMonster) mo;
+                if (m.getSpawnEffect() == 0 || m.getHp() < m.getMaxHp()) {     // avoid effect-spawning mobs
+                    if (m.getController() == chr) {
+                        c.announce(MaplePacketCreator.stopControllingMonster(m.getObjectId()));
+                        m.sendDestroyData(c);
+                        m.aggroRedirectController();
+                    } else {
+                        m.sendDestroyData(c);
+                    }
+
+                    m.aggroSwitchController(chr, false);
+                    m.sendSpawnData(c);
+                }
+            }
         }
     }
 }

@@ -35,7 +35,7 @@ var maxMapId = 925010300;
 
 var eventTime = 6;     // 6 minutes
 
-var lobbyRange = [0, 0];
+var lobbyRange = [0, 7];
 
 function init() {
         setEventRequirements();

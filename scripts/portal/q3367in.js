@@ -19,8 +19,11 @@
 */
 function enter(pi) {
         if(pi.isQuestStarted(3367)) {
-                if(pi.getQuestProgress(3367, 31) < pi.getItemQuantity(4031797)) {
-                    pi.gainItem(4031797, pi.getQuestProgress(3367, 31) - pi.getItemQuantity(4031797));
+                var booksDone = pi.getQuestProgressInt(3367, 31);
+                var booksInv = pi.getItemQuantity(4031797);
+
+                if(booksInv < booksDone) {
+                    pi.gainItem(4031797, booksDone - booksInv);
                 }
                 
                 pi.playPortalSound(); pi.warp(926130102, 0);

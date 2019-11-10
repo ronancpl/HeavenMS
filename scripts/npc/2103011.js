@@ -43,11 +43,15 @@ function action(mode, type, selection) {
     
                 if(status == 0) {
                         if(cm.isQuestStarted(3926)) {
-                            if(cm.getQuestProgress(3926, 1) != 1) {
-                                if(cm.haveItem(4031579)) {
-                                    cm.gainItem(4031579, -1);
-                                    cm.setQuestProgress(3926, 1, 1);
-                                }
+                            var progress = cm.getQuestProgress(3926);
+                            var slot = 1;
+                            
+                            var ch = progress[slot];
+                            if(ch == '2') {
+                                var nextProgress = progress.substr(0, slot) + '3' + progress.substr(slot + 1);
+
+                                cm.gainItem(4031579, -1);
+                                cm.setQuestProgress(3926, nextProgress);
                             }
                         }
                     

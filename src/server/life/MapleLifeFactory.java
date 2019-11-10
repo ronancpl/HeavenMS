@@ -25,9 +25,11 @@ import java.awt.Point;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import provider.MapleData;
 import provider.MapleDataProvider;
 import provider.MapleDataProviderFactory;
@@ -43,7 +45,19 @@ public class MapleLifeFactory {
     private static MapleData mobStringData = stringDataWZ.getData("Mob.img");
     private static MapleData npcStringData = stringDataWZ.getData("Npc.img");
     private static Map<Integer, MapleMonsterStats> monsterStats = new HashMap<>();
+    private static Set<Integer> hpbarBosses = getHpBarBosses();
 
+    private static Set<Integer> getHpBarBosses() {
+        Set<Integer> ret = new HashSet<>();
+        
+        MapleDataProvider uiDataWZ = MapleDataProviderFactory.getDataProvider(new File(System.getProperty("wzpath") + "/UI.wz"));
+        for (MapleData bossData : uiDataWZ.getData("UIWindow.img").getChildByPath("MobGage/Mob").getChildren()) {
+            ret.add(Integer.valueOf(bossData.getName()));
+        }
+        
+        return ret;
+    }
+    
     public static AbstractLoadedMapleLife getLife(int id, String type) {
         if (type.equalsIgnoreCase("n")) {
             return getNPC(id);
@@ -88,21 +102,19 @@ public class MapleLifeFactory {
         MapleData monsterInfoData = monsterData.getChildByPath("info");
         
         List<MobAttackInfoHolder> attackInfos = new LinkedList<>();
-        MapleMonsterStats stats;
+        MapleMonsterStats stats = new MapleMonsterStats();
         
         int linkMid = MapleDataTool.getIntConvert("link", monsterInfoData, 0);
-        if (linkMid == 0) {
-            stats = new MapleMonsterStats();
-        } else {
+        if (linkMid != 0) {
             Pair<MapleMonsterStats, List<MobAttackInfoHolder>> linkStats = getMonsterStats(linkMid);
             if (linkStats == null) {
                 return null;
             }
             
-            stats = linkStats.getLeft();
+            // thanks resinate for noticing non-propagable infos such as revives getting retrieved
             attackInfos.addAll(linkStats.getRight());
         }
-
+        
         stats.setHp(MapleDataTool.getIntConvert("maxHP", monsterInfoData));
         stats.setFriendly(MapleDataTool.getIntConvert("damagedByMob", monsterInfoData, stats.isFriendly() ? 1 : 0) == 1);
         stats.setPADamage(MapleDataTool.getIntConvert("PADamage", monsterInfoData));
@@ -149,10 +161,12 @@ public class MapleLifeFactory {
         }
         stats.setFirstAttack(firstAttack > 0);
         stats.setDropPeriod(MapleDataTool.getIntConvert("dropItemPeriod", monsterInfoData, stats.getDropPeriod() / 10000) * 10000);
-
-        stats.setTagColor(MapleDataTool.getIntConvert("hpTagColor", monsterInfoData, 0));
-        stats.setTagBgColor(MapleDataTool.getIntConvert("hpTagBgcolor", monsterInfoData, 0));
-
+        
+        // thanks yuxaij, Riizade, Z1peR, Anesthetic for noticing some bosses crashing players due to missing requirements
+        boolean hpbarBoss = stats.isBoss() && hpbarBosses.contains(mid);
+        stats.setTagColor(hpbarBoss ? MapleDataTool.getIntConvert("hpTagColor", monsterInfoData, 0) : 0);
+        stats.setTagBgColor(hpbarBoss ? MapleDataTool.getIntConvert("hpTagBgcolor", monsterInfoData, 0) : 0);
+        
         for (MapleData idata : monsterData) {
             if (!idata.getName().equals("info")) {
                 int delay = 0;

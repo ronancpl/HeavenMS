@@ -19,7 +19,7 @@ function action(mode, type, selection) {
 	    cm.sendNext("You don't have enough... I need at least 100.");
 	    cm.dispose();
 	} else {
-	    cm.sendGetNumber("Hey, that's a good idea! I can give you #i4310000#Perfect Pitch for each 100 #i" + exchangeItem + "##t" + exchangeItem + "# you give me. How many do you want? (Current Items: " + cm.itemQuantity(exchangeItem) + ")", java.lang.Math.min(300, cm.itemQuantity(exchangeItem) / 100), 1, java.lang.Math.min(300, cm.itemQuantity(exchangeItem) / 100));
+	    cm.sendGetNumber("Hey, that's a good idea! I can give you #i4310000#Perfect Pitch for each 100 #i" + exchangeItem + "##t" + exchangeItem + "# you give me. How many do you want? (Current Items: " + cm.itemQuantity(exchangeItem) + ")", Math.min(300, cm.itemQuantity(exchangeItem) / 100), 1, Math.min(300, cm.itemQuantity(exchangeItem) / 100));
 	}
     } else if (status == 2) { 
 	if (selection >= 1 && selection <= cm.itemQuantity(exchangeItem) / 100) {

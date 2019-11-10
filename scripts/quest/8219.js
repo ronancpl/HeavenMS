@@ -22,9 +22,10 @@ function start(mode, type, selection) {
     }
     if (status == 0)
             qm.sendAcceptDecline("The time is now, kid. We have all the preparations complete to further research for why all these oddities have been happening lately. I also must introduce you to my brother, Jack. ");
-    if (status == 1){
+    else if (status == 1){
             qm.sendOk("He is currently wandering around the Crimsonwood Mountain, past the sinister Phantom Forest, in the track to the Crimsonwood Keep. Your next destination is there, may your journey be a safe one.");
             qm.forceStartQuest();
+    } else if (status == 2) {
             qm.dispose();
     }
 }
@@ -48,14 +49,15 @@ function end(mode, type, selection) {
 	}
 	else if (status == 2){
 		if(qm.canHold(3992040, 1)) {
+                    qm.forceCompleteQuest();
                     qm.gainItem(3992040, 1);
                     qm.gainExp(175000);
-                    qm.forceCompleteQuest();
+                    qm.dispose();
                 }
 		else {
                     qm.sendOk("Hey, you don't have a slot in your SETUP inventory for what I have to give to you. Solve that minor issue of yours then talk to me.");
                 }
-                
+	} else if (status == 3) {
                 qm.dispose();
-	}
+        }
 }

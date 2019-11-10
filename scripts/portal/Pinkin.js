@@ -19,7 +19,7 @@
 */
 
 /*
-Vs Pink Bean - Ressurection stage portal
+Vs Pink Bean - Resurrection stage portal
 @author Ronan
 */
 

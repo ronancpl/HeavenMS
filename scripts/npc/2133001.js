@@ -92,10 +92,10 @@ function action(mode, type, selection) {
                                 cm.gainItem(4001169, -20);
                                 cm.getEventInstance().warpEventTeam(930000500);
                             } else {
-                                cm.warp(930000800);
+                                cm.warp(930000800, 0);
                             }
                         } else {
-                            cm.warp(930000800);
+                            cm.warp(930000800, 0);
                         }
                         
                         cm.dispose();

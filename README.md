@@ -12,6 +12,8 @@ Being a NetBeans 8.2 Project, this means that it's easier to install the project
 
 In this project, many gameplay-wise issues generated from either the original WZ files and the server source have been partially or completely solved. Considering the use of the provided edited WZ's and server-side wz.xml files should be of the greatest importance when dealing with this instance of server source, in order to perceive it at it's full potential. My opinion, though!
 
+- In other case, as fallback from the provided ones, consider using **whole clean set**. Selecting part of the provided ones to play pretty much *may eventually* lead to unexpected issues.
+
 The main objective of this project is to try as best as possible to recreate what once was the original MapleStory v83, while adding up some flavors that spices up the gameplay. In other words, aim to get the best of the MapleStory of that era.
 
 ---
@@ -25,13 +27,17 @@ Java 8 SDK & NetBeans bundle: https://www.oracle.com/technetwork/pt/java/javase/
 
 **Important note about localhosts**: these executables are red-flagged by antivirus tools as __potentially malicious softwares__, this happens due to the reverse engineering methods that were applied onto these software artifacts. Those depicted here have been put to use for years already and posed no harm so far, so they are soundly assumed to be safe.
 
-  Latest localhost: https://hostr.co/SvnSKrGzXhG0
+  Latest localhost: https://hostr.co/amuX5SLeeVZx
 
   The following list, in bottom-up chronological order, holds information regarding all changes that were applied from the starting localhost used in this development. Some lines have a link attached, that will lead you to a snapshot of the localhost at that version of the artifact. Naturally, later versions holds all previous changes along with the proposed changes.
 
 **Change log:**
 
-  * Fixed Monster Magnet crashing the caster when trying to pull bosses. Drawback: Dojo HPBar becomes unavailable.
+  * Cleared need for administrator privileges (OS) to play the game, credits to Ubaware.
+
+  * Set a higher cap for AP assigning with AP Reset, credits to Ubaware.
+
+  * Fixed Monster Magnet crashing the caster when trying to pull bosses. Drawback: Dojo HPBar becomes unavailable. https://hostr.co/SvnSKrGzXhG0
 
   * Fixed some 'rn' problems with quest icons & removed "tab" from party leader changed message. https://hostr.co/tsYsQzzV6xT0
 

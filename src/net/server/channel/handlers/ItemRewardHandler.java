@@ -24,7 +24,7 @@ package net.server.channel.handlers;
 import client.MapleClient;
 import client.inventory.Item;
 import client.inventory.MapleInventoryType;
-import constants.ItemConstants;
+import constants.inventory.ItemConstants;
 import java.util.List;
 import net.AbstractMaplePacketHandler;
 import net.server.Server;

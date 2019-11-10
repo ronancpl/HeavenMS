@@ -18,6 +18,6 @@ function start(mode, type, selection) {
 			qm.forceStartQuest();
 			qm.sendImage("UI/tutorial/evan/12/0");
 		}
-		qm.dispose();		
-	}
+                qm.dispose();
+        }
 }

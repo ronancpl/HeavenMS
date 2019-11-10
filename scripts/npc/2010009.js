@@ -22,14 +22,12 @@
 var status;
 var choice;
 var guildName;
-var partymembers;
 
 var allianceCost = 2000000;
 var increaseCost = 1000000;
 var allianceLimit = 5;
 
 function start() {
-    partymembers = cm.getPartyMembers();
     status = -1;
     action(1,0,0);
 }

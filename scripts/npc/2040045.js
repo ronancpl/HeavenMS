@@ -54,7 +54,7 @@ function action(mode, type, selection) {
                         cm.sendYesNo("Would you like to leave the bonus stage?");
                 }
                 else {
-                        cm.warp(922011100);
+                        cm.warp(922011100, "st00");
                         cm.dispose();
                 }
         }

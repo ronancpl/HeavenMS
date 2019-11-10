@@ -21,7 +21,6 @@
  */
 package net.server;
 
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.security.Security;
@@ -42,33 +41,36 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
-import java.util.concurrent.locks.ReentrantReadWriteLock.ReadLock;
-import java.util.concurrent.locks.ReentrantReadWriteLock.WriteLock;
 
+import config.YamlConfig;
 import net.server.audit.ThreadTracker;
 import net.server.audit.locks.MonitoredLockType;
+import net.server.audit.locks.MonitoredReadLock;
 import net.server.audit.locks.MonitoredReentrantReadWriteLock;
+import net.server.audit.locks.MonitoredWriteLock;
+import net.server.audit.locks.factory.MonitoredReadLockFactory;
 import net.server.audit.locks.factory.MonitoredReentrantLockFactory;
+import net.server.audit.locks.factory.MonitoredWriteLockFactory;
 
 import net.MapleServerHandler;
 import net.mina.MapleCodecFactory;
 import net.server.channel.Channel;
+import net.server.coordinator.session.MapleSessionCoordinator;
 import net.server.guild.MapleAlliance;
 import net.server.guild.MapleGuild;
 import net.server.guild.MapleGuildCharacter;
-import net.server.worker.BossLogWorker;
-import net.server.worker.CharacterDiseaseWorker;
-import net.server.worker.CouponWorker;
-import net.server.worker.EventRecallCoordinatorWorker;
-import net.server.worker.DueyFredrickWorker;
-import net.server.worker.InvitationWorker;
-import net.server.worker.LoginCoordinatorWorker;
-import net.server.worker.LoginStorageWorker;
-import net.server.worker.RankingCommandWorker;
-import net.server.worker.RankingLoginWorker;
-import net.server.worker.ReleaseLockWorker;
-import net.server.worker.RespawnWorker;
+import net.server.task.BossLogTask;
+import net.server.task.CharacterDiseaseTask;
+import net.server.task.CouponTask;
+import net.server.task.EventRecallCoordinatorTask;
+import net.server.task.DueyFredrickTask;
+import net.server.task.InvitationTask;
+import net.server.task.LoginCoordinatorTask;
+import net.server.task.LoginStorageTask;
+import net.server.task.RankingCommandTask;
+import net.server.task.RankingLoginTask;
+import net.server.task.ReleaseLockTask;
+import net.server.task.RespawnTask;
 import net.server.world.World;
 
 import org.apache.mina.core.buffer.IoBuffer;
@@ -80,20 +82,19 @@ import org.apache.mina.filter.codec.ProtocolCodecFilter;
 import org.apache.mina.transport.socket.nio.NioSocketAcceptor;
 
 import client.MapleClient;
+import client.MapleFamily;
 import client.MapleCharacter;
 import client.SkillFactory;
 import client.command.CommandsExecutor;
 import client.inventory.Item;
 import client.inventory.ItemFactory;
-import client.inventory.MaplePet;
 import client.inventory.manipulator.MapleCashidGenerator;
 import client.newyear.NewYearCardRecord;
-import constants.ItemConstants;
-import constants.GameConstants;
-import constants.OpcodeConstants;
-import constants.ServerConstants;
+import constants.inventory.ItemConstants;
+import constants.game.GameConstants;
+import constants.net.OpcodeConstants;
+import constants.net.ServerConstants;
 import java.util.TimeZone;
-import net.server.coordinator.MapleSessionCoordinator;
 import server.CashShop.CashItemFactory;
 import server.MapleSkillbookInformationProvider;
 import server.ThreadManager;
@@ -145,13 +146,13 @@ public class Server {
     private final Lock srvLock = MonitoredReentrantLockFactory.createLock(MonitoredLockType.SERVER);
     private final Lock disLock = MonitoredReentrantLockFactory.createLock(MonitoredLockType.SERVER_DISEASES);
     
-    private final ReentrantReadWriteLock wldLock = new MonitoredReentrantReadWriteLock(MonitoredLockType.SERVER_WORLDS, true);
-    private final ReadLock wldRLock = wldLock.readLock();
-    private final WriteLock wldWLock = wldLock.writeLock();
+    private final MonitoredReentrantReadWriteLock wldLock = new MonitoredReentrantReadWriteLock(MonitoredLockType.SERVER_WORLDS, true);
+    private final MonitoredReadLock wldRLock = MonitoredReadLockFactory.createLock(wldLock);
+    private final MonitoredWriteLock wldWLock = MonitoredWriteLockFactory.createLock(wldLock);
     
-    private final ReentrantReadWriteLock lgnLock = new MonitoredReentrantReadWriteLock(MonitoredLockType.SERVER_LOGIN, true);
-    private final ReadLock lgnRLock = lgnLock.readLock();
-    private final WriteLock lgnWLock = lgnLock.writeLock();
+    private final MonitoredReentrantReadWriteLock lgnLock = new MonitoredReentrantReadWriteLock(MonitoredLockType.SERVER_LOGIN, true);
+    private final MonitoredReadLock lgnRLock = MonitoredReadLockFactory.createLock(lgnLock);
+    private final MonitoredWriteLock lgnWLock = MonitoredWriteLockFactory.createLock(lgnLock);
     
     private final AtomicLong currentTime = new AtomicLong(0);
     private long serverCurrentTime = 0;
@@ -169,7 +170,7 @@ public class Server {
     }
     
     public void updateCurrentTime() {
-        serverCurrentTime = currentTime.addAndGet(ServerConstants.UPDATE_INTERVAL);
+        serverCurrentTime = currentTime.addAndGet(YamlConfig.config.server.UPDATE_INTERVAL);
     }
     
     public long forceUpdateCurrentTime() {
@@ -341,18 +342,13 @@ public class Server {
             if(worldChannels == null) return -3;
             
             int channelid = worldChannels.size();
-            if(channelid >= ServerConstants.CHANNEL_SIZE) return -2;
-            
-            Properties p = loadWorldINI();
-            if(p == null) {
-                return -1;
-            }
+            if(channelid >= YamlConfig.config.server.CHANNEL_SIZE) return -2;
             
             channelid++;
             World world = this.getWorld(worldid);
             Channel channel = new Channel(worldid, channelid, getCurrentTime());
-            
-            channel.setServerMessage(p.getProperty("whyamirecommended" + worldid));
+
+            channel.setServerMessage(YamlConfig.config.worlds.get(worldid).why_am_i_recommended);
             
             world.addChannel(channel);
             worldChannels.put(channelid, channel.getIP());
@@ -364,10 +360,7 @@ public class Server {
     }
     
     public int addWorld() {
-        Properties p = loadWorldINI();
-        if(p == null) return -2;
-        
-        int newWorld = initWorld(p);
+        int newWorld = initWorld();
         if(newWorld > -1) {
             installWorldPlayerRanking(newWorld);
             
@@ -387,40 +380,40 @@ public class Server {
         return newWorld;
     }
     
-    private static int getWorldProperty(Properties p, String property, int wid, int defaultValue) {
-        String content = p.getProperty(property + wid);
-        return content != null ? Integer.parseInt(content) : defaultValue;
-    }
-    
-    private int initWorld(Properties p) {
+    private int initWorld() {
         wldWLock.lock();
         try {
             int i = worlds.size();
             
-            if(i >= ServerConstants.WLDLIST_SIZE) {
+            if(i >= YamlConfig.config.server.WLDLIST_SIZE) {
                 return -1;
             }
             
             System.out.println("Starting world " + i);
-            int exprate = getWorldProperty(p, "exprate", i, ServerConstants.EXP_RATE);
-            int mesorate = getWorldProperty(p, "mesorate", i, ServerConstants.MESO_RATE);
-            int droprate = getWorldProperty(p, "droprate", i, ServerConstants.DROP_RATE);
-            int bossdroprate = getWorldProperty(p, "bossdroprate", i, ServerConstants.BOSS_DROP_RATE);
-            int questrate = getWorldProperty(p, "questrate", i, ServerConstants.QUEST_RATE);
-            int travelrate = getWorldProperty(p, "travelrate", i, ServerConstants.TRAVEL_RATE);
-            int fishingrate = getWorldProperty(p, "fishrate", i, ServerConstants.FISHING_RATE);
+
+            int exprate = YamlConfig.config.worlds.get(i).exp_rate;
+            int mesorate = YamlConfig.config.worlds.get(i).meso_rate;
+            int droprate = YamlConfig.config.worlds.get(i).drop_rate;
+            int bossdroprate = YamlConfig.config.worlds.get(i).boss_drop_rate;
+            int questrate = YamlConfig.config.worlds.get(i).quest_rate;
+            int travelrate = YamlConfig.config.worlds.get(i).travel_rate;
+            int fishingrate = YamlConfig.config.worlds.get(i).fishing_rate;
+
+            int flag = YamlConfig.config.worlds.get(i).flag;
+            String event_message = YamlConfig.config.worlds.get(i).event_message;
+            String why_am_i_recommended = YamlConfig.config.worlds.get(i).why_am_i_recommended;
             
             World world = new World(i,
-                    Integer.parseInt(p.getProperty("flag" + i)),
-                    p.getProperty("eventmessage" + i),
+                    flag,
+                    event_message,
                     exprate, droprate, bossdroprate, mesorate, questrate, travelrate, fishingrate);
 
-            worldRecommendedList.add(new Pair<>(i, p.getProperty("whyamirecommended" + i)));
+            worldRecommendedList.add(new Pair<>(i, why_am_i_recommended));
             worlds.add(world);
 
             Map<Integer, String> channelInfo = new HashMap<>();
             long bootTime = getCurrentTime();
-            for (int j = 1; j <= Integer.parseInt(p.getProperty("channels" + i)); j++) {
+            for (int j = 1; j <= YamlConfig.config.worlds.get(i).channels; j++) {
                 int channelid = j;
                 Channel channel = new Channel(i, channelid, bootTime);
 
@@ -430,7 +423,7 @@ public class Server {
 
             channels.add(i, channelInfo);
 
-            world.setServerMessage(p.getProperty("servermessage" + i));
+            world.setServerMessage(YamlConfig.config.worlds.get(i).server_message);
             System.out.println("Finished loading world " + i + "\r\n");
             
             return i;
@@ -510,18 +503,6 @@ public class Server {
         }
     }
     
-    public static Properties loadWorldINI() {
-        Properties p = new Properties();
-        try {
-            p.load(new FileInputStream("world.ini"));
-            return p;
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println("[SEVERE] Could not find/open 'world.ini'.");
-            return null;
-        }
-    }
-    
     private static long getTimeLeftForNextHour() {
         Calendar nextHour = Calendar.getInstance();
         nextHour.add(Calendar.HOUR, 1);
@@ -531,10 +512,10 @@ public class Server {
         return Math.max(0, nextHour.getTimeInMillis() - System.currentTimeMillis());
     }
     
-    private static long getTimeLeftForNextDay() {
+    public static long getTimeLeftForNextDay() {
         Calendar nextDay = Calendar.getInstance();
         nextDay.add(Calendar.DAY_OF_MONTH, 1);
-        nextDay.set(Calendar.HOUR, 0);
+        nextDay.set(Calendar.HOUR_OF_DAY, 0);
         nextDay.set(Calendar.MINUTE, 0);
         nextDay.set(Calendar.SECOND, 0);
         
@@ -546,7 +527,7 @@ public class Server {
     }
     
     public static void cleanNxcodeCoupons(Connection con) throws SQLException {
-        if (!ServerConstants.USE_CLEAR_OUTDATED_COUPONS) return;
+        if (!YamlConfig.config.server.USE_CLEAR_OUTDATED_COUPONS) return;
         
         long timeClear = System.currentTimeMillis() - 14 * 24 * 60 * 60 * 1000;
         
@@ -676,6 +657,7 @@ public class Server {
             MapleCharacter player = c.getPlayer();
             if(player != null && player.isLoggedinWorld()) {
                 player.announceDiseases();
+                player.collectDiseases();
             }
         }
         
@@ -703,7 +685,7 @@ public class Server {
     public List<Pair<String, Integer>> getWorldPlayerRanking(int worldid) {
         wldRLock.lock();
         try {
-            return new ArrayList<>(playerRanking.get(!ServerConstants.USE_WHOLE_SERVER_RANKING ? worldid : 0));
+            return new ArrayList<>(playerRanking.get(!YamlConfig.config.server.USE_WHOLE_SERVER_RANKING ? worldid : 0));
         } finally {
             wldRLock.unlock();
         }
@@ -714,7 +696,7 @@ public class Server {
         if(!ranking.isEmpty()) {
             wldWLock.lock();
             try {
-                if (!ServerConstants.USE_WHOLE_SERVER_RANKING) {
+                if (!YamlConfig.config.server.USE_WHOLE_SERVER_RANKING) {
                     for(int i = playerRanking.size(); i <= worldid; i++) {
                         playerRanking.add(new ArrayList<Pair<String, Integer>>(0));
                     }
@@ -730,7 +712,7 @@ public class Server {
     }
     
     private void removeWorldPlayerRanking() {
-        if (!ServerConstants.USE_WHOLE_SERVER_RANKING) {
+        if (!YamlConfig.config.server.USE_WHOLE_SERVER_RANKING) {
             wldWLock.lock();
             try {
                 if(playerRanking.size() < this.getWorldsSize()) {
@@ -758,7 +740,7 @@ public class Server {
         if(!rankUpdates.isEmpty()) {
             wldWLock.lock();
             try {
-                if (!ServerConstants.USE_WHOLE_SERVER_RANKING) {
+                if (!YamlConfig.config.server.USE_WHOLE_SERVER_RANKING) {
                     for(int i = playerRanking.size(); i <= rankUpdates.get(rankUpdates.size() - 1).getLeft(); i++) {
                         playerRanking.add(new ArrayList<Pair<String, Integer>>(0));
                     }
@@ -776,7 +758,7 @@ public class Server {
     }
     
     private void initWorldPlayerRanking() {
-        if (ServerConstants.USE_WHOLE_SERVER_RANKING) {
+        if (YamlConfig.config.server.USE_WHOLE_SERVER_RANKING) {
             playerRanking.add(new ArrayList<Pair<String, Integer>>(0));
         }        
         updateWorldPlayerRanking();
@@ -793,7 +775,7 @@ public class Server {
             con = DatabaseConnection.getConnection();
             
             String worldQuery;
-            if (!ServerConstants.USE_WHOLE_SERVER_RANKING) {
+            if (!YamlConfig.config.server.USE_WHOLE_SERVER_RANKING) {
                 if(worldid >= 0) {
                     worldQuery = (" AND `characters`.`world` = " + worldid);
                 } else {
@@ -803,10 +785,10 @@ public class Server {
                 worldQuery = (" AND `characters`.`world` >= 0 AND `characters`.`world` <= " + Math.abs(worldid));
             }
             
-            ps = con.prepareStatement("SELECT `characters`.`name`, `characters`.`level`, `characters`.`world` FROM `characters` LEFT JOIN accounts ON accounts.id = characters.accountid WHERE `characters`.`gm` < 2 AND `accounts`.`banned` = '0'" + worldQuery + " ORDER BY " + (!ServerConstants.USE_WHOLE_SERVER_RANKING ? "world, " : "") + "level DESC, exp DESC, lastExpGainTime ASC LIMIT 50");
+            ps = con.prepareStatement("SELECT `characters`.`name`, `characters`.`level`, `characters`.`world` FROM `characters` LEFT JOIN accounts ON accounts.id = characters.accountid WHERE `characters`.`gm` < 2 AND `accounts`.`banned` = '0'" + worldQuery + " ORDER BY " + (!YamlConfig.config.server.USE_WHOLE_SERVER_RANKING ? "world, " : "") + "level DESC, exp DESC, lastExpGainTime ASC LIMIT 50");
             rs = ps.executeQuery();
             
-            if (!ServerConstants.USE_WHOLE_SERVER_RANKING) {
+            if (!YamlConfig.config.server.USE_WHOLE_SERVER_RANKING) {
                 int currentWorld = -1;
                 while(rs.next()) {
                     int rsWorld = rs.getInt("world");
@@ -852,17 +834,12 @@ public class Server {
     }
     
     public void init() {
-        Properties p = loadWorldINI();
-        if(p == null) {
-            System.exit(0);
-        }
-
         System.out.println("HeavenMS v" + ServerConstants.VERSION + " starting up.\r\n");
         
-        if(ServerConstants.SHUTDOWNHOOK)
+        if(YamlConfig.config.server.SHUTDOWNHOOK)
             Runtime.getRuntime().addShutdownHook(new Thread(shutdown(false)));
         
-        TimeZone.setDefault(TimeZone.getTimeZone(ServerConstants.TIMEZONE));
+        TimeZone.setDefault(TimeZone.getTimeZone(YamlConfig.config.server.TIMEZONE));
         
         Connection c = null;
         try {
@@ -884,7 +861,7 @@ public class Server {
         }
         applyAllNameChanges(); //name changes can be missed by INSTANT_NAME_CHANGE
         applyAllWorldTransfers();
-        MaplePet.clearMissingPetsFromDb();
+        //MaplePet.clearMissingPetsFromDb();    // thanks Optimist for noticing this taking too long to run
         MapleCashidGenerator.loadExistentCashIdsFromDb();
         
         IoBuffer.setUseDirectBuffer(false);
@@ -895,25 +872,25 @@ public class Server {
         ThreadManager.getInstance().start();
         TimerManager tMan = TimerManager.getInstance();
         tMan.start();
-        tMan.register(tMan.purge(), ServerConstants.PURGING_INTERVAL);//Purging ftw...
+        tMan.register(tMan.purge(), YamlConfig.config.server.PURGING_INTERVAL);//Purging ftw...
         disconnectIdlesOnLoginTask();
         
         long timeLeft = getTimeLeftForNextHour();
-        tMan.register(new CharacterDiseaseWorker(), ServerConstants.UPDATE_INTERVAL, ServerConstants.UPDATE_INTERVAL);
-        tMan.register(new ReleaseLockWorker(), 2 * 60 * 1000, 2 * 60 * 1000);
-        tMan.register(new CouponWorker(), ServerConstants.COUPON_INTERVAL, timeLeft);
-        tMan.register(new RankingCommandWorker(), 5 * 60 * 1000, 5 * 60 * 1000);
-        tMan.register(new RankingLoginWorker(), ServerConstants.RANKING_INTERVAL, timeLeft);
-        tMan.register(new LoginCoordinatorWorker(), 60 * 60 * 1000, timeLeft);
-        tMan.register(new EventRecallCoordinatorWorker(), 60 * 60 * 1000, timeLeft);
-        tMan.register(new LoginStorageWorker(), 2 * 60 * 1000, 2 * 60 * 1000);
-        tMan.register(new DueyFredrickWorker(), 60 * 60 * 1000, timeLeft);
-        tMan.register(new InvitationWorker(), 30 * 1000, 30 * 1000);
-        tMan.register(new RespawnWorker(), ServerConstants.RESPAWN_INTERVAL, ServerConstants.RESPAWN_INTERVAL);
+        tMan.register(new CharacterDiseaseTask(), YamlConfig.config.server.UPDATE_INTERVAL, YamlConfig.config.server.UPDATE_INTERVAL);
+        tMan.register(new ReleaseLockTask(), 2 * 60 * 1000, 2 * 60 * 1000);
+        tMan.register(new CouponTask(), YamlConfig.config.server.COUPON_INTERVAL, timeLeft);
+        tMan.register(new RankingCommandTask(), 5 * 60 * 1000, 5 * 60 * 1000);
+        tMan.register(new RankingLoginTask(), YamlConfig.config.server.RANKING_INTERVAL, timeLeft);
+        tMan.register(new LoginCoordinatorTask(), 60 * 60 * 1000, timeLeft);
+        tMan.register(new EventRecallCoordinatorTask(), 60 * 60 * 1000, timeLeft);
+        tMan.register(new LoginStorageTask(), 2 * 60 * 1000, 2 * 60 * 1000);
+        tMan.register(new DueyFredrickTask(), 60 * 60 * 1000, timeLeft);
+        tMan.register(new InvitationTask(), 30 * 1000, 30 * 1000);
+        tMan.register(new RespawnTask(), YamlConfig.config.server.RESPAWN_INTERVAL, YamlConfig.config.server.RESPAWN_INTERVAL);
         
         timeLeft = getTimeLeftForNextDay();
         MapleExpeditionBossLog.resetBossLogTable();
-        tMan.register(new BossLogWorker(), 24 * 60 * 60 * 1000, timeLeft);
+        tMan.register(new BossLogTask(), 24 * 60 * 60 * 1000, timeLeft);
         
         long timeToTake = System.currentTimeMillis();
         SkillFactory.loadAllSkills();
@@ -930,13 +907,13 @@ public class Server {
 	
         NewYearCardRecord.startPendingNewYearCardRequests();
         
-        if(ServerConstants.USE_THREAD_TRACKER) ThreadTracker.getInstance().registerThreadTrackerTask();
+        if(YamlConfig.config.server.USE_THREAD_TRACKER) ThreadTracker.getInstance().registerThreadTrackerTask();
         
         try {
-            Integer worldCount = Math.min(GameConstants.WORLD_NAMES.length, Integer.parseInt(p.getProperty("worlds")));
+            Integer worldCount = Math.min(GameConstants.WORLD_NAMES.length, YamlConfig.config.server.WORLDS);
             
             for (int i = 0; i < worldCount; i++) {
-                initWorld(p);
+                initWorld();
             }
             initWorldPlayerRanking();
             
@@ -947,7 +924,17 @@ public class Server {
             System.out.println("[SEVERE] Syntax error in 'world.ini'.");
             System.exit(0);
         }
-
+        
+        System.out.println();
+        
+        if(YamlConfig.config.server.USE_FAMILY_SYSTEM) {
+            timeToTake = System.currentTimeMillis();
+            MapleFamily.loadAllFamilies();
+            System.out.println("Families loaded in " + ((System.currentTimeMillis() - timeToTake) / 1000.0) + " seconds\r\n");
+        }
+        
+        System.out.println();
+        
         acceptor.getSessionConfig().setIdleTime(IdleStatus.BOTH_IDLE, 30);
         acceptor.setHandler(new MapleServerHandler());
         try {
@@ -957,13 +944,17 @@ public class Server {
         }
         
         System.out.println("Listening on port 8484\r\n\r\n");
-
+        
         System.out.println("HeavenMS is now online.\r\n");
         online = true;
         
         MapleSkillbookInformationProvider.getInstance();
         OpcodeConstants.generateOpcodeNames();
         CommandsExecutor.getInstance();
+        
+        for (Channel ch : this.getAllChannels()) {
+            ch.reloadEventScriptManager();
+        }
     }
 
     public static void main(String args[]) {
@@ -1100,18 +1091,25 @@ public class Server {
     
     public MapleGuild getGuild(int id, int world, MapleCharacter mc) {
         synchronized (guilds) {
-            if (guilds.get(id) != null) {
-                return guilds.get(id);
+            MapleGuild g = guilds.get(id);
+            if (g != null) {
+                return g;
             }
-            MapleGuild g = new MapleGuild(id, world);
+            
+            g = new MapleGuild(id, world);
             if (g.getId() == -1) {
                 return null;
             }
             
             if(mc != null) {
-                mc.setMGC(g.getMGC(mc.getId()));
-                if(g.getMGC(mc.getId()) == null) System.out.println("null for " + mc.getName() + " when loading guild " + id);
-                g.getMGC(mc.getId()).setCharacter(mc);
+                MapleGuildCharacter mgc = g.getMGC(mc.getId());
+                if (mgc != null) {
+                    mc.setMGC(mgc);
+                    mgc.setCharacter(mc);
+                } else {
+                    FilePrinter.printError(FilePrinter.GUILD_CHAR_ERROR, "Could not find " + mc.getName() + " when loading guild " + id + ".");
+                }
+                
                 g.setOnline(mc.getId(), true, mc.getClient().getChannel());
             }
             
@@ -1439,6 +1437,11 @@ public class Server {
         } finally {
             lgnWLock.unlock();
         }
+    
+        for (World wserv : this.getWorlds()) {
+            wserv.clearAccountCharacterView(accountid);
+            wserv.unregisterAccountStorage(accountid);
+        }
     }
     */
     
@@ -1701,6 +1704,32 @@ public class Server {
         return gmLevel;
     }
     
+    public void loadAccountStorages(MapleClient c) {
+        int accountId = c.getAccID();
+        Set<Integer> accWorlds = new HashSet<>();
+        lgnWLock.lock();
+        try {
+            Set<Integer> chars = accountChars.get(accountId);
+            
+            for (Integer cid : chars) {
+                Integer worldid = worldChars.get(cid);
+                if (worldid != null) {
+                    accWorlds.add(worldid);
+                }
+            }
+        } finally {
+            lgnWLock.unlock();
+        }
+        
+        List<World> worldList = this.getWorlds();
+        for (Integer worldid : accWorlds) {
+            if (worldid < worldList.size()) {
+                World wserv = worldList.get(worldid);
+                wserv.registerAccountStorage(accountId);
+            }
+        }
+    }
+    
     private static String getRemoteIp(IoSession session) {
         return MapleSessionCoordinator.getSessionRemoteAddress(session);
     }
@@ -1717,7 +1746,7 @@ public class Server {
     }
     
     public boolean validateCharacteridInTransition(IoSession session, int charId) {
-        if (!ServerConstants.USE_IP_VALIDATION) {
+        if (!YamlConfig.config.server.USE_IP_VALIDATION) {
             return true;
         }
         
@@ -1733,7 +1762,7 @@ public class Server {
     }
     
     public Integer freeCharacteridInTransition(IoSession session) {
-        if (!ServerConstants.USE_IP_VALIDATION) {
+        if (!YamlConfig.config.server.USE_IP_VALIDATION) {
             return null;
         }
         
@@ -1748,7 +1777,7 @@ public class Server {
     }
     
     public boolean hasCharacteridInTransition(IoSession session) {
-        if (!ServerConstants.USE_IP_VALIDATION) {
+        if (!YamlConfig.config.server.USE_IP_VALIDATION) {
             return true;
         }
         
@@ -1855,7 +1884,7 @@ public class Server {
 
         List<Channel> allChannels = getAllChannels();
 
-        if(ServerConstants.USE_THREAD_TRACKER) ThreadTracker.getInstance().cancelThreadTrackerTask();
+        if(YamlConfig.config.server.USE_THREAD_TRACKER) ThreadTracker.getInstance().cancelThreadTrackerTask();
 
         for (Channel ch : allChannels) {
             while (!ch.finishedShutdown()) {
@@ -1867,13 +1896,13 @@ public class Server {
                 }
             }
         }
-
+        
         resetServerWorlds();
-
+        
         ThreadManager.getInstance().stop();
         TimerManager.getInstance().purge();
         TimerManager.getInstance().stop();
-
+        
         System.out.println("Worlds + Channels are offline.");
         acceptor.unbind();
         acceptor = null;

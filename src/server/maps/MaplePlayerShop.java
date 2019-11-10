@@ -120,8 +120,8 @@ public class MaplePlayerShop extends AbstractMapleMapObject {
         }
     }
 
-    public boolean isOwner(MapleCharacter c) {
-        return owner.equals(c);
+    public boolean isOwner(MapleCharacter chr) {
+        return owner.equals(chr);
     }
 
     private void addVisitor(MapleCharacter visitor) {

@@ -21,12 +21,15 @@
 */
 var status = -1;
 
+/*
+Custom Quest 100300
+*/
 function activateShamanRock(slot,progress) {
-    var active = (progress >> slot) % 2;
-    if(!active) {
-        progress |= (1 << slot);
+    var ch = progress[slot];
+    if(ch == '0') {
+        var nextProgress = progress.substr(0, slot) + '1' + progress.substr(slot + 1);
         
-        cm.updateQuest(2236, progress);
+        cm.setQuestProgress(2236, nextProgress);
         cm.gainItem(4032263, -1);
         cm.sendOk("The seal took it's place, repelling the evil in the area.");
         return 1;
@@ -45,7 +48,11 @@ function start() {
         else if(map == 105070000) activateShamanRock(2,progress);
         
         else if(map == 105090000) { // workaround... TWO SAME NPC ID ON SAME MAP
-            if(!activateShamanRock(3,progress)) {
+            var npcOid = cm.getQuestProgressInt(100300, 1);
+            if (npcOid == 0) {
+                activateShamanRock(3,progress);
+                cm.setQuestProgress(100300, 1, cm.getNpcObjectId());
+            } else if (cm.getNpcObjectId() != npcOid) {
                 activateShamanRock(4,progress);
             }
         }

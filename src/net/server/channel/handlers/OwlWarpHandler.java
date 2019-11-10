@@ -19,7 +19,7 @@
 */
 package net.server.channel.handlers;
 
-import constants.GameConstants;
+import constants.game.GameConstants;
 import client.MapleClient;
 import net.AbstractMaplePacketHandler;
 import server.maps.MaplePlayerShop;

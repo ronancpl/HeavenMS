@@ -44,7 +44,7 @@ function action(mode, type, selection){
     }
     
     else if(status == 1) {
-	cm.warp(exitMap);
+	cm.warp(exitMap, "st00");
         cm.dispose();
     }
 }

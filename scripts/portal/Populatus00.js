@@ -50,7 +50,7 @@ function enter(pi) {
         }
     } else {
         pi.playPortalSound();
-        pi.warp(922020300);
+        pi.warp(922020300, 0);
         return true;
     }
 }

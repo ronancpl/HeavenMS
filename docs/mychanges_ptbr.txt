@@ -2050,3 +2050,191 @@ Corrigido funcionalidade de loot explosivo de mobs não aplicando devidamente.
 Corrigido linguagens, bastante usado na MCPQ, não utilizando o valor requisitado pelo jogador ao logar/trocar de canais.
 Corrigido casos de NPE ao tentar realizar updates de posição lado-servidor em alguns summons de jogador.
 Revisado reset de reatores em reatores que estão desaparecidos por um tempo, para retornar de imediato.
+
+31 Julho 2019,
+Revisado AP inicial de jogadores, agora mantendo dois sistemas para suprir a falta de 9 AP's. Ambos com AP's começando em 4/4/4/4: 0AP inicialmente, com ganhos de 4AP na primeira mudança de classe e 5AP na segunda mudança. Se não estiver usando esse método, jogadores possuem de início 9 AP's à disposição.
+
+02 Agosto 2019,
+Refatorado vários scripts de quests, não mais realizando disposes e envio de caixas de texto no mesmo status.
+
+05 Agosto 2019,
+Revisado casos onde o sistema de recompensas de quests avisa "inventário cheio" mesmo embora novos espaços pudessem ser encontrados na retirada de itens.
+Corrigido posicionamento não-verificado de lojas criadas por jogadores.
+Corrigido ganho reduzido de EXP ao utilizar skill Mortal Blow.
+Corrigido clique em "O" na UI de recepção de itens pelo Duey não realizando ação alguma.
+Corrigido representação de "quick" na lista de pacotes recebidos pelo Duey não constando os pacotes enviados sem mensagem escrita.
+Revisado certos casos onde itens enviados com "quick delivery" não conseguiam ser recebidos imediatamente.
+
+06 Agosto 2019,
+Corrigido certas montarias não-ligadas a itens de inventário não atuando devidamente ao transicionar mapas (terceiros não conseguiam visualizar a montaria).
+Revisado os vários scripts de quests anteriormente refatorado. Adição: último if status sinalizando disposes de caixas de texto nos penúltimos status.
+
+08 - 10 Agosto 2019,
+Adicionado handler para aplicação de dano em mobs por objetos de ambiente.
+Revisado uso de Steal ao aplicar dano, preenchendo lista (e buscando evitar novas aplicações) assim que utilizado.
+Setado checagem para limites de lobbyid ao se iniciar uma instância de evento.
+Revisado boss logs somente removendo os itens da tabela a partir de um dia antes, não todas as entradas, assim que a tarefa de reset é iniciada.
+Refatorado elementos não-condizentes com o padrão de design Factory na classe geradora de mapas.
+Revisado possível cenário de vazamento de memória ocorrido devido a exceção lançada em algum trecho entre removeKilledMonsterObject e dispatchMonsterKilled.
+Aprimorado loots de reatores, agora colocando loots visíveis ao jogador no centro, similarmente a como loots de mobs ocorrem.
+Ajustado frequência de loots de reatores para 200ms.
+
+12 - 14 Agosto 2019,
+Refatorado vários casos de erros em acessos a funções estáticas a partir de scripts, que passou a ocorrer após trocar de versão Java.
+Corrigido listas que mantém conteúdo dos mundos e canais esvaziando antes que os processos em execução do TimerManager terminem de executar, no momento do sinal de shutdown do servidor.
+Revisado update de quests para o jogador durante script de quests, problema permite movimento enquanto o mesmo ainda está falando com o NPC.
+Revisado novamente os scripts de quest! Problema detectado envolvia incidências de iniciar e completar de quests com disposes na mesma estrutura status.
+
+19 - 20 Agosto 2019,
+Revisado autocommit antes da hora e falta de chamada a rollbacks quando ocorre exceção no método de salvar jogador na DB.
+Corrigido quest scripts recém-formatados pelo caso dos updates de quest durante conversação com NPCs.
+Revisado cálculo de perda de EXP em nocaute.
+Corrigido caso de deadlock relacionado a party HP e manutenção de doors, ocorrendo devido a uso indevido de statLock antes de prtLock.
+
+22 - 23 Agosto 2019,
+Revisado envio sequencial de pacotes pelo IoSession acoplado à conexão com o cliente.
+Corrigido possibilidade de uso de SP Reset para aumentar skills imprevistas.
+Adicionado permissão de drops de NX utilizando a mesma flag dos shops.
+Adicionado comando para setar quantidade de slots em todos os inventários.
+
+24 Agosto 2019,
+Refatorado objeto de MapleStorage, agora sendo gerado um objeto por conta, acoplado ao mundo que jogador pertence (não mais acoplado diretamente com objeto do jogador, jogador agora recebe uma visão deste objeto).
+
+26 - 27 Agosto 2019,
+Revisado uso de objeto de jogador pelo MaplePartyCharacter, retirando acesso ao mesmo quando o jogador está desconectado (assim limpando retenção de múltiplos objetos de jogador offline, quando os mesmos se encontram em party).
+Corrigido casos inesperados como Nimble Feet seguido de Morph fazendo o segundo atuar inesperadamente, aplicando outras imagens de morphs.
+Corrigido buffs importantes para mecânicas do jogo sendo sobrescritas por possuir menores ganhos que outros.
+Revisado diversos casos no código-fonte onde havia possibilidade de acesso ao objeto de jogador nulo a partir do MaplePartyCharacter (quando o jogador se encontra offline e está na party).
+Corrigido caso de EXP ganho ocorrendo menor que o esperado, ao se usar diversos modificadores de ganhos.
+Corrigido bug crítico na atualização recente relacionado a skill mounts, onde na inicialização dos mounts informações estariam sendo perdidas inesperadamente...
+Corrigido informações de mount não sendo atualizado para o jogador assim que o mesmo loga, levando a certas quests com requerimento de mount não permitindo inicialização pelo lado-cliente.
+Revisado sistema criado para manutenção de pacotes enviados através do IoSession, tal sistema agora atuando como uma "pool" ao invés de uma "factory".
+
+29 Agosto 2019,
+Revisado uso de loop em espera ocupada no sistema de manutenção de pacotes enviados. Em geral, threads que solicitam anúncio de pacotes não necessitam evitar esperar até que cada pacote seja enviado.
+
+30 Agosto 2019,
+Corrigido skill Seal não atuando devidamente para Blaze Wizard.
+Corrigido skill Seal atuando em bosses.
+Refatorado funções ainda utilizando invocável desabstraindo o mesmo, assim evitando múltiplos casts de tipo ao decorrer da busca pelo motor de scripts.
+
+02 - 03 Setembro 2019,
+Revisado pontos de spawn usados em warps em vários scripts do servidor.
+Refatorado métodos da CPQ buscando jogadores pelo storage de canais. Não deveria mais haver necessidade já que a partir de uma atualização recente membros offline contém objeto de jogador nulo, e ao reentrar o MPC já assume o novo objeto de jogador.
+
+05 - 06 Setembro 2019,
+Adicionado doors em mapas de cidade como objetos visíveis em campo.
+Corrigido aplicação de status de mobs, onde em várias ocasiões os mobs poderiam parecer inafetáveis aos mesmos.
+
+07 Setembro 2019,
+Corrigido jogador não recebendo informações de debuffs em outros jogadores ao trocar de mapas.
+
+10 - 12 Setembro 2019,
+Corrigido algumas skills de tipo "mágico", que não usam cargas, não mostrando dano para outros jogadores quando golpe ocorre suficientemente perto.
+Adicionado checagem por evidência de disponibilidade de scripts em quests.
+Corrigido inscrição de itens no MTS levando a certos atributos de itens sendo perdidos no processo.
+Adicionado ganho de MaxHP extra da skill para Thunderbreakers, em ambos casos de aumento de nível e de MaxHP usando AP.
+Refatorado ação de autopots, permitindo o mesmo a agir imediatamente após detecção de perda suficiente de HP/MP ao usar itens ou skills.
+Adicionado efeito sonoro de portal ao atravessar Mystic Door.
+
+16 Setembro 2019,
+Adicionado checagem no uso de autopots ao usar HP/MP, limites são calculados baseado em estimativa detectada de uso dos autopots pelo lado cliente.
+
+20 Setembro 2019,
+Adicionado update de macros ao usar SP reset.
+Refatorado vários pacotes Java contendo classes diversificadas.
+Corrigido nomenclatura errônea de "worker" introduzida, querendo significar "task".
+
+21 - 24 Setembro 2019,
+Corrigido ferramenta detectora de métodos estáticos não realizando varredura completa em arquivos, parando em casos onde um método estático é encontrado em cada.
+Implementado ferramenta detectora de scripts de quest que estiveram sendo usados como paliativo.
+Refatorado amplamente métodos que lidam com atribuição de progresso de quests.
+Revisado uso de vários scripts de quest que estiveram sendo usados como paliativo.
+Alterado declaração de "MapleCharacter c", considerado ambíguo à de MapleClient.
+Revisado uso de progresso de quests feito pelos scripts, de forma a parear com o novo modelo.
+
+26 - 28 Setembro 2019,
+Corrigido casos no novo modelo onde algumas quests utilizando informações de progresso não conseguiriam ser completadas.
+Corrigido uso envio desnecessário de pacote ao atualizar progresso de quest causando popup inesperado de mensagens de quests para jogadores.
+Corrigido alguns scripts não levando a atualização dos endereços dos pacotes alterados na última refatoração.
+Corrigido script de quest de Magatia checando errado quantidade de livros adquiridos pelo jogador no progresso de quest.
+
+29 Setembro 2019,
+Revisado Raise UI, agora utilizando o novo sistema de progressão.
+Corrigido checagem por espaço no inventário, ao tentar ganhar itens via quest, não informando o jogador adequadamente sobre itens one-of-a-kind.
+Corrigido uso de itens na Raise UI, quando não atualizando progresso algum (nenhum pacote enviado ao jogador), não permitindo jogador acesso a certos recursos (como Cash Shop/MTS).
+Revisado aplicação geral do novo modelo de progressão de quests implementado.
+
+01 - 02 Outubro 2019,
+Corrigido caso de exceção de modificação concorrente dentro de módulo de incremento de progresso de mob em quests.
+Corrigido caixa de diálogo com conteúdo extra, ao terminar uma quest, não sendo enviada ao jogador.
+Corrigido retransmissão de pacotes de movimentos com sequência vazia crashando outros jogadores.
+Refatorado checagem por pacotes de movimentos com sequência vazia, agora atuando no módulo abstrato.
+Corrigido progresso de mobs em quests não atualizando o infoex devidamente ao jogador, levando à falta do balão de "quest completa".
+Corrigido quest de 1o job de Cygnus permitindo retornar para estado que tenta concluir quest, permitindo assim múltiplas instâncias de conclusão da mesma.
+Adicionado scripting atuante ao abrir Raise UI, permitindo assim utilizar ações elaboradas, tais como EXP de combate para Mimiana.
+Corrigido pets não sendo despawnados assim que se dá o tempo de expiração.
+Corrigido jogadores com "hide" controlando mobs em certas situações.
+Corrigido análise de alerta de HP/MP lado-servidor não contando com os atributos de HP/MP de equipamentos e buffs.
+
+03 Outubro 2019,
+Corrigido skill "Energy Charge" levando atualização de buff ao tocar em mobs, levando a casos onde o buff nos stats poderia inesperadamente ficar retido além do tempo de atuação previsto.
+Substituído utilização de "Jackson annotations + SnakeYaml" por "YamlBeans", utilizando-se assim menos artefatos JARs no processo (anteriormente 5, agora somente 1). Nota: na transição, fora constatado que a utilização da tecnologia anterior era mais permissiva perante o arquivo de configurações, porém estrutura do novo arquivo foi normalizado e está agora funcional.
+Refatorado inicialização de eventos ao iniciar o servidor, em busca de melhorar o tempo de startup.
+
+05 - 08 Outubro 2019,
+Refatorado os diversos schedulers que estavam presentes na classe de canais, agora abstraídas e atuando dentro de serviços.
+Corrigido circunstância onde movimentos de mobs poderiam estar sendo processados enquanto jogador está transitando mapas, levando a possível inconsistência na aplicação de movimento do mob na área acessada.
+
+10 - 12 Outubro 2019,
+Modificado uso de "default" de petid nos itens de inventário armazenados na DB (de -1 para nulo), assim permitindo criar chaves únicas.
+Adicionado uso de chaves estrangeiras para o petid.
+Implementado código de suporte para cupons de "associação" de cosméticos de cabelo.
+Corrigido bug recente em bosses com atributo "link" sem HPbar sendo detectados como possuindo HPbar, se o mob base possui.
+Corrigido bug recente na skill "Body Pressure" não aplicando a sua passiva com chance de neutralizar ao tocar mobs.
+Corrigido quest com NPC "Shaman Rock" aplicando progresso que não corresponde com o esperado (progresso extra agora movido para um novo questid).
+Adicionado método que permite executar scripts de mapa no sistema de scripts de portal.
+Corrigido problema recente ao referenciar script com progresso "Touch the Sky" (script de portal utilizando métodos de scripts de mapa).
+Adicionado fallback para scripts de NPC MapleTV.
+Revisado aplicação e abordagem deste código-base nos arquivos XML legado.
+
+15 - 16 Outubro 2019,
+Corrigido caso inconsistente onde objeto de jogador seria mantido no storage de jogadores caso o jogador tentasse se deregistrar de um canal (sem desconectar) e não mais retornando na mesma sessão.
+Adicionado código para funcionalidade de "Safety Charm", que permite jogadores curar 30% MaxHP/MaxMP ao retornar em campo.
+Implementado extensão das facilidades de serviços, agora atuando desjuntamente de canais.
+Implementado serviço de mundo para salvar jogadores, assim evitando geração de novas threads para cada jogador que está sendo persistido na DB.
+
+18 Outubro 2019,
+Revisado abordagem de inicialização de scripts de eventos em canais. Usuários não são mais bloqueados ao tentar logar devido ao canal não ter todos os eventos carregados.
+
+19 Outubro 2019,
+Corrigido certos itens de quest não aparecendo de mobs em casos onde o mesmo não é requisito para iniciar/completar.
+Corrigido NPC Pi crashando jogadores ao tentar criar flechas.
+Corrigido script de reevolução de pets não atuando em pet Robos, além de agora evitar repetir pets na conversão.
+
+21 - 22 Outubro 2019,
+Corrigido boss HPbar não desaparecendo em certos cenários. O mesmo deveria ocorrer assim que mob é retirado do mapa.
+Revisado informações de mob, que não são propagáveis, sendo repassados à definição do novo mob.
+Revisado carregamento de storages ao inicializar informações de conta podendo retornar nulo indevidamente em caso de exceção lançada.
+Corrigido dois casos de deadlock ocorrendo ao tentar cancelar efeito de stat de jogador.
+Adicionado auditoria de locks para os componentes que travam para leitura e escrita.
+Adicionado clip de introdução de Cygnus.
+Revisado updateBuffEffect, agora checando por determinados buffs de pirata e usando pacotes específicos para os mesmos.
+Revisado geração desnecessária de objetos de mapa ao carregar nomes para comando "goto".
+Corrigido buffs de mob em fakes desaparecendo assim que o mesmo muda de estado para real.
+
+24 Outubro 2019,
+Revisado uso de scriptids na geração de PlayerNPCs. Agora somente ids existentes na base especificada vai adiante.
+
+27 Outubro 2019,
+Revisado lógica booleana na detecção de foothold abaixo, não realizando múltiplas checagens sobre um mesmo atributo.
+
+28 Outubro 2019,
+Revisado lógica recente de uso de petid único levando a lançamento de exceção (transações de DB implica retirada de item de pet do CS storage na DB antes de colocar o mesmo no inventário).
+Corrigido portal relacionado a quest em Ariant inesperadamente levando jogadores à passagem secreta de Sleepywood, em caso de conclusão de questline da mesma.
+Corrigido loop em scripts de quest de associação a Alcadno/Zenumist em Magatia.
+Adicionado utilização de dispose em quest scripts para o comando homônimo.
+
+30 Outubro 2019,
+Corrigido bug em scripts (que possivelmente passou a ocorrer ao utilizar Java8) relacionado ao tentar utilizar métodos da biblioteca Math sem corresponder parâmetros com a assinatura adequada.
+Corrigido entrega de itemid inesperado em script relacionado a EllinPQ.

@@ -29,8 +29,9 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import javax.script.Invocable;
 import javax.script.ScriptException;
+
+import jdk.nashorn.api.scripting.NashornScriptEngine;
 import scripting.AbstractScriptManager;
 import server.maps.MapleReactor;
 import server.maps.ReactorDropEntry;
@@ -52,11 +53,11 @@ public class ReactorScriptManager extends AbstractScriptManager {
     
     public void onHit(MapleClient c, MapleReactor reactor) {
         try {
-            Invocable iv = getInvocable("reactor/" + reactor.getId() + ".js", c);
+            NashornScriptEngine iv = getScriptEngine("reactor/" + reactor.getId() + ".js", c);
             if (iv == null) return;
             
             ReactorActionManager rm = new ReactorActionManager(c, reactor, iv);
-            engine.put("rm", rm);
+            iv.put("rm", rm);
             iv.invokeFunction("hit");
         } catch (final NoSuchMethodException e) {} //do nothing, hit is OPTIONAL
         
@@ -67,11 +68,11 @@ public class ReactorScriptManager extends AbstractScriptManager {
 
     public void act(MapleClient c, MapleReactor reactor) {
         try {
-            Invocable iv = getInvocable("reactor/" + reactor.getId() + ".js", c);
+            NashornScriptEngine iv = getScriptEngine("reactor/" + reactor.getId() + ".js", c);
             if (iv == null) return;
             
             ReactorActionManager rm = new ReactorActionManager(c, reactor, iv);
-            engine.put("rm", rm);
+            iv.put("rm", rm);
             iv.invokeFunction("act");
         } catch (final ScriptException | NoSuchMethodException | NullPointerException e) {
             FilePrinter.printError(FilePrinter.REACTOR + reactor.getId() + ".txt", e);
@@ -116,11 +117,11 @@ public class ReactorScriptManager extends AbstractScriptManager {
 
     private void touching(MapleClient c, MapleReactor reactor, boolean touching) {
         try {
-            Invocable iv = getInvocable("reactor/" + reactor.getId() + ".js", c);
+            NashornScriptEngine iv = getScriptEngine("reactor/" + reactor.getId() + ".js", c);
             if (iv == null) return;
             
             ReactorActionManager rm = new ReactorActionManager(c, reactor, iv);
-            engine.put("rm", rm);
+            iv.put("rm", rm);
             if (touching) {
                 iv.invokeFunction("touch");
             } else {

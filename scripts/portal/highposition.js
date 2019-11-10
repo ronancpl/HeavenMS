@@ -20,10 +20,9 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/*
- * Author: kevintjuh93
- *
-*/
-function start(ms) {
-	ms.touchTheSky();
+// Author: Ronan
+function enter(ms) {
+    // thanks kvmba for noticing some issues running this script
+    ms.runMapScript();
+    return false;
 }

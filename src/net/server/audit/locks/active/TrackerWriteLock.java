@@ -19,7 +19,7 @@
 */
 package net.server.audit.locks.active;
 
-import constants.ServerConstants;
+import config.YamlConfig;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -57,7 +57,7 @@ public class TrackerWriteLock extends ReentrantReadWriteLock.WriteLock implement
     
     @Override
     public void lock() {
-        if(ServerConstants.USE_THREAD_TRACKER) {
+        if(YamlConfig.config.server.USE_THREAD_TRACKER) {
             if(deadlockedState != null) {
                 DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
                 dateFormat.setTimeZone(TimeZone.getDefault());
@@ -75,7 +75,7 @@ public class TrackerWriteLock extends ReentrantReadWriteLock.WriteLock implement
     
     @Override
     public void unlock() {
-        if(ServerConstants.USE_THREAD_TRACKER) {
+        if(YamlConfig.config.server.USE_THREAD_TRACKER) {
             unregisterLocking();
         }
         
@@ -85,7 +85,7 @@ public class TrackerWriteLock extends ReentrantReadWriteLock.WriteLock implement
     @Override
     public boolean tryLock() {
         if(super.tryLock()) {
-            if(ServerConstants.USE_THREAD_TRACKER) {
+            if(YamlConfig.config.server.USE_THREAD_TRACKER) {
                 if(deadlockedState != null) {
                     //FilePrinter.printError(FilePrinter.DEADLOCK_ERROR, "Deadlock occurred when trying to use the '" + id.name() + "' lock resources:\r\n" + printStackTrace(deadlockedState));
                     ThreadTracker.getInstance().accessThreadTracker(true, true, id, hashcode);
@@ -112,7 +112,7 @@ public class TrackerWriteLock extends ReentrantReadWriteLock.WriteLock implement
                     public void run() {
                         issueDeadlock(t);
                     }
-                }, ServerConstants.LOCK_MONITOR_TIME);
+                }, YamlConfig.config.server.LOCK_MONITOR_TIME);
             }
         } finally {
             state.unlock();

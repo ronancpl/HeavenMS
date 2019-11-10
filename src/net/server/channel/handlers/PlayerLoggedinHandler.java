@@ -29,6 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map.Entry;
 
+import config.YamlConfig;
 import net.AbstractMaplePacketHandler;
 import net.server.PlayerBuffValueHolder;
 import net.server.Server;
@@ -40,6 +41,7 @@ import net.server.world.MaplePartyCharacter;
 import net.server.world.PartyOperation;
 import net.server.world.World;
 import tools.DatabaseConnection;
+import tools.FilePrinter;
 import tools.MaplePacketCreator;
 import tools.Pair;
 import tools.data.input.SeekableLittleEndianAccessor;
@@ -50,23 +52,24 @@ import client.MapleCharacter;
 import client.MapleClient;
 import client.MapleDisease;
 import client.MapleFamily;
+import client.MapleFamilyEntry;
 import client.MapleKeyBinding;
+import client.MapleMount;
 import client.SkillFactory;
 import client.inventory.Equip;
 import client.inventory.Item;
 import client.inventory.MapleInventory;
 import client.inventory.MapleInventoryType;
 import client.inventory.MaplePet;
-import constants.GameConstants;
-import constants.ScriptableNPCConstants;
-import constants.ServerConstants;
+import constants.game.GameConstants;
+import constants.game.ScriptableNPCConstants;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-import net.server.coordinator.MapleEventRecallCoordinator;
-import net.server.coordinator.MapleSessionCoordinator;
+import net.server.coordinator.world.MapleEventRecallCoordinator;
+import net.server.coordinator.session.MapleSessionCoordinator;
 import org.apache.mina.core.session.IoSession;
 import server.life.MobSkill;
 import scripting.event.EventInstanceManager;
@@ -124,15 +127,15 @@ public final class PlayerLoggedinHandler extends AbstractMaplePacketHandler {
 
                 MapleCharacter player = wserv.getPlayerStorage().getCharacterById(cid);
                 boolean newcomer = false;
-
+                
                 IoSession session = c.getSession();
+                if (!server.validateCharacteridInTransition(session, cid)) {
+                    c.disconnect(true, false);
+                    return;
+                }
+                
                 String remoteHwid;
                 if (player == null) {
-                    if (!server.validateCharacteridInTransition(session, cid)) {
-                        c.disconnect(true, false);
-                        return;
-                    }
-
                     remoteHwid = MapleSessionCoordinator.getInstance().getGameSessionHwid(session);
                     if (remoteHwid == null) {
                         c.disconnect(true, false);
@@ -230,7 +233,7 @@ public final class PlayerLoggedinHandler extends AbstractMaplePacketHandler {
 
                 c.announce(MaplePacketCreator.getCharInfo(player));
                 if (!player.isHidden()) {
-                    if(player.isGM() && ServerConstants.USE_AUTOHIDE_GM) {
+                    if(player.isGM() && YamlConfig.config.server.USE_AUTOHIDE_GM) {
                         player.toggleHide(true);
                     }
                 }
@@ -260,12 +263,23 @@ public final class PlayerLoggedinHandler extends AbstractMaplePacketHandler {
                 c.announce(MaplePacketCreator.loadFamily(player));
                 if (player.getFamilyId() > 0) {
                     MapleFamily f = wserv.getFamily(player.getFamilyId());
-                    if (f == null) {
-                        f = new MapleFamily(player.getId());
-                        wserv.addFamily(player.getFamilyId(), f);
+                    if(f != null) {
+                        MapleFamilyEntry familyEntry = f.getEntryByID(player.getId());
+                        if(familyEntry != null) {
+                            familyEntry.setCharacter(player);
+                            player.setFamilyEntry(familyEntry);
+                            
+                            c.announce(MaplePacketCreator.getFamilyInfo(familyEntry));
+                            familyEntry.announceToSenior(MaplePacketCreator.sendFamilyLoginNotice(player.getName(), true), true);
+                        } else {
+                            FilePrinter.printError(FilePrinter.FAMILY_ERROR, "Player " + player.getName() + "'s family doesn't have an entry for them. (" + f.getID() + ")");
+                        }
+                    } else {
+                        FilePrinter.printError(FilePrinter.FAMILY_ERROR, "Player " + player.getName() + " has an invalid family ID. (" + player.getFamilyId() + ")");
+                        c.announce(MaplePacketCreator.getFamilyInfo(null));
                     }
-                    player.setFamily(f);
-                    c.announce(MaplePacketCreator.getFamilyInfo(f.getMember(player.getId())));
+                } else {
+                    c.announce(MaplePacketCreator.getFamilyInfo(null));
                 }
                 if (player.getGuildId() > 0) {
                     MapleGuild playerGuild = server.getGuild(player.getGuildId(), player.getWorld(), player);
@@ -340,8 +354,14 @@ public final class PlayerLoggedinHandler extends AbstractMaplePacketHandler {
 
                 if (newcomer) {
                     for(MaplePet pet : player.getPets()) {
-                        if(pet != null)
+                        if(pet != null) {
                             wserv.registerPetHunger(player, player.getPetIndex(pet));
+                        }
+                    }
+                    
+                    MapleMount mount = player.getMount();   // thanks Ari for noticing a scenario where Silver Mane quest couldn't be started
+                    if (mount.getItemId() != 0) {
+                        player.announce(MaplePacketCreator.updateMount(player.getId(), mount, false));
                     }
 
                     player.reloadQuestExpirations();
@@ -360,8 +380,6 @@ public final class PlayerLoggedinHandler extends AbstractMaplePacketHandler {
                             final List<Pair<MapleDisease, Integer>> debuff = Collections.singletonList(new Pair<>(e.getKey(), Integer.valueOf(e.getValue().getRight().getX())));
                             c.announce(MaplePacketCreator.giveDebuff(debuff, e.getValue().getRight()));
                         }
-
-                        player.announceDiseases();
                     }
                 } else {
                     if(player.isRidingBattleship()) {
@@ -384,7 +402,7 @@ public final class PlayerLoggedinHandler extends AbstractMaplePacketHandler {
                 if (player.getMap().getHPDec() > 0) player.resetHpDecreaseTask();
 
                 player.resetPlayerRates();
-                if(ServerConstants.USE_ADD_RATES_BY_LEVEL == true) player.setPlayerRates();
+                if(YamlConfig.config.server.USE_ADD_RATES_BY_LEVEL == true) player.setPlayerRates();
                 player.setWorldRates();
                 player.updateCouponRates();
 
@@ -407,9 +425,13 @@ public final class PlayerLoggedinHandler extends AbstractMaplePacketHandler {
                     }
                 }
                 
-                if (ServerConstants.USE_NPCS_SCRIPTABLE) {
+                if (YamlConfig.config.server.USE_NPCS_SCRIPTABLE) {
                     c.announce(MaplePacketCreator.setNPCScriptable(ScriptableNPCConstants.SCRIPTABLE_NPCS));
                 }
+                
+                if(newcomer) player.setLoginTime(System.currentTimeMillis());
+            } catch(Exception e) {
+                e.printStackTrace();
             } finally {
                 c.releaseClient();
             }

@@ -20,7 +20,7 @@
 package net.server.coordinator.matchchecker.listener;
 
 import client.MapleCharacter;
-import constants.LanguageConstants;
+import constants.string.LanguageConstants;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
@@ -71,7 +71,9 @@ public class MatchCheckerCPQChallenge implements MatchCheckerListenerRecipe {
                 
                 List<MaplePartyCharacter> chrMembers = new LinkedList<>();
                 for (MaplePartyCharacter mpc : chr.getParty().getMembers()) {
-                    chrMembers.add(mpc);
+                    if (mpc.isOnline()) {
+                        chrMembers.add(mpc);
+                    }
                 }
                 
                 if (message.contentEquals("cpq1")) {

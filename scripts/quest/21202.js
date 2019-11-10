@@ -42,7 +42,7 @@ function start(mode, type, selection) {
         qm.sendAcceptDecline("I'm too old to make weapons now, but.. I do have a Polearm that I made way back when. It's still in excellent shape. But I can't give it to you because that Polearm is extremely sharp, so sharp it could hurt its master. Do you still want it?");
     } else if(status == 5) {
         qm.sendOk("Well, if you say so.. I can't object to that. I'll tell you what. I'll give you a quick test, and if you pass it, the Giant Polearm is yours. Head over to the #bTraining Center#k and take on the #rScarred Bears#k that are there. Your job is to bring back #b30 Sign of Acceptances#k.");
-    } else {
+    } else if(status == 6) {
         qm.startQuest();
         qm.dispose();
     }

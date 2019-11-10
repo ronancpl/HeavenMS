@@ -2,13 +2,17 @@ package net.server.channel.handlers;
 
 import java.util.Map;
 
+import client.MapleCharacter;
 import client.MapleClient;
+import client.MapleQuestStatus;
 import client.inventory.MapleInventory;
 import client.inventory.MapleInventoryType;
 import net.AbstractMaplePacketHandler;
 import client.inventory.manipulator.MapleInventoryManipulator;
 import server.MapleItemInformationProvider;
 import server.MapleItemInformationProvider.QuestConsItem;
+import server.quest.MapleQuest;
+import tools.MaplePacketCreator;
 import tools.data.input.SeekableLittleEndianAccessor;
 
 /**
@@ -22,7 +26,7 @@ public class RaiseIncExpHandler extends AbstractMaplePacketHandler {
     public final void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
         byte inventorytype = slea.readByte();//nItemIT
         short slot = slea.readShort();//nSlotPosition
-        int itemid = slea.readInt();//nItemID    
+        int itemid = slea.readInt();//nItemID
         
         if (c.tryacquireClient()) {
             try {
@@ -32,15 +36,22 @@ public class RaiseIncExpHandler extends AbstractMaplePacketHandler {
                     return;
                 }
 
-                int questid = consItem.questid;
+                int infoNumber = consItem.questid;
                 Map<Integer, Integer> consumables = consItem.items;
-
+                
+                MapleCharacter chr = c.getPlayer();
+                MapleQuest quest = MapleQuest.getInstanceFromInfoNumber(infoNumber);
+                if (!chr.getQuest(quest).getStatus().equals(MapleQuestStatus.Status.STARTED)) {
+                    c.announce(MaplePacketCreator.enableActions());
+                    return;
+                }
+                
                 int consId;
-                MapleInventory inv = c.getPlayer().getInventory(MapleInventoryType.getByType(inventorytype));
+                MapleInventory inv = chr.getInventory(MapleInventoryType.getByType(inventorytype));
                 inv.lockInventory();
                 try {
                     consId = inv.getItem(slot).getItemId();
-                    if (!consumables.containsKey(consId) || !c.getPlayer().haveItem(consId)) {
+                    if (!consumables.containsKey(consId) || !chr.haveItem(consId)) {
                         return;
                     }
 
@@ -48,9 +59,12 @@ public class RaiseIncExpHandler extends AbstractMaplePacketHandler {
                 } finally {
                     inv.unlockInventory();
                 }
-
-                int nextValue = Math.min(consumables.get(consId) + Integer.parseInt(c.getPlayer().getQuestInfo(questid)), consItem.exp * consItem.grade);
-                c.getPlayer().updateQuestInfo(questid, "" + nextValue);
+                
+                int questid = quest.getId();
+                int nextValue = Math.min(consumables.get(consId) + c.getAbstractPlayerInteraction().getQuestProgressInt(questid, infoNumber), consItem.exp * consItem.grade);
+                c.getAbstractPlayerInteraction().setQuestProgress(questid, infoNumber, nextValue);
+                
+                c.announce(MaplePacketCreator.enableActions());
             } finally {
                 c.releaseClient();
             }

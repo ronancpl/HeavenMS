@@ -26,14 +26,13 @@ package client.command.commands.gm1;
 import client.MapleCharacter;
 import client.command.Command;
 import client.MapleClient;
-import constants.GameConstants;
+import constants.game.GameConstants;
 import java.util.ArrayList;
 import java.util.Collections;
-import net.server.Server;
-import server.MaplePortal;
+import server.maps.MaplePortal;
 import server.maps.FieldLimit;
 import server.maps.MapleMap;
-import server.maps.MapleMapManager;
+import server.maps.MapleMapFactory;
 import server.maps.MapleMiniDungeonInfo;
 
 import java.util.Comparator;
@@ -47,19 +46,28 @@ public class GotoCommand extends Command {
     {
         setDescription("");
         
-        MapleMapManager mapManager = Server.getInstance().getWorlds().get(0).getChannels().get(0).getMapFactory();
-        
         List<Entry<String, Integer>> towns = new ArrayList<>(GameConstants.GOTO_TOWNS.entrySet());
         sortGotoEntries(towns);
-        for (Map.Entry<String, Integer> e : towns) {
-            GOTO_TOWNS_INFO += ("'" + e.getKey() + "' - #b" + (mapManager.getMap(e.getValue()).getMapName()) + "#k\r\n");
+        
+        try {
+            // thanks shavit for noticing goto areas getting loaded from wz needlessly, only for the name retrieval
+            
+            for (Map.Entry<String, Integer> e : towns) {
+                GOTO_TOWNS_INFO += ("'" + e.getKey() + "' - #b" + (MapleMapFactory.loadPlaceName(e.getValue())) + "#k\r\n");
+            }
+
+            List<Entry<String, Integer>> areas = new ArrayList<>(GameConstants.GOTO_AREAS.entrySet());
+            sortGotoEntries(areas);
+            for (Map.Entry<String, Integer> e : areas) {
+                GOTO_AREAS_INFO += ("'" + e.getKey() + "' - #b" + (MapleMapFactory.loadPlaceName(e.getValue())) + "#k\r\n");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            
+            GOTO_TOWNS_INFO = "(none)";
+            GOTO_AREAS_INFO = "(none)";
         }
         
-        List<Entry<String, Integer>> areas = new ArrayList<>(GameConstants.GOTO_AREAS.entrySet());
-        sortGotoEntries(areas);
-        for (Map.Entry<String, Integer> e : areas) {
-            GOTO_AREAS_INFO += ("'" + e.getKey() + "' - #b" + (mapManager.getMap(e.getValue()).getMapName()) + "#k\r\n");
-        }
     }
     
     public static String GOTO_TOWNS_INFO = "";

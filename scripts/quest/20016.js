@@ -50,9 +50,10 @@ function start(mode, type, selection) {
     } else if (status == 11) {
     	qm.sendNextPrev("But no one starts as a strong Knight on day one. The Empress didn't want someone strong. She wanted someone with courage whom she could develop into a strong Knight through rigorous training. So, you should first become a Knight-in-Training. We'll talk about your missions when you get to that point.");
     } else if (status == 12) {
-    	qm.sendPrev("Take the portal on the left to reach the Training Forest. There, you will find #p1102000#, the Training Instructor, who will teach you how to become stronger. I don't want to find you wandering around aimlessly until you reach Lv. 10, you hear?");
     	qm.forceCompleteQuest();
-    	qm.dispose();
+        qm.sendPrev("Take the portal on the left to reach the Training Forest. There, you will find #p1102000#, the Training Instructor, who will teach you how to become stronger. I don't want to find you wandering around aimlessly until you reach Lv. 10, you hear?");
+    } else if (status == 13) {
+        qm.dispose();
     }
 }
 

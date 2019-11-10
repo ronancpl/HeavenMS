@@ -25,7 +25,7 @@ package client.command.commands.gm5;
 
 import client.command.Command;
 import client.MapleClient;
-import constants.ServerConstants;
+import constants.net.ServerConstants;
 
 public class SetCommand extends Command {
     {

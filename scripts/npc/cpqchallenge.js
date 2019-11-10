@@ -5,7 +5,7 @@
 ---------------------------------------------------------------------------------------------------
 **/
 
-importPackage(Packages.constants);
+importPackage(Packages.constants.game);
 
 var status = 0;
 var party;

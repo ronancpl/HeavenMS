@@ -22,6 +22,7 @@ function start(mode, type, selection) {
 			qm.forceStartQuest();
 			qm.sendNext("#b#b(Try giving #p1013000# some #t4032453#. You have to hunt a few #o1210100#s at the farm. Ten should be plenty...)");
 		}
-		qm.dispose();
-	}
+	} else if (status == 4) {
+                qm.dispose();
+        }
 }
