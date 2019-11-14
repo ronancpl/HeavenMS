@@ -126,13 +126,7 @@ public final class PlayerLoggedinHandler extends AbstractMaplePacketHandler {
                 }
 
                 MapleCharacter player = wserv.getPlayerStorage().getCharacterById(cid);
-                boolean newcomer = false;
-                
                 IoSession session = c.getSession();
-                if (!server.validateCharacteridInTransition(session, cid)) {
-                    c.disconnect(true, false);
-                    return;
-                }
                 
                 String remoteHwid;
                 if (player == null) {
@@ -141,25 +135,37 @@ public final class PlayerLoggedinHandler extends AbstractMaplePacketHandler {
                         c.disconnect(true, false);
                         return;
                     }
-
+                } else {
+                    remoteHwid = player.getClient().getHWID();
+                }
+                
+                int hwidLen = remoteHwid.length();
+                session.setAttribute(MapleClient.CLIENT_HWID, remoteHwid);
+                session.setAttribute(MapleClient.CLIENT_NIBBLEHWID, remoteHwid.substring(hwidLen - 8, hwidLen));
+                c.setHWID(remoteHwid);
+                
+                if (!server.validateCharacteridInTransition(c, cid)) {
+                    c.disconnect(true, false);
+                    return;
+                }
+                
+                boolean newcomer = false;
+                if (player == null) {
                     try {
                         player = MapleCharacter.loadCharFromDB(cid, c, true);
                         newcomer = true;
                     } catch (SQLException e) {
                         e.printStackTrace();
                     }
-                } else {
-                    remoteHwid = player.getClient().getHWID();
+                    
+                    if (player == null) { //If you are still getting null here then please just uninstall the game >.>, we dont need you fucking with the logs
+                        c.disconnect(true, false);
+                        return;
+                    }
                 }
-
-                if (player == null) { //If you are still getting null here then please just uninstall the game >.>, we dont need you fucking with the logs
-                    c.disconnect(true, false);
-                    return;
-                }
-
                 c.setPlayer(player);
                 c.setAccID(player.getAccountID());
-
+                
                 boolean allowLogin = true;
 
                 /*  is this check really necessary?
@@ -210,11 +216,6 @@ public final class PlayerLoggedinHandler extends AbstractMaplePacketHandler {
                     c.setCharacterSlots((byte) player.getClient().getCharacterSlots());
                     player.newClient(c);
                 }
-
-                int hwidLen = remoteHwid.length();
-                session.setAttribute(MapleClient.CLIENT_HWID, remoteHwid);
-                session.setAttribute(MapleClient.CLIENT_NIBBLEHWID, remoteHwid.substring(hwidLen - 8, hwidLen));
-                c.setHWID(remoteHwid);
 
                 cserv.addPlayer(player);
                 wserv.addPlayer(player);
@@ -386,7 +387,7 @@ public final class PlayerLoggedinHandler extends AbstractMaplePacketHandler {
                         player.announceBattleshipHp();
                     }
                 }
-
+                
                 player.buffExpireTask();
                 player.diseaseExpireTask();
                 player.skillCooldownTask();

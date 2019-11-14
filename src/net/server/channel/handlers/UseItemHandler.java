@@ -53,7 +53,7 @@ public final class UseItemHandler extends AbstractMaplePacketHandler {
         int itemId = slea.readInt();
         Item toUse = chr.getInventory(MapleInventoryType.USE).getItem(slot);
         if (toUse != null && toUse.getQuantity() > 0 && toUse.getItemId() == itemId) {
-            if (itemId == 2022178 || itemId == 2050004) {
+            if (itemId == 2050004) {
                 chr.dispelDebuffs();
                 remove(c, slot);
                 return;

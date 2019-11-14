@@ -19,10 +19,8 @@
 */
 package server;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -67,24 +65,11 @@ public class MapleSkillbookInformationProvider {
     static String driver = "com.mysql.jdbc.Driver";
     static String username = "root";
     static String password = "";
-
-    static String wzPath = "wz";
+    
     static String rootDirectory = ".";
-    
-    static InputStreamReader fileReader = null;
-    static BufferedReader bufferedReader = null;
-    
-    static int initialStringLength = 50;
     
     static int skillbookMinItemid = 2280000;
     static int skillbookMaxItemid = 2300000;  // exclusively
-    
-    static byte status = 0;
-    static int questId = -1;
-    static int isCompleteState = 0;
-    
-    static int currentItemid = 0;
-    static int currentCount = 0;
     
     static {
         loadSkillbooks();
@@ -106,7 +91,7 @@ public class MapleSkillbookInformationProvider {
                             int itemcount = MapleDataTool.getInt("count", questItemData, 0);
                             
                             if (isSkillBook(itemid) && itemcount > 0) {
-                                foundSkillbooks.put(currentItemid, SkillBookEntry.QUEST);
+                                foundSkillbooks.put(itemid, SkillBookEntry.QUEST);
                             }
                         }
                         

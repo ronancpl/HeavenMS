@@ -101,6 +101,7 @@ public class MapleItemInformationProvider {
     protected Map<Integer, MapleData> equipLevelInfoCache = new HashMap<>();
     protected Map<Integer, Integer> equipLevelReqCache = new HashMap<>();
     protected Map<Integer, Integer> equipMaxLevelCache = new HashMap<>();
+    protected Map<Integer, List<Integer>> scrollReqsCache = new HashMap<>();
     protected Map<Integer, Integer> wholePriceCache = new HashMap<>();
     protected Map<Integer, Double> unitPriceCache = new HashMap<>();
     protected Map<Integer, Integer> projectileWatkCache = new HashMap<>();
@@ -594,15 +595,20 @@ public class MapleItemInformationProvider {
     }
 
     public List<Integer> getScrollReqs(int itemId) {
+        if (scrollReqsCache.containsKey(itemId)) {
+            return scrollReqsCache.get(itemId);
+        }
+        
         List<Integer> ret = new ArrayList<>();
         MapleData data = getItemData(itemId);
         data = data.getChildByPath("req");
-        if (data == null) {
-            return ret;
+        if (data != null) {
+            for (MapleData req : data.getChildren()) {
+                ret.add(MapleDataTool.getInt(req));
+            }
         }
-        for (MapleData req : data.getChildren()) {
-            ret.add(MapleDataTool.getInt(req));
-        }
+        
+        scrollReqsCache.put(itemId, ret);
         return ret;
     }
 
@@ -620,7 +626,7 @@ public class MapleItemInformationProvider {
     }
 
     public static boolean rollSuccessChance(double propPercent) {
-        return Math.random() >= testYourLuck(propPercent / 100.0, YamlConfig.config.server.SCROLL_CHANCE_RATE);
+        return Math.random() >= testYourLuck(propPercent / 100.0, YamlConfig.config.server.SCROLL_CHANCE_ROLLS);
     }
 
     private static short getMaximumShortMaxIfOverflow(int value1, int value2) {

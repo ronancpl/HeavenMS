@@ -375,7 +375,7 @@ public final class Channel {
         for (Integer cid : playersAway) {
             MapleCharacter chr = wserv.getPlayerStorage().getCharacterById(cid);
             if (chr != null && chr.isLoggedin()) {
-                chr.getClient().disconnect(true, false);
+                chr.getClient().forceDisconnect();
             }
         }
     }

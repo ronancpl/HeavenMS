@@ -58,20 +58,18 @@ public final class WeddingHandler extends AbstractMaplePacketHandler {
                                         MapleInventoryType type = ItemConstants.getInventoryType(itemid);
                                         MapleInventory chrInv = chr.getInventory(type);
 
+                                        Item newItem = null;
                                         chrInv.lockInventory();
                                         try {
                                             Item item = chrInv.getItem((byte) slot);
                                             if (item != null) {
                                                 if (!item.isUntradeable()) {
                                                     if (itemid == item.getItemId() && quantity <= item.getQuantity()) {
-                                                        Item newItem = item.copy();
+                                                        newItem = item.copy();
 
                                                         marriage.addGiftItem(groomWishlist, newItem);
                                                         MapleInventoryManipulator.removeFromSlot(c, type, slot, quantity, false, false);
-
-                                                        if (YamlConfig.config.server.USE_ENFORCE_MERCHANT_SAVE) chr.saveCharToDB(false); 
-                                                        marriage.saveGiftItemsToDb(c, groomWishlist, cid);
-
+                                                        
                                                         MapleKarmaManipulator.toggleKarmaFlagToUntradeable(newItem);
                                                         marriage.setIntProperty(groomWishlistProp, giftCount + 1);
 
@@ -83,6 +81,11 @@ public final class WeddingHandler extends AbstractMaplePacketHandler {
                                             }
                                         } finally {
                                             chrInv.unlockInventory();
+                                        }
+                                        
+                                        if (newItem != null) {
+                                            if (YamlConfig.config.server.USE_ENFORCE_MERCHANT_SAVE) chr.saveCharToDB(false); 
+                                            marriage.saveGiftItemsToDb(c, groomWishlist, cid);
                                         }
                                     } else {
                                         c.announce(Wedding.OnWeddingGiftResult((byte) 0xE, marriage.getWishlistItems(groomWishlist), null));

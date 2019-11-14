@@ -40,7 +40,6 @@ import server.CashShop;
 import server.CashShop.CashItem;
 import server.CashShop.CashItemFactory;
 import client.inventory.manipulator.MapleInventoryManipulator;
-import constants.net.ServerConstants;
 import server.MapleItemInformationProvider;
 import tools.FilePrinter;
 import tools.MaplePacketCreator;

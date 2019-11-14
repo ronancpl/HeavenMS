@@ -51,14 +51,7 @@ public class AssignSPProcessor {
             AutobanFactory.PACKET_EDIT.alert(player, "tried to packet edit in distributing sp.");
             FilePrinter.printError(FilePrinter.EXPLOITS + c.getPlayer().getName() + ".txt", c.getPlayer().getName() + " tried to use skill " + skillid + " without it being in their job.");
 
-            final MapleClient client = c;
-            ThreadManager.getInstance().newTask(new Runnable() {
-                @Override
-                public void run() {
-                    client.disconnect(true, false);
-                }
-            });
-
+            c.disconnect(true, false);
             return false;
         }
         

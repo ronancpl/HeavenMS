@@ -490,18 +490,6 @@ public class GameConstants {
         }
     }
     
-    public static int getHiddenSkill(final int skill) {
-        switch (skill) {
-            case Aran.HIDDEN_FULL_DOUBLE:
-            case Aran.HIDDEN_FULL_TRIPLE:
-                return Aran.FULL_SWING;
-            case Aran.HIDDEN_OVER_DOUBLE:
-            case Aran.HIDDEN_OVER_TRIPLE:
-                return Aran.OVER_SWING;
-        }
-        return skill;
-    }
-    
     public static int getSkillBook(final int job) {
         if (job >= 2210 && job <= 2218) {
              return job - 2209;

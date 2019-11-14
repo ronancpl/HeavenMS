@@ -113,10 +113,11 @@ public abstract class AbstractDealDamageHandler extends AbstractMaplePacketHandl
         public boolean ranged, magic;
         public int speed = 4;
         public Point position = new Point();
+        
         public MapleStatEffect getAttackEffect(MapleCharacter chr, Skill theSkill) {
             Skill mySkill = theSkill;
             if (mySkill == null) {
-                mySkill = SkillFactory.getSkill(GameConstants.getHiddenSkill(skill));
+                mySkill = SkillFactory.getSkill(skill);
             }
             
             int skillLevel = chr.getSkillLevel(mySkill);
@@ -149,8 +150,8 @@ public abstract class AbstractDealDamageHandler extends AbstractMaplePacketHandl
                 return;
             }
             if (attack.skill != 0) {
-                theSkill = SkillFactory.getSkill(GameConstants.getHiddenSkill(attack.skill)); //returns back the skill id if its not a hidden skill so we are gucci
-                attackEffect = attack.getAttackEffect(player, theSkill);
+                theSkill = SkillFactory.getSkill(attack.skill); // thanks Conrad for noticing some Aran skills not consuming MP
+                attackEffect = attack.getAttackEffect(player, theSkill); //returns back the player's attack effect so we are gucci
                 if (attackEffect == null) {
                     player.announce(MaplePacketCreator.enableActions());
                     return;

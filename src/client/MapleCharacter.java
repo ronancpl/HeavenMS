@@ -568,9 +568,7 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
     }
     
     public void setSessionTransitionState() {
-        IoSession session = client.getSession();
-        session.setAttribute(MapleClient.CLIENT_TRANSITION);
-        Server.getInstance().setCharacteridInTransition(session, this.getId());
+        client.setCharacterOnSessionTransitionState(this.getId());
     }
     
     public boolean getCS() {
@@ -2803,6 +2801,8 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
         dispelDebuff(MapleDisease.SEAL);
         dispelDebuff(MapleDisease.WEAKEN);
         dispelDebuff(MapleDisease.SLOW);
+        dispelDebuff(MapleDisease.ZOMBIFY);
+        dispelDebuff(MapleDisease.CONFUSE);
     }
 
     public void cancelAllDebuffs() {
@@ -6792,20 +6792,16 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
         MapleInventory cashInv = this.getInventory(MapleInventoryType.CASH);
         if (cashInv == null) return;
         
-        if (cpnLock.tryLock()) {
-            effLock.lock();
-            chrLock.lock();
-            cashInv.lockInventory();
-            try {
-                revertCouponRates();
-                setCouponRates();
-            } finally {
-                cpnLock.unlock();
-                
-                cashInv.unlockInventory();
-                chrLock.unlock();
-                effLock.unlock();
-            }
+        effLock.lock();
+        chrLock.lock();
+        cashInv.lockInventory();
+        try {
+            revertCouponRates();
+            setCouponRates();
+        } finally {
+            cashInv.unlockInventory();
+            chrLock.unlock();
+            effLock.unlock();
         }
     }
     
@@ -7509,7 +7505,7 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
     }
     
     public void reloadQuestExpirations() {
-        for(MapleQuestStatus mqs: getQuests()) {
+        for(MapleQuestStatus mqs: getStartedQuests()) {
             if(mqs.getExpirationTime() > 0) {
                 questTimeLimit2(mqs.getQuest(), mqs.getExpirationTime());
             }
@@ -7690,29 +7686,23 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
     }
     
     public void sitChair(int itemId) {
-        if (client.tryacquireClient()) {
-            try {
-                if (this.isLoggedinWorld()) {
-                    if (itemId >= 1000000) {    // sit on item chair
-                        if (chair.get() < 0) {
-                            setChair(itemId);
-                            getMap().broadcastMessage(this, MaplePacketCreator.showChair(this.getId(), itemId), false);
-                        }
-                        announce(MaplePacketCreator.enableActions());
-                    } else if (itemId >= 0) {    // sit on map chair
-                        if (chair.get() < 0) {
-                            setChair(itemId);
-                            if (registerChairBuff()) {
-                                getMap().broadcastMessage(this, MaplePacketCreator.giveForeignChairSkillEffect(this.getId()), false);
-                            }
-                            announce(MaplePacketCreator.cancelChair(itemId));
-                        }
-                    } else {    // stand up
-                        unsitChairInternal();
-                    }
+        if (this.isLoggedinWorld()) {
+            if (itemId >= 1000000) {    // sit on item chair
+                if (chair.get() < 0) {
+                    setChair(itemId);
+                    getMap().broadcastMessage(this, MaplePacketCreator.showChair(this.getId(), itemId), false);
                 }
-            } finally {
-                client.releaseClient();
+                announce(MaplePacketCreator.enableActions());
+            } else if (itemId >= 0) {    // sit on map chair
+                if (chair.get() < 0) {
+                    setChair(itemId);
+                    if (registerChairBuff()) {
+                        getMap().broadcastMessage(this, MaplePacketCreator.giveForeignChairSkillEffect(this.getId()), false);
+                    }
+                    announce(MaplePacketCreator.cancelChair(itemId));
+                }
+            } else {    // stand up
+                unsitChairInternal();
             }
         }
     }
@@ -9974,9 +9964,9 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
                 awardQuestPoint(YamlConfig.config.server.QUEST_POINT_PER_QUEST_COMPLETE);
             }
             qs.setCompleted(qs.getCompleted() + 1);   // count quest completed Jayd's idea
-            
+
             announceUpdateQuest(DelayedQuestUpdate.COMPLETE, questid, qs.getCompletionTime());
-            announceUpdateQuest(DelayedQuestUpdate.INFO, qs);
+            //announceUpdateQuest(DelayedQuestUpdate.INFO, qs); // happens after giving rewards, for non-next quests only
         } else if (qs.getStatus().equals(MapleQuestStatus.Status.NOT_STARTED)) {
             announceUpdateQuest(DelayedQuestUpdate.UPDATE, qs, false);
             if (qs.getInfoNumber() > 0) {
@@ -9987,19 +9977,9 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
     }
     
     private void expireQuest(MapleQuest quest) {
-        MapleQuestStatus mqs = getQuest(quest);
-        if(mqs.getStatus().equals(MapleQuestStatus.Status.COMPLETED)) {
-            return;
+        if (quest.forfeit(this)) {
+            announce(MaplePacketCreator.questExpire(quest.getId()));
         }
-        
-        if(System.currentTimeMillis() < mqs.getExpirationTime()) {
-            return;
-        }
-        
-        announce(MaplePacketCreator.questExpire(quest.getId()));
-        MapleQuestStatus newStatus = new MapleQuestStatus(quest, MapleQuestStatus.Status.NOT_STARTED);
-        newStatus.setForfeited(mqs.getForfeited() + 1);
-        updateQuestStatus(newStatus);
     }
     
     public void cancelQuestExpirationTask() {

@@ -224,6 +224,16 @@ public class MapleSessionCoordinator {
     public static String getSessionRemoteAddress(IoSession session) {
         return (String) session.getAttribute(MapleClient.CLIENT_REMOTE_ADDRESS);
     }
+    
+    public static String getSessionRemoteHost(IoSession session) {
+        String nibbleHwid = (String) session.getAttribute(MapleClient.CLIENT_NIBBLEHWID);
+        
+        if (nibbleHwid != null) {
+            return getSessionRemoteAddress(session) + "-" + nibbleHwid;
+        } else {
+            return getSessionRemoteAddress(session);
+        }
+    }
 
     private static MapleClient getSessionClient(IoSession session) {
         return (MapleClient) session.getAttribute(MapleClient.CLIENT_KEY);
@@ -246,7 +256,7 @@ public class MapleSessionCoordinator {
     public boolean canStartLoginSession(IoSession session) {
         if (!YamlConfig.config.server.DETERRED_MULTICLIENT) return true;
 
-        String remoteHost = getSessionRemoteAddress(session);
+        String remoteHost = getSessionRemoteHost(session);
         Lock lock = getCoodinatorLock(remoteHost);
 
         try {
@@ -306,7 +316,9 @@ public class MapleSessionCoordinator {
     }
 
     public void closeLoginSession(IoSession session) {
-        String remoteHost = getSessionRemoteAddress(session);
+        String nibbleHwid = (String) session.removeAttribute(MapleClient.CLIENT_NIBBLEHWID);
+        String remoteHost = getSessionRemoteHost(session);
+        
         Set<IoSession> lrh = loginRemoteHosts.get(remoteHost);
         if (lrh != null) {
             lrh.remove(session);
@@ -314,8 +326,7 @@ public class MapleSessionCoordinator {
                 loginRemoteHosts.remove(remoteHost);
             }
         }
-
-        String nibbleHwid = (String) session.removeAttribute(MapleClient.CLIENT_NIBBLEHWID);
+        
         if (nibbleHwid != null) {
             onlineRemoteHwids.remove(nibbleHwid);
 
@@ -337,7 +348,7 @@ public class MapleSessionCoordinator {
             return AntiMulticlientResult.SUCCESS;
         }
 
-        String remoteHost = getSessionRemoteAddress(session);
+        String remoteHost = getSessionRemoteHost(session);
         Lock lock = getCoodinatorLock(remoteHost);
 
         try {
@@ -403,9 +414,10 @@ public class MapleSessionCoordinator {
     }
 
     public AntiMulticlientResult attemptGameSession(IoSession session, int accountId, String remoteHwid) {
-        String remoteHost = getSessionRemoteAddress(session);
+        String remoteHost = getSessionRemoteHost(session);
         if (!YamlConfig.config.server.DETERRED_MULTICLIENT) {
             associateRemoteHostHwid(remoteHost, remoteHwid);
+            associateRemoteHostHwid(getSessionRemoteAddress(session), remoteHwid);  // no HWID information on the loggedin newcomer session...
             return AntiMulticlientResult.SUCCESS;
         }
         
@@ -451,6 +463,7 @@ public class MapleSessionCoordinator {
                         // updated session CLIENT_HWID attribute will be set when the player log in the game
                         onlineRemoteHwids.add(remoteHwid);
                         associateRemoteHostHwid(remoteHost, remoteHwid);
+                        associateRemoteHostHwid(getSessionRemoteAddress(session), remoteHwid);
                         associateHwidAccountIfAbsent(remoteHwid, accountId);
 
                         return AntiMulticlientResult.SUCCESS;
@@ -486,7 +499,7 @@ public class MapleSessionCoordinator {
             }
             
             MapleClient client = new MapleClient(null, null, session);
-            Integer cid = Server.getInstance().freeCharacteridInTransition(session);
+            Integer cid = Server.getInstance().freeCharacteridInTransition(client);
             if (cid != null) {
                 try {
                     client.setAccID(MapleCharacter.loadCharFromDB(cid, client, false).getAccountID());
@@ -535,7 +548,7 @@ public class MapleSessionCoordinator {
     }
     
     public String getGameSessionHwid(IoSession session) {
-        String remoteHost = getSessionRemoteAddress(session);
+        String remoteHost = getSessionRemoteHost(session);
         return cachedHostHwids.get(remoteHost);
     }
     

@@ -70,6 +70,7 @@ import net.server.services.type.ChannelServices;
 import net.server.services.task.channel.FaceExpressionService;
 import net.server.services.task.channel.MobMistService;
 import net.server.services.task.channel.OverallService;
+import net.server.world.MapleParty;
 import net.server.world.World;
 import scripting.map.MapScriptManager;
 import server.MapleItemInformationProvider;
@@ -2413,8 +2414,7 @@ public class MapleMap {
         return null;
     }
     
-    private void addPartyMemberInternal(MapleCharacter chr) {
-        int partyid = chr.getPartyId();
+    private void addPartyMemberInternal(MapleCharacter chr, int partyid) {
         if (partyid == -1) {
             return;
         }
@@ -2430,8 +2430,7 @@ public class MapleMap {
         }
     }
     
-    private void removePartyMemberInternal(MapleCharacter chr) {
-        int partyid = chr.getPartyId();
+    private void removePartyMemberInternal(MapleCharacter chr, int partyid) {
         if (partyid == -1) {
             return;
         }
@@ -2446,19 +2445,19 @@ public class MapleMap {
         }
     }
     
-    public void addPartyMember(MapleCharacter chr) {
+    public void addPartyMember(MapleCharacter chr, int partyid) {
         chrWLock.lock();
         try {
-            addPartyMemberInternal(chr);
+            addPartyMemberInternal(chr, partyid);
         } finally {
             chrWLock.unlock();
         }
     }
             
-    public void removePartyMember(MapleCharacter chr) {
+    public void removePartyMember(MapleCharacter chr, int partyid) {
         chrWLock.lock();
         try {
-            removePartyMemberInternal(chr);
+            removePartyMemberInternal(chr, partyid);
         } finally {
             chrWLock.unlock();
         }
@@ -2475,12 +2474,15 @@ public class MapleMap {
     
     public void addPlayer(final MapleCharacter chr) {
         int chrSize;
+        MapleParty party = chr.getParty();
         chrWLock.lock();
         try {
             characters.add(chr);
             chrSize = characters.size();
             
-            addPartyMemberInternal(chr);
+            if (party != null && party.getMemberById(chr.getId()) != null) {
+                addPartyMemberInternal(chr, party.getId());
+            }
             itemMonitorTimeout = 1;
         } finally {
             chrWLock.unlock();
@@ -2810,9 +2812,13 @@ public class MapleMap {
         service.unregisterFaceExpression(mapid, chr);
         chr.unregisterChairBuff();
         
+        MapleParty party = chr.getParty();
         chrWLock.lock();
         try {
-            removePartyMemberInternal(chr);
+            if (party != null && party.getMemberById(chr.getId()) != null) {
+                removePartyMemberInternal(chr, party.getId());
+            }
+            
             characters.remove(chr);
         } finally {
             chrWLock.unlock();
@@ -3559,7 +3565,7 @@ public class MapleMap {
 
         @Override
         public void run() {
-            reactor.lockReactor();
+            reactor.hitLockReactor();
             try {
                 if(reactor.getReactorType() == 100) {
                     if (reactor.getShouldCollect() == true && mapitem != null && mapitem == getMapObject(mapitem.getObjectId())) {
@@ -3603,7 +3609,7 @@ public class MapleMap {
                     }
                 }
             } finally {
-                reactor.unlockReactor();
+                reactor.hitUnlockReactor();
             }
         }
     }

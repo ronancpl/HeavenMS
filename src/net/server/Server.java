@@ -106,7 +106,6 @@ import tools.AutoJCE;
 import tools.DatabaseConnection;
 import tools.FilePrinter;
 import tools.Pair;
-import org.apache.mina.core.session.IoSession;
 
 public class Server {
     
@@ -1730,12 +1729,12 @@ public class Server {
         }
     }
     
-    private static String getRemoteIp(IoSession session) {
-        return MapleSessionCoordinator.getSessionRemoteAddress(session);
+    private static String getRemoteHost(MapleClient client) {
+        return MapleSessionCoordinator.getSessionRemoteHost(client.getSession());
     }
     
-    public void setCharacteridInTransition(IoSession session, int charId) {
-        String remoteIp = getRemoteIp(session);
+    public void setCharacteridInTransition(MapleClient client, int charId) {
+        String remoteIp = getRemoteHost(client);
         
         lgnWLock.lock();
         try {
@@ -1745,12 +1744,12 @@ public class Server {
         }
     }
     
-    public boolean validateCharacteridInTransition(IoSession session, int charId) {
+    public boolean validateCharacteridInTransition(MapleClient client, int charId) {
         if (!YamlConfig.config.server.USE_IP_VALIDATION) {
             return true;
         }
         
-        String remoteIp = getRemoteIp(session);
+        String remoteIp = getRemoteHost(client);
         
         lgnWLock.lock();
         try {
@@ -1761,12 +1760,12 @@ public class Server {
         }
     }
     
-    public Integer freeCharacteridInTransition(IoSession session) {
+    public Integer freeCharacteridInTransition(MapleClient client) {
         if (!YamlConfig.config.server.USE_IP_VALIDATION) {
             return null;
         }
         
-        String remoteIp = getRemoteIp(session);
+        String remoteIp = getRemoteHost(client);
         
         lgnWLock.lock();
         try {
@@ -1776,13 +1775,13 @@ public class Server {
         }
     }
     
-    public boolean hasCharacteridInTransition(IoSession session) {
+    public boolean hasCharacteridInTransition(MapleClient client) {
         if (!YamlConfig.config.server.USE_IP_VALIDATION) {
             return true;
         }
         
-        String remoteIp = getRemoteIp(session);
-        
+        String remoteIp = getRemoteHost(client);
+                
         lgnRLock.lock();
         try {
             return transitioningChars.containsKey(remoteIp);

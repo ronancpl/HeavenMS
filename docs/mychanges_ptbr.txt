@@ -2238,3 +2238,38 @@ Adicionado utilização de dispose em quest scripts para o comando homônimo.
 30 Outubro 2019,
 Corrigido bug em scripts (que possivelmente passou a ocorrer ao utilizar Java8) relacionado ao tentar utilizar métodos da biblioteca Math sem corresponder parâmetros com a assinatura adequada.
 Corrigido entrega de itemid inesperado em script relacionado a EllinPQ.
+
+01 - 03 Novembro 2019,
+Corrigido deslize recente em na funcionalidade de recuperação de itens de quest.
+Adicionado custom npc para MapleTVs: geradora de scrolls, provê os mesmos após trocar diversos itens ganhos durante jogo.
+
+04 Novembro 2019,
+Revisado diversos fluxos de aquisição de locks ao longo das classes mais relevantes do código-fonte.
+Corrigido problema inesperado com funcionalidade restoreLostItem.
+Inserido remoção de cash item para dentro da cláusula que checa item no inventário.
+Corrigido bug em pet autopot retirando quantidades negativas do inventário.
+Corrigido caso de deadlock em tentativa de aquisição de lock inesperada após adquirir os de mapas, que deveriam ter prioridade baixa.
+
+07 Novembro 2019,
+Adicionado cura de debuffs zumbificação e confusão na lista de debuffs a serem curados pela poção "cura-tudo".
+Corrigido duplicação em mensagem de pós-quest enviada, em casos onde há a presença de ação que automatiza mensagem guiando jogador para a próxima quest.
+
+09 - 10 Novembro 2019,
+Refatorado certos usos de finalização não-sucedida de quests, que poderiam compartilhar das mecânicas de desistência de quest.
+Revisado aquisição de endereço remoto para checagem de transição de jogadores e multi-cliente, agora também avaliando distinção de HWID passado.
+Corrigido pós-quests ainda permitindo jogadores a movimentarem enquanto a mensagem está na tela, devido a certo conflito com envio de recompensas permitindo movimentação do jogador.
+Corrigido informação de skillbooks por quests não-funcional após refatoração recente.
+Corrigido chance de drop de item de quest em El Nath extremamente baixa.
+
+11 - 12 Novembro 2019,
+Corrigido algumas skills de ataque de Aran (double, triple swing) não aplicando consumo de MP devidamente.
+Revisado caso com doors levando jogadores a solo abaixo inesperadamente.
+Corrigido pots em MCPQ não atuando devidamente para outros jogadores no grupo ou somente para si.
+Corrigido buffs random em MCPQ acertando sempre múltiplos jogadores.
+Corrigido poção "cura-tudo" em MCPQ: pots pequenos curando todos os jogadores de party, pots grandes não curando slow.
+Corrigido caso inesperado em 2nd job de pirata bloqueando saída de jogadores do mapa enquanto não lidarem com todos os mobs.
+
+13 Novembro 2019,
+Corrigido problema no sistema de matching ao tentar rodar ações externas enquanto travando os recursos do sistema, ao criar match.
+Corrigido caso onde novos jogadores poderiam ser agregados à party e entrar em campo na MCPQ assim que confirmação de partida e contagem de início fossem efetivados.
+Adicionado cache para requerimento de scrolls, assim melhorando tempo de resposta para o novo custom NPC de geração de scrolls.

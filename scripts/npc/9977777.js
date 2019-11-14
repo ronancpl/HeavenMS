@@ -253,6 +253,7 @@ function writeFeatureTab_CustomNPCs() {
         addFeature("Dalair: automatized equipment-merger.");
         addFeature("Donation Box: automatized item-buyer.");
         addFeature("Coco & Ace of Hearts: C. scroll crafters.");
+        addFeature("Barry (MapleTV): fill book & exchange items for scroll.");
 }
 
 function writeFeatureTab_Localhostedits() {

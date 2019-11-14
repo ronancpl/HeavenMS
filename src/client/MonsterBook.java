@@ -29,6 +29,7 @@ import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.Semaphore;
@@ -46,10 +47,10 @@ public final class MonsterBook {
     private Map<Integer, Integer> cards = new LinkedHashMap<>();
     private Lock lock = MonitoredReentrantLockFactory.createLock(MonitoredLockType.BOOK);
 
-    private Set<Entry<Integer, Integer>> getCardSet() {
+    public Set<Entry<Integer, Integer>> getCardSet() {
         lock.lock();
         try {
-            return Collections.unmodifiableSet(cards.entrySet());
+            return new HashSet<>(cards.entrySet());
         } finally {
             lock.unlock();
         }
@@ -240,6 +241,31 @@ public final class MonsterBook {
             con.close();
         } catch (SQLException e) {
             e.printStackTrace();
+        }
+    }
+    
+    public static int[] getCardTierSize() {
+        try {
+            Connection con = DatabaseConnection.getConnection();
+            PreparedStatement ps = con.prepareStatement("SELECT COUNT(*) FROM monstercarddata GROUP BY floor(cardid / 1000);");
+            ResultSet rs = ps.executeQuery();
+            
+            rs.last();
+            int[] tierSizes = new int[rs.getRow()];
+            rs.beforeFirst();
+            
+            while (rs.next()) {
+                tierSizes[rs.getRow() - 1] = rs.getInt(1);
+            }
+            
+            rs.close();
+            ps.close();
+            con.close();
+            
+            return tierSizes;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return new int[0];
         }
     }
 }

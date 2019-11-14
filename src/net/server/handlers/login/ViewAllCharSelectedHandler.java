@@ -112,8 +112,7 @@ public final class ViewAllCharSelectedHandler extends AbstractMaplePacketHandler
         }
         
         server.unregisterLoginState(c);
-        c.updateLoginState(MapleClient.LOGIN_SERVER_TRANSITION);
-        server.setCharacteridInTransition(session, charId);
+        c.setCharacterOnSessionTransitionState(charId);
         
         try {
             c.announce(MaplePacketCreator.getServerIP(InetAddress.getByName(socket[0]), Integer.parseInt(socket[1]), charId));

@@ -22,7 +22,6 @@ package net.server.coordinator.matchchecker;
 import client.MapleCharacter;
 import net.server.PlayerStorage;
 import net.server.Server;
-import net.server.coordinator.matchchecker.AbstractMatchCheckerListener;
 import net.server.coordinator.matchchecker.MatchCheckerListenerFactory.MatchCheckerType;
 import net.server.world.World;
 import java.util.Collections;
@@ -260,19 +259,19 @@ public class MapleMatchCheckerCoordinator {
         }
     }
     
-    private void createMatchConfirmationInternal(MatchCheckerType matchType, int world, int leaderCid, AbstractMatchCheckerListener leaderListener, Set<Integer> players, String message) {
+    private MapleMatchCheckingElement createMatchConfirmationInternal(MatchCheckerType matchType, int world, int leaderCid, AbstractMatchCheckerListener leaderListener, Set<Integer> players, String message) {
         MapleMatchCheckingElement mmce = new MapleMatchCheckingElement(matchType, leaderCid, world, leaderListener, players, message);
         
         for (Integer cid : players) {
             matchEntries.put(cid, mmce);
         }
         
-        mmce.dispatchMatchCreated();
-        
         acceptMatchElement(mmce, leaderCid);
+        return mmce;
     }
     
     public boolean createMatchConfirmation(MatchCheckerType matchType, int world, int leaderCid, Set<Integer> players, String message) {
+        MapleMatchCheckingElement mmce = null;
         try {
             semaphorePool.acquire();
             try {
@@ -280,8 +279,7 @@ public class MapleMatchCheckerCoordinator {
                     try {
                         if (isMatchingAvailable(players)) {
                             AbstractMatchCheckerListener leaderListener = matchType.getListener();
-                            createMatchConfirmationInternal(matchType, world, leaderCid, leaderListener, players, message);
-                            return true;
+                            mmce = createMatchConfirmationInternal(matchType, world, leaderCid, leaderListener, players, message);
                         } else {
                             reenablePlayerMatching(players);
                         }
@@ -296,7 +294,12 @@ public class MapleMatchCheckerCoordinator {
             ie.printStackTrace();
         }
         
-        return false;
+        if (mmce != null) {
+            mmce.dispatchMatchCreated();
+            return true;
+        } else {
+            return false;
+        }
     }
     
     private void disposeMatchElement(MapleMatchCheckingElement mmce) {
@@ -320,16 +323,12 @@ public class MapleMatchCheckerCoordinator {
         if (mmce.acceptEntry(cid)) {
             unpoolMatchPlayer(cid);
             disposeMatchElement(mmce);
-            
-            mmce.dispatchMatchResult(true);
         }
     }
     
     private void denyMatchElement(MapleMatchCheckingElement mmce, int cid) {
         unpoolMatchPlayer(cid);
         disposeMatchElement(mmce);
-        
-        mmce.dispatchMatchResult(false);
     }
     
     private void dismissMatchElement(MapleMatchCheckingElement mmce, int cid) {
@@ -337,35 +336,32 @@ public class MapleMatchCheckerCoordinator {
         
         unpoolMatchPlayer(cid);
         disposeMatchElement(mmce);
-        
-        mmce.dispatchMatchDismissed();
     }
     
     public boolean answerMatchConfirmation(int cid, boolean accept) {
+        MapleMatchCheckingElement mmce = null;
         try {
             semaphorePool.acquire();
             try {
                 while (matchEntries.containsKey(cid)) {
                     if (poolMatchPlayer(cid)) {
                         try {
-                            MapleMatchCheckingElement mmce = matchEntries.get(cid);
+                            mmce = matchEntries.get(cid);
                             
                             if (mmce != null) {
                                 synchronized (mmce) {
                                     if (!mmce.isMatchActive()) {    // thanks Alex (CanIGetaPR) for noticing that exploiters could stall on match checking
                                         matchEntries.remove(cid);
-                                        return false;
-                                    }
-                                    
-                                    if (accept) {
-                                        acceptMatchElement(mmce, cid);
+                                        mmce = null;
                                     } else {
-                                        denyMatchElement(mmce, cid);
-                                        matchEntries.remove(cid);
+                                        if (accept) {
+                                            acceptMatchElement(mmce, cid);
+                                        } else {
+                                            denyMatchElement(mmce, cid);
+                                            matchEntries.remove(cid);
+                                        }
                                     }
                                 }
-                                
-                                return true;
                             }
                         } finally {
                             unpoolMatchPlayer(cid);
@@ -377,28 +373,32 @@ public class MapleMatchCheckerCoordinator {
             }
         } catch (InterruptedException ie) {
             ie.printStackTrace();
+        }
+        
+        if (mmce != null) {
+            mmce.dispatchMatchResult(accept);
         }
         
         return false;
     }
     
     public boolean dismissMatchConfirmation(int cid) {
+        MapleMatchCheckingElement mmce = null;
         try {
             semaphorePool.acquire();
             try {
                 while (matchEntries.containsKey(cid)) {
                     if (poolMatchPlayer(cid)) {
                         try {
-                            MapleMatchCheckingElement mmce = matchEntries.get(cid);
+                            mmce = matchEntries.get(cid);
 
                             if (mmce != null) {
                                 synchronized (mmce) {
                                     if (!mmce.isMatchActive()) {
-                                        return false;
+                                        mmce = null;
+                                    } else {
+                                        dismissMatchElement(mmce, cid);
                                     }
-                                    
-                                    dismissMatchElement(mmce, cid);
-                                    return true;
                                 }
                             }
                         } finally {
@@ -413,7 +413,12 @@ public class MapleMatchCheckerCoordinator {
             ie.printStackTrace();
         }
         
-        return false;
+        if (mmce != null) {
+            mmce.dispatchMatchDismissed();
+            return true;
+        } else {
+            return false;
+        }
     }
         
 }

@@ -37,6 +37,12 @@ public final class UseChairHandler extends AbstractMaplePacketHandler {
             return;
         }
         
-        c.getPlayer().sitChair(itemId);
+        if (c.tryacquireClient()) {
+            try {
+                c.getPlayer().sitChair(itemId);
+            } finally {
+                c.releaseClient();
+            }
+        }
     }
 }

@@ -187,7 +187,7 @@ public class ServerConfig {
     public boolean USE_ENHANCED_CHSCROLL;
     public boolean USE_ENHANCED_CRAFTING;
     public boolean USE_ENHANCED_CLNSLATE;
-    public int SCROLL_CHANCE_RATE;
+    public int SCROLL_CHANCE_ROLLS;
     public int CHSCROLL_STAT_RATE;
     public int CHSCROLL_STAT_RANGE;
 

@@ -37,6 +37,12 @@ public final class CancelChairHandler extends AbstractMaplePacketHandler {
             return;
         }
         
-        mc.sitChair(id);
+        if (c.tryacquireClient()) {
+            try {
+                mc.sitChair(id);
+            } finally {
+                c.releaseClient();
+            }
+        }
     }
 }

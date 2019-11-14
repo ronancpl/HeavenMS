@@ -170,11 +170,11 @@ public final class ItemConstants {
     }
     
     public static boolean isPartyItem(int itemId) {
-        return itemId >= 2022430 && itemId <= 2022433;
+        return itemId >= 2022430 && itemId <= 2022433 || itemId >= 2022160 && itemId <= 2022163;
     }
     
     public static boolean isPartyAllcure(int itemId) {
-        return itemId == 2022433;
+        return itemId == 2022433 || itemId == 2022163;
     }
     
     public static boolean isHiredMerchant(int itemId) {

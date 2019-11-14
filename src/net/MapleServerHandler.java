@@ -242,14 +242,14 @@ public class MapleServerHandler extends IoHandlerAdapter {
         long timeNow = Server.getInstance().getCurrentTime();
         long timeThen = timeNow - 15000;
         
+        Set<MapleClient> pingClients = new HashSet<>();
         idleLock.lock();
         try {
             for(Entry<MapleClient, Long> mc : idleSessions.entrySet()) {
                 if(timeNow - mc.getValue() >= 15000) {
-                    mc.getKey().testPing(timeThen);
+                    pingClients.add(mc.getKey());
                 }
             }
-            
             idleSessions.clear();
             
             if(!tempIdleSessions.isEmpty()) {
@@ -266,6 +266,10 @@ public class MapleServerHandler extends IoHandlerAdapter {
             }
         } finally {
             idleLock.unlock();
+        }
+        
+        for(MapleClient c : pingClients) {
+            c.testPing(timeThen);
         }
     }
     

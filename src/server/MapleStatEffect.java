@@ -262,6 +262,7 @@ public class MapleStatEffect {
         }
         if (MapleDataTool.getInt("weakness", source, 0) > 0) {
             cure.add(MapleDisease.WEAKEN);
+            cure.add(MapleDisease.SLOW);
         }
         if (MapleDataTool.getInt("curse", source, 0) > 0) {
             cure.add(MapleDisease.CURSE);
@@ -1070,7 +1071,7 @@ public class MapleStatEffect {
         if (isMagicDoor() && !FieldLimit.DOOR.check(applyto.getMap().getFieldLimit())) { // Magic Door
             int y = applyto.getFh();
             if (y == 0) {
-                y = applyto.getPosition().y;
+                y = applyto.getMap().getGroundBelow(applyto.getPosition()).y;    // thanks Lame for pointing out unusual cases of doors sending players on ground below
             }
             Point doorPosition = new Point(applyto.getPosition().x, y);
             MapleDoor door = new MapleDoor(applyto, doorPosition);
@@ -1118,7 +1119,7 @@ public class MapleStatEffect {
                         }
                     }
                 } else {
-                    int amount = opposition.getMembers().size() - 1;
+                    int amount = opposition.getMembers().size();
                     int randd = (int) Math.floor(Math.random() * amount);
                     MapleCharacter chrApp = applyfrom.getMap().getCharacterById(opposition.getMemberByPos(randd).getId());
                     if (chrApp != null && chrApp.getMap().isCPQMap()) {
@@ -1132,16 +1133,7 @@ public class MapleStatEffect {
             }
         } else if (cureDebuffs.size() > 0) { // by Drago-Dragohe4rt
             for (final MapleDisease debuff : cureDebuffs) {
-                if (applyfrom.getParty() != null) {
-                    for (MaplePartyCharacter mpc : applyfrom.getParty().getPartyMembers()) {
-                        MapleCharacter chr = mpc.getPlayer();
-                        if (chr != null) {
-                            chr.dispelDebuff(debuff);
-                        }
-                    }
-                } else {
-                    applyfrom.dispelDebuff(debuff);
-                }
+                applyfrom.dispelDebuff(debuff);
             }
         } else if (mobSkill > 0 && mobSkillLevel > 0) {
             MobSkill ms = MobSkillFactory.getMobSkill(mobSkill, mobSkillLevel);
