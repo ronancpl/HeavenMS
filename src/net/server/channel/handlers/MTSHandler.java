@@ -44,7 +44,7 @@ import client.MapleClient;
 import client.inventory.Equip;
 import client.inventory.Item;
 import client.inventory.MapleInventoryType;
-import constants.ItemConstants;
+import constants.inventory.ItemConstants;
 
 public final class MTSHandler extends AbstractMaplePacketHandler {
 
@@ -160,48 +160,55 @@ public final class MTSHandler extends AbstractMaplePacketHandler {
                         }
                         if (!i.getInventoryType().equals(MapleInventoryType.EQUIP)) {
                             Item item = (Item) i;
-                            ps = con.prepareStatement("INSERT INTO mts_items (tab, type, itemid, quantity, seller, price, owner, sellername, sell_ends) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+                            ps = con.prepareStatement("INSERT INTO mts_items (tab, type, itemid, quantity, expiration, giftFrom, seller, price, owner, sellername, sell_ends) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
                             ps.setInt(1, 1);
                             ps.setInt(2, (int) invType.getType());
                             ps.setInt(3, item.getItemId());
                             ps.setInt(4, quantity);
-                            ps.setInt(5, c.getPlayer().getId());
-                            ps.setInt(6, price);
-                            ps.setString(7, item.getOwner());
-                            ps.setString(8, c.getPlayer().getName());
-                            ps.setString(9, date);
+                            ps.setLong(5, item.getExpiration());
+                            ps.setString(6, item.getGiftFrom());
+                            ps.setInt(7, c.getPlayer().getId());
+                            ps.setInt(8, price);
+                            ps.setString(9, item.getOwner());
+                            ps.setString(10, c.getPlayer().getName());
+                            ps.setString(11, date);
                         } else {
                             Equip equip = (Equip) i;
-                            ps = con.prepareStatement("INSERT INTO mts_items (tab, type, itemid, quantity, seller, price, upgradeslots, level, str, dex, `int`, luk, hp, mp, watk, matk, wdef, mdef, acc, avoid, hands, speed, jump, locked, owner, sellername, sell_ends, vicious, flag) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+                            ps = con.prepareStatement("INSERT INTO mts_items (tab, type, itemid, quantity, expiration, giftFrom, seller, price, upgradeslots, level, str, dex, `int`, luk, hp, mp, watk, matk, wdef, mdef, acc, avoid, hands, speed, jump, locked, owner, sellername, sell_ends, vicious, flag, itemexp, itemlevel, ringid) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
                             ps.setInt(1, 1);
                             ps.setInt(2, (int) invType.getType());
                             ps.setInt(3, equip.getItemId());
                             ps.setInt(4, quantity);
-                            ps.setInt(5, c.getPlayer().getId());
-                            ps.setInt(6, price);
-                            ps.setInt(7, equip.getUpgradeSlots());
-                            ps.setInt(8, equip.getLevel());
-                            ps.setInt(9, equip.getStr());
-                            ps.setInt(10, equip.getDex());
-                            ps.setInt(11, equip.getInt());
-                            ps.setInt(12, equip.getLuk());
-                            ps.setInt(13, equip.getHp());
-                            ps.setInt(14, equip.getMp());
-                            ps.setInt(15, equip.getWatk());
-                            ps.setInt(16, equip.getMatk());
-                            ps.setInt(17, equip.getWdef());
-                            ps.setInt(18, equip.getMdef());
-                            ps.setInt(19, equip.getAcc());
-                            ps.setInt(20, equip.getAvoid());
-                            ps.setInt(21, equip.getHands());
-                            ps.setInt(22, equip.getSpeed());
-                            ps.setInt(23, equip.getJump());
-                            ps.setInt(24, 0);
-                            ps.setString(25, equip.getOwner());
-                            ps.setString(26, c.getPlayer().getName());
-                            ps.setString(27, date);
-                            ps.setInt(28, equip.getVicious());
-                            ps.setInt(29, equip.getFlag());
+                            ps.setLong(5, equip.getExpiration());
+                            ps.setString(6, equip.getGiftFrom());
+                            ps.setInt(7, c.getPlayer().getId());
+                            ps.setInt(8, price);
+                            ps.setInt(9, equip.getUpgradeSlots());
+                            ps.setInt(10, equip.getLevel());
+                            ps.setInt(11, equip.getStr());
+                            ps.setInt(12, equip.getDex());
+                            ps.setInt(13, equip.getInt());
+                            ps.setInt(14, equip.getLuk());
+                            ps.setInt(15, equip.getHp());
+                            ps.setInt(16, equip.getMp());
+                            ps.setInt(17, equip.getWatk());
+                            ps.setInt(18, equip.getMatk());
+                            ps.setInt(19, equip.getWdef());
+                            ps.setInt(20, equip.getMdef());
+                            ps.setInt(21, equip.getAcc());
+                            ps.setInt(22, equip.getAvoid());
+                            ps.setInt(23, equip.getHands());
+                            ps.setInt(24, equip.getSpeed());
+                            ps.setInt(25, equip.getJump());
+                            ps.setInt(26, 0);
+                            ps.setString(27, equip.getOwner());
+                            ps.setString(28, c.getPlayer().getName());
+                            ps.setString(29, date);
+                            ps.setInt(30, equip.getVicious());
+                            ps.setInt(31, equip.getFlag());
+                            ps.setInt(32, equip.getItemExp());
+                            ps.setByte(33, equip.getItemLevel());    // thanks Jefe for noticing missing itemlevel labels
+                            ps.setInt(34, equip.getRingId());
                         }
                         ps.executeUpdate();
                         ps.close();
@@ -320,8 +327,13 @@ public final class MTSHandler extends AbstractMaplePacketHandler {
                             equip.setWdef((short) rs.getInt("wdef"));
                             equip.setUpgradeSlots((byte) rs.getInt("upgradeslots"));
                             equip.setLevel((byte) rs.getInt("level"));
+                            equip.setItemLevel(rs.getByte("itemlevel"));
+                            equip.setItemExp(rs.getInt("itemexp"));
+                            equip.setRingId(rs.getInt("ringid"));
                             equip.setVicious((byte) rs.getInt("vicious"));
-                            equip.setFlag((byte) rs.getInt("flag"));
+                            equip.setFlag((short) rs.getInt("flag"));
+                            equip.setExpiration(rs.getLong("expiration"));
+                            equip.setGiftFrom(rs.getString("giftFrom"));
                             equip.setPosition(c.getPlayer().getInventory(ItemConstants.getInventoryType(rs.getInt("itemid"))).getNextFreeSlot());
                             i = equip.copy();
                         }
@@ -568,7 +580,12 @@ public final class MTSHandler extends AbstractMaplePacketHandler {
                     equip.setWdef((short) rs.getInt("wdef"));
                     equip.setUpgradeSlots((byte) rs.getInt("upgradeslots"));
                     equip.setLevel((byte) rs.getInt("level"));
-                    equip.setFlag((byte) rs.getInt("flag"));
+                    equip.setFlag((short) rs.getInt("flag"));
+                    equip.setItemLevel(rs.getByte("itemlevel"));
+                    equip.setItemExp(rs.getInt("itemexp"));
+                    equip.setRingId(rs.getInt("ringid"));
+                    equip.setExpiration(rs.getLong("expiration"));
+                    equip.setGiftFrom(rs.getString("giftFrom"));
                     items.add(new MTSItemInfo((Item) equip, rs.getInt("price"), rs.getInt("id"), rs.getInt("seller"), rs.getString("sellername"), rs.getString("sell_ends")));
                 }
             }
@@ -623,7 +640,12 @@ public final class MTSHandler extends AbstractMaplePacketHandler {
                             equip.setWdef((short) rse.getInt("wdef"));
                             equip.setUpgradeSlots((byte) rse.getInt("upgradeslots"));
                             equip.setLevel((byte) rse.getInt("level"));
-                            equip.setFlag((byte) rs.getInt("flag"));
+                            equip.setItemLevel(rs.getByte("itemlevel"));
+                            equip.setItemExp(rs.getInt("itemexp"));
+                            equip.setRingId(rs.getInt("ringid"));
+                            equip.setFlag((short) rs.getInt("flag"));
+                            equip.setExpiration(rs.getLong("expiration"));
+                            equip.setGiftFrom(rs.getString("giftFrom"));
                             items.add(new MTSItemInfo((Item) equip, rse.getInt("price"), rse.getInt("id"), rse.getInt("seller"), rse.getString("sellername"), rse.getString("sell_ends")));
                         }
                     }
@@ -686,7 +708,12 @@ public final class MTSHandler extends AbstractMaplePacketHandler {
                     equip.setWdef((short) rs.getInt("wdef"));
                     equip.setUpgradeSlots((byte) rs.getInt("upgradeslots"));
                     equip.setLevel((byte) rs.getInt("level"));
-                    equip.setFlag((byte) rs.getInt("flag"));
+                    equip.setItemLevel(rs.getByte("itemlevel"));
+                    equip.setItemExp(rs.getInt("itemexp"));
+                    equip.setRingId(rs.getInt("ringid"));
+                    equip.setFlag((short) rs.getInt("flag"));
+                    equip.setExpiration(rs.getLong("expiration"));
+                    equip.setGiftFrom(rs.getString("giftFrom"));
                     items.add(new MTSItemInfo((Item) equip, rs.getInt("price"), rs.getInt("id"), rs.getInt("seller"), rs.getString("sellername"), rs.getString("sell_ends")));
                 }
             }
@@ -747,7 +774,12 @@ public final class MTSHandler extends AbstractMaplePacketHandler {
                     equip.setWdef((short) rs.getInt("wdef"));
                     equip.setUpgradeSlots((byte) rs.getInt("upgradeslots"));
                     equip.setLevel((byte) rs.getInt("level"));
-                    equip.setFlag((byte) rs.getInt("flag"));
+                    equip.setItemLevel(rs.getByte("itemlevel"));
+                    equip.setItemExp(rs.getInt("itemexp"));
+                    equip.setRingId(rs.getInt("ringid"));
+                    equip.setFlag((short) rs.getInt("flag"));
+                    equip.setExpiration(rs.getLong("expiration"));
+                    equip.setGiftFrom(rs.getString("giftFrom"));
                     items.add(new MTSItemInfo((Item) equip, rs.getInt("price"), rs.getInt("id"), rs.getInt("seller"), rs.getString("sellername"), rs.getString("sell_ends")));
                 }
             }
@@ -841,7 +873,12 @@ public final class MTSHandler extends AbstractMaplePacketHandler {
                     equip.setWdef((short) rs.getInt("wdef"));
                     equip.setUpgradeSlots((byte) rs.getInt("upgradeslots"));
                     equip.setLevel((byte) rs.getInt("level"));
-                    equip.setFlag((byte) rs.getInt("flag"));
+                    equip.setItemLevel(rs.getByte("itemlevel"));
+                    equip.setItemExp(rs.getInt("itemexp"));
+                    equip.setRingId(rs.getInt("ringid"));
+                    equip.setFlag((short) rs.getInt("flag"));
+                    equip.setExpiration(rs.getLong("expiration"));
+                    equip.setGiftFrom(rs.getString("giftFrom"));
                     items.add(new MTSItemInfo((Item) equip, rs.getInt("price"), rs.getInt("id"), rs.getInt("seller"), rs.getString("sellername"), rs.getString("sell_ends")));
                 }
             }

@@ -19,7 +19,7 @@ function action(mode, type, selection) {
 	cm.removeAll(4001163);
 	cm.removeAll(4001169);
 	cm.removeAll(2270004);
-	cm.warp(930000800);
+	cm.warp(930000800, 0);
 	cm.dispose();
     }
 }

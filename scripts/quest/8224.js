@@ -25,6 +25,7 @@ function start(mode, type, selection) {
     else if (status == 1){
             qm.sendOk("Ok. I need you to hunt down #bthose fake trees#k in the forest, and collect 50 of their drops as proof that you made your part on this.");
             qm.forceStartQuest();
+    } else if (status == 2) {
             qm.dispose();
     }
 }

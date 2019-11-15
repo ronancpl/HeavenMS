@@ -25,7 +25,7 @@ package net.server.handlers.login;
 import client.MapleClient;
 import net.AbstractMaplePacketHandler;
 import net.server.Server;
-import net.server.coordinator.MapleSessionCoordinator;
+import net.server.coordinator.session.MapleSessionCoordinator;
 import tools.MaplePacketCreator;
 import tools.data.input.SeekableLittleEndianAccessor;
 

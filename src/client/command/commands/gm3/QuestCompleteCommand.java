@@ -46,13 +46,13 @@ public class QuestCompleteCommand extends Command {
 
         if (player.getQuestStatus(questId) == 1) {
             MapleQuest quest = MapleQuest.getInstance(questId);
-            if (quest != null) {
-                int npcid = quest.getNpcRequirement(true);
-                quest.forceComplete(player, npcid);
-                player.dropMessage(5, "QUEST " + questId + " completed.");
-            } else {    // should not occur
-                player.dropMessage(5, "QUESTID " + questId + " is invalid.");
+            if (quest != null && quest.getNpcRequirement(true) != -1) {
+                c.getAbstractPlayerInteraction().forceCompleteQuest(questId, quest.getNpcRequirement(true));
+            } else {
+                c.getAbstractPlayerInteraction().forceCompleteQuest(questId);
             }
+            
+            player.dropMessage(5, "QUEST " + questId + " completed.");
         } else {
             player.dropMessage(5, "QUESTID " + questId + " not started or already completed.");
         }

@@ -27,11 +27,10 @@ import client.MapleMount;
 import client.inventory.Item;
 import client.inventory.MapleInventory;
 import client.inventory.MapleInventoryType;
-import constants.ExpTable;
+import constants.game.ExpTable;
 import net.AbstractMaplePacketHandler;
 import client.inventory.manipulator.MapleInventoryManipulator;
 import tools.MaplePacketCreator;
-import tools.Pair;
 import tools.data.input.SeekableLittleEndianAccessor;
 
 /**

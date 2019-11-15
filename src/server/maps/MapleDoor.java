@@ -23,11 +23,13 @@ package server.maps;
 
 import java.awt.Point;
 import java.util.Collection;
+
+import config.YamlConfig;
 import tools.Pair;
 
-import server.MaplePortal;
 import client.MapleCharacter;
-import constants.ServerConstants;
+import net.server.services.type.ChannelServices;
+import net.server.services.task.channel.OverallService;
 
 /**
  *
@@ -51,7 +53,7 @@ public class MapleDoor {
         this.target = owner.getMap();
         
         if(target.canDeployDoor(targetPosition)) {
-            if(ServerConstants.USE_ENFORCE_MDOOR_POSITION) {
+            if(YamlConfig.config.server.USE_ENFORCE_MDOOR_POSITION) {
                 posStatus = target.getDoorPositionStatus(targetPosition);
             }
             
@@ -103,10 +105,12 @@ public class MapleDoor {
 
         for (MapleCharacter chr : targetChars) {
             areaDoor.sendDestroyData(chr.getClient());
+            chr.removeVisibleMapObject(areaDoor);
         }
 
         for (MapleCharacter chr : townChars) {
             townDoor.sendDestroyData(chr.getClient());
+            chr.removeVisibleMapObject(townDoor);
         }
         
         owner.removePartyDoor(false);
@@ -116,6 +120,7 @@ public class MapleDoor {
                 MapleDoor door = chr.getMainTownDoor();
                 if (door != null) {
                     townDoor.sendSpawnData(chr.getClient());
+                    chr.addVisibleMapObject(townDoor);
                 }
             }
         }
@@ -127,7 +132,9 @@ public class MapleDoor {
             long effectTimeLeft = 3000 - destroyDoor.getElapsedDeployTime();   // portal deployment effect duration
             if (effectTimeLeft > 0) {
                 MapleMap town = destroyDoor.getTown();
-                town.getChannelServer().registerOverallAction(town.getId(), new Runnable() {
+                
+                OverallService service = (OverallService) town.getChannelServer().getServiceAccess(ChannelServices.OVERALL);
+                service.registerOverallAction(town.getId(), new Runnable() {
                     @Override
                     public void run() {
                         destroyDoor.broadcastRemoveDoor(owner);   // thanks BHB88 for noticing doors crashing players when instantly cancelling buff

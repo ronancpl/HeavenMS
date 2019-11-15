@@ -31,12 +31,10 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import provider.MapleData;
 import provider.MapleDataProvider;
 import provider.MapleDataProviderFactory;
 import provider.MapleDataTool;
-import server.PortalFactory;
 import server.life.AbstractLoadedMapleLife;
 import server.life.MapleLifeFactory;
 import server.life.MapleMonster;
@@ -49,8 +47,6 @@ import tools.StringUtil;
 
 public class MapleMapFactory {
 
-    private static Map<Integer, Float> mapRecoveryRateCache = new HashMap<>();
-    
     private static MapleData nameData;
     private static MapleDataProvider mapSource;
     
@@ -58,7 +54,7 @@ public class MapleMapFactory {
         nameData = MapleDataProviderFactory.getDataProvider(new File(System.getProperty("wzpath") + "/String.wz")).getData("Map.img");
         mapSource = MapleDataProviderFactory.getDataProvider(new File(System.getProperty("wzpath") + "/Map.wz"));
     }
-
+    
     private static void loadLifeFromWz(MapleMap map, MapleData mapData) {
         for (MapleData life : mapData.getChildByPath("life")) {
             life.getName();
@@ -166,14 +162,13 @@ public class MapleMapFactory {
 
         map.setFieldLimit(MapleDataTool.getInt(infoData.getChildByPath("fieldLimit"), 0));
         map.setMobInterval((short) MapleDataTool.getInt(infoData.getChildByPath("createMobInterval"), 5000));
-        PortalFactory portalFactory = new PortalFactory();
+        MaplePortalFactory portalFactory = new MaplePortalFactory();
         for (MapleData portal : mapData.getChildByPath("portal")) {
             map.addPortal(portalFactory.makePortal(MapleDataTool.getInt(portal.getChildByPath("pt")), portal));
         }
         MapleData timeMob = infoData.getChildByPath("timeMob");
         if (timeMob != null) {
-            map.timeMob(MapleDataTool.getInt(timeMob.getChildByPath("id")),
-            MapleDataTool.getString(timeMob.getChildByPath("message")));
+            map.setTimeMob(MapleDataTool.getInt(timeMob.getChildByPath("id")), MapleDataTool.getString(timeMob.getChildByPath("message")));
         }
 
         int bounds[] = new int[4];
@@ -243,6 +238,10 @@ public class MapleMapFactory {
                 map.addMapleArea(new Rectangle(x1, y1, (x2 - x1), (y2 - y1)));
             }
         }
+        if (mapData.getChildByPath("seat") != null) {
+            int seats = mapData.getChildByPath("seat").getChildren().size();
+            map.setSeats(seats);
+        }
         if (event == null) {
             try {
                 Connection con = DatabaseConnection.getConnection();
@@ -275,10 +274,10 @@ public class MapleMapFactory {
             MapleData mcData = mapData.getChildByPath("monsterCarnival");
             if (mcData != null) {
                 map.setDeathCP(MapleDataTool.getIntConvert("deathCP", mcData, 0));
-                map.setMaxMobs(MapleDataTool.getIntConvert("mobGenMax", mcData, 0));
+                map.setMaxMobs(MapleDataTool.getIntConvert("mobGenMax", mcData, 20));    // thanks Atoot for noticing CPQ1 bf. 3 & 4 not accepting spawns due to undefined limits, Lame for noticing a need to cap mob spawns even on such undefined limits
                 map.setTimeDefault(MapleDataTool.getIntConvert("timeDefault", mcData, 0));
                 map.setTimeExpand(MapleDataTool.getIntConvert("timeExpand", mcData, 0));
-                map.setMaxReactors(MapleDataTool.getIntConvert("guardianGenMax", mcData, 0));
+                map.setMaxReactors(MapleDataTool.getIntConvert("guardianGenMax", mcData, 16));
                 MapleData guardianGenData = mcData.getChildByPath("guardianGenPos");
                 for (MapleData node : guardianGenData.getChildren()) {
                     GuardianSpawnPoint pt = new GuardianSpawnPoint(new Point(MapleDataTool.getIntConvert("x", node), MapleDataTool.getIntConvert("y", node)));
@@ -310,9 +309,10 @@ public class MapleMapFactory {
                 }
             }
         }
+        
         try {
-            map.setMapName(MapleDataTool.getString("mapName", nameData.getChildByPath(getMapStringName(mapid)), ""));
-            map.setStreetName(MapleDataTool.getString("streetName", nameData.getChildByPath(getMapStringName(mapid)), ""));
+            map.setMapName(loadPlaceName(mapid));
+            map.setStreetName(loadStreetName(mapid));
         } catch (Exception e) {
             if (mapid / 1000 != 1020) {     // explorer job introduction scenes
                 e.printStackTrace();
@@ -333,11 +333,10 @@ public class MapleMapFactory {
         map.setTimeLimit(MapleDataTool.getIntConvert("timeLimit", infoData, -1));
         map.setFieldType(MapleDataTool.getIntConvert("fieldType", infoData, 0));
         map.setMobCapacity(MapleDataTool.getIntConvert("fixedMobCapacity", infoData, 500));//Is there a map that contains more than 500 mobs?
-
+        
         MapleData recData = infoData.getChildByPath("recovery");
         if (recData != null) {
-            float recoveryRate = MapleDataTool.getFloat(recData);
-            mapRecoveryRateCache.put(mapid, recoveryRate);
+            map.setRecovery(MapleDataTool.getFloat(recData));
         }
 
         HashMap<Integer, Integer> backTypes = new HashMap<>();
@@ -435,9 +434,21 @@ public class MapleMapFactory {
         builder.append("/").append(mapid);
         return builder.toString();
     }
-
-    public static float getMapRecoveryRate(int mapid) {
-        Float recRate = mapRecoveryRateCache.get(mapid);
-        return recRate != null ? recRate : 1.0f;
+    
+    public static String loadPlaceName(int mapid) throws Exception {
+        try {
+            return MapleDataTool.getString("mapName", nameData.getChildByPath(getMapStringName(mapid)), "");
+        } catch (Exception e) {
+            return "";
+        }
     }
+    
+    public static String loadStreetName(int mapid) throws Exception {
+        try {
+            return MapleDataTool.getString("streetName", nameData.getChildByPath(getMapStringName(mapid)), "");
+        } catch (Exception e) {
+            return "";
+        }
+    }
+    
 }

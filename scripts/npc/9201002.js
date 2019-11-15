@@ -21,7 +21,7 @@
  Marriage NPC
  */
 
-importPackage(Packages.constants);
+importPackage(Packages.config);
 importPackage(Packages.net.server.channel.handlers);
 importPackage(Packages.tools);
 importPackage(Packages.tools.packets);
@@ -32,7 +32,7 @@ var eim;
 var weddingEventName = "WeddingCathedral";
 var cathedralWedding = true;
 var weddingIndoors;
-var weddingBlessingExp = ServerConstants.WEDDING_BLESS_EXP;
+var weddingBlessingExp = YamlConfig.config.server.WEDDING_BLESS_EXP;
 
 function isWeddingIndoors(mapid) {
     return mapid >= 680000100 && mapid <= 680000500;
@@ -304,7 +304,7 @@ function action(mode, type, selection) {
                 if (state == 0) {    // give player blessings
                     eim.gridInsert(cm.getPlayer(), 1);
 
-                    if (ServerConstants.WEDDING_BLESSER_SHOWFX) {
+                    if (YamlConfig.config.server.WEDDING_BLESSER_SHOWFX) {
                         var target = cm.getPlayer();
                         target.announce(MaplePacketCreator.showSpecialEffect(9));
                         target.getMap().broadcastMessage(target, MaplePacketCreator.showForeignEffect(target.getId(), 9), false);

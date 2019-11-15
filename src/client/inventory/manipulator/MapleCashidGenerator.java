@@ -41,7 +41,10 @@ public class MapleCashidGenerator {
         ResultSet rs = ps.executeQuery();
         
         while (rs.next()) {
-            existentCashids.add(rs.getInt(1));
+            int id = rs.getInt(1);
+            if (!rs.wasNull()) {
+                existentCashids.add(id);
+            }
         }
         
         rs.close();

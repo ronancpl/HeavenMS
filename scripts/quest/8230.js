@@ -25,6 +25,7 @@ function start(mode, type, selection) {
     else if (status == 1) {
             qm.sendOk("That's the thing: the Twisted Masters, great figures that currently holds seize of the Crimsonwood Keep, have planned a large-scale attack to the New Leaf City, that may be happening on the next few days. I can't just stay here observing while they prepare for this attack. However, I can't just leave this position, I must keep an eye on their moves at all costs. There's where you enter: go find Lukan, knight of the past Crimsonwood Keep, that is currently wandering around the woods, and receive from him further orders, he knows what to do.");
             qm.forceStartQuest();
+    } else if (status == 2) {
             qm.dispose();
     }
 }
@@ -41,7 +42,7 @@ function end(mode, type, selection) {
 		} else {
 			qm.sendOk("The folks back there on the city are counting on you on this one. Please hurry up.");
 		}
-	
-		qm.dispose();
-	}
+	} else if (status == 1) {
+                qm.dispose();
+        }
 }

@@ -163,6 +163,7 @@ public final class PacketProcessor {
             registerHandler(RecvOpcode.CANCEL_BUFF, new CancelBuffHandler());
             registerHandler(RecvOpcode.CANCEL_ITEM_EFFECT, new CancelItemEffectHandler());
             registerHandler(RecvOpcode.PLAYER_INTERACTION, new PlayerInteractionHandler());
+            registerHandler(RecvOpcode.RPS_ACTION, new RPSActionHandler());
             registerHandler(RecvOpcode.DISTRIBUTE_AP, new DistributeAPHandler());
             registerHandler(RecvOpcode.DISTRIBUTE_SP, new DistributeSPHandler());
             registerHandler(RecvOpcode.CHANGE_KEYMAP, new KeymapChangeHandler());
@@ -222,8 +223,14 @@ public final class PacketProcessor {
             registerHandler(RecvOpcode.MONSTER_BOOK_COVER, new MonsterBookCoverHandler());
             registerHandler(RecvOpcode.AUTO_DISTRIBUTE_AP, new AutoAssignHandler());
             registerHandler(RecvOpcode.MAKER_SKILL, new MakerSkillHandler());
+            registerHandler(RecvOpcode.OPEN_FAMILY_PEDIGREE, new OpenFamilyPedigreeHandler());
+            registerHandler(RecvOpcode.OPEN_FAMILY, new OpenFamilyHandler());
             registerHandler(RecvOpcode.ADD_FAMILY, new FamilyAddHandler());
+            registerHandler(RecvOpcode.SEPARATE_FAMILY_BY_SENIOR, new FamilySeparateHandler());
+            registerHandler(RecvOpcode.SEPARATE_FAMILY_BY_JUNIOR, new FamilySeparateHandler());
             registerHandler(RecvOpcode.USE_FAMILY, new FamilyUseHandler());
+            registerHandler(RecvOpcode.CHANGE_FAMILY_MESSAGE, new FamilyPreceptsHandler());
+            registerHandler(RecvOpcode.FAMILY_SUMMON_RESPONSE, new FamilySummonResponseHandler());
             registerHandler(RecvOpcode.USE_HAMMER, new UseHammerHandler());
             registerHandler(RecvOpcode.SCRIPTED_ITEM, new ScriptedItemHandler());
             registerHandler(RecvOpcode.TOUCHING_REACTOR, new TouchReactorHandler());
@@ -244,6 +251,7 @@ public final class PacketProcessor {
             registerHandler(RecvOpcode.PLAYER_MAP_TRANSFER, new PlayerMapTransitionHandler());
             registerHandler(RecvOpcode.USE_MAPLELIFE, new UseMapleLifeHandler());
             registerHandler(RecvOpcode.USE_CATCH_ITEM, new UseCatchItemHandler());
+            registerHandler(RecvOpcode.FIELD_DAMAGE_MOB, new FieldDamageMobHandler());
             registerHandler(RecvOpcode.MOB_DAMAGE_MOB_FRIENDLY, new MobDamageMobFriendlyHandler());
             registerHandler(RecvOpcode.PARTY_SEARCH_REGISTER, new PartySearchRegisterHandler());
             registerHandler(RecvOpcode.PARTY_SEARCH_START, new PartySearchStartHandler());

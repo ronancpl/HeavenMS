@@ -30,9 +30,9 @@ function action(mode, type, selection) {
         cm.dispose();
     } else {
         if (mode == 0) {
-            cm.sendOk("If you want to return to #m801000000#, then talk to me");
+            cm.sendOk("If you want to return to #m801000000#, then talk to me.");
             cm.dispose();
-        } if (mode == 1) {
+        } else if (mode == 1) {
             status++;
         }
         if (status == 1) {

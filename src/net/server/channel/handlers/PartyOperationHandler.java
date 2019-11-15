@@ -21,6 +21,7 @@
 */
 package net.server.channel.handlers;
 
+import config.YamlConfig;
 import net.AbstractMaplePacketHandler;
 import net.server.world.MapleParty;
 import net.server.world.MaplePartyCharacter;
@@ -30,11 +31,11 @@ import tools.MaplePacketCreator;
 import tools.data.input.SeekableLittleEndianAccessor;
 import client.MapleCharacter;
 import client.MapleClient;
-import constants.ServerConstants;
-import net.server.coordinator.MapleInviteCoordinator;
-import net.server.coordinator.MapleInviteCoordinator.InviteResult;
-import net.server.coordinator.MapleInviteCoordinator.InviteType;
-import tools.Pair;
+import constants.net.ServerConstants;
+import net.server.coordinator.world.MapleInviteCoordinator;
+import net.server.coordinator.world.MapleInviteCoordinator.InviteResult;
+import net.server.coordinator.world.MapleInviteCoordinator.InviteType;
+import net.server.coordinator.world.MapleInviteCoordinator.MapleInviteResult;
 
 import java.util.List;
 
@@ -53,7 +54,7 @@ public final class PartyOperationHandler extends AbstractMaplePacketHandler {
             }
             case 2: { // leave/disband
                 if (party != null) {
-                    List<MapleCharacter> partymembers = player.getPartyMembers();
+                    List<MapleCharacter> partymembers = player.getPartyMembersOnline();
 
                     MapleParty.leaveParty(party, c);
                     player.updatePartySearchAvailability(true);
@@ -64,8 +65,8 @@ public final class PartyOperationHandler extends AbstractMaplePacketHandler {
             case 3: { // join
                 int partyid = slea.readInt();
                 
-                Pair<InviteResult, MapleCharacter> inviteRes = MapleInviteCoordinator.answerInvite(InviteType.PARTY, player.getId(), partyid, true);
-                InviteResult res = inviteRes.getLeft();
+                MapleInviteResult inviteRes = MapleInviteCoordinator.answerInvite(InviteType.PARTY, player.getId(), partyid, true);
+                InviteResult res = inviteRes.result;
                 if (res == InviteResult.ACCEPTED) {
                     MapleParty.joinParty(player, partyid, false);
                 } else {
@@ -77,11 +78,11 @@ public final class PartyOperationHandler extends AbstractMaplePacketHandler {
                 String name = slea.readMapleAsciiString();
                 MapleCharacter invited = world.getPlayerStorage().getCharacterByName(name);
                 if (invited != null) {
-                    if(invited.getLevel() < 10 && (!ServerConstants.USE_PARTY_FOR_STARTERS || player.getLevel() >= 10)) { //min requirement is level 10
+                    if(invited.getLevel() < 10 && (!YamlConfig.config.server.USE_PARTY_FOR_STARTERS || player.getLevel() >= 10)) { //min requirement is level 10
                         c.announce(MaplePacketCreator.serverNotice(5, "The player you have invited does not meet the requirements."));
                         return;
                     }
-                    if(ServerConstants.USE_PARTY_FOR_STARTERS && invited.getLevel() >= 10 && player.getLevel() < 10) {    //trying to invite high level
+                    if(YamlConfig.config.server.USE_PARTY_FOR_STARTERS && invited.getLevel() >= 10 && player.getLevel() < 10) {    //trying to invite high level
                         c.announce(MaplePacketCreator.serverNotice(5, "The player you have invited does not meet the requirements."));
                         return;
                     }

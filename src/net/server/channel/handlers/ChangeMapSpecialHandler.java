@@ -23,7 +23,7 @@ package net.server.channel.handlers;
 
 import client.MapleClient;
 import net.AbstractMaplePacketHandler;
-import server.MaplePortal;
+import server.maps.MaplePortal;
 import server.MapleTrade;
 import server.MapleTrade.TradeResult;
 import tools.MaplePacketCreator;

@@ -6,9 +6,13 @@ Besides myself for maintaining this repository, credits are to be given to Wizet
 
 Regarding distributability and usage of the code presented here: like it was before, this MapleStory server is open-source. By that, it is meant that anyone is **free to install, use, modify and redistribute the contents**, as long as there is **no kind of commercial trading involved** and the **credits to the original creators are maintained** within the codes.
 
-This is a NetBeans 8.0.2 Project, that MUST be built and run on Java 7 (JDK/JRE 1.7.0_79+) in order to run properly. This means that it's easier to install the project via opening the server project folder inside NetBeans' IDE. Once installed, build this project on your machine and run the server using the "launch.bat" application.
+This is a NetBeans 8.2 Project, that should be built and run on Java 8 in order to run properly (used to be ran in Java 7, thanks @kolakcc for the Java 8 support!).
+
+Being a NetBeans 8.2 Project, this means that it's easier to install the project via opening the server project folder inside NetBeans' IDE. Once installed, build this project on your machine and run the server using the "launch.bat" application.
 
 In this project, many gameplay-wise issues generated from either the original WZ files and the server source have been partially or completely solved. Considering the use of the provided edited WZ's and server-side wz.xml files should be of the greatest importance when dealing with this instance of server source, in order to perceive it at it's full potential. My opinion, though!
+
+- In other case, as fallback from the provided ones, consider using **whole clean set**. Selecting part of the provided ones to play pretty much *may eventually* lead to unexpected issues.
 
 The main objective of this project is to try as best as possible to recreate what once was the original MapleStory v83, while adding up some flavors that spices up the gameplay. In other words, aim to get the best of the MapleStory of that era.
 
@@ -19,17 +23,21 @@ Server files: https://github.com/ronancpl/HeavenMS
 
 Client files & general tools: https://drive.google.com/drive/folders/0BzDsHSr-0V4MYVJ0TWIxd05hYUk
 
-Java7 SDK: https://www.oracle.com/technetwork/java/javase/downloads/java-archive-downloads-javase7-521261.html
+Java 8 SDK & NetBeans bundle: https://www.oracle.com/technetwork/pt/java/javase/downloads/jdk-netbeans-jsp-3413153-ptb.html
 
 **Important note about localhosts**: these executables are red-flagged by antivirus tools as __potentially malicious softwares__, this happens due to the reverse engineering methods that were applied onto these software artifacts. Those depicted here have been put to use for years already and posed no harm so far, so they are soundly assumed to be safe.
 
-  Latest localhost: https://hostr.co/itrvrHapvtEg
+  Latest localhost: https://hostr.co/amuX5SLeeVZx
 
   The following list, in bottom-up chronological order, holds information regarding all changes that were applied from the starting localhost used in this development. Some lines have a link attached, that will lead you to a snapshot of the localhost at that version of the artifact. Naturally, later versions holds all previous changes along with the proposed changes.
 
 **Change log:**
 
-  * Fixed Monster Magnet crashing the caster when trying to pull-in bosses.
+  * Cleared need for administrator privileges (OS) to play the game, credits to Ubaware.
+
+  * Set a higher cap for AP assigning with AP Reset, credits to Ubaware.
+
+  * Fixed Monster Magnet crashing the caster when trying to pull bosses. Drawback: Dojo HPBar becomes unavailable. https://hostr.co/SvnSKrGzXhG0
 
   * Fixed some 'rn' problems with quest icons & removed "tab" from party leader changed message. https://hostr.co/tsYsQzzV6xT0
 
@@ -131,18 +139,14 @@ Firstly, install all the general tools required to run the server:
 * mysql-query-browser.msi -> MySQL client component, visually shows the DB data and hubs queries.
 * hamachi.msi -> used for establishing a tunnelling route for the server/client communication.
 
-
-Now install the Java 7 Development Kit:
-
-* jdk-7u79-windows-x64.exe
-* netbeans-8.0.2-javase-windows.exe -> It's a NetBeans project, use other IDE at your own risk.
+Now install the Java 8 SDK & NetBeans bundle:
+* jdk-8u111-nb-8_2-windows-x64.exe -> It's a NetBeans project, use other IDE at your own risk.
 
 Now that the tools have been installed, test if they are working.
 
 For WampServer:
 
-* Once you're done installing it, run it and you will see the Wamp icon on the bottom right corner.
-Left click it and click 'Put Online'.
+* Once you're done installing it, run it and you will see the Wamp icon on the bottom right corner. Left click it and click 'Put Online'.
 * In case of ORANGE ICON, change port 80 at "httpd.conf" to another, as it clashes with a Windows default port. Then Left click it again and click 'Start All Services'.
 * The Wamp icon must look completely green (if its orange or red, you have a problem).
 
@@ -161,7 +165,9 @@ For expediency, "HeavenMS-master" folder on this guide will be referred just as 
 
 Setting up the SQL: open MySQL Query Browser, then create a new session with the parameters below, then click OK.
 
-Server Host: localhost		Port: 3306		Username: root
+* Server Host: localhost
+* Port: 3306
+* Username: root
 
 Now it must be done CAREFULLY:
 
@@ -183,9 +189,7 @@ Now open NetBeans, and click "Open a project..." . Select then the "HeavenMS" fo
 
 Inside the project, you may encounter some code errors.
 
-Firstly, a **new Java7 platform** must be defined to run the server. Click "Manage Platforms...", then "Add platform", browse through "C:\Program Files\Java" for the JDK 1.7 folder. Then, name this new platform "JDK 1.7".
-
-In case errors still show up, these errors probably occurs because you have yet to set the core JARs of the project. From the project hierarchy, right-click the project and select "Resolve Project Problems".
+If that's the case, you have yet to set the core JARs of the project. From the project hierarchy, right-click the project and select "Resolve Project Problems".
 
 Locate the folder "cores" inside the root directory of this project and manually configure the missing files on NetBeans (mina-core, slf4j-api, ...).
 
@@ -247,7 +251,7 @@ To change a character's GM level, make sure that character is not logged in, the
 ---
 ### Some notes about WZ/WZ.XML EDITING 
 
-NOTE: Be extremely wary when using server-side's XMLs data being reimporting into the client's WZ, as some means of synchronization between the server and client modules, this action COULD generate some kind of bugs afterwards. Client-to-server data reimporting seems to be fine, though.
+NOTE: Be extremely wary when using server-side's XMLs data being reimported into the client's WZ, as some means of synchronization between the server and client modules, this action COULD generate some kind of bugs afterwards. Client-to-server data reimporting seems to be fine, though.
 
 #### Editing the v83 WZ's:
 

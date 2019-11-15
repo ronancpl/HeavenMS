@@ -44,7 +44,7 @@ function start(mode, type, selection) {
             qm.sendNext("Okay... so here's our plan to defeat Scrooge and his dastardly plans. The Force of the Spirit I gave you is an item packed with mana. It's an item you'll definitely use at the map I am about to send you. In order to do that, you'll have to bring your party members with you as well. You should bring your party members here or form one right now!");
         } else if (status == 1) {
             qm.sendAcceptDecline("Would you like to move forward?");
-        } else {
+        } else if (status == 2) {
             var level = qm.getPlayer().getLevel();
             
             qm.warp(level <= 30 ? 889100000 : (level <= 40 ? 889100010 : 889100020));

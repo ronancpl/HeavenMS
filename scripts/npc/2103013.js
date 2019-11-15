@@ -66,7 +66,7 @@ function action(mode, type, selection) {
 			} else if (selection == 4) {
 				cm.sendNext("Inside Pharaoh Yeti's Tomb, you can acquire a #e#b#t2022613##k#n by proving yourself capable of defeating the #bPharaoh Jr. Yeti#k, the Pharaoh's clone. Inside that box lies a very special treasure. It is the #e#b#t1132012##k#n.\r\n#i1132012:# #t1132012#\r\n\r\n And if you are somehow able to survive Hell Mode, you will receive the #e#b#t1132013##k#n.\r\n\r\n#i1132013:# #t1132013#\r\n\r\n Though, of course, Nett won't allow that to happen.");
 			} else if (selection == 5) {
-				var progress = cm.getQuestProgress(29932);
+				var progress = cm.getQuestProgressInt(29932);
 				if (progress >= 50000)
 					cm.dispose();
 				else

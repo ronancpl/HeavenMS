@@ -19,18 +19,19 @@
 */
 package client;
 
-import constants.GameConstants;
-import constants.ServerConstants;
+import config.YamlConfig;
+import constants.game.GameConstants;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
-import java.util.concurrent.locks.ReentrantReadWriteLock.ReadLock;
-import java.util.concurrent.locks.ReentrantReadWriteLock.WriteLock;
 import net.server.audit.locks.MonitoredLockType;
+import net.server.audit.locks.MonitoredReadLock;
 import net.server.audit.locks.MonitoredReentrantReadWriteLock;
+import net.server.audit.locks.MonitoredWriteLock;
+import net.server.audit.locks.factory.MonitoredReadLockFactory;
 import net.server.audit.locks.factory.MonitoredReentrantLockFactory;
+import net.server.audit.locks.factory.MonitoredWriteLockFactory;
 import server.maps.AbstractAnimatedMapleMapObject;
 import server.maps.MapleMap;
 
@@ -50,13 +51,13 @@ public abstract class AbstractMapleCharacterObject extends AbstractAnimatedMaple
     protected Map<MapleStat, Integer> statUpdates = new HashMap<>();
     
     protected Lock effLock = MonitoredReentrantLockFactory.createLock(MonitoredLockType.CHARACTER_EFF, true);
-    protected ReadLock statRlock;
-    protected WriteLock statWlock;
+    protected MonitoredReadLock statRlock;
+    protected MonitoredWriteLock statWlock;
     
     protected AbstractMapleCharacterObject() {
-        ReentrantReadWriteLock locks = new MonitoredReentrantReadWriteLock(MonitoredLockType.CHARACTER_STA, true);
-        statRlock = locks.readLock();
-        statWlock = locks.writeLock();
+        MonitoredReentrantReadWriteLock locks = new MonitoredReentrantReadWriteLock(MonitoredLockType.CHARACTER_STA, true);
+        statRlock = MonitoredReadLockFactory.createLock(locks);
+        statWlock = MonitoredWriteLockFactory.createLock(locks);
         
         for (int i = 0; i < remainingSp.length; i++) {
             remainingSp[i] = 0;
@@ -220,6 +221,10 @@ public abstract class AbstractMapleCharacterObject extends AbstractAnimatedMaple
         listener.onHpmpPoolUpdate();
     }
     
+    private void dispatchStatUpdated() {
+        listener.onStatUpdate();
+    }
+    
     private void dispatchStatPoolUpdateAnnounced() {
         listener.onAnnounceStatPoolUpdate();
     }
@@ -299,6 +304,7 @@ public abstract class AbstractMapleCharacterObject extends AbstractAnimatedMaple
         try {
             statUpdates.clear();
             boolean poolUpdate = false;
+            boolean statUpdate = false;
 
             if (hpMpPool != null) {
                 short newHp = (short) (hpMpPool >> 48);
@@ -370,7 +376,7 @@ public abstract class AbstractMapleCharacterObject extends AbstractAnimatedMaple
                     statUpdates.put(MapleStat.AVAILABLEAP, remainingAp);
                 }
 
-                poolUpdate = true;  // recalc stats
+                statUpdate = true;
             }
             
             if (newSp != null) {
@@ -384,6 +390,10 @@ public abstract class AbstractMapleCharacterObject extends AbstractAnimatedMaple
             if (!statUpdates.isEmpty()) {
                 if (poolUpdate) {
                     dispatchHpmpPoolUpdated();
+                }
+                
+                if (statUpdate) {
+                    dispatchStatUpdated();
                 }
 
                 if (!silent) {
@@ -626,19 +636,19 @@ public abstract class AbstractMapleCharacterObject extends AbstractAnimatedMaple
             }
 
             int newStr = str + deltaStr, newDex = dex + deltaDex, newInt = int_ + deltaInt, newLuk = luk + deltaLuk;
-            if (newStr < 4 && deltaStr != Short.MIN_VALUE || newStr > ServerConstants.MAX_AP) {
+            if (newStr < 4 && deltaStr != Short.MIN_VALUE || newStr > YamlConfig.config.server.MAX_AP) {
                 return false;
             }
 
-            if (newDex < 4 && deltaDex != Short.MIN_VALUE || newDex > ServerConstants.MAX_AP) {
+            if (newDex < 4 && deltaDex != Short.MIN_VALUE || newDex > YamlConfig.config.server.MAX_AP) {
                 return false;
             }
 
-            if (newInt < 4 && deltaInt != Short.MIN_VALUE || newInt > ServerConstants.MAX_AP) {
+            if (newInt < 4 && deltaInt != Short.MIN_VALUE || newInt > YamlConfig.config.server.MAX_AP) {
                 return false;
             }
 
-            if (newLuk < 4 && deltaLuk != Short.MIN_VALUE || newLuk > ServerConstants.MAX_AP) {
+            if (newLuk < 4 && deltaLuk != Short.MIN_VALUE || newLuk > YamlConfig.config.server.MAX_AP) {
                 return false;
             }
 

@@ -31,9 +31,9 @@ import client.inventory.MapleInventory;
 import client.inventory.MapleInventoryType;
 import client.status.MonsterStatus;
 import client.status.MonsterStatusEffect;
-import constants.GameConstants;
-import constants.ItemConstants;
-import constants.ServerConstants;
+import config.YamlConfig;
+import constants.game.GameConstants;
+import constants.inventory.ItemConstants;
 import constants.skills.Aran;
 
 import java.awt.Point;
@@ -44,7 +44,6 @@ import java.util.List;
 import net.AbstractMaplePacketHandler;
 import client.inventory.manipulator.MapleInventoryManipulator;
 import server.MapleStatEffect;
-import server.life.MapleLifeFactory;
 import server.life.MapleLifeFactory.loseItem;
 import server.life.MapleMonster;
 import server.life.MobAttackInfo;
@@ -85,16 +84,6 @@ public final class TakeDamageHandler extends AbstractMaplePacketHandler {
                     attacker = (MapleMonster) mmo;
                     if(attacker.getId() != monsteridfrom) {
                         attacker = null;
-                    }
-                }
-                
-                if (monsteridfrom == 9300166 && attacker == null) {
-                    if (c.tryacquireClient()) {
-                        try {
-                            attacker = MapleLifeFactory.getMonster(monsteridfrom);
-                        } finally {
-                            c.releaseClient();
-                        }
                     }
                 }
                 
@@ -149,7 +138,7 @@ public final class TakeDamageHandler extends AbstractMaplePacketHandler {
                             map.removeMapObject(attacker);
                         }
                     }
-                } else {
+                } else if (damagefrom != 0 || !map.removeSelfDestructive(oid)) {    // thanks inhyuk for noticing self-destruct damage not being handled properly
                     return;
                 }
             } catch(ClassCastException e) {
@@ -196,21 +185,23 @@ public final class TakeDamageHandler extends AbstractMaplePacketHandler {
                     }
 	        }
         }
+        
         if (damage == -1) {
             fake = 4020002 + (chr.getJob().getId() / 10 - 40) * 100000;
         }
         
+        if (damage > 0) {
+            chr.getAutobanManager().resetMisses();
+        } else {
+            chr.getAutobanManager().addMiss();
+        }
+        
         //in dojo player cannot use pot, so deadly attacks should be turned off as well
-        if(is_deadly && chr.getMap().isDojoMap() && !ServerConstants.USE_DEADLY_DOJO) {
+        if(is_deadly && chr.getMap().isDojoMap() && !YamlConfig.config.server.USE_DEADLY_DOJO) {
             damage = 0;
             mpattack = 0;
         }
         
-        if (damage == 0) {
-            chr.getAutobanManager().addMiss();
-        } else {
-            chr.getAutobanManager().resetMisses();
-        }
         if (damage > 0 && !chr.isHidden()) {
             if (attacker != null) {
                 if (damagefrom == -1) {
@@ -222,7 +213,7 @@ public final class TakeDamageHandler extends AbstractMaplePacketHandler {
                         map.broadcastMessage(chr, MaplePacketCreator.damageMonster(oid, bouncedamage), false, true);
                         attacker.aggroMonsterDamage(chr, bouncedamage);
                     }
-                    MapleStatEffect bPressure = chr.getBuffEffect(MapleBuffStat.COMBO_BARRIER);
+                    MapleStatEffect bPressure = chr.getBuffEffect(MapleBuffStat.BODY_PRESSURE); // thanks Atoot for noticing an issue on Body Pressure neutralise
                     if (bPressure != null) {
                         Skill skill = SkillFactory.getSkill(Aran.BODY_PRESSURE);
                         if (!attacker.alreadyBuffedStats().contains(MonsterStatus.NEUTRALISE)) {
@@ -248,6 +239,12 @@ public final class TakeDamageHandler extends AbstractMaplePacketHandler {
                 }
                 if (achilles != 0 && achilles1 != null) {
                     damage *= (achilles1.getEffect(achilles).getX() / 1000.0);
+                }
+                
+                Skill highDef = SkillFactory.getSkill(Aran.HIGH_DEFENSE);
+                int hdLevel = chr.getSkillLevel(highDef);
+                if (highDef != null && hdLevel > 0) {
+                    damage *= Math.ceil(highDef.getEffect(hdLevel).getX() / 1000.0);
                 }
             }
             Integer mesoguard = chr.getBuffedValue(MapleBuffStat.MESOGUARD);
@@ -285,7 +282,7 @@ public final class TakeDamageHandler extends AbstractMaplePacketHandler {
             map.broadcastGMMessage(chr, MaplePacketCreator.damagePlayer(damagefrom, monsteridfrom, chr.getId(), damage, fake, direction, is_pgmr, pgmr, is_pg, oid, pos_x, pos_y), false);
         }
         if (GameConstants.isDojo(map.getId())) {
-            chr.setDojoEnergy(chr.getDojoEnergy() + ServerConstants.DOJO_ENERGY_DMG);
+            chr.setDojoEnergy(chr.getDojoEnergy() + YamlConfig.config.server.DOJO_ENERGY_DMG);
             c.announce(MaplePacketCreator.getEnergy("energy", chr.getDojoEnergy()));
         }
         

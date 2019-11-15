@@ -21,6 +21,7 @@
 */
 package server.life;
 
+import config.YamlConfig;
 import server.life.positioner.MaplePlayerNPCPositioner;
 import server.life.positioner.MaplePlayerNPCPodium;
 import java.awt.Point;
@@ -42,8 +43,8 @@ import client.MapleCharacter;
 import client.MapleClient;
 import client.inventory.Item;
 import client.inventory.MapleInventoryType;
-import constants.GameConstants;
-import constants.ServerConstants;
+import constants.game.GameConstants;
+import constants.net.ServerConstants;
 import net.server.Server;
 import net.server.channel.Channel;
 import net.server.world.World;
@@ -360,11 +361,15 @@ public class MaplePlayerNPC extends AbstractMapleMapObject {
             int j = 0;
             for(int i = branchSid; i < nextBranchSid; i++) {
                 if(!usedScriptIds.contains(i)) {
-                    availables.add(i);
-                    j++;
-                    
-                    if(j == 20) {
-                        break;
+                    if (MaplePlayerNPCFactory.isExistentScriptid(i)) {  // thanks Ark, Zein, geno, Ariel, JrCl0wn for noticing client crashes due to use of missing scriptids
+                        availables.add(i);
+                        j++;
+
+                        if(j == 20) {
+                            break;
+                        }
+                    } else {
+                        break;  // after this point no more scriptids expected...
                     }
                 }
             }
@@ -426,7 +431,7 @@ public class MaplePlayerNPC extends AbstractMapleMapObject {
             }
         }
         
-        if(ServerConstants.USE_DEBUG) System.out.println("GOT SID " + scriptId + " POS " + pos);
+        if(YamlConfig.config.server.USE_DEBUG) System.out.println("GOT SID " + scriptId + " POS " + pos);
         
         int worldId = chr.getWorld();
         int jobId = (chr.getJob().getId() / 100) * 100;

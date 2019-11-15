@@ -20,7 +20,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 importPackage(Packages.client);
-importPackage(Packages.constants);
+importPackage(Packages.config);
 
 var status = -1;
 
@@ -60,14 +60,13 @@ function end(mode, type, selection) {
             if(!qm.isQuestCompleted(21201)) {
                 if(!qm.canHold(1142130)) {
                     qm.sendOk("Wow, your #bequip#k inventory is full. I need you to make at least 1 empty slot to complete this quest.");   // thanks MedicOP for finding an issue here
-                    qm.dispose();
                     return;
                 }
 
                 qm.gainItem(1142130, true);
                 qm.changeJobById(2110);
                 
-                if (ServerConstants.USE_FULL_ARAN_SKILLSET) {
+                if (YamlConfig.config.server.USE_FULL_ARAN_SKILLSET) {
                     qm.teachSkill(21100000, 0, 20, -1);   //polearm mastery
                     qm.teachSkill(21100002, 0, 30, -1);   //final charge
                     qm.teachSkill(21100004, 0, 20, -1);   //combo smash
@@ -78,6 +77,7 @@ function end(mode, type, selection) {
             }
 
             qm.sendNext("Your level isn't what it used to be back in your glory days, so I can't restore all of your old abilities. But the few I can restore should help you level up faster. Now hurry up and train so you can return to the old you.");    
+        } else if (status == 9) {
             qm.dispose();
         }
     }

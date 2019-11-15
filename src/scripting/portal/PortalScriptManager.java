@@ -22,23 +22,17 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package scripting.portal;
 
 import client.MapleClient;
-import constants.ServerConstants;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
 import java.lang.reflect.UndeclaredThrowableException;
 import java.util.HashMap;
 import java.util.Map;
-import javax.script.Compilable;
-import javax.script.Invocable;
-import javax.script.ScriptEngine;
 import javax.script.ScriptEngineFactory;
 import javax.script.ScriptEngineManager;
-import javax.script.ScriptException;
-import server.MaplePortal;
+import jdk.nashorn.api.scripting.NashornScriptEngine;
+import scripting.AbstractScriptManager;
+import server.maps.MaplePortal;
 import tools.FilePrinter;
 
-public class PortalScriptManager {
+public class PortalScriptManager extends AbstractScriptManager {
 
     private static PortalScriptManager instance = new PortalScriptManager();
     
@@ -46,7 +40,7 @@ public class PortalScriptManager {
         return instance;
     }
     
-    private Map<String, PortalScript> scripts = new HashMap<>();
+    private Map<String, NashornScriptEngine> scripts = new HashMap<>();
     private ScriptEngineFactory sef;
 
     private PortalScriptManager() {
@@ -54,47 +48,28 @@ public class PortalScriptManager {
         sef = sem.getEngineByName("javascript").getFactory();
     }
 
-    private PortalScript getPortalScript(String scriptName) {
-        if (scripts.containsKey(scriptName)) {
-            return scripts.get(scriptName);
+    private NashornScriptEngine getPortalScript(String scriptName) {
+        String scriptPath = "portal/" + scriptName + ".js";
+        NashornScriptEngine iv = scripts.get(scriptPath);
+        if (iv != null) {
+            return iv;
         }
-        File scriptFile = new File("scripts/portal/" + scriptName + ".js");
-        if (!scriptFile.exists()) {
-            scripts.put(scriptName, null);
+        
+        iv = getScriptEngine(scriptPath);
+        if (iv == null) {
             return null;
         }
-        FileReader fr = null;
-        ScriptEngine portal = sef.getScriptEngine();
-        try {
-            fr = new FileReader(scriptFile);
-            
-            // java 8 support here thanks to Arufonsu
-            if (ServerConstants.JAVA_8){
-                    portal.eval("load('nashorn:mozilla_compat.js');" + System.lineSeparator());
-            }
-            
-            ((Compilable) portal).compile(fr).eval();
-        } catch (ScriptException | IOException | UndeclaredThrowableException e) {
-            FilePrinter.printError(FilePrinter.PORTAL + scriptName + ".txt", e);
-        } finally {
-            if (fr != null) {
-                try {
-                    fr.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-        PortalScript script = ((Invocable) portal).getInterface(PortalScript.class);
-        scripts.put(scriptName, script);
-        return script;
+        
+        scripts.put(scriptPath, iv);
+        return iv;
     }
 
     public boolean executePortalScript(MaplePortal portal, MapleClient c) {
         try {
-            PortalScript script = getPortalScript(portal.getScriptName());
-            if (script != null) {
-                return script.enter(new PortalPlayerInteraction(c, portal));
+            NashornScriptEngine iv = getPortalScript(portal.getScriptName());
+            if (iv != null) {
+                boolean couldWarp = (boolean) iv.invokeFunction("enter", new PortalPlayerInteraction(c, portal));
+                return couldWarp;
             }
         } catch (UndeclaredThrowableException ute) {
             FilePrinter.printError(FilePrinter.PORTAL + portal.getScriptName() + ".txt", ute);

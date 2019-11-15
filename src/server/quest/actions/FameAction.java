@@ -22,12 +22,10 @@
 package server.quest.actions;
 
 import client.MapleCharacter;
-import client.MapleStat;
 import provider.MapleData;
 import provider.MapleDataTool;
 import server.quest.MapleQuest;
 import server.quest.MapleQuestActionType;
-import tools.MaplePacketCreator;
 
 /**
  *

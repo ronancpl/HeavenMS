@@ -22,9 +22,9 @@
 package client.inventory;
 
 import client.MapleClient;
-import constants.ServerConstants;
-import constants.ExpTable;
-import constants.ItemConstants;
+import config.YamlConfig;
+import constants.game.ExpTable;
+import constants.inventory.ItemConstants;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -64,7 +64,8 @@ public class Equip extends Item {
     }
     
     private byte upgradeSlots;
-    private byte level, flag, itemLevel;
+    private byte level, itemLevel;
+    private short flag;
     private short str, dex, _int, luk, hp, mp, watk, matk, wdef, mdef, acc, avoid, hands, speed, jump, vicious;
     private float itemExp;
     private int ringid = -1;
@@ -117,7 +118,7 @@ public class Equip extends Item {
     }
 
     @Override
-    public byte getFlag() {
+    public short getFlag() {
         return flag;
     }
 
@@ -195,7 +196,7 @@ public class Equip extends Item {
     }
 
     @Override
-    public void setFlag(byte flag) {
+    public void setFlag(short flag) {
         this.flag = flag;
     }
 
@@ -278,7 +279,7 @@ public class Equip extends Item {
     private static int getStatModifier(boolean isAttribute) {
         // each set of stat points grants a chance for a bonus stat point upgrade at equip level up.
         
-        if(ServerConstants.USE_EQUIPMNT_LVLUP_POWER) {
+        if(YamlConfig.config.server.USE_EQUIPMNT_LVLUP_POWER) {
             if(isAttribute) return 2;
             else return 4;
         }
@@ -289,7 +290,7 @@ public class Equip extends Item {
     }
     
     private static int randomizeStatUpgrade(int top) {
-        int limit = Math.min(top, ServerConstants.MAX_EQUIPMNT_LVLUP_STAT_UP);
+        int limit = Math.min(top, YamlConfig.config.server.MAX_EQUIPMNT_LVLUP_STAT_UP);
         
         int poolCount = (limit * (limit + 1) / 2) + limit;
         int rnd = Randomizer.rand(0, poolCount);
@@ -382,7 +383,7 @@ public class Equip extends Item {
     public Pair<String, Pair<Boolean, Boolean>> gainStats(List<Pair<StatUpgrade, Integer>> stats) {
         boolean gotSlot = false, gotVicious = false;
         String lvupStr = "";
-        Integer statUp, maxStat = ServerConstants.MAX_EQUIPMNT_STAT;
+        Integer statUp, maxStat = YamlConfig.config.server.MAX_EQUIPMNT_STAT;
         for (Pair<StatUpgrade, Integer> stat : stats) {
             switch (stat.getLeft()) {
                 case incDEX:
@@ -482,7 +483,7 @@ public class Equip extends Item {
         }
         
         if(!stats.isEmpty()) {
-            if(ServerConstants.USE_EQUIPMNT_LVLUP_SLOTS) {
+            if(YamlConfig.config.server.USE_EQUIPMNT_LVLUP_SLOTS) {
                 if(vicious > 0) getUnitSlotUpgrade(stats, StatUpgrade.incVicious);
                 getUnitSlotUpgrade(stats, StatUpgrade.incSlot);
             }
@@ -490,7 +491,7 @@ public class Equip extends Item {
             isUpgradeable = false;
             
             improveDefaultStats(stats);
-            if(ServerConstants.USE_EQUIPMNT_LVLUP_SLOTS) {
+            if(YamlConfig.config.server.USE_EQUIPMNT_LVLUP_SLOTS) {
                 if(vicious > 0) getUnitSlotUpgrade(stats, StatUpgrade.incVicious);
                 getUnitSlotUpgrade(stats, StatUpgrade.incSlot);
             }
@@ -498,7 +499,7 @@ public class Equip extends Item {
             if(isUpgradeable) {
                 while(stats.isEmpty()) {
                     improveDefaultStats(stats);
-                    if(ServerConstants.USE_EQUIPMNT_LVLUP_SLOTS) {
+                    if(YamlConfig.config.server.USE_EQUIPMNT_LVLUP_SLOTS) {
                         if(vicious > 0) getUnitSlotUpgrade(stats, StatUpgrade.incVicious);
                         getUnitSlotUpgrade(stats, StatUpgrade.incSlot);
                     }
@@ -562,14 +563,14 @@ public class Equip extends Item {
             return;
         }
         
-        int equipMaxLevel = Math.min(30, Math.max(ii.getEquipLevel(this.getItemId(), true), ServerConstants.USE_EQUIPMNT_LVLUP));
+        int equipMaxLevel = Math.min(30, Math.max(ii.getEquipLevel(this.getItemId(), true), YamlConfig.config.server.USE_EQUIPMNT_LVLUP));
         if (itemLevel >= equipMaxLevel) {
             return;
         }
         
         int reqLevel = ii.getEquipLevelReq(this.getItemId());
         
-        float masteryModifier = (float)(ServerConstants.EQUIP_EXP_RATE * ExpTable.getExpNeededForLevel(1)) / (float)normalizedMasteryExp(reqLevel);
+        float masteryModifier = (float)(YamlConfig.config.server.EQUIP_EXP_RATE * ExpTable.getExpNeededForLevel(1)) / (float)normalizedMasteryExp(reqLevel);
         float elementModifier = (isElemental) ? 0.85f : 0.6f;
         
         float baseExpGain = gain * elementModifier * masteryModifier;
@@ -577,7 +578,7 @@ public class Equip extends Item {
         itemExp += baseExpGain;
         int expNeeded = ExpTable.getEquipExpNeededForLevel(itemLevel);
         
-        if(ServerConstants.USE_DEBUG_SHOW_INFO_EQPEXP) System.out.println("'" + ii.getName(this.getItemId()) + "' -> EXP Gain: " + gain + " Mastery: " + masteryModifier + " Base gain: " + baseExpGain + " exp: " + itemExp + " / " + expNeeded + ", Kills TNL: " + expNeeded / (baseExpGain / c.getPlayer().getExpRate()));
+        if(YamlConfig.config.server.USE_DEBUG_SHOW_INFO_EQPEXP) System.out.println("'" + ii.getName(this.getItemId()) + "' -> EXP Gain: " + gain + " Mastery: " + masteryModifier + " Base gain: " + baseExpGain + " exp: " + itemExp + " / " + expNeeded + ", Kills TNL: " + expNeeded / (baseExpGain / c.getPlayer().getExpRate()));
         
         if (itemExp >= expNeeded) {
             while(itemExp >= expNeeded) {
@@ -594,7 +595,7 @@ public class Equip extends Item {
         }
         
         c.getPlayer().forceUpdateItem(this);
-        //if(ServerConstants.USE_DEBUG) c.getPlayer().dropMessage("'" + ii.getName(this.getItemId()) + "': " + itemExp + " / " + expNeeded);
+        //if(YamlConfig.config.server.USE_DEBUG) c.getPlayer().dropMessage("'" + ii.getName(this.getItemId()) + "': " + itemExp + " / " + expNeeded);
     }
     
     private boolean reachedMaxLevel() {
@@ -604,7 +605,7 @@ public class Equip extends Item {
             }
         }
         
-        return itemLevel >= ServerConstants.USE_EQUIPMNT_LVLUP;
+        return itemLevel >= YamlConfig.config.server.USE_EQUIPMNT_LVLUP;
     }
     
     public String showEquipFeatures(MapleClient c) {

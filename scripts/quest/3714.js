@@ -55,11 +55,10 @@ function start(mode, type, selection) {
                 return;
             }
             
+            qm.forceCompleteQuest();
             qm.gainItem(4001094, -1);
             qm.gainItem(2041200, 1);    // quest not rewarding properly found thanks to MedicOP & Thora
             qm.gainExp(42000);
-            
-            qm.forceCompleteQuest();
             qm.dispose();
         }
     }

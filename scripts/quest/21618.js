@@ -71,11 +71,12 @@ function end(mode, type, selection) {
             }
             
             qm.sendNext("Step aside, behold the mighty prowess of Maha!!");
-        } else {
+        } else if (status == 1) {
+            qm.forceCompleteQuest();
+            
             qm.gainItem(1902017, -1);
             qm.gainItem(1902018, 1);
             
-            qm.forceCompleteQuest();
             qm.dispose();
         }
     }

@@ -42,18 +42,23 @@ function start(mode, type, selection) {
         else
             status--;
         
-        if(!isTigunMorphed(qm.getPlayer())) {
-            qm.sendNext("What's this? I can't simply give the Queen's silk to anyone, claiming they will hand it at once to the queen. Get out of my sights.");
-            qm.dispose();
-            return;
-        }
-        
         if (status == 0) {
+            if(!isTigunMorphed(qm.getPlayer())) {
+                qm.sendNext("What's this? I can't simply give the Queen's silk to anyone, claiming they will hand it at once to the queen. Get out of my sights.");
+                status = 1;
+                return;
+            }
+
             qm.sendNext("Tigun, what are you doing here?");
         } else if (status == 1) {
+            if(!isTigunMorphed(qm.getPlayer())) {
+                qm.sendNext("What's this? I can't simply give the Queen's silk to anyone, claiming they will hand it at once to the queen. Get out of my sights.");
+                return;
+            }
+
             qm.sendNext("The Queen wants her silk right now? Alright, I have them here. Hold on a moment.");
-            
-            qm.forceStartQuest();            
+            qm.forceStartQuest();
+        } else if (status == 2) {
             qm.dispose();
         }
     }
@@ -73,13 +78,13 @@ function end(mode, type, selection) {
         else
             status--;
         
-        if(!isTigunMorphed(qm.getPlayer())) {
-            qm.sendNext("What's this? I can't simply give the Queen's silk to anyone, claiming they will hand it at once to the queen. Get out of my sights.");
-            qm.dispose();
-            return;
-        }
-        
         if (status == 0) {
+            if(!isTigunMorphed(qm.getPlayer())) {
+                qm.sendNext("What's this? I can't simply give the Queen's silk to anyone, claiming they will hand it at once to the queen. Get out of my sights.");
+                qm.dispose();
+                return;
+            }
+
             if(qm.canHold(4031571, 1)) {
                 qm.gainItem(4031571);
                 
@@ -88,7 +93,7 @@ function end(mode, type, selection) {
             } else {
                 qm.sendNext("Hey, you're lacking space to hold this, man. I will stay with it while you arrange your backpack...");
             }
-            
+        } else if (status == 1) {
             qm.dispose();
         }
     }

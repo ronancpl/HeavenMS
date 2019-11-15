@@ -30,7 +30,7 @@ import client.inventory.Equip;
 import client.inventory.Item;
 import client.inventory.MapleInventoryType;
 import client.inventory.manipulator.MapleInventoryManipulator;
-import constants.ItemConstants;
+import constants.inventory.ItemConstants;
 import server.MapleItemInformationProvider;
 
 public class ProItemCommand extends Command {
@@ -84,7 +84,7 @@ public class ProItemCommand extends Command {
         equip.setHp(stat);
         equip.setMp(stat);
 
-        byte flag = equip.getFlag();
+        short flag = equip.getFlag();
         flag |= ItemConstants.UNTRADEABLE;
         equip.setFlag(flag);
     }

@@ -9,8 +9,7 @@ function enter(pi) {
 			
 			pi.playPortalSound();
 			pi.warp(i, "out00");
-			pi.getPlayer().updateQuestInfo(21202, "0");
-			//pi.getPlayer().announce(Packages.tools.MaplePacketCreator.questProgress(21203, "21203"));
+			pi.setQuestProgress(21202, 21203, 0);
 			return true;
 		}
 		pi.message("The mirror is blank due to many players recalling their memories. Please wait and try again.");
@@ -24,7 +23,7 @@ function enter(pi) {
 			spawnMob(-210, 454, 9001013, map);
 			
 			pi.playPortalSound();
-			pi.getPlayer().updateQuestInfo(21203, "1");
+			pi.setQuestProgress(21303, 21203, 1);
 			pi.warp(108010701, "out00");
 			return true;
 		}

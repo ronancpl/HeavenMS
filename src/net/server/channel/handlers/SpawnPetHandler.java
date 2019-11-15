@@ -22,7 +22,7 @@
 package net.server.channel.handlers;
 
 import client.MapleClient;
-import client.processor.SpawnPetProcessor;
+import client.processor.action.SpawnPetProcessor;
 import net.AbstractMaplePacketHandler;
 import tools.data.input.SeekableLittleEndianAccessor;
 

@@ -35,6 +35,7 @@ function start(mode, type, selection) {
         qm.sendAcceptDecline("How is the training going? Wow, you've reached such a high level! That's amazing. I knew you would do just fine on Victoria Island... Oh, look at me. I'm wasting your time. I know you're busy, but you'll have to return to the island for a bit.");
     else if(status == 1){
         qm.sendOk("Your #b#p1201001##k in #b#m140000000##k is acting strange all of a sudden. According to the records, the Polearm acts this way when it is calling for its master. #bPerhaps it's calling for you#k. Please return to the island and check things out.");
+    } else if(status == 2){
         qm.startQuest();
         qm.dispose();
     }

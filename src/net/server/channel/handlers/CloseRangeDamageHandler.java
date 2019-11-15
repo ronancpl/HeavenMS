@@ -25,19 +25,14 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
-import server.MapleStatEffect;
-import tools.MaplePacketCreator;
-import tools.Pair;
-import tools.data.input.SeekableLittleEndianAccessor;
+import config.YamlConfig;
 import client.MapleBuffStat;
 import client.MapleCharacter;
 import client.MapleClient;
 import client.MapleJob;
-import client.MapleStat;
 import client.Skill;
 import client.SkillFactory;
-import constants.GameConstants;
-import constants.ServerConstants;
+import constants.game.GameConstants;
 import constants.skills.Crusader;
 import constants.skills.DawnWarrior;
 import constants.skills.DragonKnight;
@@ -45,12 +40,16 @@ import constants.skills.Hero;
 import constants.skills.NightWalker;
 import constants.skills.Rogue;
 import constants.skills.WindArcher;
+import server.MapleStatEffect;
+import tools.MaplePacketCreator;
+import tools.Pair;
+import tools.data.input.SeekableLittleEndianAccessor;
 
 public final class CloseRangeDamageHandler extends AbstractDealDamageHandler {
+    
     @Override
     public final void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
         MapleCharacter chr = c.getPlayer();
-        //chr.setPetLootCd(currentServerTime());
         
         /*long timeElapsed = currentServerTime() - chr.getAutobanManager().getLastSpam(8);
         if(timeElapsed < 300) {
@@ -70,7 +69,7 @@ public final class CloseRangeDamageHandler extends AbstractDealDamageHandler {
         if (chr.getDojoEnergy() < 10000 && (attack.skill == 1009 || attack.skill == 10001009 || attack.skill == 20001009)) // PE hacking or maybe just lagging
             return;
         if (chr.getMap().isDojoMap() && attack.numAttacked > 0) {
-            chr.setDojoEnergy(chr.getDojoEnergy() + ServerConstants.DOJO_ENERGY_ATK);
+            chr.setDojoEnergy(chr.getDojoEnergy() + YamlConfig.config.server.DOJO_ENERGY_ATK);
             c.announce(MaplePacketCreator.getEnergy("energy", chr.getDojoEnergy()));
         }
         

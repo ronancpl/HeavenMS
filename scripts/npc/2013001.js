@@ -278,7 +278,7 @@ function action(mode, type, selection) {
                 if(cm.getMap().countMonsters() > 0) {
                     cm.sendNext("This is the hidden room of the tower. After eliminating all monsters on this room, talk to me to gain access to the treasure room, leaving the center tower access behind.");
                 } else {
-                    cm.warp(920011100);
+                    cm.warp(920011100, "st00");
                 }
                 break;
         }

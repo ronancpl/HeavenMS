@@ -14,8 +14,8 @@ import client.inventory.MapleInventory;
 import client.inventory.MapleInventoryType;
 import client.inventory.manipulator.MapleInventoryManipulator;
 import client.inventory.manipulator.MapleKarmaManipulator;
-import constants.ItemConstants;
-import constants.ServerConstants;
+import config.YamlConfig;
+import constants.inventory.ItemConstants;
 import net.AbstractMaplePacketHandler;
 import server.MapleMarriage;
 import tools.MaplePacketCreator;
@@ -50,7 +50,7 @@ public final class WeddingHandler extends AbstractMaplePacketHandler {
                             String groomWishlistProp = "giftedItem" + (groomWishlist ? "G" : "B") + chr.getId();
 
                             int giftCount = marriage.getIntProperty(groomWishlistProp);
-                            if (giftCount < ServerConstants.WEDDING_GIFT_LIMIT) {
+                            if (giftCount < YamlConfig.config.server.WEDDING_GIFT_LIMIT) {
                                 int cid = marriage.getIntProperty(groomWishlist ? "groomId" : "brideId");
                                 if (chr.getId() != cid) {   // cannot gift yourself
                                     MapleCharacter spouse = marriage.getPlayerById(cid);
@@ -58,20 +58,18 @@ public final class WeddingHandler extends AbstractMaplePacketHandler {
                                         MapleInventoryType type = ItemConstants.getInventoryType(itemid);
                                         MapleInventory chrInv = chr.getInventory(type);
 
+                                        Item newItem = null;
                                         chrInv.lockInventory();
                                         try {
                                             Item item = chrInv.getItem((byte) slot);
                                             if (item != null) {
                                                 if (!item.isUntradeable()) {
                                                     if (itemid == item.getItemId() && quantity <= item.getQuantity()) {
-                                                        Item newItem = item.copy();
+                                                        newItem = item.copy();
 
                                                         marriage.addGiftItem(groomWishlist, newItem);
                                                         MapleInventoryManipulator.removeFromSlot(c, type, slot, quantity, false, false);
-
-                                                        if (ServerConstants.USE_ENFORCE_MERCHANT_SAVE) chr.saveCharToDB(false); 
-                                                        marriage.saveGiftItemsToDb(c, groomWishlist, cid);
-
+                                                        
                                                         MapleKarmaManipulator.toggleKarmaFlagToUntradeable(newItem);
                                                         marriage.setIntProperty(groomWishlistProp, giftCount + 1);
 
@@ -83,6 +81,11 @@ public final class WeddingHandler extends AbstractMaplePacketHandler {
                                             }
                                         } finally {
                                             chrInv.unlockInventory();
+                                        }
+                                        
+                                        if (newItem != null) {
+                                            if (YamlConfig.config.server.USE_ENFORCE_MERCHANT_SAVE) chr.saveCharToDB(false); 
+                                            marriage.saveGiftItemsToDb(c, groomWishlist, cid);
                                         }
                                     } else {
                                         c.announce(Wedding.OnWeddingGiftResult((byte) 0xE, marriage.getWishlistItems(groomWishlist), null));

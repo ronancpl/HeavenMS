@@ -22,6 +22,7 @@ import client.MapleClient;
 import client.inventory.Item;
 import client.inventory.ItemFactory;
 import client.inventory.MapleInventoryType;
+import constants.game.GameConstants;
 import java.io.File;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -44,6 +45,7 @@ import tools.DatabaseConnection;
 import tools.MaplePacketCreator;
 import tools.Pair;
 import net.server.audit.locks.MonitoredLockType;
+import tools.FilePrinter;
 
 /**
  *
@@ -58,76 +60,74 @@ public class MapleStorage {
     private int meso;
     private byte slots;
     private Map<MapleInventoryType, List<Item>> typeItems = new HashMap<>();
-    private List<Item> items;
+    private List<Item> items = new LinkedList<>();
     private Lock lock = MonitoredReentrantLockFactory.createLock(MonitoredLockType.STORAGE, true);
 
     private MapleStorage(int id, byte slots, int meso) {
         this.id = id;
         this.slots = slots;
-        this.items = new LinkedList<>();
         this.meso = meso;
     }
 
-    private static MapleStorage create(int id, int world) {
-        try {
-            Connection con = DatabaseConnection.getConnection();
-            try (PreparedStatement ps = con.prepareStatement("INSERT INTO storages (accountid, world, slots, meso) VALUES (?, ?, 4, 0)")) {
-                ps.setInt(1, id);
-                ps.setInt(2, world);
-                ps.executeUpdate();
-            }
-            
-            con.close();
-        } catch (Exception e) {
-            e.printStackTrace();
+    private static MapleStorage create(int id, int world) throws SQLException {
+        Connection con = DatabaseConnection.getConnection();
+        try (PreparedStatement ps = con.prepareStatement("INSERT INTO storages (accountid, world, slots, meso) VALUES (?, ?, 4, 0)")) {
+            ps.setInt(1, id);
+            ps.setInt(2, world);
+            ps.executeUpdate();
         }
+        con.close();
+        
         return loadOrCreateFromDB(id, world);
     }
 
     public static MapleStorage loadOrCreateFromDB(int id, int world) {
-        MapleStorage ret = null;
-        int storeId;
         try {
+            MapleStorage ret;
             Connection con = DatabaseConnection.getConnection();
             PreparedStatement ps = con.prepareStatement("SELECT storageid, slots, meso FROM storages WHERE accountid = ? AND world = ?");
             ps.setInt(1, id);
             ps.setInt(2, world);
+            
             ResultSet rs = ps.executeQuery();
-            if (!rs.next()) {
-                rs.close();
-                ps.close();
-                con.close();
-                return create(id, world);
-            } else {
-                storeId = rs.getInt("storageid");
-                ret = new MapleStorage(storeId, (byte) rs.getInt("slots"), rs.getInt("meso"));
-                rs.close();
-                ps.close();
+            if (rs.next()) {
+                ret = new MapleStorage(rs.getInt("storageid"), (byte) rs.getInt("slots"), rs.getInt("meso"));
                 for (Pair<Item, MapleInventoryType> item : ItemFactory.STORAGE.loadItems(ret.id, false)) {
                     ret.items.add(item.getLeft());
                 }
+            } else {
+                ret = create(id, world);
             }
             
+            rs.close();
+            ps.close();
             con.close();
-        } catch (SQLException ex) {
-            ex.printStackTrace();
+            
+            return ret;
+        } catch (SQLException ex) { // exceptions leading to deploy null storages found thanks to Jefe
+            FilePrinter.printError(FilePrinter.STORAGE, ex, "SQL error occurred when trying to load storage for accountid " + id + ", world " + GameConstants.WORLD_NAMES[world]);
+            throw new RuntimeException(ex);
         }
-        return ret;
     }
 
     public byte getSlots() {
         return slots;
     }
 
-    public synchronized boolean gainSlots(int slots) {
-        slots += this.slots;
+    public boolean gainSlots(int slots) {
+        lock.lock();
+        try {
+            slots += this.slots;
+            
+            if (slots <= 48) {
+                this.slots = (byte) slots;
+                return true;
+            }
 
-        if (slots <= 48) {
-            this.slots = (byte) slots;
-            return true;
+            return false;
+        } finally {
+            lock.unlock();
         }
-
-        return false;
     }
     
     public void saveToDB(Connection con) {
@@ -160,29 +160,33 @@ public class MapleStorage {
         }
     }
 
-    public Item takeOut(byte slot) {
-        Item ret;
-        
+    public boolean takeOut(Item item) {
         lock.lock();
         try {
-            ret = items.remove(slot);
+            boolean ret = items.remove(item);
             
-            MapleInventoryType type = ret.getInventoryType();
+            MapleInventoryType type = item.getInventoryType();
             typeItems.put(type, new ArrayList<>(filterItems(type)));
+            
+            return ret;
         } finally {
             lock.unlock();
         }
-        
-        return ret;
     }
 
-    public void store(Item item) {
+    public boolean store(Item item) {
         lock.lock();
         try {
+            if (isFull()) { // thanks Optimist for noticing unrestricted amount of insertions here
+                return false;
+            }
+            
             items.add(item);
             
             MapleInventoryType type = item.getInventoryType();
             typeItems.put(type, new ArrayList<>(filterItems(type)));
+            
+            return true;
         } finally {
             lock.unlock();
         }
@@ -196,7 +200,7 @@ public class MapleStorage {
             lock.unlock();
         }
     }
-
+    
     private List<Item> filterItems(MapleInventoryType type) {
         List<Item> storageItems = getItems();
         List<Item> ret = new LinkedList<>();
@@ -208,7 +212,7 @@ public class MapleStorage {
         }
         return ret;
     }
-
+    
     public byte getSlot(MapleInventoryType type, byte slot) {
         lock.lock();
         try {
@@ -225,7 +229,7 @@ public class MapleStorage {
             lock.unlock();
         }
     }
-
+    
     public void sendStorage(MapleClient c, int npcId) {
         if (c.getPlayer().getLevel() < 15){
             c.getPlayer().dropMessage(1, "You may only use the storage once you have reached level 15.");
@@ -287,7 +291,7 @@ public class MapleStorage {
             for (MapleInventoryType type : MapleInventoryType.values()) {
                 typeItems.put(type, new ArrayList<>(items));
             }
-
+            
             c.announce(MaplePacketCreator.arrangeStorage(slots, items));
         } finally {
             lock.unlock();
@@ -353,7 +357,7 @@ public class MapleStorage {
             lock.unlock();
         }
     }
-
+    
     public void close() {
         lock.lock();
         try {
@@ -362,4 +366,5 @@ public class MapleStorage {
             lock.unlock();
         }
     }
+    
 }

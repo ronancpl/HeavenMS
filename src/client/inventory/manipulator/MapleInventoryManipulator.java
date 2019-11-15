@@ -31,8 +31,8 @@ import client.inventory.MapleInventoryType;
 import client.inventory.MaplePet;
 import client.inventory.ModifyInventory;
 import client.newyear.NewYearCardRecord;
-import constants.ItemConstants;
-import constants.ServerConstants;
+import config.YamlConfig;
+import constants.inventory.ItemConstants;
 
 import java.awt.Point;
 import java.util.ArrayList;
@@ -68,29 +68,20 @@ public class MapleInventoryManipulator {
         return addById(c, itemId, quantity, owner, petid, (byte) 0, expiration);
     }
 
-    public static boolean addById(MapleClient c, int itemId, short quantity, String owner, int petid, byte flag, long expiration) {
+    public static boolean addById(MapleClient c, int itemId, short quantity, String owner, int petid, short flag, long expiration) {
         MapleCharacter chr = c.getPlayer();
         MapleInventoryType type = ItemConstants.getInventoryType(itemId);
         
-        if (c.tryacquireClient()) {
-            try {
-                MapleInventory inv = chr.getInventory(type);
-                inv.lockInventory();
-                try {
-                    return addByIdInternal(c, chr, type, inv, itemId, quantity, owner, petid, flag, expiration);
-                } finally {
-                    inv.unlockInventory();
-                }
-            } finally {
-                c.releaseClient();
-            }
-        } else {
-            c.announce(MaplePacketCreator.enableActions());
-            return false;
+        MapleInventory inv = chr.getInventory(type);
+        inv.lockInventory();
+        try {
+            return addByIdInternal(c, chr, type, inv, itemId, quantity, owner, petid, flag, expiration);
+        } finally {
+            inv.unlockInventory();
         }
     }
     
-    private static boolean addByIdInternal(MapleClient c, MapleCharacter chr, MapleInventoryType type, MapleInventory inv, int itemId, short quantity, String owner, int petid, byte flag, long expiration) {
+    private static boolean addByIdInternal(MapleClient c, MapleCharacter chr, MapleInventoryType type, MapleInventory inv, int itemId, short quantity, String owner, int petid, short flag, long expiration) {
         MapleItemInformationProvider ii = MapleItemInformationProvider.getInstance();
         if (!type.equals(MapleInventoryType.EQUIP)) {
             short slotMax = ii.getSlotMax(c, itemId);
@@ -187,21 +178,12 @@ public class MapleInventoryManipulator {
         MapleCharacter chr = c.getPlayer();
         MapleInventoryType type = item.getInventoryType();
         
-        if (c.tryacquireClient()) {
-            try {
-                MapleInventory inv = chr.getInventory(type);
-                inv.lockInventory();
-                try {
-                    return addFromDropInternal(c, chr, type, inv, item, show, petId);
-                } finally {
-                    inv.unlockInventory();
-                }
-            } finally {
-                c.releaseClient();
-            }
-        } else {
-            c.announce(MaplePacketCreator.enableActions());
-            return false;
+        MapleInventory inv = chr.getInventory(type);
+        inv.lockInventory();
+        try {
+            return addFromDropInternal(c, chr, type, inv, item, show, petId);
+        } finally {
+            inv.unlockInventory();
         }
     }
     
@@ -683,9 +665,27 @@ public class MapleInventoryManipulator {
         c.announce(MaplePacketCreator.modifyInventory(true, Collections.singletonList(new ModifyInventory(2, source, src))));
         chr.equipChanged();
     }
+    
+    private static boolean isDisappearingItemDrop(Item it) {
+        MapleItemInformationProvider ii = MapleItemInformationProvider.getInstance();
+        if (ii.isDropRestricted(it.getItemId())) {
+            return true;
+        } else if (ii.isCash(it.getItemId())) {
+            if (YamlConfig.config.server.USE_ENFORCE_UNMERCHABLE_CASH) {     // thanks Ari for noticing cash drops not available server-side
+                return true;
+            } else if (ItemConstants.isPet(it.getItemId()) && YamlConfig.config.server.USE_ENFORCE_UNMERCHABLE_PET) {
+                return true;
+            }
+        } else if (isDroppedItemRestricted(it)) {
+            return true;
+        } else if (ItemConstants.isWeddingRing(it.getItemId())) {
+            return true;
+        }
+        
+        return false;
+    }
 
     public static void drop(MapleClient c, MapleInventoryType type, short src, short quantity) {
-        MapleItemInformationProvider ii = MapleItemInformationProvider.getInstance();
         if (src < 0) {
             type = MapleInventoryType.EQUIPPED;
         }
@@ -698,14 +698,21 @@ public class MapleInventoryManipulator {
         	return;
         }
         int itemId = source.getItemId();
-        if (ItemConstants.isPet(itemId)) {
-            return;
-        }
         
         MapleMap map = chr.getMap();
         if ((!ItemConstants.isRechargeable(itemId) && source.getQuantity() < quantity) || quantity < 0) {
             return;
         }
+        
+        int petid = source.getPetId();
+        if (petid > -1) {
+            int petIdx = chr.getPetIndex(petid);
+            if(petIdx > -1) {
+                MaplePet pet = chr.getPet(petIdx);
+                chr.unequipPet(pet, true);
+            }
+        }
+        
         Point dropPos = new Point(chr.getPosition());
         if (quantity < source.getQuantity() && !ItemConstants.isRechargeable(itemId)) {
             Item target = source.copy();
@@ -721,11 +728,9 @@ public class MapleInventoryManipulator {
                     NewYearCardRecord.removeAllNewYearCard(false, chr);
                     c.getAbstractPlayerInteraction().removeAll(4301000);
                 }
-            } else if (ItemConstants.isWeddingRing(source.getItemId())) {
-                map.disappearingItemDrop(chr, chr, target, dropPos);
             }
             
-            if (ii.isDropRestricted(target.getItemId()) || ii.isCash(target.getItemId()) || isDroppedItemRestricted(target)) {
+            if (isDisappearingItemDrop(target)) {
                 map.disappearingItemDrop(chr, chr, target, dropPos);
             } else {
                 map.spawnItemDrop(chr, chr, target, dropPos, true, true);
@@ -754,11 +759,9 @@ public class MapleInventoryManipulator {
                     NewYearCardRecord.removeAllNewYearCard(false, chr);
                     c.getAbstractPlayerInteraction().removeAll(4301000);
                 }
-            } else if (ItemConstants.isWeddingRing(source.getItemId())) {
-                map.disappearingItemDrop(chr, chr, source, dropPos);
             }
             
-            if (ii.isDropRestricted(itemId) || ii.isCash(itemId) || isDroppedItemRestricted(source)) {
+            if (isDisappearingItemDrop(source)) {
                 map.disappearingItemDrop(chr, chr, source, dropPos);
             } else {
                 map.spawnItemDrop(chr, chr, source, dropPos, true, true);
@@ -781,7 +784,7 @@ public class MapleInventoryManipulator {
     }
 
     private static boolean isDroppedItemRestricted(Item it) {
-        return ServerConstants.USE_ERASE_UNTRADEABLE_DROP && it.isUntradeable();
+        return YamlConfig.config.server.USE_ERASE_UNTRADEABLE_DROP && it.isUntradeable();
     }
     
     public static boolean isSandboxItem(Item it) {

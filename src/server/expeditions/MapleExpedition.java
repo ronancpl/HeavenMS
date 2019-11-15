@@ -46,6 +46,7 @@ import java.util.Properties;
 import net.server.audit.locks.MonitoredLockType;
 import net.server.audit.locks.MonitoredReentrantLock;
 import net.server.audit.locks.factory.MonitoredReentrantLockFactory;
+import net.server.channel.Channel;
 
 /**
  *
@@ -108,7 +109,6 @@ public class MapleExpedition {
                 minSize = (minPlayers != 0) ? minPlayers : type.getMinSize();
                 maxSize = (maxPlayers != 0) ? maxPlayers : type.getMaxSize();
 		bossLogs = new CopyOnWriteArrayList<>();
-		beginRegistration();
 	}
         
         public int getMinSize() {
@@ -119,7 +119,7 @@ public class MapleExpedition {
                 return maxSize;
         }
 
-	private void beginRegistration() {
+	public void beginRegistration() {
 		registering = true;
                 leader.announce(MaplePacketCreator.getClock(type.getRegistrationTime() * 60));
 		if (!silent) {
@@ -137,7 +137,7 @@ public class MapleExpedition {
 			@Override
 			public void run() {
 				if (registering){
-                                        startMap.getChannelServer().removeExpedition(exped);
+                                        exped.removeChannelExpedition(startMap.getChannelServer());
 					if (!silent) startMap.broadcastMessage(MaplePacketCreator.serverNotice(6, "[Expedition] The time limit has been reached. Expedition has been disbanded."));
                                         
                                         dispose(false);
@@ -163,6 +163,7 @@ public class MapleExpedition {
 
 	public void start(){
 		finishRegistration();
+                registerExpeditionAttempt();
 		broadcastExped(MaplePacketCreator.removeClock());
 		if (!silent) broadcastExped(MaplePacketCreator.serverNotice(6, "[Expedition] The expedition has started! Good luck, brave heroes!"));
 		startTime = System.currentTimeMillis();
@@ -179,6 +180,11 @@ public class MapleExpedition {
 		if (members.size() >= this.getMaxSize()){ //Would be a miracle if anybody ever saw this
 			return "Sorry, this expedition is full!";
 		}
+                
+                int channel = this.getRecruitingMap().getChannelServer().getId();
+                if (!MapleExpeditionBossLog.attemptBoss(player.getId(), channel, this, false)) {    // thanks Conrad, Cato for noticing some expeditions have entry limit
+                        return "Sorry, you've already reached the quota of attempts for this expedition! Try again another day...";
+                }
                 
                 members.put(player.getId(), player.getName());
                 player.announce(MaplePacketCreator.getClock((int)(startTime - System.currentTimeMillis()) / 1000));
@@ -202,13 +208,21 @@ public class MapleExpedition {
                 if (!silent) broadcastExped(MaplePacketCreator.serverNotice(6, "[Expedition] " + player.getName() + " has joined the expedition!"));
                 return 0; //"You have registered for the expedition successfully!";
         }
+        
+        private void registerExpeditionAttempt(){
+                int channel = this.getRecruitingMap().getChannelServer().getId();
 
+                for (MapleCharacter chr : getActiveMembers()){
+                        MapleExpeditionBossLog.attemptBoss(chr.getId(), channel, this, true);
+                }
+        }
+        
 	private void broadcastExped(byte[] packet){
 		for (MapleCharacter chr : getActiveMembers()){
                         chr.announce(packet);
 		}
 	}
-
+        
 	public boolean removeMember(MapleCharacter chr) {
 		if(members.remove(chr.getId()) != null) {
                     chr.announce(MaplePacketCreator.removeClock());
@@ -358,6 +372,14 @@ public class MapleExpedition {
                 for (MapleCharacter chr : players) {
                         chr.changeMap(warpTo, toSp);
                 }
+        }
+        
+        public final boolean addChannelExpedition(Channel ch) {
+                return ch.addExpedition(this);
+        }
+        
+        public final void removeChannelExpedition(Channel ch) {
+                ch.removeExpedition(this);
         }
 
 	public MapleCharacter getLeader(){

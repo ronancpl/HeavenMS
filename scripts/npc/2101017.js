@@ -115,7 +115,7 @@ function action(mode, type, selection) {
                     status = 2;
                 }
             }
-        } else if (Packages.constants.GameConstants.isAriantColiseumArena(cm.getPlayer().getMapId())) {
+        } else if (Packages.constants.game.GameConstants.isAriantColiseumArena(cm.getPlayer().getMapId())) {
             if (cm.getPlayer().getMapId() == 980010101) {
                 exped = MapleExpeditionType.ARIANT;
                 expedicao = cm.getExpedition(exped);

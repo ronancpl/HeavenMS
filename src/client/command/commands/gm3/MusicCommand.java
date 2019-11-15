@@ -26,7 +26,7 @@ package client.command.commands.gm3;
 import client.command.Command;
 import client.MapleClient;
 import client.MapleCharacter;
-import constants.GameConstants;
+import constants.game.GameConstants;
 import tools.MaplePacketCreator;
 
 public class MusicCommand extends Command {

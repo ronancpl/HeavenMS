@@ -73,7 +73,7 @@ function end(mode, type, selection) {
 			qm.gainItem(4032309, -1);
 			qm.gainItem(4032310, -1);
             qm.gainItem(3010062, 1);
-	    qm.sendNextPrev("Here, a fully-assembled chair, just for you! I've always wanted to give you a chair as a gift, because I know a hero can occasionally use some good rest. Tee hee.", 9);	
+	    qm.sendNext("Here, a fully-assembled chair, just for you! I've always wanted to give you a chair as a gift, because I know a hero can occasionally use some good rest. Tee hee.", 9);	
     } else if (status == 2) { 
 	qm.sendNext("A hero is not invincible. A hero is human. I'm sure you will face challenges and even falter at times. But you are a hero because you have what it takes to overcome any obstacles you may encounter.", 9);
     } else if (status == 3) { 

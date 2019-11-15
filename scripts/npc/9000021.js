@@ -55,7 +55,7 @@ function action(mode, type, selection) {
             cm.sendOk("Very well. Remember, there you can assemble a team or take on the fightings on your own, it's up to you. Good luck!");
         } else if(status == 4) {
             cm.getPlayer().saveLocation("BOSSPQ");
-            cm.warp(970030000);
+            cm.warp(970030000, "out00");
             cm.dispose();
         }
     }

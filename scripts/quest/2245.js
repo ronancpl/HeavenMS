@@ -38,7 +38,6 @@ function start(mode, type, selection) {
             em = qm.getEventManager("BalrogQuest");
             if (em == null) {
                 qm.sendOk("Sorry, but the BalrogQuest is closed.");
-                qm.dispose();
                 return;
             }
             
@@ -47,8 +46,9 @@ function start(mode, type, selection) {
                 qm.sendOk("There is currently someone in this map, come back later.");
             } else {
                 qm.forceStartQuest();
+                qm.dispose();
             }
-
+        } else if (status == 1) {
             qm.dispose();
         }
     }

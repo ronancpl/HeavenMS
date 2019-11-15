@@ -21,7 +21,7 @@
  */
 package provider.wz;
 
-import constants.GameConstants;
+import constants.game.GameConstants;
 import java.awt.Point;
 import java.io.File;
 import java.io.FileInputStream;

@@ -36,8 +36,9 @@ function start(mode, type, selection) {
         
         if (status == 0) {
             qm.sendNext("Did you know, they say someone from the sewers has been trying to #rdevelop a magic powder that let's one to grow#k, isn't that nice?");
-            qm.gainExp(7000);
+        } else if (status == 1) {
             qm.forceCompleteQuest();
+            qm.gainExp(7000);
             
             if(isAllSubquestsDone() && qm.haveItem(4031894)) {
                 qm.gainItem(4031894, -1);

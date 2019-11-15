@@ -59,7 +59,7 @@ function action(mode, type, selection) {
 						cm.divideTeams();
         
 					cm.getEvent().minusLimit();
-					cm.warp(cm.getEvent().getMapId());
+					cm.warp(cm.getEvent().getMapId(), 0);
 					cm.dispose();
 				} else {
 					cm.sendNext("Either the event has not been started, you already have the #bScroll of Secrets#k, or you have already participated in this event within the last 24 hours. Please try again later!");

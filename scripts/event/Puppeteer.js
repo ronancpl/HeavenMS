@@ -24,7 +24,7 @@ function respawn(eim){}
 
 function playerEntry(eim, player){
 	var cave = eim.getMapInstance(eventMap);
-	player.changeMap(cave);
+	player.changeMap(cave, 1);
 }
 
 function scheduledTimeout(eim){

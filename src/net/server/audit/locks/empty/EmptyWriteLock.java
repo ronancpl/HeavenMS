@@ -19,7 +19,7 @@
 */
 package net.server.audit.locks.empty;
 
-import constants.ServerConstants;
+import constants.net.ServerConstants;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;

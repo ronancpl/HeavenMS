@@ -62,7 +62,7 @@ function action(mode, type, selection){
                         }
                 }
         } else {
-                var questProgress = cm.getQuestProgress(2330, 3300005) + cm.getQuestProgress(2330, 3300006) + cm.getQuestProgress(2330, 3300007); //3 Yetis
+                var questProgress = cm.getQuestProgressInt(2330, 3300005) + cm.getQuestProgressInt(2330, 3300006) + cm.getQuestProgressInt(2330, 3300007); //3 Yetis
                 if (!(cm.isQuestStarted(2330) && questProgress < 3)) {  // thanks Vcoc for finding an exploit with boss entry through NPC
                         cm.dispose();
                         return;

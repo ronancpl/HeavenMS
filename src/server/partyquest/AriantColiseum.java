@@ -26,7 +26,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.ScheduledFuture;
 import client.MapleCharacter;
-import constants.GameConstants;
+import constants.game.GameConstants;
 import server.TimerManager;
 import server.expeditions.MapleExpedition;
 import server.expeditions.MapleExpeditionType;
@@ -272,7 +272,7 @@ public class AriantColiseum {
     }
     
     private void enterKingsRoom() {
-        map.getChannelServer().removeExpedition(exped);
+        exped.removeChannelExpedition(map.getChannelServer());
         cancelAriantSchedules();
         
         for (MapleCharacter chr : map.getAllPlayers()) {

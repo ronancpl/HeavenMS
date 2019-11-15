@@ -24,6 +24,7 @@ package net.server.channel.handlers;
 import java.util.ArrayList;
 import java.util.List;
 
+import config.YamlConfig;
 import net.AbstractMaplePacketHandler;
 import tools.MaplePacketCreator;
 import tools.data.input.SeekableLittleEndianAccessor;
@@ -34,7 +35,7 @@ import client.inventory.Equip;
 import client.inventory.MapleInventory;
 import client.inventory.MapleInventoryType;
 import client.inventory.ModifyInventory;
-import constants.ServerConstants;
+import constants.net.ServerConstants;
 import server.MapleItemInformationProvider;
 import net.server.Server;
 
@@ -265,7 +266,7 @@ public final class InventorySortHandler extends AbstractMaplePacketHandler {
         slea.readInt();
         chr.getAutobanManager().setTimestamp(3, Server.getInstance().getCurrentTimestamp(), 4);
         
-        if(!ServerConstants.USE_ITEM_SORT) {
+        if(!YamlConfig.config.server.USE_ITEM_SORT) {
             c.announce(MaplePacketCreator.enableActions());
             return;
         }
@@ -295,7 +296,7 @@ public final class InventorySortHandler extends AbstractMaplePacketHandler {
             }
 
             int invTypeCriteria = (MapleInventoryType.getByType(invType) == MapleInventoryType.EQUIP) ? 3 : 1;
-            int sortCriteria = (ServerConstants.USE_ITEM_SORT_BY_NAME == true) ? 2 : 0;
+            int sortCriteria = (YamlConfig.config.server.USE_ITEM_SORT_BY_NAME == true) ? 2 : 0;
             PairedQuicksort pq = new PairedQuicksort(itemarray, sortCriteria, invTypeCriteria);
 
             for (Item item : itemarray) {

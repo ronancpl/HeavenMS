@@ -19,7 +19,7 @@
 */
 package server.life.positioner;
 
-import constants.ServerConstants;
+import config.YamlConfig;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.ArrayList;
@@ -59,18 +59,18 @@ public class MaplePlayerNPCPositioner {
     }
     
     private static int calcDx(int newStep) {
-        return ServerConstants.PLAYERNPC_AREA_X / (newStep + 1);
+        return YamlConfig.config.server.PLAYERNPC_AREA_X / (newStep + 1);
     }
     
     private static int calcDy(int newStep) {
-        return (ServerConstants.PLAYERNPC_AREA_Y / 2) + (ServerConstants.PLAYERNPC_AREA_Y / (1 << (newStep + 1)));
+        return (YamlConfig.config.server.PLAYERNPC_AREA_Y / 2) + (YamlConfig.config.server.PLAYERNPC_AREA_Y / (1 << (newStep + 1)));
     }
     
     private static List<Point> rearrangePlayerNpcPositions(MapleMap map, int newStep, int pnpcsSize) {
         Rectangle mapArea = map.getMapArea();
         
-        int leftPx = mapArea.x + ServerConstants.PLAYERNPC_INITIAL_X, px, py = mapArea.y + ServerConstants.PLAYERNPC_INITIAL_Y;
-        int outx = mapArea.x + mapArea.width - ServerConstants.PLAYERNPC_INITIAL_X, outy = mapArea.y + mapArea.height;
+        int leftPx = mapArea.x + YamlConfig.config.server.PLAYERNPC_INITIAL_X, px, py = mapArea.y + YamlConfig.config.server.PLAYERNPC_INITIAL_Y;
+        int outx = mapArea.x + mapArea.width - YamlConfig.config.server.PLAYERNPC_INITIAL_X, outy = mapArea.y + mapArea.height;
         int cx = calcDx(newStep), cy = calcDy(newStep);
         
         List<Point> otherPlayerNpcs = new LinkedList<>();
@@ -101,8 +101,8 @@ public class MaplePlayerNPCPositioner {
     private static Point rearrangePlayerNpcs(MapleMap map, int newStep, List<MaplePlayerNPC> pnpcs) {
         Rectangle mapArea = map.getMapArea();
         
-        int leftPx = mapArea.x + ServerConstants.PLAYERNPC_INITIAL_X, px, py = mapArea.y + ServerConstants.PLAYERNPC_INITIAL_Y;
-        int outx = mapArea.x + mapArea.width - ServerConstants.PLAYERNPC_INITIAL_X, outy = mapArea.y + mapArea.height;
+        int leftPx = mapArea.x + YamlConfig.config.server.PLAYERNPC_INITIAL_X, px, py = mapArea.y + YamlConfig.config.server.PLAYERNPC_INITIAL_Y;
+        int outx = mapArea.x + mapArea.width - YamlConfig.config.server.PLAYERNPC_INITIAL_X, outy = mapArea.y + mapArea.height;
         int cx = calcDx(newStep), cy = calcDy(newStep);
         
         List<Point> otherPlayerNpcs = new LinkedList<>();
@@ -138,7 +138,7 @@ public class MaplePlayerNPCPositioner {
     
     private static Point reorganizePlayerNpcs(MapleMap map, int newStep, List<MapleMapObject> mmoList) {
         if(!mmoList.isEmpty()) {
-            if(ServerConstants.USE_DEBUG) System.out.println("Reorganizing pnpc map, step " + newStep);
+            if(YamlConfig.config.server.USE_DEBUG) System.out.println("Reorganizing pnpc map, step " + newStep);
             
             List<MaplePlayerNPC> playerNpcs = new ArrayList<>(mmoList.size());
             for(MapleMapObject mmo : mmoList) {
@@ -189,12 +189,12 @@ public class MaplePlayerNPCPositioner {
         
         int cx = calcDx(initStep), cy = calcDy(initStep);
         Rectangle mapArea = map.getMapArea();
-        int outx = mapArea.x + mapArea.width - ServerConstants.PLAYERNPC_INITIAL_X, outy = mapArea.y + mapArea.height;
+        int outx = mapArea.x + mapArea.width - YamlConfig.config.server.PLAYERNPC_INITIAL_X, outy = mapArea.y + mapArea.height;
         boolean reorganize = false;
         
         int i = initStep;
-        while(i < ServerConstants.PLAYERNPC_AREA_STEPS) {
-            int leftPx = mapArea.x + ServerConstants.PLAYERNPC_INITIAL_X, px, py = mapArea.y + ServerConstants.PLAYERNPC_INITIAL_Y;
+        while(i < YamlConfig.config.server.PLAYERNPC_AREA_STEPS) {
+            int leftPx = mapArea.x + YamlConfig.config.server.PLAYERNPC_INITIAL_X, px, py = mapArea.y + YamlConfig.config.server.PLAYERNPC_INITIAL_Y;
             
             while(py < outy) {
                 px = leftPx;
@@ -207,7 +207,7 @@ public class MaplePlayerNPCPositioner {
                                 map.getWorldServer().setPlayerNpcMapStep(map.getId(), i);
                             }
 
-                            if(reorganize && ServerConstants.PLAYERNPC_ORGANIZE_AREA) {
+                            if(reorganize && YamlConfig.config.server.PLAYERNPC_ORGANIZE_AREA) {
                                 return reorganizePlayerNpcs(map, i, mmoList);
                             }
 
@@ -226,13 +226,13 @@ public class MaplePlayerNPCPositioner {
             
             cx = calcDx(i);
             cy = calcDy(i);
-            if(ServerConstants.PLAYERNPC_ORGANIZE_AREA) {
+            if(YamlConfig.config.server.PLAYERNPC_ORGANIZE_AREA) {
                 otherPlayerNpcs = rearrangePlayerNpcPositions(map, i, mmoList.size());
             }
         }
         
         if(i > initStep) {
-            map.getWorldServer().setPlayerNpcMapStep(map.getId(), ServerConstants.PLAYERNPC_AREA_STEPS - 1);
+            map.getWorldServer().setPlayerNpcMapStep(map.getId(), YamlConfig.config.server.PLAYERNPC_AREA_STEPS - 1);
         }
         return null;
     }

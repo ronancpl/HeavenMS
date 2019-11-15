@@ -10,7 +10,7 @@ function enter(pi) {
     
     for(var i = 0; i < quests.length; i++) {
         if (pi.isQuestActive(quests[i])) {
-            if(pi.getQuestProgress(quests[i], mobs[i]) != 0) {
+            if(pi.getQuestProgressInt(quests[i], mobs[i]) != 0) {
                 pi.message("You already faced Nex. Complete your mission.");
                 return false;
             }

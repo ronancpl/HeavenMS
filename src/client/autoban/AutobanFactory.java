@@ -23,7 +23,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package client.autoban;
 
 import client.MapleCharacter;
-import constants.ServerConstants;
+import config.YamlConfig;
 import net.server.Server;
 import tools.FilePrinter;
 import tools.MapleLogger;
@@ -84,19 +84,19 @@ public enum AutobanFactory {
 	}
 	
 	public void alert(MapleCharacter chr, String reason) {
-            if(ServerConstants.USE_AUTOBAN == true) {
+            if(YamlConfig.config.server.USE_AUTOBAN == true) {
 		if (chr != null && MapleLogger.ignored.contains(chr.getId())){
 			return;
 		}
 		Server.getInstance().broadcastGMMessage((chr != null ? chr.getWorld() : 0), MaplePacketCreator.sendYellowTip((chr != null ? MapleCharacter.makeMapleReadable(chr.getName()) : "") + " caused " + this.name() + " " + reason));
             }
-        if (ServerConstants.USE_AUTOBAN_LOG) {
+        if (YamlConfig.config.server.USE_AUTOBAN_LOG) {
 			FilePrinter.print(FilePrinter.AUTOBAN_WARNING, (chr != null ? MapleCharacter.makeMapleReadable(chr.getName()) : "") + " caused " + this.name() + " " + reason);
 		}
 	}
 	
 	public void autoban(MapleCharacter chr, String value) {
-            if(ServerConstants.USE_AUTOBAN == true) {
+            if(YamlConfig.config.server.USE_AUTOBAN == true) {
 		chr.autoban("Autobanned for (" + this.name() + ": " + value + ")");
 		//chr.sendPolice("You will be disconnected for (" + this.name() + ": " + value + ")");
             }

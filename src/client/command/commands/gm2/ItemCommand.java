@@ -28,8 +28,8 @@ import client.MapleClient;
 import client.MapleCharacter;
 import client.inventory.MaplePet;
 import client.inventory.manipulator.MapleInventoryManipulator;
-import constants.ItemConstants;
-import constants.ServerConstants;
+import config.YamlConfig;
+import constants.inventory.ItemConstants;
 import server.MapleItemInformationProvider;
 
 public class ItemCommand extends Command {
@@ -57,7 +57,7 @@ public class ItemCommand extends Command {
         short quantity = 1;
         if(params.length >= 2) quantity = Short.parseShort(params[1]);
 
-        if (ServerConstants.BLOCK_GENERATE_CASH_ITEM && ii.isCash(itemId)) {
+        if (YamlConfig.config.server.BLOCK_GENERATE_CASH_ITEM && ii.isCash(itemId)) {
             player.yellowMessage("You cannot create a cash item with this command.");
             return;
         }
@@ -77,12 +77,12 @@ public class ItemCommand extends Command {
                 }
         }
         
-        byte flag = 0;
+        short flag = 0;
         if(player.gmLevel() < 3) {
                 flag |= ItemConstants.ACCOUNT_SHARING;
                 flag |= ItemConstants.UNTRADEABLE;
         }
-
+        
         MapleInventoryManipulator.addById(c, itemId, quantity, player.getName(), -1, flag, -1);
     }
 }

@@ -21,10 +21,10 @@
 */
 package net.mina;
 
-import constants.ServerConstants;
+import config.YamlConfig;
 import client.MapleClient;
-import constants.OpcodeConstants;
-import net.server.coordinator.MapleSessionCoordinator;
+import constants.net.OpcodeConstants;
+import net.server.coordinator.session.MapleSessionCoordinator;
 import org.apache.mina.core.buffer.IoBuffer;
 import org.apache.mina.core.session.IoSession;
 import org.apache.mina.filter.codec.CumulativeProtocolDecoder;
@@ -33,7 +33,6 @@ import tools.HexTool;
 import tools.MapleAESOFB;
 import tools.data.input.ByteArrayByteStream;
 import tools.data.input.GenericLittleEndianAccessor;
-import net.opcodes.RecvOpcode;
 import tools.FilePrinter;
 
 public class MaplePacketDecoder extends CumulativeProtocolDecoder {
@@ -75,7 +74,7 @@ public class MaplePacketDecoder extends CumulativeProtocolDecoder {
             rcvdCrypto.crypt(decryptedPacket);
             MapleCustomEncryption.decryptData(decryptedPacket);
             out.write(decryptedPacket);
-            if (ServerConstants.USE_DEBUG_SHOW_PACKET){ // Atoot's idea: packet traffic log, applied using auto-identation thanks to lrenex
+            if (YamlConfig.config.server.USE_DEBUG_SHOW_PACKET){ // packet traffic log: Atoot's idea, applied using auto-identation thanks to lrenex
                 int packetLen = decryptedPacket.length;
                 int pHeader = readFirstShort(decryptedPacket);
                 String pHeaderStr = Integer.toHexString(pHeader).toUpperCase();

@@ -69,18 +69,10 @@ public class MapleMarriage extends EventInstanceManager {
     }
 
     public List<Item> getGiftItems(MapleClient c, boolean groom) {
-        if (c.tryacquireClient()) {
-            try {
-                List<Item> gifts = getGiftItemsList(groom);
-                synchronized (gifts) {
-                    return new LinkedList<>(gifts);
-                }
-            } finally {
-                c.releaseClient();
-            }
+        List<Item> gifts = getGiftItemsList(groom);
+        synchronized (gifts) {
+            return new LinkedList<>(gifts);
         }
-        
-        return new LinkedList<>();
     }
 
     private List<Item> getGiftItemsList(boolean groom) {
@@ -130,7 +122,9 @@ public class MapleMarriage extends EventInstanceManager {
                 Connection con = DatabaseConnection.getConnection();
                 ItemFactory.MARRIAGE_GIFTS.saveItems(new LinkedList<Pair<Item, MapleInventoryType>>(), chr.getId(), con);
                 con.close();
-            } catch (SQLException sqle) {}
+            } catch (SQLException sqle) {
+                sqle.printStackTrace();
+            }
 
             for (Item item : gifts) {
                 MapleInventoryManipulator.addFromDrop(chr.getClient(), item, false);
@@ -144,18 +138,13 @@ public class MapleMarriage extends EventInstanceManager {
         
     public static List<Item> loadGiftItemsFromDb(MapleClient c, int cid) {
         List<Item> items = new LinkedList<>();
-        if (c.tryacquireClient()) {
-            try {
-                try {
-                    for (Pair<Item, MapleInventoryType> it : ItemFactory.MARRIAGE_GIFTS.loadItems(cid, false)) {
-                        items.add(it.getLeft());
-                    }
-                } catch (SQLException sqle) {
-                    sqle.printStackTrace();
-                }
-            } finally {
-                c.releaseClient();
+        
+        try {
+            for (Pair<Item, MapleInventoryType> it : ItemFactory.MARRIAGE_GIFTS.loadItems(cid, false)) {
+                items.add(it.getLeft());
             }
+        } catch (SQLException sqle) {
+            sqle.printStackTrace();
         }
         
         return items;
@@ -170,19 +159,13 @@ public class MapleMarriage extends EventInstanceManager {
         for (Item it : giftItems) {
             items.add(new Pair<>(it, it.getInventoryType()));
         }
-
-        if (c.tryacquireClient()) {
-            try {
-                try {
-                    Connection con = DatabaseConnection.getConnection();
-                    ItemFactory.MARRIAGE_GIFTS.saveItems(items, cid, con);
-                    con.close();
-                } catch (SQLException sqle) {
-                    sqle.printStackTrace();
-                }
-            } finally {
-                c.releaseClient();
-            }
+        
+        try {
+            Connection con = DatabaseConnection.getConnection();
+            ItemFactory.MARRIAGE_GIFTS.saveItems(items, cid, con);
+            con.close();
+        } catch (SQLException sqle) {
+            sqle.printStackTrace();
         }
     }
 }

@@ -5,8 +5,8 @@ import java.net.UnknownHostException;
 
 import net.AbstractMaplePacketHandler;
 import net.server.Server;
-import net.server.coordinator.MapleSessionCoordinator;
-import net.server.coordinator.MapleSessionCoordinator.AntiMulticlientResult;
+import net.server.coordinator.session.MapleSessionCoordinator;
+import net.server.coordinator.session.MapleSessionCoordinator.AntiMulticlientResult;
 import net.server.world.World;
 import org.apache.mina.core.session.IoSession;
 import tools.MaplePacketCreator;
@@ -84,8 +84,7 @@ public class CharSelectedWithPicHandler extends AbstractMaplePacketHandler {
             }
             
             server.unregisterLoginState(c);
-            c.updateLoginState(MapleClient.LOGIN_SERVER_TRANSITION);
-            server.setCharacteridInTransition(session, charId);
+            c.setCharacterOnSessionTransitionState(charId);
             
             try {
                 c.announce(MaplePacketCreator.getServerIP(InetAddress.getByName(socket[0]), Integer.parseInt(socket[1]), charId));

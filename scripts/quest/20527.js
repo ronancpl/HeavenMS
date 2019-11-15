@@ -38,12 +38,12 @@ function start(mode, type, selection) {
             var mount = qm.getPlayer().getMount();
             
             if(mount != null && mount.getLevel() >= 3) {
-                qm.sendNext("Alright, I'll get you started in how to train Mimio, the next step for Mimianas. When you're ready, talk to me again.");
                 qm.forceCompleteQuest();
+                qm.sendNext("Alright, I'll get you started in how to train Mimio, the next step for Mimianas. When you're ready, talk to me again.");
             } else {
                 qm.sendNext("It looks like your Mimiana haven't reached #rlevel 3#k yet. Please train it a bit more before trying to advance it.");
             }
-            
+        } else if (status == 1) {
             qm.dispose();
         }
     }

@@ -78,7 +78,10 @@ function action(mode, type, selection) {
         else if (status == 2){
             cm.dispose();
             if (beauty == 1){
-                if (cm.haveItem(5150003)){
+                if (cm.haveItem(5420003)){
+                    cm.setHair(hairnew[selection]);
+                    cm.sendOk("Enjoy your new and improved hairstyle!");
+                } else if (cm.haveItem(5150003)){
                     cm.gainItem(5150003, -1);
                     cm.setHair(hairnew[selection]);
                     cm.sendOk("Enjoy your new and improved hairstyle!");

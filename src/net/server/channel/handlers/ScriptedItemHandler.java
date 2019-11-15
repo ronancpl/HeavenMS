@@ -23,7 +23,7 @@ package net.server.channel.handlers;
 
 import client.MapleClient;
 import client.inventory.Item;
-import constants.ItemConstants;
+import constants.inventory.ItemConstants;
 import net.AbstractMaplePacketHandler;
 import scripting.item.ItemScriptManager;
 import server.MapleItemInformationProvider;

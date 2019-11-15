@@ -29,8 +29,8 @@ import client.MapleCharacter;
 import client.inventory.Item;
 import client.inventory.MapleInventoryType;
 import client.inventory.MaplePet;
-import constants.ItemConstants;
-import constants.ServerConstants;
+import config.YamlConfig;
+import constants.inventory.ItemConstants;
 import server.MapleItemInformationProvider;
 
 public class ItemDropCommand extends Command {
@@ -58,7 +58,7 @@ public class ItemDropCommand extends Command {
         short quantity = 1;
         if(params.length >= 2) quantity = Short.parseShort(params[1]);
 
-        if (ServerConstants.BLOCK_GENERATE_CASH_ITEM && ii.isCash(itemId)) {
+        if (YamlConfig.config.server.BLOCK_GENERATE_CASH_ITEM && ii.isCash(itemId)) {
             player.yellowMessage("You cannot create a cash item with this command.");
             return;
         }
@@ -75,12 +75,12 @@ public class ItemDropCommand extends Command {
 
                 toDrop.setOwner("");
                 if(player.gmLevel() < 3) {
-                    byte b = toDrop.getFlag();
-                    b |= ItemConstants.ACCOUNT_SHARING;
-                    b |= ItemConstants.UNTRADEABLE;
-                    b |= ItemConstants.SANDBOX;
+                    short f = toDrop.getFlag();
+                    f |= ItemConstants.ACCOUNT_SHARING;
+                    f |= ItemConstants.UNTRADEABLE;
+                    f |= ItemConstants.SANDBOX;
                     
-                    toDrop.setFlag(b);
+                    toDrop.setFlag(f);
                     toDrop.setOwner("TRIAL-MODE");
                 }
 
@@ -102,12 +102,12 @@ public class ItemDropCommand extends Command {
 
         toDrop.setOwner(player.getName());
         if(player.gmLevel() < 3) {
-            byte b = toDrop.getFlag();
-            b |= ItemConstants.ACCOUNT_SHARING;
-            b |= ItemConstants.UNTRADEABLE;
-            b |= ItemConstants.SANDBOX;
+            short f = toDrop.getFlag();
+            f |= ItemConstants.ACCOUNT_SHARING;
+            f |= ItemConstants.UNTRADEABLE;
+            f |= ItemConstants.SANDBOX;
 
-            toDrop.setFlag(b);
+            toDrop.setFlag(f);
             toDrop.setOwner("TRIAL-MODE");
         }
 

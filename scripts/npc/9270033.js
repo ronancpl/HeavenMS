@@ -60,7 +60,7 @@ function action(mode, type, selection) {
                                 }
                         }
                     
-                        cm.warp(541010110);
+                        cm.warp(541010110, 0);
                         cm.dispose();
                 }
         }

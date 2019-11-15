@@ -20,11 +20,14 @@
 package server.maps;
 
 import java.awt.Point;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
 import client.MapleCharacter;
 import client.MapleClient;
 import net.server.audit.locks.MonitoredLockType;
+import net.server.audit.locks.MonitoredReadLock;
 import net.server.audit.locks.MonitoredReentrantReadWriteLock;
+import net.server.audit.locks.MonitoredWriteLock;
+import net.server.audit.locks.factory.MonitoredReadLockFactory;
+import net.server.audit.locks.factory.MonitoredWriteLockFactory;
 import net.server.world.MapleParty;
 import tools.MaplePacketCreator;
 
@@ -41,9 +44,9 @@ public class MapleDoorObject extends AbstractMapleMapObject {
     private int linkedPortalId;
     private Point linkedPos;
     
-    private final ReentrantReadWriteLock locks = new MonitoredReentrantReadWriteLock(MonitoredLockType.PLAYER_DOOR, true);
-    private ReentrantReadWriteLock.ReadLock rlock = locks.readLock();
-    private ReentrantReadWriteLock.WriteLock wlock = locks.writeLock();
+    private final MonitoredReentrantReadWriteLock locks = new MonitoredReentrantReadWriteLock(MonitoredLockType.PLAYER_DOOR, true);
+    private MonitoredReadLock rlock = MonitoredReadLockFactory.createLock(locks);
+    private MonitoredWriteLock wlock = MonitoredWriteLockFactory.createLock(locks);
     
     public MapleDoorObject(int owner, MapleMap destination, MapleMap origin, int townPortalId, Point targetPosition, Point toPosition) {
         super();
@@ -87,6 +90,8 @@ public class MapleDoorObject extends AbstractMapleMapObject {
     public void warp(final MapleCharacter chr) {
         MapleParty party = chr.getParty();
         if (chr.getId() == ownerId || (party != null && party.getMemberById(ownerId) != null)) {
+            chr.announce(MaplePacketCreator.playPortalSound());
+            
             if(!inTown() && party == null) {
                 chr.changeMap(to, getLinkedPortalId());
             } else {

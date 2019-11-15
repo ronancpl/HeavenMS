@@ -16,7 +16,6 @@
     <int name="reqINT" value="0"/>
     <int name="reqLUK" value="0"/>
     <int name="cash" value="0"/>
-    <float name="recovery" value="15.0"/>
     <int name="tuc" value="10"/>
     <int name="incPDD" value="20"/>
     <int name="incSpeed" value="5"/>
@@ -116,6 +115,7 @@
         </imgdir>
       </imgdir>
     </imgdir>
+    <double name="recovery" value="1,5"/>
   </imgdir>
   <imgdir name="walk1">
     <imgdir name="0">

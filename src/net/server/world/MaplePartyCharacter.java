@@ -82,6 +82,9 @@ public class MaplePartyCharacter {
 
     public void setOnline(boolean online) {
         this.online = online;
+        if (!online) {
+            this.character = null;  // thanks Feras for noticing offline party members retaining whole character object unnecessarily
+        }
     }
 
     public int getMapId() {

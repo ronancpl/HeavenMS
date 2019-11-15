@@ -21,14 +21,15 @@
  */
 package scripting.event;
 
-import java.util.LinkedHashMap;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.script.Invocable;
-import javax.script.ScriptEngine;
+import jdk.nashorn.api.scripting.NashornScriptEngine;
 
 import net.server.channel.Channel;
 import scripting.AbstractScriptManager;
@@ -41,54 +42,67 @@ public class EventScriptManager extends AbstractScriptManager {
 
     private class EventEntry {
 
-        public EventEntry(Invocable iv, EventManager em) {
+        public EventEntry(NashornScriptEngine iv, EventManager em) {
             this.iv = iv;
             this.em = em;
         }
-        public Invocable iv;
+        public NashornScriptEngine iv;
         public EventManager em;
     }
-    private Map<String, EventEntry> events = new LinkedHashMap<>();
-
+    
+    private static EventEntry fallback;
+    private Map<String, EventEntry> events = new ConcurrentHashMap<>();
+    private boolean active = false;
+    
     public EventScriptManager(Channel cserv, String[] scripts) {
         super();
         for (String script : scripts) {
             if (!script.equals("")) {
-                Invocable iv = getInvocable("event/" + script + ".js", null);
+                NashornScriptEngine iv = getScriptEngine("event/" + script + ".js");
                 events.put(script, new EventEntry(iv, new EventManager(cserv, iv, script)));
             }
         }
+        
+        init();
+        fallback = events.remove("0_EXAMPLE");
     }
 
     public EventManager getEventManager(String event) {
         EventEntry entry = events.get(event);
         if (entry == null) {
-            return null;
+            return fallback.em;
         }
         return entry.em;
     }
-
-    public void init() {
+    
+    public boolean isActive() {
+        return active;
+    }
+    
+    public final void init() {
         for (EventEntry entry : events.values()) {
             try {
-                ((ScriptEngine) entry.iv).put("em", entry.em);
+                entry.iv.put("em", entry.em);
                 entry.iv.invokeFunction("init", (Object) null);
             } catch (Exception ex) {
                 Logger.getLogger(EventScriptManager.class.getName()).log(Level.SEVERE, null, ex);
                 System.out.println("Error on script: " + entry.em.getName());
             }
         }
+        
+        active = events.size() > 1; // bootup loads only 1 script
     }
 
     private void reloadScripts() {
-        if (events.isEmpty()) {
+        Set<Entry<String, EventEntry>> eventEntries = new HashSet<>(events.entrySet());
+        if (eventEntries.isEmpty()) {
             return;
         }
 
-        Channel cserv = events.values().iterator().next().em.getChannelServer();
-        for (Entry<String, EventEntry> entry : events.entrySet()) {
+        Channel cserv = eventEntries.iterator().next().getValue().em.getChannelServer();
+        for (Entry<String, EventEntry> entry : eventEntries) {
             String script = entry.getKey();
-            Invocable iv = getInvocable("event/" + script + ".js", null);
+            NashornScriptEngine iv = getScriptEngine("event/" + script + ".js");
             events.put(script, new EventEntry(iv, new EventManager(cserv, iv, script)));
         }
     }
@@ -100,7 +114,22 @@ public class EventScriptManager extends AbstractScriptManager {
     }
 
     public void cancel() {
+        active = false;
         for (EventEntry entry : events.values()) {
+            entry.em.cancel();
+        }
+    }
+    
+    public void dispose() {
+        if (events.isEmpty()) {
+            return;
+        }
+        
+        Set<EventEntry> eventEntries = new HashSet<>(events.values());
+        events.clear();
+        
+        active = false;
+        for (EventEntry entry : eventEntries) {
             entry.em.cancel();
         }
     }

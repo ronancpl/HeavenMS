@@ -40,6 +40,12 @@ var facenew = Array();
 var colors = Array();
 var price = 100000;
 
+function pushIfItemExists(array, itemid) {
+    if ((itemid = cm.getCosmeticItem(itemid)) != -1 && !cm.isCosmeticEquipped(itemid)) {  // thanks Conrad for noticing NPC crashing the player when trying to display inexistent cosmetics
+        array.push(itemid);
+    }
+}
+
 function start() {
     if(cm.getPlayer().gmLevel() < 1) {
         cm.sendOk("Hey wassup?");
@@ -67,21 +73,21 @@ function action(mode, type, selection) {
 				cm.sendStyle("Pick one?", skin);
 			else if (selection == 1 || selection == 5) {
 				for each(var i in selection == 1 ? hair : fhair)
-					hairnew.push(i);
+					pushIfItemExists(hairnew, i);
 				cm.sendStyle("Pick one?", hairnew);
 			} else if (selection == 2) {
 				var baseHair = parseInt(cm.getPlayer().getHair() / 10) * 10;
 				for(var k = 0; k < 8; k++)
-					haircolor.push(baseHair + k);
+					pushIfItemExists(haircolor, baseHair + k);
 				cm.sendStyle("Pick one?", haircolor);
 			} else if (selection == 3 || selection == 6) {
 				for each(var j in selection == 3 ? face : fface)
-					facenew.push(j);
+					pushIfItemExists(facenew, j);
 				cm.sendStyle("Pick one?", facenew);
 			} else if (selection == 4) {
 				var baseFace = parseInt(cm.getPlayer().getFace() / 1000) * 1000 + parseInt(cm.getPlayer().getFace() % 100);
 				for(var i = 0; i < 9; i++)
-					colors.push(baseFace + (i*100));
+					pushIfItemExists(colors, baseFace + (i*100));
 				cm.sendStyle("Pick one?", colors);
 			}
 		} else {

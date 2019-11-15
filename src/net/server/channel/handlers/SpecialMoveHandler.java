@@ -23,6 +23,7 @@ package net.server.channel.handlers;
 
 import java.awt.Point;
 
+import config.YamlConfig;
 import net.AbstractMaplePacketHandler;
 import server.MapleStatEffect;
 import server.life.MapleMonster;
@@ -32,7 +33,6 @@ import client.MapleCharacter;
 import client.MapleClient;
 import client.Skill;
 import client.SkillFactory;
-import constants.ServerConstants;
 import constants.skills.Brawler;
 import constants.skills.Corsair;
 import constants.skills.DarkKnight;
@@ -81,7 +81,7 @@ public final class SpecialMoveHandler extends AbstractMaplePacketHandler {
                 return;
             } else if (skillid != Corsair.BATTLE_SHIP) {
                 int cooldownTime = effect.getCooldown();
-                if(MapleStatEffect.isHerosWill(skillid) && ServerConstants.USE_FAST_REUSE_HERO_WILL) {
+                if(MapleStatEffect.isHerosWill(skillid) && YamlConfig.config.server.USE_FAST_REUSE_HERO_WILL) {
                     cooldownTime /= 60;
                 }
                 
@@ -101,7 +101,8 @@ public final class SpecialMoveHandler extends AbstractMaplePacketHandler {
                         monster.aggroClearDamages();
                         monster.aggroMonsterDamage(chr, 1);
                         
-                        // thanks onechord for pointing out Magnet disconnecting the caster (issue would actually happen upon failing to catch mob)
+                        // thanks onechord for pointing out Magnet crashing the caster (issue would actually happen upon failing to catch mob)
+                        // thanks Conrad for noticing Magnet crashing when trying to pull bosses and fixed mobs
                         monster.aggroSwitchController(chr, true);
                     }
                 }

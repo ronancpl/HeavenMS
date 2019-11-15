@@ -85,7 +85,9 @@ function setEventRewards(eim) {
         eim.setEventClearStageMeso(mesoStages);
 }
 
-function afterSetup(eim) {}
+function afterSetup(eim) {
+    updateGateState(1);
+}
 
 function setup(channel) {
     var eim = em.newInstance("Zakum" + channel);
@@ -188,6 +190,7 @@ function giveRandomEventReward(eim, player) {
 function clearPQ(eim) {
     eim.stopEventTimer();
     eim.setEventCleared();
+    updateGateState(0);
 }
 
 function isZakum(mob) {
@@ -209,4 +212,12 @@ function allMonstersDead(eim) {}
 
 function cancelSchedule() {}
 
-function dispose(eim) {}
+function updateGateState(newState) {    // thanks Conrad for noticing missing gate update
+    em.getChannelServer().getMapFactory().getMap(211042300).getReactorById(2118002).forceHitReactor(newState);
+}
+
+function dispose(eim) {
+    if (!eim.isEventCleared()) {
+        updateGateState(0);
+    }
+}

@@ -57,8 +57,10 @@ function action(mode, type, selection) {
                 if (cm.getPlayer().getGuildId() < 1 || cm.getPlayer().getGuildRank() != 1) {
                     cm.sendOk("You can only increase your Guild's capacity if you are the leader.");
                     cm.dispose();
-                } else
-                    cm.sendYesNo("Increasing your Guild capacity by #b5#k costs #b " + cm.getPlayer().getGuild().getIncreaseGuildCost(cm.getPlayer().getGuild().getCapacity()) +" mesos#k, are you sure you want to continue?");
+                } else {
+                    var MapleGuild = Java.type("net.server.guild.MapleGuild");  // thanks Conrad for noticing an issue due to call on a static method here
+                    cm.sendYesNo("Increasing your Guild capacity by #b5#k costs #b " + MapleGuild.getIncreaseGuildCost(cm.getPlayer().getGuild().getCapacity()) +" mesos#k, are you sure you want to continue?");
+                }
             }
         } else if (status == 2) {
             if (sel == 0 && cm.getPlayer().getGuildId() <= 0) {

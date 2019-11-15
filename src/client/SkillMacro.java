@@ -49,6 +49,18 @@ public class SkillMacro {
     public int getSkill3() {
         return skill3;
     }
+    
+    public void setSkill1(int skill) {
+        skill1 = skill;
+    }
+
+    public void setSkill2(int skill) {
+        skill2 = skill;
+    }
+
+    public void setSkill3(int skill) {
+        skill3 = skill;
+    }
 
     public String getName() {
         return name;

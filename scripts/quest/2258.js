@@ -38,7 +38,7 @@ function start(mode, type, selection) {
             qm.sendAcceptDecline("Meerkats spreads rumors like wildfire... By blackmailing me and my cab service, they are taking costumers away from me day after day... Hey, tell no one about this, if you clean some #rMeerkats#k from my way, I'll tell you an info about the #rMushroom Castle#k. What do you say?");
         } else if (status == 1) {
             qm.sendNext("Great, they you have #r5 minutes#k to kill #b40 Meerkats#k within this time. Good luck!");
-        } else {
+        } else if (status == 2) {
             qm.forceStartQuest();
             qm.dispose();
         }
@@ -61,7 +61,7 @@ function end(mode, type, selection) {
         
         if (status == 0) {
             qm.sendNext("You did it! ... Hey, #rMeerkats#k around here may listen to our conversation. I'm not going to talk about THAT right now.");
-        } else {
+        } else if (status == 1) {
             qm.forceCompleteQuest();
             qm.dispose();
         }

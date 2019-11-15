@@ -31,7 +31,6 @@ import server.maps.MapleMapItem;
 import server.maps.MapleMapObject;
 import tools.MaplePacketCreator;
 import tools.data.input.SeekableLittleEndianAccessor;
-import constants.ServerConstants;
 
 /**
  * @author TheRamon
@@ -41,10 +40,6 @@ public final class PetLootHandler extends AbstractMaplePacketHandler {
     @Override
     public final void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
         MapleCharacter chr = c.getPlayer();
-        if(currentServerTime() - chr.getPetLootCd() < ServerConstants.PET_LOOT_UPON_ATTACK) {
-            c.announce(MaplePacketCreator.enableActions());
-            return;
-        }
         
         int petIndex = chr.getPetIndex(slea.readInt());
         MaplePet pet = chr.getPet(petIndex);

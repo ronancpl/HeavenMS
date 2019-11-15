@@ -51,7 +51,7 @@ function action(mode, type, selection) {
                 } else {
                         if(!cm.isQuestCompleted(7770)) cm.completeQuest(7770);
                         
-                        cm.warp(926110600);
+                        cm.warp(926110600, 0);
                         cm.dispose();
                 }
         }

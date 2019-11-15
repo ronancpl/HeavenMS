@@ -26,6 +26,7 @@ function start(mode, type, selection) {
 	else if (status == 1){
 		qm.sendOk("Okay, I need you to have these items on hand first: #b10 #t4010006##k, #b4 #t4032005##k and #b1 #t4004000##k. Go!");
 		qm.forceStartQuest();
-		qm.dispose();
-	}
+	} else if (status == 2) {
+                qm.dispose();
+        }
 }

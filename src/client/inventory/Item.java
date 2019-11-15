@@ -21,7 +21,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package client.inventory;
 
-import constants.ItemConstants;
+import constants.inventory.ItemConstants;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -40,7 +40,7 @@ public class Item implements Comparable<Item> {
     private MaplePet pet = null;
     private String owner = "";
     protected List<String> log;
-    private byte flag;
+    private short flag;
     private long expiration = -1;
     private String giftFrom = "";
 
@@ -126,7 +126,7 @@ public class Item implements Comparable<Item> {
     public int getPetId() {
         return petid;
     }
- 
+    
     @Override
     public int compareTo(Item other) {
         if (this.id < other.getItemId()) {
@@ -146,11 +146,16 @@ public class Item implements Comparable<Item> {
         return Collections.unmodifiableList(log);
     }
 
-    public byte getFlag() {
+    public short getFlag() {
         return flag;
     }
 
-    public void setFlag(byte b) {
+    public void setFlag(short b) {
+        MapleItemInformationProvider ii = MapleItemInformationProvider.getInstance();
+        if (ii.isAccountRestricted(id)) {
+            b |= ItemConstants.ACCOUNT_SHARING; // thanks Shinigami15 for noticing ACCOUNT_SHARING flag not being applied properly to items server-side
+        }
+        
         this.flag = b;
     }
 

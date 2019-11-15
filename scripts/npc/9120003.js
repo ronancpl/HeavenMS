@@ -49,7 +49,7 @@ function action(mode, type, selection) {
         cm.sendOk("Please check and see if you have " + price + " mesos to enter this place.");
     else {
         cm.gainMeso(-price);
-        cm.warp(801000100 + 100 * cm.getPlayer().getGender());
+        cm.warp(801000100 + 100 * cm.getPlayer().getGender(), "out00");
     }
     cm.dispose();
 }

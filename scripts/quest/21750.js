@@ -36,7 +36,7 @@ function end(mode, type, selection) {
         
         if (status == 0) {
             qm.sendNext("Aran, you're finally back!!! How you've been doing? Where did you go for so long? We have so much to catch up...");
-        } else {
+        } else if (status == 1) {
             qm.forceCompleteQuest();
             qm.dispose();
         }

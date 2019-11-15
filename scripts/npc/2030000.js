@@ -33,7 +33,7 @@ var status = 0;
 
 function start() {
     if(cm.haveItem(4031450, 1)) {
-        cm.warp(921100100);
+        cm.warp(921100100, 1);
         cm.dispose();
         return;
     }

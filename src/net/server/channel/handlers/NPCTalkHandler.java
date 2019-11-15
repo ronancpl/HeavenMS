@@ -22,8 +22,8 @@
 package net.server.channel.handlers;
 
 import client.MapleClient;
-import client.processor.DueyProcessor;
-import constants.ServerConstants;
+import client.processor.npc.DueyProcessor;
+import config.YamlConfig;
 import net.AbstractMaplePacketHandler;
 import scripting.npc.NPCScriptManager;
 import server.life.MapleNPC;
@@ -41,7 +41,7 @@ public final class NPCTalkHandler extends AbstractMaplePacketHandler {
             return;
         }
         
-        if(currentServerTime() - c.getPlayer().getNpcCooldown() < ServerConstants.BLOCK_NPC_RACE_CONDT) {
+        if(currentServerTime() - c.getPlayer().getNpcCooldown() < YamlConfig.config.server.BLOCK_NPC_RACE_CONDT) {
             c.announce(MaplePacketCreator.enableActions());
             return;
         }
@@ -50,26 +50,28 @@ public final class NPCTalkHandler extends AbstractMaplePacketHandler {
         MapleMapObject obj = c.getPlayer().getMap().getMapObject(oid);
         if (obj instanceof MapleNPC) {
             MapleNPC npc = (MapleNPC) obj;
-            if(ServerConstants.USE_DEBUG == true) c.getPlayer().dropMessage(5, "Talking to NPC " + npc.getId());
+            if(YamlConfig.config.server.USE_DEBUG == true) c.getPlayer().dropMessage(5, "Talking to NPC " + npc.getId());
             
             if (npc.getId() == 9010009) {   //is duey
-                c.getPlayer().setNpcCooldown(currentServerTime());
-                DueyProcessor.dueySendTalk(c);
+                DueyProcessor.dueySendTalk(c, false);
             } else {
                 if (c.getCM() != null || c.getQM() != null) {
                     c.announce(MaplePacketCreator.enableActions());
                     return;
                 }
-                if(npc.getId() >= 9100100 && npc.getId() <= 9100200) {
-                    // Custom handling for gachapon scripts to reduce the amount of scripts needed.
+                
+                // Custom handling to reduce the amount of scripts needed.
+                if (npc.getId() >= 9100100 && npc.getId() <= 9100200) {
                     NPCScriptManager.getInstance().start(c, npc.getId(), "gachapon", null);
+                } else if (npc.getName().endsWith("Maple TV")) {
+                    NPCScriptManager.getInstance().start(c, npc.getId(), "mapleTV", null);
                 } else {
                     boolean hasNpcScript = NPCScriptManager.getInstance().start(c, npc.getId(), oid, null);
                     if (!hasNpcScript) {
                         if (!npc.hasShop()) {
                             FilePrinter.printError(FilePrinter.NPC_UNCODED, "NPC " + npc.getName() + "(" + npc.getId() + ") is not coded.");
                             return;
-                        } else if(c.getPlayer().getShop() != null) {
+                        } else if (c.getPlayer().getShop() != null) {
                             c.announce(MaplePacketCreator.enableActions());
                             return;
                         }

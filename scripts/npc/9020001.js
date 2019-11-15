@@ -170,7 +170,8 @@ function action(mode, type, selection) {
                                                         eim.gridInsert(cm.getPlayer(), 0);
                                                 }
                                                 else {
-                                                        cm.sendNext("I'm sorry, but that is not the right answer! Please have the correct number of coupons in your inventory.");
+                                                        var question = stage1Questions[eim.gridCheck(cm.getPlayer()) - 1];
+                                                        cm.sendNext("I'm sorry, but that is not the right answer!\r\n" + question);
                                                 }
                                         }
                                 }

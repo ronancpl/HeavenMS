@@ -60,13 +60,12 @@ function end(mode, type, selection) {
         if (status == 0) {
             if(qm.getMapId() == 260020000) {
                 qm.sendNext("Eh you're still here? To reach #b#m260020700##k, follow #reast#k from here until you reach #rMagatia#k, I will be there. Now go.");
-                qm.dispose();
                 return;
             }
             
             qm.sendNext("Oh there you are. There're no Meerkat's nearby, so there probably is no eavesdropping around here. Very well, you must be fit to go to the #rMushroom Castle#k. Talk to me once you've got #blevel 30#k.");
-        } else {
             qm.forceCompleteQuest();
+        } else if (status == 1) {
             qm.dispose();
         }
     }

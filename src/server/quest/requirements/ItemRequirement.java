@@ -32,7 +32,7 @@ import server.quest.MapleQuestRequirementType;
 import client.MapleCharacter;
 import client.inventory.Item;
 import client.inventory.MapleInventoryType;
-import constants.ItemConstants;
+import constants.inventory.ItemConstants;
 
 /**
  *
@@ -96,11 +96,12 @@ public class ItemRequirement extends MapleQuestRequirement {
 		return true;
 	}
 	
-	public int getItemAmountNeeded(int itemid) {
-                if(items.containsKey(itemid)) {
-			return items.get(itemid);
-		}
-		
-		return 0;
+	public int getItemAmountNeeded(int itemid, boolean complete) {
+                Integer amount = items.get(itemid);
+                if (amount != null) {
+			return amount;
+		} else {
+                        return complete ? Integer.MAX_VALUE : Integer.MIN_VALUE;
+                }
 	}
 }

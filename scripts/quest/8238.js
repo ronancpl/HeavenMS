@@ -28,6 +28,7 @@ function start(mode, type, selection) {
             var reqs = "#r1 #t4032013##k";
             qm.sendOk("Very well. Get me #r" + reqs + "#k, asap. The NLC is counting on you.");
             qm.forceStartQuest();
+    } else if (status == 2) {
             qm.dispose();
     }
 }

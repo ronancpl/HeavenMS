@@ -21,6 +21,9 @@
 */
 package scripting.event;
 
+import config.YamlConfig;
+import jdk.nashorn.api.scripting.ScriptObjectMirror;
+import jdk.nashorn.api.scripting.ScriptUtils;
 import tools.exceptions.EventInstanceInProgressException;
 import java.util.Collection;
 import java.util.HashMap;
@@ -29,11 +32,10 @@ import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.script.Invocable;
 import javax.script.ScriptException;
 
-import constants.ServerConstants;
-import constants.GameConstants;
+import constants.net.ServerConstants;
+import constants.game.GameConstants;
 import client.MapleCharacter;
 import net.server.Server;
 import net.server.world.World;
@@ -41,7 +43,7 @@ import net.server.channel.Channel;
 import net.server.guild.MapleGuild;
 import net.server.world.MapleParty;
 import net.server.world.MaplePartyCharacter;
-import scripting.event.worker.EventScriptScheduler;
+import scripting.event.scheduler.EventScriptScheduler;
 import server.MapleMarriage;
 import server.expeditions.MapleExpedition;
 import server.maps.MapleMap;
@@ -57,6 +59,7 @@ import java.util.Queue;
 import java.util.Set;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
+import jdk.nashorn.api.scripting.NashornScriptEngine;
 import net.server.audit.LockCollector;
 import net.server.audit.locks.MonitoredLockType;
 import net.server.audit.locks.MonitoredReentrantLock;
@@ -70,7 +73,7 @@ import server.ThreadManager;
  * @author Ronan
  */
 public class EventManager {
-    private Invocable iv;
+    private NashornScriptEngine iv;
     private Channel cserv;
     private World wserv;
     private Server server;
@@ -93,7 +96,7 @@ public class EventManager {
     
     private static final int maxLobbys = 8;     // an event manager holds up to this amount of concurrent lobbys
     
-    public EventManager(Channel cserv, Invocable iv, String name) {
+    public EventManager(Channel cserv, NashornScriptEngine iv, String name) {
         this.server = Server.getInstance();
         this.iv = iv;
         this.cserv = cserv;
@@ -165,23 +168,31 @@ public class EventManager {
         startLock = startLock.dispose();
     }
     
-    private static List<Integer> convertToIntegerArray(List<Double> list) {
+    private List<Integer> convertToIntegerArray(List<Object> list) {
         List<Integer> intList = new ArrayList<>();
-        for(Double d: list) intList.add(d.intValue());
-
+        
+        if (ServerConstants.JAVA_8) {
+            for (Object d: list) {
+                intList.add(((Integer) d).intValue());
+            }
+        } else {
+            for (Object d: list) {
+                intList.add(((Double) d).intValue());
+            }
+        }
+        
         return intList;
     }
     
-    public static long getLobbyDelay() {
-        return ServerConstants.EVENT_LOBBY_DELAY;
+    public long getLobbyDelay() {
+        return YamlConfig.config.server.EVENT_LOBBY_DELAY;
     }
     
     private List<Integer> getLobbyRange() {
         try {
             if (!ServerConstants.JAVA_8) {
-                return convertToIntegerArray((List<Double>)iv.invokeFunction("setLobbyRange", (Object) null));
+                return convertToIntegerArray((List<Object>)iv.invokeFunction("setLobbyRange", (Object) null));
             } else {  // java 8 support here thanks to MedicOP
-                /*
                 ScriptObjectMirror object = (ScriptObjectMirror) iv.invokeFunction("setLobbyRange", (Object) null);
                 int[] to = object.to(int[].class);
                 List<Integer> list = new ArrayList<>();
@@ -189,9 +200,7 @@ public class EventManager {
                     list.add(i);
                 }
                 return list;
-                */
-                
-                throw new NoSuchMethodException();
+
             }
         } catch (ScriptException | NoSuchMethodException ex) { // they didn't define a lobby range
             List<Integer> defaultRange = new ArrayList<>();
@@ -248,7 +257,7 @@ public class EventManager {
         return cserv;
     }
     
-    public Invocable getIv() {
+    public NashornScriptEngine getIv() {
         return iv;
     }
 
@@ -304,7 +313,7 @@ public class EventManager {
                     instances.remove(name);
                 }
             }
-        }, ServerConstants.EVENT_LOBBY_DELAY * 1000);
+        }, YamlConfig.config.server.EVENT_LOBBY_DELAY * 1000);
     }
 
     public void setProperty(String key, String value) {
@@ -339,6 +348,12 @@ public class EventManager {
     private boolean startLobbyInstance(int lobbyId) {
         lobbyLock.lock();
         try {
+            if (lobbyId < 0) {
+                lobbyId = 0;
+            } else if (lobbyId >= maxLobbys) {
+                lobbyId = maxLobbys - 1;
+            }
+            
             if(!openedLobbys.get(lobbyId)) {
                 openedLobbys.set(lobbyId, true);
                 return true;
@@ -745,18 +760,17 @@ public class EventManager {
             return(new ArrayList<>());
         }
         try {
-            Object p = iv.invokeFunction("getEligibleParty", party.getPartyMembers());
+            Object p = iv.invokeFunction("getEligibleParty", party.getPartyMembersOnline());
             
             if(p != null) {
                 List<MaplePartyCharacter> lmpc;
                 
-                /*if(ServerConstants.JAVA_8) {
+                if(ServerConstants.JAVA_8) {
                     lmpc = new ArrayList<>(((Map<String, MaplePartyCharacter>)(ScriptUtils.convert(p, Map.class))).values());
                 } else {
                     lmpc = new ArrayList<>((List<MaplePartyCharacter>) p);
-                }*/
-                
-                lmpc = new ArrayList<>((List<MaplePartyCharacter>) p);
+                }
+
                 party.setEligibleMembers(lmpc);
                 return lmpc;
             }
@@ -826,7 +840,7 @@ public class EventManager {
     
     public boolean isQueueFull() {
         synchronized(queuedGuilds) {
-            return queuedGuilds.size() >= ServerConstants.EVENT_MAX_GUILD_QUEUE;
+            return queuedGuilds.size() >= YamlConfig.config.server.EVENT_MAX_GUILD_QUEUE;
         }
     }
     
@@ -911,7 +925,7 @@ public class EventManager {
     }
     
     private void fillEimQueue() {
-        ThreadManager.getInstance().newTask(new EventManagerWorker());  //call new thread to fill up readied instances queue
+        ThreadManager.getInstance().newTask(new EventManagerTask());  //call new thread to fill up readied instances queue
     }
     
     private EventInstanceManager getReadyInstance() {
@@ -960,7 +974,7 @@ public class EventManager {
         instantiateQueuedInstance();    // keep filling the queue until reach threshold.
     }
     
-    private class EventManagerWorker implements Runnable {
+    private class EventManagerTask implements Runnable {
     
         @Override
         public void run() {

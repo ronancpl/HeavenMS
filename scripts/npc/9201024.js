@@ -99,14 +99,14 @@ function action(mode, type, selection) {
 
         if(status == 0) {
             if(!cm.isQuestStarted(100400)) {
-                cm.sendOk("Hello #b#h0##k, I'm #p9201001# the fairy of Love.");
+                cm.sendOk("Hello #b#h0##k, I'm #p9201024# the fairy of Love.");
                 cm.dispose();
                 return;
             }
             
             nanaLoc = getNanaLocation(cm.getPlayer());
             if(nanaLoc == -1) {
-                cm.sendOk("Hello #b#h0##k, I'm #p9201001# the fairy of Love.");
+                cm.sendOk("Hello #b#h0##k, I'm #p9201024# the fairy of Love.");
                 cm.dispose();
                 return;
             }

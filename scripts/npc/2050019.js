@@ -45,13 +45,13 @@ function action(mode, type, selection) {
                         if(cm.isQuestStarted(3421)) {
                                 var meteoriteId = cm.getNpc() - 2050014;
                                 
-                                var progress = cm.getQuestProgress(3421, 0);
+                                var progress = cm.getQuestProgressInt(3421, 1);
                                 if((progress >> meteoriteId) % 2 == 0 || (progress == 63 && !cm.haveItem(4031117, 6))) {
                                         if (cm.canHold(4031117, 1)) {
                                                 progress |= (1 << meteoriteId);
                                                 
                                                 cm.gainItem(4031117, 1);
-                                                cm.setQuestProgress(3421, 0, progress);
+                                                cm.setQuestProgress(3421, 1, progress);
                                         } else {
                                                 cm.getPlayer().dropMessage(1, "Have a ETC slot available for this item.");
                                         }

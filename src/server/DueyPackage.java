@@ -23,15 +23,14 @@ package server;
 
 import client.inventory.Item;
 import java.util.Calendar;
+import java.sql.Timestamp;
 
 public class DueyPackage {
     private String sender = null;
     private Item item = null;
     private int mesos = 0;
-    private String message = "";
-    private int day;
-    private int month;
-    private int year;
+    private String message = null;
+    private Calendar timestamp;
     private int packageId = 0;
 
     public DueyPackage(int pId, Item item) {
@@ -76,14 +75,37 @@ public class DueyPackage {
     }
 
     public long sentTimeInMilliseconds() {
-        Calendar cal = Calendar.getInstance();
-        cal.set(year, month, day);
-        return cal.getTimeInMillis();
+        Calendar ts = timestamp;
+        if (ts != null) {
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(ts.getTime());
+            cal.add(Calendar.MONTH, 1);  // duey representation is in an array of months.
+
+            return cal.getTimeInMillis();
+        } else {
+            return 0;
+        }
+    }
+    
+    public boolean isDeliveringTime() {
+        Calendar ts = timestamp;
+        if (ts != null) {
+            return ts.getTimeInMillis() >= System.currentTimeMillis();
+        } else {
+            return false;
+        }
     }
 
-    public void setSentTime(String sentTime) {
-        day = Integer.parseInt(sentTime.substring(0, 2));
-        month = Integer.parseInt(sentTime.substring(3, 5));
-        year = Integer.parseInt(sentTime.substring(6, 10));
+    public void setSentTime(Timestamp ts, boolean quick) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTimeInMillis(ts.getTime());
+        
+        if (quick) {
+            if (System.currentTimeMillis() - ts.getTime() < 24 * 60 * 60 * 1000) {  // thanks inhyuk for noticing quick delivery packages unavailable to retrieve from the get-go
+                cal.add(Calendar.DATE, -1);
+            }
+        }
+        
+        this.timestamp = cal;
     }
 }

@@ -26,7 +26,7 @@ package client.command.commands.gm2;
 import client.command.Command;
 import client.MapleClient;
 import client.MapleCharacter;
-import server.MaplePortal;
+import server.maps.MaplePortal;
 import server.maps.MapleMap;
 
 public class JailCommand extends Command {

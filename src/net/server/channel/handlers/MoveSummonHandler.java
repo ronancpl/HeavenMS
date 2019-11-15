@@ -23,20 +23,19 @@ package net.server.channel.handlers;
 
 import java.awt.Point;
 import java.util.Collection;
-import java.util.List;
+
 import client.MapleCharacter;
 import client.MapleClient;
 import server.maps.MapleSummon;
-import server.movement.LifeMovementFragment;
 import tools.MaplePacketCreator;
 import tools.data.input.SeekableLittleEndianAccessor;
+import tools.exceptions.EmptyMovementException;
 
 public final class MoveSummonHandler extends AbstractMovementPacketHandler {
     @Override
     public final void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
         int oid = slea.readInt();
         Point startPos = new Point(slea.readShort(), slea.readShort());
-        List<LifeMovementFragment> res = parseMovement(slea);
         MapleCharacter player = c.getPlayer();
         Collection<MapleSummon> summons = player.getSummonsValues();
         MapleSummon summon = null;
@@ -47,8 +46,14 @@ public final class MoveSummonHandler extends AbstractMovementPacketHandler {
             }
         }
         if (summon != null) {
-            updatePosition(res, summon, 0);
-            player.getMap().broadcastMessage(player, MaplePacketCreator.moveSummon(player.getId(), oid, startPos, res), summon.getPosition());
+            try {
+                long movementDataStart = slea.getPosition();
+                updatePosition(slea, summon, 0);
+                long movementDataLength = slea.getPosition() - movementDataStart; //how many bytes were read by updatePosition
+                slea.seek(movementDataStart);
+                
+                player.getMap().broadcastMessage(player, MaplePacketCreator.moveSummon(player.getId(), oid, startPos, slea, movementDataLength), summon.getPosition());
+            } catch (EmptyMovementException e) {}
         }
     }
 }

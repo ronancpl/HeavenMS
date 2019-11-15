@@ -107,6 +107,10 @@ public class MapleMount {
     public void setItemId(int newitemid) {
         this.itemid = newitemid;
     }
+    
+    public void setSkillId(int newskillid) {
+        this.skillid = newskillid;
+    }
 
     public void setActive(boolean set) {
         this.active = set;

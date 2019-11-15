@@ -31,14 +31,13 @@ import java.util.List;
 import client.MapleCharacter;
 import client.MapleClient;
 import net.server.Server;
-import net.server.coordinator.MapleInviteCoordinator;
-import net.server.coordinator.MapleInviteCoordinator.InviteResult;
-import net.server.coordinator.MapleInviteCoordinator.InviteType;
+import net.server.coordinator.world.MapleInviteCoordinator;
+import net.server.coordinator.world.MapleInviteCoordinator.InviteType;
+import net.server.coordinator.world.MapleInviteCoordinator.MapleInviteResult;
 import net.server.world.MapleParty;
 import net.server.world.MaplePartyCharacter;
 import tools.DatabaseConnection;
 import tools.MaplePacketCreator;
-import tools.Pair;
 
 /**
  *
@@ -92,8 +91,13 @@ public class MapleAlliance {
         List<MapleCharacter> mcl = new LinkedList<>();
 
         for(MaplePartyCharacter mpc: party.getMembers()) {
-            if(mpc.getPlayer().getGuildRank() == 1 && mpc.getPlayer().getMapId() == party.getLeader().getPlayer().getMapId())
-                mcl.add(mpc.getPlayer());
+            MapleCharacter chr = mpc.getPlayer();
+            if (chr != null) {
+                MapleCharacter lchr = party.getLeader().getPlayer();
+                if (chr.getGuildRank() == 1 && lchr != null && chr.getMapId() == lchr.getMapId()) {
+                    mcl.add(chr);
+                }
+            }
         }
 
         if(!mcl.isEmpty() && !mcl.get(0).isPartyLeader()) {
@@ -494,11 +498,11 @@ public class MapleAlliance {
     }
     
     public static boolean answerInvitation(int targetId, String targetGuildName, int allianceId, boolean answer) {
-        Pair<InviteResult, MapleCharacter> res = MapleInviteCoordinator.answerInvite(InviteType.ALLIANCE, targetId, allianceId, answer);
+        MapleInviteResult res = MapleInviteCoordinator.answerInvite(InviteType.ALLIANCE, targetId, allianceId, answer);
         
         String msg;
-        MapleCharacter sender = res.getRight();
-        switch (res.getLeft()) {
+        MapleCharacter sender = res.from;
+        switch (res.result) {
             case ACCEPTED:
                 return true;
                 

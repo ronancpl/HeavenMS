@@ -19,17 +19,15 @@
 */
 package server.maps;
 
-import constants.ServerConstants;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
-import java.util.concurrent.locks.ReentrantReadWriteLock.ReadLock;
-import java.util.concurrent.locks.ReentrantReadWriteLock.WriteLock;
 import net.server.audit.locks.MonitoredLockType;
+import net.server.audit.locks.MonitoredReadLock;
 import net.server.audit.locks.MonitoredReentrantReadWriteLock;
+import net.server.audit.locks.MonitoredWriteLock;
+import net.server.audit.locks.factory.MonitoredReadLockFactory;
+import net.server.audit.locks.factory.MonitoredWriteLockFactory;
 import scripting.event.EventInstanceManager;
-import server.TimerManager;
 
 public class MapleMapManager {
 
@@ -38,26 +36,17 @@ public class MapleMapManager {
     
     private Map<Integer, MapleMap> maps = new HashMap<>();
     
-    private ScheduledFuture<?> updateTask;
-    
-    private ReadLock mapsRLock;
-    private WriteLock mapsWLock;
+    private MonitoredReadLock mapsRLock;
+    private MonitoredWriteLock mapsWLock;
 
     public MapleMapManager(EventInstanceManager eim, int world, int channel) {
         this.world = world;
         this.channel = channel;
         this.event = eim;
 
-        ReentrantReadWriteLock rrwl = new MonitoredReentrantReadWriteLock(MonitoredLockType.MAP_MANAGER);
-        this.mapsRLock = rrwl.readLock();
-        this.mapsWLock = rrwl.writeLock();
-        
-        updateTask = TimerManager.getInstance().register(new Runnable() {
-            @Override
-            public void run() {
-                updateMaps();
-            }
-        }, ServerConstants.RESPAWN_INTERVAL);
+        MonitoredReentrantReadWriteLock rrwl = new MonitoredReentrantReadWriteLock(MonitoredLockType.MAP_MANAGER);
+        this.mapsRLock = MonitoredReadLockFactory.createLock(rrwl);
+        this.mapsWLock = MonitoredWriteLockFactory.createLock(rrwl);
     }
 
     public MapleMap resetMap(int mapid) {
@@ -136,7 +125,7 @@ public class MapleMapManager {
         }
     }
     
-    private void updateMaps() {
+    public void updateMaps() {
         for (MapleMap map : getMaps().values()) {
             map.respawn();
             map.mobMpRecovery();
@@ -144,11 +133,6 @@ public class MapleMapManager {
     }
     
     public void dispose() {
-        if (updateTask != null) {
-            updateTask.cancel(false);
-            updateTask = null;
-        }
-        
         for (MapleMap map : getMaps().values()) {
             map.dispose();
         }
@@ -156,7 +140,4 @@ public class MapleMapManager {
         this.event = null;
     }
 
-    public static float getMapRecoveryRate(int mapid) {
-        return MapleMapFactory.getMapRecoveryRate(mapid);
-    }
 }

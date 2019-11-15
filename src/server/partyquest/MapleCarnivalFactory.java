@@ -59,7 +59,7 @@ public class MapleCarnivalFactory {
         if (multi) {
             return skills.get(multiTargetedSkills.get((int) (Math.random() * multiTargetedSkills.size())));
         } else {
-            return skills.get(multiTargetedSkills.get((int) (Math.random() * multiTargetedSkills.size())));
+            return skills.get(singleTargetedSkills.get((int) (Math.random() * singleTargetedSkills.size())));
         }
     }
     

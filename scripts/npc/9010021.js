@@ -26,7 +26,7 @@
 
 function start() {
     status = -1;
-    if (!Packages.constants.ServerConstants.USE_REBIRTH_SYSTEM) {
+    if (!Packages.config.YamlConfig.config.server.USE_REBIRTH_SYSTEM) {
         cm.sendOk("... I came from distant planes to assist the fight against the #rBlack Magician#k. Right now I search my master, have you seen him?");
         cm.dispose();
         return;

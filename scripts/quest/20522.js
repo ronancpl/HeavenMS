@@ -54,6 +54,7 @@ function start(mode, type, selection) {
         qm.forceStartQuest();
         if(!qm.haveItem(4220137)) qm.gainItem(4220137);
 	qm.sendOk("Mimiana's egg can be raised by #bsharing your daily experiences with it#k. Once Mimiana fully grows up, please come see me.");
+    } else if (status == 4) {
 	qm.dispose();
     }
 }
@@ -70,17 +71,15 @@ function end(mode, type, selection) {
     } else if (status == 1) {   //pretty sure there would need to have an egg EXP condition... Whatever.
         if(!qm.haveItem(4220137)) {
             qm.sendOk("I see, you lost your egg... You need to be more careful when raising a baby Mimiana!");
-            qm.dispose();
             return;
         }
         
-	qm.sendOk("Oh, were you able to awaken Mimiana Egg? That's amazing... Most knights can't even dream of awakening it in such a short amount of time.");
-        
-        qm.forceCompleteQuest();
+	qm.forceCompleteQuest();
         qm.gainItem(4220137, -1);
         qm.gainExp(37600);
-        
-	qm.dispose();
+        qm.sendOk("Oh, were you able to awaken Mimiana Egg? That's amazing... Most knights can't even dream of awakening it in such a short amount of time.");
+    } else if (status == 2) {
+        qm.dispose();
     }
 }
 

@@ -23,13 +23,14 @@ package net.server.guild;
 
 import client.MapleCharacter;
 import client.MapleClient;
-import constants.ServerConstants;
+import config.YamlConfig;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -45,12 +46,11 @@ import net.server.Server;
 import net.server.channel.Channel;
 import tools.DatabaseConnection;
 import tools.MaplePacketCreator;
-import tools.Pair;
 import net.server.audit.locks.MonitoredLockType;
-import net.server.coordinator.MapleInviteCoordinator;
-import net.server.coordinator.MapleInviteCoordinator.InviteType;
-import net.server.coordinator.MapleInviteCoordinator.InviteResult;
-import net.server.coordinator.MapleMatchCheckerCoordinator;
+import net.server.coordinator.world.MapleInviteCoordinator;
+import net.server.coordinator.world.MapleInviteCoordinator.InviteType;
+import net.server.coordinator.world.MapleInviteCoordinator.MapleInviteResult;
+import net.server.coordinator.matchchecker.MapleMatchCheckerCoordinator;
 
 public class MapleGuild {
     
@@ -305,6 +305,18 @@ public class MapleGuild {
             
             byte[] packet = MaplePacketCreator.guildMarkChanged(chr.getId(), this);
             chr.getMap().broadcastMessage(chr, packet);
+        }
+    }
+    
+    public void broadcastInfoChanged() {
+        PlayerStorage ps = Server.getInstance().getWorld(world).getPlayerStorage();
+        
+        for (MapleGuildCharacter mgc : getMembers()) {
+            MapleCharacter chr = ps.getCharacterById(mgc.getId());
+            if (chr == null || !chr.isLoggedinWorld()) continue;
+            
+            byte[] packet = MaplePacketCreator.showGuildInfo(chr);
+            chr.announce(packet);
         }
     }
     
@@ -577,7 +589,7 @@ public class MapleGuild {
     
     public void setGuildNotice(String notice) {
         this.notice = notice;
-        writeToDB(false);
+        this.writeToDB(false);
         
         membersLock.lock();
         try {
@@ -727,11 +739,11 @@ public class MapleGuild {
     }
     
     public static boolean answerInvitation(int targetId, String targetName, int guildId, boolean answer) {
-        Pair<InviteResult, MapleCharacter> res = MapleInviteCoordinator.answerInvite(InviteType.GUILD, targetId, guildId, answer);
+        MapleInviteResult res = MapleInviteCoordinator.answerInvite(InviteType.GUILD, targetId, guildId, answer);
         
         MapleGuildResponse mgr;
-        MapleCharacter sender = res.getRight();
-        switch (res.getLeft()) {
+        MapleCharacter sender = res.from;
+        switch (res.result) {
             case ACCEPTED:
                 return true;
                 
@@ -826,10 +838,10 @@ public class MapleGuild {
     }
 
     public static int getIncreaseGuildCost(int size) {
-        int cost = ServerConstants.EXPAND_GUILD_BASE_COST + Math.max(0, (size - 15) / 5) * ServerConstants.EXPAND_GUILD_TIER_COST;
+        int cost = YamlConfig.config.server.EXPAND_GUILD_BASE_COST + Math.max(0, (size - 15) / 5) * YamlConfig.config.server.EXPAND_GUILD_TIER_COST;
         
         if (size > 30) {
-            return Math.min(ServerConstants.EXPAND_GUILD_MAX_COST, Math.max(cost, 5000000));
+            return Math.min(YamlConfig.config.server.EXPAND_GUILD_MAX_COST, Math.max(cost, 5000000));
         } else {
             return cost;
         }

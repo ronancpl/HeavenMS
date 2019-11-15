@@ -55,7 +55,7 @@ public class IdCommand extends Command {
                         }
                         sb.append(String.format("Results found: #r%d#k | Returned: #b%d#k/100 | Refine search query to improve time.", resultList.size(), count) + "\r\n");
                         
-                        player.getClient().getAbstractPlayerInteraction().npcTalk(9010000, sb.toString());
+                        player.getAbstractPlayerInteraction().npcTalk(9010000, sb.toString());
                     } else {
                         player.yellowMessage(String.format("Id not found for item: %s, of type: %s.", queryItem, params[0]));
                     }

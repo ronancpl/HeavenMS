@@ -38,13 +38,19 @@ public final class QuestActionHandler extends AbstractMaplePacketHandler {
     
     // isNpcNearby thanks to GabrielSin
     private static boolean isNpcNearby(SeekableLittleEndianAccessor slea, MapleCharacter player, MapleQuest quest, int npcId) {
-        Point playerP = null;
+        Point playerP;
+        Point pos = player.getPosition();
         
         if(slea.available() >= 4) {
             playerP = new Point(slea.readShort(), slea.readShort());
+            if (playerP.distance(pos) > 1000) {     // thanks Darter (YungMoozi) for reporting unchecked player position
+                playerP = pos;
+            }
+        } else {
+            playerP = pos;
         }
         
-        if (playerP != null && !quest.isAutoStart() && !quest.isAutoComplete()) {
+        if (!quest.isAutoStart() && !quest.isAutoComplete()) {
             MapleNPC npc = player.getMap().getNPCById(npcId);
             if(npc == null) {
                 return false;
@@ -66,7 +72,12 @@ public final class QuestActionHandler extends AbstractMaplePacketHandler {
         short questid = slea.readShort();
         MapleCharacter player = c.getPlayer();
         MapleQuest quest = MapleQuest.getInstance(questid);
-        if (action == 1) { //Start Quest
+        
+        if (action == 0) { // Restore lost item, Credits Darter ( Rajan )
+            slea.readInt();
+            int itemid = slea.readInt();
+            quest.restoreLostItem(player, itemid);
+        } else if (action == 1) { //Start Quest
             int npc = slea.readInt();
             if(!isNpcNearby(slea, player, quest, npc)) {
                 return;

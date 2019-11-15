@@ -27,11 +27,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
-import java.util.concurrent.locks.ReentrantReadWriteLock.ReadLock;
-import java.util.concurrent.locks.ReentrantReadWriteLock.WriteLock;
 import net.server.audit.locks.MonitoredLockType;
+import net.server.audit.locks.MonitoredReadLock;
 import net.server.audit.locks.MonitoredReentrantReadWriteLock;
+import net.server.audit.locks.MonitoredWriteLock;
+import net.server.audit.locks.factory.MonitoredReadLockFactory;
+import net.server.audit.locks.factory.MonitoredWriteLockFactory;
 import provider.MapleData;
 import provider.MapleDataProvider;
 import provider.MapleDataProviderFactory;
@@ -46,9 +47,9 @@ public class MobSkillFactory {
     private static Map<String, MobSkill> mobSkills = new HashMap<String, MobSkill>();
     private final static MapleDataProvider dataSource = MapleDataProviderFactory.getDataProvider(new File(System.getProperty("wzpath") + "/Skill.wz"));
     private static MapleData skillRoot = dataSource.getData("MobSkill.img");
-    private final static ReentrantReadWriteLock dataLock = new MonitoredReentrantReadWriteLock(MonitoredLockType.MOBSKILL_FACTORY);
-    private final static ReadLock rL = dataLock.readLock();
-    private final static WriteLock wL = dataLock.writeLock();
+    private final static MonitoredReentrantReadWriteLock dataLock = new MonitoredReentrantReadWriteLock(MonitoredLockType.MOBSKILL_FACTORY);
+    private final static MonitoredReadLock rL = MonitoredReadLockFactory.createLock(dataLock);
+    private final static MonitoredWriteLock wL = MonitoredWriteLockFactory.createLock(dataLock);
 
     public static MobSkill getMobSkill(final int skillId, final int level) {
         final String key = skillId + "" + level;

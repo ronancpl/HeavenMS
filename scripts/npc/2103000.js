@@ -40,9 +40,9 @@ function action(mode, type, selection) {
         else
             status--;
         if (status == 0 && mode == 1) {
-                if(cm.isQuestStarted(3900) && cm.getPlayer().getQuestInfo(3900) != 5) {
+                if(cm.isQuestStarted(3900) && cm.getQuestProgressInt(3900) != 5) {
                         cm.sendOk("#b(You drink the water from the oasis and feel refreshed.)", 2);
-                        cm.getPlayer().updateQuestInfo(3900, "5");
+                        cm.setQuestProgress(3900, 5);
                 } else if(cm.isQuestCompleted(3938)) {
                         if(cm.canHold(2210005)) {
                                 if(!cm.haveItem(2210005) && !isTigunMorphed(cm.getPlayer())) {

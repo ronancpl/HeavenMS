@@ -27,7 +27,7 @@ import client.MapleStat;
 import client.command.Command;
 import client.MapleClient;
 import client.MapleCharacter;
-import constants.ItemConstants;
+import constants.inventory.ItemConstants;
 import server.MapleItemInformationProvider;
 
 public class HairCommand extends Command {

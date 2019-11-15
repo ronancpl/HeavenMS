@@ -9,6 +9,11 @@ var status;
 var mobId = 2220100; //Blue Mushroom
 
 function start(){
+        if (!cm.isQuestStarted(20718)) {    // thanks Stray, Ari
+                cm.dispose();
+                return;
+        }
+
 	status = -1;
 	action(1, 0, 0);
 }

@@ -37,7 +37,7 @@ import net.server.audit.locks.factory.MonitoredReentrantLockFactory;
 import tools.Pair;
 import client.MapleCharacter;
 import client.MapleClient;
-import constants.ItemConstants;
+import constants.inventory.ItemConstants;
 import server.MapleItemInformationProvider;
 import client.inventory.manipulator.MapleInventoryManipulator;
 import tools.FilePrinter;
@@ -83,6 +83,19 @@ public class MapleInventory implements Iterable<Item> {
     public void setSlotLimit(int newLimit) {
         lock.lock();
         try {
+            if (newLimit < slotLimit) {
+                List<Short> toRemove = new LinkedList<>();
+                for (Item it : list()) {
+                    if (it.getPosition() > newLimit) {
+                        toRemove.add(it.getPosition());
+                    }
+                }
+                
+                for (Short slot : toRemove) {
+                    removeSlot(slot);
+                }
+            }
+            
             slotLimit = (byte) newLimit;
         } finally {
             lock.unlock();

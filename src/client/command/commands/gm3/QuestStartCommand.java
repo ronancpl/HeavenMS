@@ -46,13 +46,13 @@ public class QuestStartCommand extends Command {
 
         if (player.getQuestStatus(questid) == 0) {
             MapleQuest quest = MapleQuest.getInstance(questid);
-            if (quest != null) {
-                int npcid = quest.getNpcRequirement(false);
-                quest.forceStart(player, npcid);
-                player.dropMessage(5, "QUEST " + questid + " started.");
+            if (quest != null && quest.getNpcRequirement(false) != -1) {
+                c.getAbstractPlayerInteraction().forceStartQuest(questid, quest.getNpcRequirement(false));
             } else {
-                player.dropMessage(5, "QUESTID " + questid + " is invalid.");
+                c.getAbstractPlayerInteraction().forceStartQuest(questid);
             }
+            
+            player.dropMessage(5, "QUEST " + questid + " started.");
         } else {
             player.dropMessage(5, "QUESTID " + questid + " already started/completed.");
         }

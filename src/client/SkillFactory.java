@@ -68,7 +68,7 @@ import constants.skills.Shadower;
 import constants.skills.Sniper;
 import constants.skills.Spearman;
 import constants.skills.SuperGM;
-import constants.skills.Swordsman;
+import constants.skills.Warrior;
 import constants.skills.ThunderBreaker;
 import constants.skills.WhiteKnight;
 import constants.skills.WindArcher;
@@ -180,6 +180,7 @@ public class SkillFactory {
                 case NightWalker.POISON_BOMB:
                 case NightWalker.VAMPIRE:
                 case ChiefBandit.CHAKRA:
+                case Aran.COMBAT_STEP:
                 case Evan.RECOVERY_AURA:
                     isBuff = false;
                     break;
@@ -188,7 +189,7 @@ public class SkillFactory {
                 case Beginner.MONSTER_RIDER:
                 case Beginner.ECHO_OF_HERO:
                 case Beginner.MAP_CHAIR:
-                case Swordsman.IRON_BODY:
+                case Warrior.IRON_BODY:
                 case Fighter.AXE_BOOSTER:
                 case Fighter.POWER_GUARD:
                 case Fighter.RAGE:

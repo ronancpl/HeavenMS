@@ -69,7 +69,7 @@ function action(mode, type, selection) {
                     cm.gainItem(4031010, -1);
                     cm.sendOk("You will have to collect me #b30 #t4031013##k. Good luck.")
                 } else if (status == 4) {
-                    cm.warp(108000100);
+                    cm.warp(108000100, 0);
                     cm.dispose();
                 }
                 else {

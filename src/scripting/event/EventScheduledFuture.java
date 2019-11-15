@@ -19,7 +19,7 @@
 */
 package scripting.event;
 
-import scripting.event.worker.EventScriptScheduler;
+import scripting.event.scheduler.EventScriptScheduler;
 
 /**
  *

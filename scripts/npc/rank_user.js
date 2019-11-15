@@ -21,7 +21,7 @@
  * @Author Ronan
  * Player NPC Ranking System */
 
-importPackage(Packages.constants);
+importPackage(Packages.constants.game);
 
 var status;
  

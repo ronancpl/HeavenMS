@@ -217,7 +217,7 @@ function action(mode, type, selection) {
                                         complete = false;
 			}
                         
-                        if(java.lang.Math.random() >= 0.9) //A lucky find! Scroll 60%
+                        if(Math.random() >= 0.9) //A lucky find! Scroll 60%
                             item += 1;
 
 			if (!complete || !cm.canHold(item, 1))
@@ -251,7 +251,7 @@ function action(mode, type, selection) {
                         var reward;
                         if (rewdSet[selectedItem] instanceof Array) {
                                 var length = rewdSet[selectedItem][1] - rewdSet[selectedItem][0];
-                                reward = rewdSet[selectedItem][0] + java.lang.Math.round(java.lang.Math.random() * length);
+                                reward = rewdSet[selectedItem][0] + Math.round(Math.random() * length);
                         }
                         else reward = rewdSet[selectedItem];
 

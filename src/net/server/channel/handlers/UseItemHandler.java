@@ -26,8 +26,8 @@ import client.MapleClient;
 import client.MapleDisease;
 import client.inventory.Item;
 import client.inventory.MapleInventoryType;
-import constants.ItemConstants;
-import constants.ServerConstants;
+import config.YamlConfig;
+import constants.inventory.ItemConstants;
 import net.AbstractMaplePacketHandler;
 import client.inventory.manipulator.MapleInventoryManipulator;
 import server.MapleItemInformationProvider;
@@ -53,7 +53,7 @@ public final class UseItemHandler extends AbstractMaplePacketHandler {
         int itemId = slea.readInt();
         Item toUse = chr.getInventory(MapleInventoryType.USE).getItem(slot);
         if (toUse != null && toUse.getQuantity() > 0 && toUse.getItemId() == itemId) {
-            if (itemId == 2022178 || itemId == 2050004) {
+            if (itemId == 2050004) {
                 chr.dispelDebuffs();
                 remove(c, slot);
                 return;
@@ -77,7 +77,7 @@ public final class UseItemHandler extends AbstractMaplePacketHandler {
                 long banTime = currentServerTime();
                 
                 if (ii.getItemEffect(toUse.getItemId()).applyTo(chr)) {
-                    if(ServerConstants.USE_BANISHABLE_TOWN_SCROLL) {
+                    if(YamlConfig.config.server.USE_BANISHABLE_TOWN_SCROLL) {
                         chr.setBanishPlayerData(banMap, banSp, banTime);
                     }
                     

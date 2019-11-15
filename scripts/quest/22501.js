@@ -20,11 +20,11 @@ function start(mode, type, selection) {
 	} else if (status == 4) {
 		if (mode == 0) {
 			qm.sendNext("*gasp* How can you refuse to feed your Dragon? This is child abuse! ");
-			qm.dispose();
 		} else {
 			qm.forceStartQuest();
 			qm.sendOk("#b#b(#p1013000# the baby Dragon appears to be extremely hungry. You must feed him. Maybe your Dad can give you advice on what dragons eat.)");
-			qm.dispose();
 		}
-	}
+	} else if (status == 5) {
+                qm.dispose();
+        }
 }

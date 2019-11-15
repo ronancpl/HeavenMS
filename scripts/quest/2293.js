@@ -37,9 +37,12 @@ function start(mode, type, selection) {
     if(status == 0)
     {
         qm.sendNext("Do you remember the last song that the Spirit of Rock played? I can think of a few songs that he may be imitating, so listen carefully and tell me which song it is. #bYou only get one chance,#k so please choose wisely.");
+        qm.forceStartQuest();
     }
-    qm.forceStartQuest();
-    qm.dispose();
+    else if(status == 1)
+    {
+        qm.dispose();
+    }
 }
 
 function end(mode, type, selection)
@@ -92,19 +95,24 @@ function end(mode, type, selection)
         if(selection == 1)
         {
             qm.sendOk("Obviously you don't enjoy music.");
-            qm.dispose();
         }
         else if(selection == 2)
         {
             qm.sendOk("I suppose you could get #b#eone#n#k more chance.");
-            qm.dispose();
         }
         else if(selection == 3)
         {
             qm.sendOk("So that was the song he was playing... Well, it wasn't my song after all, but I'm glad I can know that now with certainty. Thank you so much.");
-            qm.gainExp(32500);
             qm.forceCompleteQuest();
+            qm.gainExp(32500);
+        }
+        else
+        {
             qm.dispose();
         }
+    }
+    else if(status == 3)
+    {
+        qm.dispose();
     }
 }

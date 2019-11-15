@@ -111,9 +111,9 @@ function action(mode, type, selection) {
                                        cm.dispose();
                                 }
                         } else if (selection == 2){
-                                if (cm.haveItem(1032061) && !cm.haveItem(1032101) && cm.haveItem(4001198, 10)) {
+                                if (cm.haveItem(1032061) && !cm.haveItem(1032072) && cm.haveItem(4001198, 10)) {
                                         cm.gainItem(1032061,-1);
-                                        cm.gainItem(1032101, 1);
+                                        cm.gainItem(1032072, 1);    // thanks yuxaij for noticing unexpected itemid here
                                         cm.gainItem(4001198, -10);
                                         cm.dispose();
                                 } else {
