@@ -54,10 +54,10 @@ typedef struct StrMap StrMap;
  * Parameters:
  *
  * key: A pointer to a null-terminated C string. The string must not
- * be modified by the client.
+ * be modified.
  *
  * value: A pointer to a null-terminated C string. The string must
- * not be modified by the client.
+ * not be modified.
  *
  * obj: A pointer to a client-specific object. This parameter may be
  * null.
@@ -168,7 +168,7 @@ int sm_get_count(const StrMap *map);
  * map: A pointer to a string map. This parameter cannot be null.
  *
  * enum_func: A pointer to a callback function that will be
- * called by this procedure once for every key associated
+ * called from this procedure once for every key associated
  * with a value. This parameter cannot be null.
  *
  * obj: A pointer to a client-specific object. This parameter will be

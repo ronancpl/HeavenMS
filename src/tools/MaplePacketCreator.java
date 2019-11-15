@@ -2291,7 +2291,7 @@ public class MaplePacketCreator {
 
         private static void rebroadcastMovementList(LittleEndianWriter lew, SeekableLittleEndianAccessor slea, long movementDataLength) {
         	//movement command length is sent by client, probably not a big issue? (could be calculated on server)
-        	//if multiple write/reads are slow, could use a (cached?) byte[] buffer
+        	//if multiple write/reads are slow, could use (and cache?) a byte[] buffer
         	for(long i = 0; i < movementDataLength; i++) {
         		lew.write(slea.readByte());
         	}
@@ -3478,7 +3478,7 @@ public class MaplePacketCreator {
                 return mplew.getPacket();
         }
         
-        // thanks NPC Quiz packets thanks to Eric
+        // NPC Quiz packets thanks to Eric
         public static byte[] OnAskQuiz(int nSpeakerTypeID, int nSpeakerTemplateID, int nResCode, String sTitle, String sProblemText, String sHintText, int nMinInput, int nMaxInput, int tRemainInitialQuiz) { 
                 MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter(); 
                 mplew.writeShort(SendOpcode.NPC_TALK.getValue()); 

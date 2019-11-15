@@ -105,7 +105,7 @@ public final class AcceptFamilyHandler extends AbstractMaplePacketHandler {
                         newEntry.setSenior(inviterEntry, true);
                         // save new family
                         insertNewFamilyRecord(inviter.getId(), newFamily.getID(), 0, true);
-                        insertNewFamilyRecord(chr.getId(), newFamily.getID(), inviter.getId(), false); // char was already saved by setSenior() above
+                        insertNewFamilyRecord(chr.getId(), newFamily.getID(), inviter.getId(), false); // char was already saved from setSenior() above
                         newFamily.setMessage("", true);
                     } else { //new family for inviter, absorb invitee family
                         insertNewFamilyRecord(inviter.getId(), newFamily.getID(), 0 , true);

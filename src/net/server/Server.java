@@ -858,7 +858,7 @@ public class Server {
         } catch (SQLException sqle) {
             sqle.printStackTrace();
         }
-        applyAllNameChanges(); //name changes can be missed by INSTANT_NAME_CHANGE
+        applyAllNameChanges(); // -- name changes can be missed by INSTANT_NAME_CHANGE --
         applyAllWorldTransfers();
         //MaplePet.clearMissingPetsFromDb();    // thanks Optimist for noticing this taking too long to run
         MapleCashidGenerator.loadExistentCashIdsFromDb();

@@ -50,7 +50,7 @@ public class GotoCommand extends Command {
         sortGotoEntries(towns);
         
         try {
-            // thanks shavit for noticing goto areas getting loaded from wz needlessly, only for the name retrieval
+            // thanks shavit for noticing goto areas getting loaded from wz needlessly only for the name retrieval
             
             for (Map.Entry<String, Integer> e : towns) {
                 GOTO_TOWNS_INFO += ("'" + e.getKey() + "' - #b" + (MapleMapFactory.loadPlaceName(e.getValue())) + "#k\r\n");

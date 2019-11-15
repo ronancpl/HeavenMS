@@ -205,7 +205,7 @@ public abstract class AbstractMovementPacketHandler extends AbstractMaplePacketH
                     lea.skip(9); // jump down (?)
                     break;
                 case 10: // Change Equip
-                    //ignored by server
+                    //ignored server-side
                     lea.readByte();
                     break;
                 /*case 11: { // Chair
