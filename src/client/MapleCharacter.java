@@ -9963,7 +9963,7 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
             if (!mquest.isSameDayRepeatable() && !MapleQuest.isExploitableQuest(questid)) {
                 awardQuestPoint(YamlConfig.config.server.QUEST_POINT_PER_QUEST_COMPLETE);
             }
-            qs.setCompleted(qs.getCompleted() + 1);   // count quest completed Jayd's idea
+            qs.setCompleted(qs.getCompleted() + 1);   // Jayd's idea - count quest completed
 
             announceUpdateQuest(DelayedQuestUpdate.COMPLETE, questid, qs.getCompletionTime());
             //announceUpdateQuest(DelayedQuestUpdate.INFO, qs); // happens after giving rewards, for non-next quests only
