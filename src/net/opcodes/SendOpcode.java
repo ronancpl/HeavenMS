@@ -188,6 +188,7 @@ public enum SendOpcode {
     ARIANT_ARENA_SHOW_RESULT(0x9B),
     PYRAMID_GAUGE(0x9D),
     PYRAMID_SCORE(0x9E),
+    QUICKSLOT_INIT(0x9F),//LP_QuickslotMappedInit
     SPAWN_PLAYER(0xA0),
     REMOVE_PLAYER_FROM_MAP(0xA1),
     CHATTEXT(0xA2), //0

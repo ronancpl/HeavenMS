@@ -43,7 +43,8 @@ import client.MapleClient;
 import client.MapleDisease;
 import client.MapleFamilyEntitlement;
 import client.MapleFamilyEntry;
-import client.MapleKeyBinding;
+import client.keybind.MapleKeyBinding;
+import client.keybind.MapleQuickslotBinding;
 import client.MapleMount;
 import client.MapleQuestStatus;
 import client.MapleRing;
@@ -3613,6 +3614,16 @@ public class MaplePacketCreator {
                         }
                 }
                 return mplew.getPacket();
+        }
+        
+        public static byte[] QuickslotMappedInit(MapleQuickslotBinding pQuickslot)
+        {
+                final MaplePacketLittleEndianWriter pOutPacket = new MaplePacketLittleEndianWriter();
+
+                pOutPacket.writeShort(SendOpcode.QUICKSLOT_INIT.getValue());
+                pQuickslot.Encode(pOutPacket);
+
+                return pOutPacket.getPacket();
         }
 
         public static byte[] getWhisper(String sender, int channel, String text) {

@@ -53,7 +53,7 @@ import client.MapleClient;
 import client.MapleDisease;
 import client.MapleFamily;
 import client.MapleFamilyEntry;
-import client.MapleKeyBinding;
+import client.keybind.MapleKeyBinding;
 import client.MapleMount;
 import client.SkillFactory;
 import client.inventory.Equip;
@@ -239,6 +239,7 @@ public final class PlayerLoggedinHandler extends AbstractMaplePacketHandler {
                     }
                 }
                 player.sendKeymap();
+                player.sendQuickmap();
                 player.sendMacros();
 
                 // pot bindings being passed through other characters on the account detected thanks to Croosade dev team

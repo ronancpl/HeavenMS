@@ -123,6 +123,8 @@ import tools.exceptions.NotEnabledException;
 import tools.packets.Wedding;
 import client.autoban.AutobanManager;
 import client.creator.CharacterFactoryRecipe;
+import client.keybind.MapleKeyBinding;
+import client.keybind.MapleQuickslotBinding;
 import client.inventory.Equip;
 import client.inventory.Equip.StatUpgrade;
 import client.inventory.Item;
@@ -175,8 +177,8 @@ import net.server.services.type.ChannelServices;
 import net.server.services.task.channel.FaceExpressionService;
 import net.server.services.task.world.CharacterSaveService;
 import net.server.services.type.WorldServices;
-import org.apache.mina.core.session.IoSession;
 import org.apache.mina.util.ConcurrentHashSet;
+import tools.LongTool;
 
 public class MapleCharacter extends AbstractMapleCharacterObject {
     private static final MapleItemInformationProvider ii = MapleItemInformationProvider.getInstance();
@@ -277,6 +279,8 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
     private Map<Integer, MapleSummon> summons = new LinkedHashMap<>();
     private Map<Integer, MapleCoolDownValueHolder> coolDowns = new LinkedHashMap<>();
     private EnumMap<MapleDisease, Pair<MapleDiseaseValueHolder, MobSkill>> diseases = new EnumMap<>(MapleDisease.class);
+    public byte[] m_aQuickslotLoaded;
+    public MapleQuickslotBinding m_pQuickslotKeyMapped;
     private MapleDoor pdoor = null;
     private Map<MapleQuest, Long> questExpirations = new LinkedHashMap<>();
     private ScheduledFuture<?> dragonBloodSchedule;
@@ -7496,6 +7500,17 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
             ret.maplemount.setTiredness(mounttiredness);
             ret.maplemount.setActive(false);
             
+            try (final PreparedStatement pSelectQuickslotKeyMapped = con.prepareStatement("SELECT keymap FROM quickslotkeymapped WHERE accountid = ?;")) {
+                pSelectQuickslotKeyMapped.setInt(1, ret.getAccountID());
+
+                try (final ResultSet pResultSet = pSelectQuickslotKeyMapped.executeQuery()) {
+                    if (pResultSet.next()) {
+                        ret.m_aQuickslotLoaded = LongTool.LongToBytes(pResultSet.getLong(1));
+                        ret.m_pQuickslotKeyMapped = new MapleQuickslotBinding(ret.m_aQuickslotLoaded);
+                    }
+                }
+            }
+            
             con.close();
             return ret;
         } catch (SQLException | RuntimeException e) {
@@ -8334,6 +8349,19 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
                 ps.execute();
             }
             ps.close();
+            
+            // No quickslots, or no change.
+            boolean bQuickslotEquals = this.m_pQuickslotKeyMapped == null || (this.m_aQuickslotLoaded != null && Arrays.equals(this.m_pQuickslotKeyMapped.m_aQuickslotKeyMapped, this.m_aQuickslotLoaded));
+            if (!bQuickslotEquals) {
+                long nQuickslotKeymapped = LongTool.BytesToLong(this.m_pQuickslotKeyMapped.m_aQuickslotKeyMapped);
+                
+                try (final PreparedStatement pInsertStatement = con.prepareStatement("INSERT INTO quickslotkeymapped (accountid, keymap) VALUES (?, ?) ON DUPLICATE KEY UPDATE keymap = ?;")) {
+                    pInsertStatement.setInt(1, this.getAccountID());
+                    pInsertStatement.setLong(2, nQuickslotKeymapped);
+                    pInsertStatement.setLong(3, nQuickslotKeymapped);
+                    pInsertStatement.executeUpdate();
+                }
+            }
 
             itemsWithType = new ArrayList<>();
             for (MapleInventory iv : inventory) {
@@ -8587,6 +8615,19 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
             ps.executeBatch();
             ps.close();
             
+            // No quickslots, or no change.
+            boolean bQuickslotEquals = this.m_pQuickslotKeyMapped == null || (this.m_aQuickslotLoaded != null && Arrays.equals(this.m_pQuickslotKeyMapped.m_aQuickslotKeyMapped, this.m_aQuickslotLoaded));
+            if (!bQuickslotEquals) {
+                long nQuickslotKeymapped = LongTool.BytesToLong(this.m_pQuickslotKeyMapped.m_aQuickslotKeyMapped);
+                
+                try (final PreparedStatement pInsertStatement = con.prepareStatement("INSERT INTO quickslotkeymapped (accountid, keymap) VALUES (?, ?) ON DUPLICATE KEY UPDATE keymap = ?;")) {
+                    pInsertStatement.setInt(1, this.getAccountID());
+                    pInsertStatement.setLong(2, nQuickslotKeymapped);
+                    pInsertStatement.setLong(3, nQuickslotKeymapped);
+                    pInsertStatement.executeUpdate();
+                }
+            }
+            
             deleteWhereCharacterId(con, "DELETE FROM skillmacros WHERE characterid = ?");
             ps = con.prepareStatement("INSERT INTO skillmacros (characterid, skill1, skill2, skill3, name, shout, position) VALUES (?, ?, ?, ?, ?, ?, ?)");
             ps.setInt(1, getId());
@@ -8823,6 +8864,17 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
 
     public void sendKeymap() {
         client.announce(MaplePacketCreator.getKeymap(keymap));
+    }
+    
+    public void sendQuickmap() {
+        // send quickslots to user
+        MapleQuickslotBinding pQuickslotKeyMapped = this.m_pQuickslotKeyMapped;
+
+        if (pQuickslotKeyMapped == null) {
+            pQuickslotKeyMapped = new MapleQuickslotBinding(MapleQuickslotBinding.DEFAULT_QUICKSLOTS);
+        }
+
+        this.announce(MaplePacketCreator.QuickslotMappedInit(pQuickslotKeyMapped));
     }
 
     public void sendMacros() {
