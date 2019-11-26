@@ -29,6 +29,6 @@ public class QuickslotKeyMappedModifiedHandler extends AbstractMaplePacketHandle
             aQuickslotKeyMapped[i] = (byte) slea.readInt();
         }
 
-        c.getPlayer().m_pQuickslotKeyMapped = new MapleQuickslotBinding(aQuickslotKeyMapped);
+        c.getPlayer().changeQuickslotKeybinding(aQuickslotKeyMapped);
     }
 }

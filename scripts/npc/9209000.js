@@ -87,30 +87,50 @@ function action(mode, type, selection) {
         } else if(status == 1) {
             var sendStr = "The following books are currently available:\r\n\r\n";
             if(selected == 0) selected = selection;
-
-            table = (selected == 1) ? skillbook : masterybook;
-            for(var i = 0; i < table.length; i++) {
-                sendStr += "  #L" + i + "# #i" + table[i] + "#  #t" + table[i] + "##l\r\n";
+            
+            if (selected == 1) {
+                table = skillbook;
+                for(var i = 0; i < table.length; i++) {
+                    if (table[i] > 0) {
+                        var itemid = table[i];
+                        sendStr += "  #L" + i + "# #i" + itemid + "#  #t" + itemid + "##l\r\n";
+                    } else {
+                        var skillid = -table[i];
+                        sendStr += "  #L" + i + "# #s" + skillid + "#  #q" + skillid + "##l\r\n";
+                    }
+                }
+            } else {
+                table = masterybook;
+                for(var i = 0; i < table.length; i++) {
+                    var itemid = table[i];
+                    sendStr += "  #L" + i + "# #i" + itemid + "#  #t" + itemid + "##l\r\n";
+                }
             }
-
+            
             cm.sendSimple(sendStr);
 
         } else if(status == 2) {
             selected = selection;
-            var mobList = cm.getNamesWhoDropsItem(table[selected]);
-            
-            var sendStr;
-            if(mobList.length == 0) {
-                sendStr = "No mobs drop '#b#t" + table[selected] + "##k'.\r\n\r\n";
-            } else {
-                sendStr = "The following mobs drop '#b#t" + table[selected] + "##k':\r\n\r\n";
 
-                for(var i = 0; i < mobList.length; i++) {
-                    sendStr += "  #L" + i + "# " + mobList[i] + "#l\r\n";
-                }
+            var sendStr;
+            if (table[selected] > 0) {
+                var mobList = cm.getNamesWhoDropsItem(table[selected]);
                 
-                sendStr += "\r\n";
+                if(mobList.length == 0) {
+                    sendStr = "No mobs drop '#b#t" + table[selected] + "##k'.\r\n\r\n";
+                } else {
+                    sendStr = "The following mobs drop '#b#t" + table[selected] + "##k':\r\n\r\n";
+
+                    for(var i = 0; i < mobList.length; i++) {
+                        sendStr += "  #L" + i + "# " + mobList[i] + "#l\r\n";
+                    }
+
+                    sendStr += "\r\n";
+                }
+            } else {
+                sendStr = "\r\n\r\n";
             }
+            
             sendStr += cm.getSkillBookInfo(table[selected]);
 
             cm.sendNext(sendStr);

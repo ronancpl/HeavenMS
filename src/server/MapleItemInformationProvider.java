@@ -1981,10 +1981,10 @@ public class MapleItemInformationProvider {
                 PreparedStatement ps = con.prepareStatement("SELECT req_level, req_maker_level, req_meso, quantity FROM makercreatedata WHERE itemid = ?");
                 ps.setInt(1, toCreate);
                 ResultSet rs = ps.executeQuery();
-                int reqLevel = 0;
-                int reqMakerLevel = 0;
-                int cost = 0;
-                int toGive = 0;
+                int reqLevel = -1;
+                int reqMakerLevel = -1;
+                int cost = -1;
+                int toGive = -1;
                 if (rs.next()) {
                     reqLevel = rs.getInt("req_level");
                     reqMakerLevel = rs.getInt("req_maker_level");

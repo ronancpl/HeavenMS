@@ -17,7 +17,7 @@ public class MapleQuickslotBinding
             0x2A, 0x52, 0x47, 0x49, 0x1D, 0x53, 0x4F, 0x51
     };
 
-    public byte[] m_aQuickslotKeyMapped;
+    private byte[] m_aQuickslotKeyMapped;
 
     // Initializes quickslot object for the user.
     // aKeys' length has to be 8.
@@ -52,4 +52,9 @@ public class MapleQuickslotBinding
             oPacket.writeInt(nKey);
         }
     }
+    
+    public byte[] GetKeybindings() {
+        return m_aQuickslotKeyMapped;
+    }
+    
 }

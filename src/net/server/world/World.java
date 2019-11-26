@@ -260,10 +260,15 @@ public class World {
         }
     }
 
-    public void addChannel(Channel channel) {
+    public boolean addChannel(Channel channel) {
         chnWLock.lock();
         try {
-            channels.add(channel);
+            if (channel.getId() == channels.size() + 1) {
+                channels.add(channel);
+                return true;
+            } else {
+                return false;
+            }
         } finally {
             chnWLock.unlock();
         }

@@ -146,7 +146,7 @@ public class MapleStatEffect {
     private int itemCon, itemConNo;
     private int damage, attackCount, fixdamage;
     private Point lt, rb;
-    private byte bulletCount, bulletConsume;
+    private short bulletCount, bulletConsume;
     private byte mapProtection;
     private CardItemupStats cardStats;
     
@@ -484,8 +484,8 @@ public class MapleStatEffect {
         ret.damage = MapleDataTool.getIntConvert("damage", source, 100);
         ret.fixdamage = MapleDataTool.getIntConvert("fixdamage", source, -1);
         ret.attackCount = MapleDataTool.getIntConvert("attackCount", source, 1);
-        ret.bulletCount = (byte) MapleDataTool.getIntConvert("bulletCount", source, 1);
-        ret.bulletConsume = (byte) MapleDataTool.getIntConvert("bulletConsume", source, 0);
+        ret.bulletCount = (short) MapleDataTool.getIntConvert("bulletCount", source, 1);
+        ret.bulletConsume = (short) MapleDataTool.getIntConvert("bulletConsume", source, 0);
         ret.moneyCon = MapleDataTool.getIntConvert("moneyCon", source, 0);
         ret.itemCon = MapleDataTool.getInt("itemCon", source, 0);
         ret.itemConNo = MapleDataTool.getInt("itemConNo", source, 0);
@@ -961,6 +961,7 @@ public class MapleStatEffect {
         } else if (isCureAllAbnormalStatus()) {
             applyto.dispelDebuff(MapleDisease.SEDUCE);
             applyto.dispelDebuff(MapleDisease.ZOMBIFY);
+            applyto.dispelDebuff(MapleDisease.CONFUSE);
             applyto.dispelDebuffs();
         } else if (isComboReset()) {
             applyto.setCombo((short) 0);
@@ -1008,6 +1009,8 @@ public class MapleStatEffect {
             }
         }
         if (isShadowClaw()) {
+            short projectileConsume = this.getBulletConsume();  // noticed by shavit
+            
             MapleInventory use = applyto.getInventory(MapleInventoryType.USE);
             use.lockInventory();
             try {
@@ -1015,7 +1018,7 @@ public class MapleStatEffect {
                 for (int i = 1; i <= use.getSlotLimit(); i++) { // impose order...
                     Item item = use.getItem((short) i);
                     if (item != null) {
-                        if (ItemConstants.isThrowingStar(item.getItemId()) && item.getQuantity() >= 200) {
+                        if (ItemConstants.isThrowingStar(item.getItemId()) && item.getQuantity() >= projectileConsume) {
                             projectile = item;
                             break;
                         }
@@ -1024,7 +1027,7 @@ public class MapleStatEffect {
                 if (projectile == null) {
                     return false;
                 } else {
-                    MapleInventoryManipulator.removeFromSlot(applyto.getClient(), MapleInventoryType.USE, projectile.getPosition(), (short) 200, false, true);
+                    MapleInventoryManipulator.removeFromSlot(applyto.getClient(), MapleInventoryType.USE, projectile.getPosition(), (short) projectileConsume, false, true);
                 }
             } finally {
                 use.unlockInventory();
@@ -1938,11 +1941,11 @@ public class MapleStatEffect {
         return fixdamage;
     }
 
-    public byte getBulletCount() {
+    public short getBulletCount() {
         return bulletCount;
     }
 
-    public byte getBulletConsume() {
+    public short getBulletConsume() {
         return bulletConsume;
     }
 

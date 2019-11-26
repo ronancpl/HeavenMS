@@ -180,7 +180,7 @@ public class MobSkill {
                 break;
             case 127:
                 if (lt != null && rb != null && skill) {
-                    for (MapleCharacter character : getPlayersInRange(monster, player)) {
+                    for (MapleCharacter character : getPlayersInRange(monster)) {
                         character.dispel();
                     }
                 } else {
@@ -192,7 +192,7 @@ public class MobSkill {
                 break;
             case 129: // Banish
                 if (lt != null && rb != null && skill) {
-                    for (MapleCharacter chr : getPlayersInRange(monster, player)) {
+                    for (MapleCharacter chr : getPlayersInRange(monster)) {
                         banishPlayers.add(chr);
                     }
                 } else {
@@ -200,7 +200,7 @@ public class MobSkill {
                 }
                 break;
             case 131: // Mist
-                monster.getMap().spawnMist(new MapleMist(calculateBoundingBox(monster.getPosition(), monster.isFacingLeft()), monster, this), x * 100, false, false, false);
+                monster.getMap().spawnMist(new MapleMist(calculateBoundingBox(monster.getPosition()), monster, this), x * 100, false, false, false);
                 break;
             case 132:
                 disease = MapleDisease.CONFUSE;
@@ -248,7 +248,7 @@ public class MobSkill {
                 int skillLimit = this.getLimit();
                 MapleMap map = monster.getMap();
 
-                if (map.isDojoMap()) {  // spawns in dojo should be unlimited
+                if (GameConstants.isDojo(map.getId())) {  // spawns in dojo should be unlimited
                     skillLimit = Integer.MAX_VALUE;
                 }
 
@@ -333,7 +333,7 @@ public class MobSkill {
         if (disease != null) {
             if (lt != null && rb != null && skill) {
                 int i = 0;
-                for (MapleCharacter character : getPlayersInRange(monster, player)) {
+                for (MapleCharacter character : getPlayersInRange(monster)) {
                     if (!character.hasActiveBuff(2321005)) {  // holy shield
                         if (disease.equals(MapleDisease.SEDUCE)) {
                             if (i < 10) {
@@ -351,8 +351,8 @@ public class MobSkill {
         }
     }
 
-    private List<MapleCharacter> getPlayersInRange(MapleMonster monster, MapleCharacter player) {
-        return monster.getMap().getPlayersInRange(calculateBoundingBox(monster.getPosition(), monster.isFacingLeft()), Collections.singletonList(player));
+    private List<MapleCharacter> getPlayersInRange(MapleMonster monster) {
+        return monster.getMap().getPlayersInRange(calculateBoundingBox(monster.getPosition()));
     }
 
     public int getSkillId() {
@@ -411,15 +411,14 @@ public class MobSkill {
         return prop == 1.0 || Math.random() < prop;
     }
 
-    private Rectangle calculateBoundingBox(Point posFrom, boolean facingLeft) {
-        int multiplier = facingLeft ? 1 : -1;
-        Point mylt = new Point(lt.x * multiplier + posFrom.x, lt.y + posFrom.y);
-        Point myrb = new Point(rb.x * multiplier + posFrom.x, rb.y + posFrom.y);
+    private Rectangle calculateBoundingBox(Point posFrom) {
+        Point mylt = new Point(lt.x + posFrom.x, lt.y + posFrom.y);
+        Point myrb = new Point(rb.x + posFrom.x, rb.y + posFrom.y);
         Rectangle bounds = new Rectangle(mylt.x, mylt.y, myrb.x - mylt.x, myrb.y - mylt.y);
         return bounds;
     }
 
     private List<MapleMapObject> getObjectsInRange(MapleMonster monster, MapleMapObjectType objectType) {
-        return monster.getMap().getMapObjectsInBox(calculateBoundingBox(monster.getPosition(), monster.isFacingLeft()), Collections.singletonList(objectType));
+        return monster.getMap().getMapObjectsInBox(calculateBoundingBox(monster.getPosition()), Collections.singletonList(objectType));
     }
 }

@@ -26,6 +26,7 @@
 */
 
 importPackage(Packages.config);
+importPackage(Packages.constants.game);
 
 var disabled = false;
 var belts = Array(1132000, 1132001, 1132002, 1132003, 1132004);
@@ -69,7 +70,7 @@ function action(mode, type, selection) {
         if(status == 0) {
             if (isRestingSpot(cm.getPlayer().getMap().getId())) {
                 var text = "I'm surprised you made it this far! But it won't be easy from here on out. You still want the challenge?\r\n\r\n#b#L0#I want to continue#l\r\n#L1#I want to leave#l\r\n";
-                if (!cm.getPlayer().getDojoParty()) {
+                if (!GameConstants.isDojoPartyArea(cm.getPlayer().getMapId())) {
                     text += "#L2#I want to record my score up to this point#l";
                 }
                 cm.sendSimple(text);
@@ -99,7 +100,7 @@ function action(mode, type, selection) {
                                     cm.dispose();
                                     return;
                                 } else {
-                                    var avDojo = cm.getClient().getChannelServer().getAvailableDojo(true);
+                                    var avDojo = cm.getClient().getChannelServer().ingressDojo(true, 0);
 
                                     if(avDojo < 0) {
                                         if(avDojo == -1) cm.sendOk("All Dojo's are being used already. Wait for awhile before trying again.");
@@ -107,7 +108,6 @@ function action(mode, type, selection) {
                                     }
                                     else {
                                         cm.getClient().getChannelServer().getMapFactory().getMap(925020010 + avDojo).resetMapObjects();
-                                        cm.getClient().getChannelServer().resetDojo(925020010 + avDojo);
                                         
                                         cm.resetDojoEnergy();
                                         cm.warp(925020010 + avDojo, 0);
@@ -120,9 +120,11 @@ function action(mode, type, selection) {
                         } else if (cm.getPlayer().getDojoStage() > 0) {
                             dojoWarp = cm.getPlayer().getDojoStage();
                             cm.getPlayer().setDojoStage(0);
-                            cm.sendYesNo("The last time you took the challenge by yourself, you went up to level #b" + dojoWarp + "#k. I can take you there right now. Do you want to go there? (Select #rNo#k to erase this record.)");
+                            
+                            var stageWarp = ((dojoWarp / 6) | 0) * 5;
+                            cm.sendYesNo("The last time you took the challenge by yourself, you went up to round #b" + stageWarp + "#k. I can take you there right now. Do you want to go there? (Select #rNo#k to erase this record.)");
                         } else {
-                            var avDojo = cm.getClient().getChannelServer().getAvailableDojo(false);
+                            var avDojo = cm.getClient().getChannelServer().ingressDojo(false, dojoWarp);
 
                             if(avDojo < 0) {
                                 if(avDojo == -1) cm.sendOk("All Dojo's are being used already. Wait for awhile before trying again.");
@@ -132,7 +134,6 @@ function action(mode, type, selection) {
                             } else {
                                 var warpDojoMap = 925020000 + (dojoWarp + 1) * 100 + avDojo;
                                 cm.getClient().getChannelServer().resetDojoMap(warpDojoMap);
-                                cm.getClient().getChannelServer().resetDojo(warpDojoMap);
                                 
                                 cm.resetDojoEnergy();
                                 cm.warp(warpDojoMap, 0);
@@ -164,14 +165,13 @@ function action(mode, type, selection) {
                             cm.dispose();
                             return;
                         } else {
-                            var avDojo = cm.getClient().getChannelServer().getAvailableDojo(true, cm.getParty());
+                            var avDojo = cm.getClient().getChannelServer().ingressDojo(true, cm.getParty(), 0);
 
                             if(avDojo < 0) {
                                 if(avDojo == -1) cm.sendOk("All Dojo's are being used already. Wait for awhile before trying again.");
                                 else cm.sendOk("Either your party is already using the Dojo or your party's allotted time on the Dojo has not expired yet. Wait for them to finish to enter.");
                             } else {
                                 cm.getClient().getChannelServer().resetDojoMap(925030100 + avDojo);
-                                cm.getClient().getChannelServer().resetDojo(925030100 + avDojo);
                                 
                                 cm.resetPartyDojoEnergy();
                                 cm.warpParty(925030100 + avDojo);
@@ -299,7 +299,7 @@ function action(mode, type, selection) {
                             }
                         }
                         
-                        avDojo = cm.getClient().getChannelServer().getAvailableDojo(hasParty, cm.getParty());
+                        avDojo = cm.getClient().getChannelServer().ingressDojo(hasParty, cm.getParty(), Math.floor((cm.getPlayer().getMap().getId()) / 100) % 100);
                         firstEnter = true;
                     }
 
@@ -313,7 +313,6 @@ function action(mode, type, selection) {
                         var dojoWarpMap = baseStg + (nextStg * 100) + avDojo;
                         if(firstEnter) {
                             cm.getClient().getChannelServer().resetDojoMap(dojoWarpMap);
-                            cm.getClient().getChannelServer().resetDojo(dojoWarpMap, nextStg - 1);
                         }
                         
                         //non-leader party members can progress whilst having the record saved if they don't command to enter the next stage

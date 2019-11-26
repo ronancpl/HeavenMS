@@ -320,7 +320,7 @@ public class Server {
     
     
     private void dumpData() {
-        wldWLock.lock();
+        wldRLock.lock();
         try {
             System.out.println(worlds);
             System.out.println(channels);
@@ -328,34 +328,44 @@ public class Server {
             System.out.println();
             System.out.println("---------------------");
         } finally {
-            wldWLock.unlock();
+            wldRLock.unlock();
         }
     }
     
     public int addChannel(int worldid) {
-        wldWLock.lock();
+        World world;
+        Map<Integer, String> channelInfo;
+        int channelid;
+        
+        wldRLock.lock();
         try {
             if(worldid >= worlds.size()) return -3;
             
-            Map<Integer, String> worldChannels = channels.get(worldid);
-            if(worldChannels == null) return -3;
+            channelInfo = channels.get(worldid);
+            if(channelInfo == null) return -3;
             
-            int channelid = worldChannels.size();
+            channelid = channelInfo.size();
             if(channelid >= YamlConfig.config.server.CHANNEL_SIZE) return -2;
             
             channelid++;
-            World world = this.getWorld(worldid);
-            Channel channel = new Channel(worldid, channelid, getCurrentTime());
-
-            channel.setServerMessage(YamlConfig.config.worlds.get(worldid).why_am_i_recommended);
-            
-            world.addChannel(channel);
-            worldChannels.put(channelid, channel.getIP());
-            
-            return channelid;
+            world = this.getWorld(worldid);
         } finally {
-            wldWLock.unlock();
+            wldRLock.unlock();
         }
+        
+        Channel channel = new Channel(worldid, channelid, getCurrentTime());
+        channel.setServerMessage(YamlConfig.config.worlds.get(worldid).why_am_i_recommended);
+        
+        if (world.addChannel(channel)) {
+            wldWLock.lock();
+            try {
+                channelInfo.put(channelid, channel.getIP());
+            } finally {
+                wldWLock.unlock();
+            }
+        }
+        
+        return channelid;
     }
     
     public int addWorld() {
@@ -380,73 +390,96 @@ public class Server {
     }
     
     private int initWorld() {
-        wldWLock.lock();
+        int i;
+        
+        wldRLock.lock();
         try {
-            int i = worlds.size();
+            i = worlds.size();
             
             if(i >= YamlConfig.config.server.WLDLIST_SIZE) {
                 return -1;
             }
-            
-            System.out.println("Starting world " + i);
+        } finally {
+            wldRLock.unlock();
+        }
+        
+        System.out.println("Starting world " + i);
 
-            int exprate = YamlConfig.config.worlds.get(i).exp_rate;
-            int mesorate = YamlConfig.config.worlds.get(i).meso_rate;
-            int droprate = YamlConfig.config.worlds.get(i).drop_rate;
-            int bossdroprate = YamlConfig.config.worlds.get(i).boss_drop_rate;
-            int questrate = YamlConfig.config.worlds.get(i).quest_rate;
-            int travelrate = YamlConfig.config.worlds.get(i).travel_rate;
-            int fishingrate = YamlConfig.config.worlds.get(i).fishing_rate;
+        int exprate = YamlConfig.config.worlds.get(i).exp_rate;
+        int mesorate = YamlConfig.config.worlds.get(i).meso_rate;
+        int droprate = YamlConfig.config.worlds.get(i).drop_rate;
+        int bossdroprate = YamlConfig.config.worlds.get(i).boss_drop_rate;
+        int questrate = YamlConfig.config.worlds.get(i).quest_rate;
+        int travelrate = YamlConfig.config.worlds.get(i).travel_rate;
+        int fishingrate = YamlConfig.config.worlds.get(i).fishing_rate;
 
-            int flag = YamlConfig.config.worlds.get(i).flag;
-            String event_message = YamlConfig.config.worlds.get(i).event_message;
-            String why_am_i_recommended = YamlConfig.config.worlds.get(i).why_am_i_recommended;
-            
-            World world = new World(i,
-                    flag,
-                    event_message,
-                    exprate, droprate, bossdroprate, mesorate, questrate, travelrate, fishingrate);
+        int flag = YamlConfig.config.worlds.get(i).flag;
+        String event_message = YamlConfig.config.worlds.get(i).event_message;
+        String why_am_i_recommended = YamlConfig.config.worlds.get(i).why_am_i_recommended;
 
-            worldRecommendedList.add(new Pair<>(i, why_am_i_recommended));
-            worlds.add(world);
+        World world = new World(i,
+                flag,
+                event_message,
+                exprate, droprate, bossdroprate, mesorate, questrate, travelrate, fishingrate);
+        
+        Map<Integer, String> channelInfo = new HashMap<>();
+        long bootTime = getCurrentTime();
+        for (int j = 1; j <= YamlConfig.config.worlds.get(i).channels; j++) {
+            int channelid = j;
+            Channel channel = new Channel(i, channelid, bootTime);
 
-            Map<Integer, String> channelInfo = new HashMap<>();
-            long bootTime = getCurrentTime();
-            for (int j = 1; j <= YamlConfig.config.worlds.get(i).channels; j++) {
-                int channelid = j;
-                Channel channel = new Channel(i, channelid, bootTime);
-
-                world.addChannel(channel);
-                channelInfo.put(channelid, channel.getIP());
+            world.addChannel(channel);
+            channelInfo.put(channelid, channel.getIP());
+        }
+        
+        boolean canDeploy;
+        
+        wldWLock.lock();	// thanks Ashen for noticing a deadlock issue when trying to deploy a channel
+        try {
+            canDeploy = world.getId() == worlds.size();
+            if (canDeploy) {
+                worldRecommendedList.add(new Pair<>(i, why_am_i_recommended));
+                worlds.add(world);
+                channels.add(i, channelInfo);
             }
-
-            channels.add(i, channelInfo);
-
-            world.setServerMessage(YamlConfig.config.worlds.get(i).server_message);
-            System.out.println("Finished loading world " + i + "\r\n");
-            
-            return i;
         } finally {
             wldWLock.unlock();
+        }
+        
+        if (canDeploy) {
+            world.setServerMessage(YamlConfig.config.worlds.get(i).server_message);
+            
+            System.out.println("Finished loading world " + i + "\r\n");
+            return i;
+        } else {
+            System.out.println("Could not load world " + i + "...\r\n");
+            world.shutdown();
+            return -2;
         }
     }
     
     public boolean removeChannel(int worldid) {   //lol don't!
-        wldWLock.lock();
+        World world;
+        
+        wldRLock.lock();
         try {
             if(worldid >= worlds.size()) return false;
-            
-            World world = worlds.get(worldid);
-            if (world != null) {
-                int channel = world.removeChannel();
-
+            world = worlds.get(worldid);
+        } finally {
+            wldRLock.unlock();
+        }
+        
+        if (world != null) {
+            int channel = world.removeChannel();
+            wldWLock.lock();
+            try {
                 Map<Integer, String> m = channels.get(worldid);
                 if(m != null) m.remove(channel);
-                
-                return channel > -1;
+            } finally {
+                wldWLock.unlock();
             }
-        } finally {
-            wldWLock.unlock();
+
+            return channel > -1;
         }
         
         return false;
@@ -472,17 +505,15 @@ public class Server {
             return false;
         }
         
+        removeWorldPlayerRanking();
+        w.shutdown();
+        
         wldWLock.lock();
         try {
-            if(worldid == worlds.size() - 1) {
-                removeWorldPlayerRanking();
-                w.shutdown();
-                
+            if (worldid == worlds.size() - 1) {
                 worlds.remove(worldid);
                 channels.remove(worldid);
                 worldRecommendedList.remove(worldid);
-            } else {
-                return false;
             }
         } finally {
             wldWLock.unlock();
@@ -714,7 +745,7 @@ public class Server {
         if (!YamlConfig.config.server.USE_WHOLE_SERVER_RANKING) {
             wldWLock.lock();
             try {
-                if(playerRanking.size() < this.getWorldsSize()) {
+                if(playerRanking.size() < worlds.size()) {
                     return;
                 }
                 

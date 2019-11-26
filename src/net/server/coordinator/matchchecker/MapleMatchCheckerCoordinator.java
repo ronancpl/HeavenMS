@@ -319,10 +319,14 @@ public class MapleMatchCheckerCoordinator {
         }
     }
     
-    private void acceptMatchElement(MapleMatchCheckingElement mmce, int cid) {
+    private boolean acceptMatchElement(MapleMatchCheckingElement mmce, int cid) {
         if (mmce.acceptEntry(cid)) {
             unpoolMatchPlayer(cid);
             disposeMatchElement(mmce);
+            
+            return true;
+        } else {
+            return false;
         }
     }
     
@@ -355,7 +359,11 @@ public class MapleMatchCheckerCoordinator {
                                         mmce = null;
                                     } else {
                                         if (accept) {
-                                            acceptMatchElement(mmce, cid);
+                                            if (!acceptMatchElement(mmce, cid)) {
+                                                mmce = null;
+                                            }
+                                            
+                                            break;  // thanks Rohenn for noticing loop scenario here
                                         } else {
                                             denyMatchElement(mmce, cid);
                                             matchEntries.remove(cid);

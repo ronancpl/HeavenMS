@@ -758,9 +758,11 @@ public class MapleMap {
         final List<MonsterDropEntry>  dropEntry = new ArrayList<>();
         final List<MonsterDropEntry> visibleQuestEntry = new ArrayList<>();
         final List<MonsterDropEntry> otherQuestEntry = new ArrayList<>();
-        sortDropEntries(YamlConfig.config.server.USE_SPAWN_RELEVANT_LOOT ? mob.retrieveRelevantDrops() : mi.retrieveEffectiveDrop(mob.getId()), dropEntry, visibleQuestEntry, otherQuestEntry, chr);
         
-        if (dropEntry.isEmpty() && visibleQuestEntry.isEmpty()) {   // thanks resinate
+        List<MonsterDropEntry> lootEntry = YamlConfig.config.server.USE_SPAWN_RELEVANT_LOOT ? mob.retrieveRelevantDrops() : mi.retrieveEffectiveDrop(mob.getId());
+        sortDropEntries(lootEntry, dropEntry, visibleQuestEntry, otherQuestEntry, chr);     // thanks Articuno, Limit, Rohenn for noticing quest loots not showing up in only-quest item drops scenario
+        
+        if (lootEntry.isEmpty()) {   // thanks resinate
             return;
         }
         
@@ -1309,15 +1311,13 @@ public class MapleMap {
         return pchars;
     }
     
-    public List<MapleCharacter> getPlayersInRange(Rectangle box, List<MapleCharacter> targets) {
+    public List<MapleCharacter> getPlayersInRange(Rectangle box) {
         List<MapleCharacter> character = new LinkedList<>();
         chrRLock.lock();
         try {
-            for (MapleCharacter chr : targets) {
-                if (characters.contains(chr)) {
-                    if (box.contains(chr.getPosition())) {
-                        character.add(chr);
-                    }
+            for (MapleCharacter chr : characters) {
+                if (box.contains(chr.getPosition())) {
+                    character.add(chr);
                 }
             }
         } finally {
@@ -4171,14 +4171,6 @@ public class MapleMap {
     public void broadcastEnemyShip(final boolean state) {
         broadcastMessage(MaplePacketCreator.crogBoatPacket(state));
         this.setDocked(state);
-    }
-    
-    public boolean isDojoMap() {
-        return mapid >= 925020000 && mapid < 925040000;
-    }
-    
-    public boolean isDojoFightMap() {
-        return isDojoMap() && (((mapid / 100) % 100) % 6) > 0;
     }
     
     public boolean isHorntailDefeated() {   // all parts of dead horntail can be found here?

@@ -547,6 +547,11 @@ public class MapleSessionCoordinator {
         // session.removeAttribute(MapleClient.CLIENT_REMOTE_ADDRESS); No real need for removing String property on closed sessions
     }
     
+    public String pickLoginSessionHwid(IoSession session) {
+        String remoteHost = getSessionRemoteAddress(session);
+        return cachedHostHwids.remove(remoteHost);    // thanks BHB, resinate for noticing players from same network not being able to login
+    }
+    
     public String getGameSessionHwid(IoSession session) {
         String remoteHost = getSessionRemoteHost(session);
         return cachedHostHwids.get(remoteHost);

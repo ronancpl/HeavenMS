@@ -56,7 +56,6 @@ import client.autoban.AutobanFactory;
 import client.status.MonsterStatus;
 import client.status.MonsterStatusEffect;
 import constants.game.GameConstants;
-import constants.net.ServerConstants;
 import constants.skills.Aran;
 import constants.skills.Assassin;
 import constants.skills.Bandit;
@@ -102,6 +101,7 @@ import constants.skills.SuperGM;
 import constants.skills.ThunderBreaker;
 import constants.skills.WhiteKnight;
 import constants.skills.WindArcher;
+import net.server.PlayerBuffValueHolder;
 import scripting.AbstractPlayerInteraction;
 
 public abstract class AbstractDealDamageHandler extends AbstractMaplePacketHandler {
@@ -166,14 +166,17 @@ public abstract class AbstractDealDamageHandler extends AbstractMaplePacketHandl
                     if (player.isAlive()) {
                         if(attack.skill == Aran.BODY_PRESSURE || attack.skill == Marauder.ENERGY_CHARGE || attack.skill == ThunderBreaker.ENERGY_CHARGE) {  // thanks IxianMace for noticing Energy Charge skills refreshing on touch, leading to misleading buff applies
                             // prevent touch dmg skills refreshing
+                        } else if(attack.skill == DawnWarrior.FINAL_ATTACK || attack.skill == WindArcher.FINAL_ATTACK) {
+                            // prevent cygnus FA refreshing
+                            mobCount = 15;
                         } else if(attack.skill == NightWalker.POISON_BOMB) {// Poison Bomb
                             attackEffect.applyTo(player, new Point(attack.position.x, attack.position.y));
                         } else {
                             attackEffect.applyTo(player);
                             
-                            if (attack.skill == DawnWarrior.FINAL_ATTACK || attack.skill == Page.FINAL_ATTACK_BW || attack.skill == Page.FINAL_ATTACK_SWORD || attack.skill == Fighter.FINAL_ATTACK_SWORD
-                                    || attack.skill == Fighter.FINAL_ATTACK_AXE || attack.skill == Spearman.FINAL_ATTACK_SPEAR || attack.skill == Spearman.FINAL_ATTACK_POLEARM || attack.skill == WindArcher.FINAL_ATTACK
-                                    || attack.skill == DawnWarrior.FINAL_ATTACK || attack.skill == Hunter.FINAL_ATTACK || attack.skill == Crossbowman.FINAL_ATTACK) {
+                            if (attack.skill == Page.FINAL_ATTACK_BW || attack.skill == Page.FINAL_ATTACK_SWORD || attack.skill == Fighter.FINAL_ATTACK_SWORD
+                                    || attack.skill == Fighter.FINAL_ATTACK_AXE || attack.skill == Spearman.FINAL_ATTACK_SPEAR || attack.skill == Spearman.FINAL_ATTACK_POLEARM
+                                    || attack.skill == Hunter.FINAL_ATTACK || attack.skill == Crossbowman.FINAL_ATTACK) {
                                 
                                 mobCount = 15;//:(
                             } else if (attack.skill == Aran.HIDDEN_FULL_DOUBLE || attack.skill == Aran.HIDDEN_FULL_TRIPLE || attack.skill == Aran.HIDDEN_OVER_DOUBLE || attack.skill == Aran.HIDDEN_OVER_TRIPLE) {
@@ -753,6 +756,17 @@ public abstract class AbstractDealDamageHandler extends AbstractMaplePacketHandl
             calcDmgMax *= (100 + ceffect.getDamage()) / 100;
         }
         
+        int bonusDmgBuff = 100;
+        for (PlayerBuffValueHolder pbvh : chr.getAllBuffs()) {
+            int bonusDmg = pbvh.effect.getDamage() - 100;
+            bonusDmgBuff += bonusDmg;
+        }
+        
+        if (bonusDmgBuff != 100) {
+            float dmgBuff = bonusDmgBuff / 100.0f;
+            calcDmgMax = (long) Math.ceil(calcDmgMax * dmgBuff);
+        }
+        
         if(chr.getMapId() >= 914000000 && chr.getMapId() <= 914000500) {
             calcDmgMax += 80000; // Aran Tutorial.
         }
@@ -789,7 +803,7 @@ public abstract class AbstractDealDamageHandler extends AbstractMaplePacketHandl
             if(chr.getBuffEffect(MapleBuffStat.WK_CHARGE) != null) {
                 // Charge, so now we need to check elemental effectiveness
                 int sourceID = chr.getBuffSource(MapleBuffStat.WK_CHARGE);
-				int level = chr.getBuffedValue(MapleBuffStat.WK_CHARGE);
+                int level = chr.getBuffedValue(MapleBuffStat.WK_CHARGE);
                 if(monster != null) {
                     if(sourceID == WhiteKnight.BW_FIRE_CHARGE || sourceID == WhiteKnight.SWORD_FIRE_CHARGE) {
                         if(monster.getStats().getEffectiveness(Element.FIRE) == ElementalEffectiveness.WEAK) {
@@ -880,7 +894,7 @@ public abstract class AbstractDealDamageHandler extends AbstractMaplePacketHandl
                     long maxWithCrit = hitDmgMax;
                     if(canCrit) // They can crit, so up the max.
                             maxWithCrit *= 2;
-
+                    
                     // Warn if the damage is over 1.5x what we calculated above.
                     if(damage > maxWithCrit * 1.5) {
                         AutobanFactory.DAMAGE_HACK.alert(chr, "DMG: " + damage + " MaxDMG: " + maxWithCrit + " SID: " + ret.skill + " MobID: " + (monster != null ? monster.getId() : "null") + " Map: " + chr.getMap().getMapName() + " (" + chr.getMapId() + ")");

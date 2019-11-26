@@ -106,7 +106,7 @@ public class MapleInventoryManipulator {
                     }
                 }
                 boolean sandboxItem = (flag & ItemConstants.SANDBOX) == ItemConstants.SANDBOX;
-                while (quantity > 0 || ItemConstants.isRechargeable(itemId)) {
+                while (quantity > 0) {
                     short newQ = (short) Math.min(quantity, slotMax);
                     if (newQ != 0) {
                         quantity -= newQ;
@@ -124,9 +124,6 @@ public class MapleInventoryManipulator {
                         }
                         c.announce(MaplePacketCreator.modifyInventory(true, Collections.singletonList(new ModifyInventory(0, nItem))));
                         if(sandboxItem) chr.setHasSandboxItem();
-                        if ((ItemConstants.isRechargeable(itemId)) && quantity == 0) {
-                            break;
-                        }
                     } else {
                         c.announce(MaplePacketCreator.enableActions());
                         return false;
@@ -189,8 +186,8 @@ public class MapleInventoryManipulator {
     
     private static boolean addFromDropInternal(MapleClient c, MapleCharacter chr, MapleInventoryType type, MapleInventory inv, Item item, boolean show, int petId) {
         MapleItemInformationProvider ii = MapleItemInformationProvider.getInstance();
-        
-        if (ii.isPickupRestricted(item.getItemId()) && chr.haveItemWithId(item.getItemId(), true)) {
+        int itemid = item.getItemId();
+        if (ii.isPickupRestricted(itemid) && chr.haveItemWithId(itemid, true)) {
             c.announce(MaplePacketCreator.getInventoryFull());
             c.announce(MaplePacketCreator.showItemUnavailable());
             return false;
@@ -198,9 +195,9 @@ public class MapleInventoryManipulator {
         short quantity = item.getQuantity();
 
         if (!type.equals(MapleInventoryType.EQUIP)) {
-            short slotMax = ii.getSlotMax(c, item.getItemId());
-            List<Item> existing = inv.listById(item.getItemId());
-            if (!ItemConstants.isRechargeable(item.getItemId()) && petId == -1) {
+            short slotMax = ii.getSlotMax(c, itemid);
+            List<Item> existing = inv.listById(itemid);
+            if (!ItemConstants.isRechargeable(itemid) && petId == -1) {
                 if (existing.size() > 0) { // first update all existing slots to slotMax
                     Iterator<Item> i = existing.iterator();
                     while (quantity > 0) {
@@ -222,7 +219,7 @@ public class MapleInventoryManipulator {
                 while (quantity > 0) {
                     short newQ = (short) Math.min(quantity, slotMax);
                     quantity -= newQ;
-                    Item nItem = new Item(item.getItemId(), (short) 0, newQ, petId);
+                    Item nItem = new Item(itemid, (short) 0, newQ, petId);
                     nItem.setExpiration(item.getExpiration());
                     nItem.setOwner(item.getOwner());
                     nItem.setFlag(item.getFlag());
@@ -239,7 +236,7 @@ public class MapleInventoryManipulator {
                     if (MapleInventoryManipulator.isSandboxItem(nItem)) chr.setHasSandboxItem();
                 }
             } else {
-                Item nItem = new Item(item.getItemId(), (short) 0, quantity, petId);
+                Item nItem = new Item(itemid, (short) 0, quantity, petId);
                 nItem.setExpiration(item.getExpiration());
                 nItem.setFlag(item.getFlag());
 
@@ -266,13 +263,13 @@ public class MapleInventoryManipulator {
             c.announce(MaplePacketCreator.modifyInventory(true, Collections.singletonList(new ModifyInventory(0, item))));
             if (MapleInventoryManipulator.isSandboxItem(item)) chr.setHasSandboxItem();
         } else {
-            FilePrinter.printError(FilePrinter.ITEM, "Tried to pickup Equip id " + item.getItemId() + " containing more than 1 quantity --> " + quantity);
+            FilePrinter.printError(FilePrinter.ITEM, "Tried to pickup Equip id " + itemid + " containing more than 1 quantity --> " + quantity);
             c.announce(MaplePacketCreator.getInventoryFull());
             c.announce(MaplePacketCreator.showItemUnavailable());
             return false;
         }
         if (show) {
-            c.announce(MaplePacketCreator.getShowItemGain(item.getItemId(), item.getQuantity()));
+            c.announce(MaplePacketCreator.getShowItemGain(itemid, item.getQuantity()));
         }
         return true;
     }

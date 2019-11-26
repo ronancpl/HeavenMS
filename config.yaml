@@ -193,7 +193,7 @@ server:
     #Besides blocking logging in with several client sessions on the same machine, this also blocks suspicious login attempts for players that tries to login on an account using several diferent remote addresses.
 
     #Multiclient Coordinator Configuration
-    MAX_ALLOWED_ACCOUNT_HWID: 4         #Allows up to N concurrent HWID's for an account. HWID's remains linked to an account longer the more times it's used to login.
+    MAX_ALLOWED_ACCOUNT_HWID: 10        #Allows up to N concurrent HWID's for an account. HWID's remains linked to an account longer the more times it's used to login.
     MAX_ACCOUNT_LOGIN_ATTEMPT: 15       #After N tries on an account, login on that account gets disabled for a short period.
     LOGIN_ATTEMPT_DURATION: 120         #Period in seconds the login attempt remains registered on the system.
 
