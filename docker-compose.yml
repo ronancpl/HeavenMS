@@ -1,0 +1,20 @@
+version: '3'
+services:
+  maplestory:
+    network_mode: "host"
+    build: .
+    depends_on:
+      - db
+    environment:
+      WAIT_HOSTS: localhost:3306
+    
+  db:
+    network_mode: "host"
+    image: mysql:5.6
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+      MYSQL_DATABASE: "heavenms"
+      MYSQL_USER: "root"
+      MYSQL_PASSWORD: ""
+    volumes:
+      - ./sql:/docker-entrypoint-initdb.d
