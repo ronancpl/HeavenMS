@@ -173,6 +173,7 @@ public enum RecvOpcode {
     DAMAGE_SUMMON(0xB1),
     BEHOLDER(0xB2),
     MOVE_DRAGON(0xB5),
+    CHANGE_QUICKSLOT(0xB7),//CP_QuickslotKeyMappedModified
     MOVE_LIFE(0xBC),
     AUTO_AGGRO(0xBD),
     FIELD_DAMAGE_MOB(0xBF),
@@ -202,6 +203,7 @@ public enum RecvOpcode {
     MTS_OPERATION(0xFD),
     USE_MAPLELIFE(0x100),
     USE_HAMMER(0x104);
+    
     private int code = -2;
 
     private RecvOpcode(int code) {

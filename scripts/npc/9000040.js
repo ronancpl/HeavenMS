@@ -24,7 +24,7 @@
         * @author Ronan Lana
  */
 
-importPackage(Packages.client.processor);
+importPackage(Packages.client.processor.action);
 importPackage(Packages.config);
 
 var status;

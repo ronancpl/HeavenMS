@@ -490,18 +490,6 @@ public class GameConstants {
         }
     }
     
-    public static int getHiddenSkill(final int skill) {
-        switch (skill) {
-            case Aran.HIDDEN_FULL_DOUBLE:
-            case Aran.HIDDEN_FULL_TRIPLE:
-                return Aran.FULL_SWING;
-            case Aran.HIDDEN_OVER_DOUBLE:
-            case Aran.HIDDEN_OVER_TRIPLE:
-                return Aran.OVER_SWING;
-        }
-        return skill;
-    }
-    
     public static int getSkillBook(final int job) {
         if (job >= 2210 && job <= 2218) {
              return job - 2209;
@@ -596,6 +584,15 @@ public class GameConstants {
     public static boolean isDojo(int mapid) {
         return mapid >= 925020000 && mapid < 925040000;
     }
+    
+    public static boolean isDojoPartyArea(int mapid) {
+    	return mapid >= 925030100 && mapid < 925040000;
+    }
+    
+    public static boolean isDojoBossArea(int mapid) {
+        return isDojo(mapid) && (((mapid / 100) % 100) % 6) > 0;
+    }
+    
     
     public static boolean isPyramid(int mapid) {
     	return mapid >= 926010010 & mapid <= 930010000;

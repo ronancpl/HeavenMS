@@ -38,8 +38,8 @@ public class MakerItemFactory {
     
     public static MakerItemCreateEntry getItemCreateEntry(int toCreate, int stimulantid, Map<Integer, Short> reagentids) {
         MakerItemCreateEntry makerEntry = ii.getMakerItemEntry(toCreate);
-        if(makerEntry == null) {
-            return null;
+        if(makerEntry.isInvalid()) {
+            return makerEntry;
         }
         
           // THEY DECIDED FOR SOME BIZARRE PATTERN ON THE FEE THING, ALMOST RANDOMIZED.
@@ -205,6 +205,10 @@ public class MakerItemFactory {
         public void trimCost() {
             reqCost = (int) (cost / 1000);
             reqCost *= 1000;
+        }
+        
+        public boolean isInvalid() {    // thanks Rohenn, Wh1SK3Y for noticing some items not getting checked properly
+            return reqLevel < 0;
         }
     }
 }

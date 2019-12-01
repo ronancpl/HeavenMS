@@ -53,7 +53,7 @@ import client.MapleClient;
 import client.MapleDisease;
 import client.MapleFamily;
 import client.MapleFamilyEntry;
-import client.MapleKeyBinding;
+import client.keybind.MapleKeyBinding;
 import client.MapleMount;
 import client.SkillFactory;
 import client.inventory.Equip;
@@ -126,40 +126,46 @@ public final class PlayerLoggedinHandler extends AbstractMaplePacketHandler {
                 }
 
                 MapleCharacter player = wserv.getPlayerStorage().getCharacterById(cid);
-                boolean newcomer = false;
-                
                 IoSession session = c.getSession();
-                if (!server.validateCharacteridInTransition(session, cid)) {
-                    c.disconnect(true, false);
-                    return;
-                }
                 
                 String remoteHwid;
                 if (player == null) {
-                    remoteHwid = MapleSessionCoordinator.getInstance().getGameSessionHwid(session);
+                    remoteHwid = MapleSessionCoordinator.getInstance().pickLoginSessionHwid(session);
                     if (remoteHwid == null) {
                         c.disconnect(true, false);
                         return;
                     }
-
+                } else {
+                    remoteHwid = player.getClient().getHWID();
+                }
+                
+                int hwidLen = remoteHwid.length();
+                session.setAttribute(MapleClient.CLIENT_HWID, remoteHwid);
+                session.setAttribute(MapleClient.CLIENT_NIBBLEHWID, remoteHwid.substring(hwidLen - 8, hwidLen));
+                c.setHWID(remoteHwid);
+                
+                if (!server.validateCharacteridInTransition(c, cid)) {
+                    c.disconnect(true, false);
+                    return;
+                }
+                
+                boolean newcomer = false;
+                if (player == null) {
                     try {
                         player = MapleCharacter.loadCharFromDB(cid, c, true);
                         newcomer = true;
                     } catch (SQLException e) {
                         e.printStackTrace();
                     }
-                } else {
-                    remoteHwid = player.getClient().getHWID();
+                    
+                    if (player == null) { //If you are still getting null here then please just uninstall the game >.>, we dont need you fucking with the logs
+                        c.disconnect(true, false);
+                        return;
+                    }
                 }
-
-                if (player == null) { //If you are still getting null here then please just uninstall the game >.>, we dont need you fucking with the logs
-                    c.disconnect(true, false);
-                    return;
-                }
-
                 c.setPlayer(player);
                 c.setAccID(player.getAccountID());
-
+                
                 boolean allowLogin = true;
 
                 /*  is this check really necessary?
@@ -211,11 +217,6 @@ public final class PlayerLoggedinHandler extends AbstractMaplePacketHandler {
                     player.newClient(c);
                 }
 
-                int hwidLen = remoteHwid.length();
-                session.setAttribute(MapleClient.CLIENT_HWID, remoteHwid);
-                session.setAttribute(MapleClient.CLIENT_NIBBLEHWID, remoteHwid.substring(hwidLen - 8, hwidLen));
-                c.setHWID(remoteHwid);
-
                 cserv.addPlayer(player);
                 wserv.addPlayer(player);
                 player.setEnteredChannelWorld();
@@ -238,6 +239,7 @@ public final class PlayerLoggedinHandler extends AbstractMaplePacketHandler {
                     }
                 }
                 player.sendKeymap();
+                player.sendQuickmap();
                 player.sendMacros();
 
                 // pot bindings being passed through other characters on the account detected thanks to Croosade dev team
@@ -386,7 +388,7 @@ public final class PlayerLoggedinHandler extends AbstractMaplePacketHandler {
                         player.announceBattleshipHp();
                     }
                 }
-
+                
                 player.buffExpireTask();
                 player.diseaseExpireTask();
                 player.skillCooldownTask();

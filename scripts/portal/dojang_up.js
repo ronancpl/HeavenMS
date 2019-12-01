@@ -25,6 +25,7 @@
  * @maps:     All Dojo fighting maps
 */
 
+importPackage(Packages.constants.game);
 
 function enter(pi) {
     try {
@@ -32,7 +33,7 @@ function enter(pi) {
             pi.goDojoUp();
             pi.getPlayer().getMap().setReactorState();
             var stage = Math.floor(pi.getPlayer().getMapId() / 100) % 100;
-            if ((stage - (stage / 6) | 0) == pi.getPlayer().getVanquisherStage() && !pi.getPlayer().getDojoParty()) // we can also try 5 * stage / 6 | 0 + 1
+            if ((stage - (stage / 6) | 0) == pi.getPlayer().getVanquisherStage() && !GameConstants.isDojoPartyArea(pi.getPlayer().getMapId())) // we can also try 5 * stage / 6 | 0 + 1
                 pi.getPlayer().setVanquisherKills(pi.getPlayer().getVanquisherKills() + 1);
         } else {
             pi.getPlayer().message("There are still some monsters remaining.");

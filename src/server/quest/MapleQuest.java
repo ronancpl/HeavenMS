@@ -305,16 +305,20 @@ public class MapleQuest {
             for (MapleQuestAction a : acts) {
                 a.run(chr, selection);
             }
+            if (!this.hasNextQuestAction()) {
+                chr.announceUpdateQuest(MapleCharacter.DelayedQuestUpdate.INFO, chr.getQuest(this));
+            }
         }
     }
 
     public void reset(MapleCharacter chr) {
-        chr.updateQuestStatus(new MapleQuestStatus(this, MapleQuestStatus.Status.NOT_STARTED));
+        MapleQuestStatus newStatus = new MapleQuestStatus(this, MapleQuestStatus.Status.NOT_STARTED);
+        chr.updateQuestStatus(newStatus);
     }
 
-    public void forfeit(MapleCharacter chr) {
+    public boolean forfeit(MapleCharacter chr) {
         if (!chr.getQuest(this).getStatus().equals(Status.STARTED)) {
-            return;
+            return false;
         }
         if (timeLimit > 0) {
             chr.announce(MaplePacketCreator.removeQuestTimeLimit(id));
@@ -322,6 +326,7 @@ public class MapleQuest {
         MapleQuestStatus newStatus = new MapleQuestStatus(this, MapleQuestStatus.Status.NOT_STARTED);
         newStatus.setForfeited(chr.getQuest(this).getForfeited() + 1);
         chr.updateQuestStatus(newStatus);
+        return true;
     }
 
     public boolean forceStart(MapleCharacter chr, int npc) {
@@ -584,7 +589,7 @@ public class MapleQuest {
 	}
         
         public boolean restoreLostItem(MapleCharacter chr, int itemid) {
-                if (chr.getQuest(this).equals(MapleQuestStatus.Status.STARTED)) {
+                if (chr.getQuest(this).getStatus().equals(MapleQuestStatus.Status.STARTED)) {
                         ItemAction itemAct = (ItemAction) startActs.get(MapleQuestActionType.ITEM);
                         if (itemAct != null) {
                                 return itemAct.restoreLostItem(chr, itemid);
@@ -618,6 +623,13 @@ public class MapleQuest {
                 } else {
                         return false;
                 }
+        }
+        
+        public boolean hasNextQuestAction() {
+                Map<MapleQuestActionType, MapleQuestAction> acts = completeActs;
+                MapleQuestAction mqa = acts.get(MapleQuestActionType.NEXTQUEST);
+                
+                return mqa != null;
         }
         
         public String getName() {

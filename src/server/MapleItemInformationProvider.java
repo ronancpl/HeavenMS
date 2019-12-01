@@ -101,6 +101,7 @@ public class MapleItemInformationProvider {
     protected Map<Integer, MapleData> equipLevelInfoCache = new HashMap<>();
     protected Map<Integer, Integer> equipLevelReqCache = new HashMap<>();
     protected Map<Integer, Integer> equipMaxLevelCache = new HashMap<>();
+    protected Map<Integer, List<Integer>> scrollReqsCache = new HashMap<>();
     protected Map<Integer, Integer> wholePriceCache = new HashMap<>();
     protected Map<Integer, Double> unitPriceCache = new HashMap<>();
     protected Map<Integer, Integer> projectileWatkCache = new HashMap<>();
@@ -594,15 +595,20 @@ public class MapleItemInformationProvider {
     }
 
     public List<Integer> getScrollReqs(int itemId) {
+        if (scrollReqsCache.containsKey(itemId)) {
+            return scrollReqsCache.get(itemId);
+        }
+        
         List<Integer> ret = new ArrayList<>();
         MapleData data = getItemData(itemId);
         data = data.getChildByPath("req");
-        if (data == null) {
-            return ret;
+        if (data != null) {
+            for (MapleData req : data.getChildren()) {
+                ret.add(MapleDataTool.getInt(req));
+            }
         }
-        for (MapleData req : data.getChildren()) {
-            ret.add(MapleDataTool.getInt(req));
-        }
+        
+        scrollReqsCache.put(itemId, ret);
         return ret;
     }
 
@@ -620,7 +626,7 @@ public class MapleItemInformationProvider {
     }
 
     public static boolean rollSuccessChance(double propPercent) {
-        return Math.random() >= testYourLuck(propPercent / 100.0, YamlConfig.config.server.SCROLL_CHANCE_RATE);
+        return Math.random() >= testYourLuck(propPercent / 100.0, YamlConfig.config.server.SCROLL_CHANCE_ROLLS);
     }
 
     private static short getMaximumShortMaxIfOverflow(int value1, int value2) {
@@ -1975,10 +1981,10 @@ public class MapleItemInformationProvider {
                 PreparedStatement ps = con.prepareStatement("SELECT req_level, req_maker_level, req_meso, quantity FROM makercreatedata WHERE itemid = ?");
                 ps.setInt(1, toCreate);
                 ResultSet rs = ps.executeQuery();
-                int reqLevel = 0;
-                int reqMakerLevel = 0;
-                int cost = 0;
-                int toGive = 0;
+                int reqLevel = -1;
+                int reqMakerLevel = -1;
+                int cost = -1;
+                int toGive = -1;
                 if (rs.next()) {
                     reqLevel = rs.getInt("req_level");
                     reqMakerLevel = rs.getInt("req_maker_level");

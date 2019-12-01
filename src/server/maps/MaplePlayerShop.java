@@ -272,13 +272,13 @@ public class MaplePlayerShop extends AbstractMapleMapObject {
                     int price = (int) Math.min((float)pItem.getPrice() * quantity, Integer.MAX_VALUE);
                     
                     if (c.getPlayer().getMeso() >= price) {
+                        if (!owner.canHoldMeso(price)) {    // thanks Rohenn for noticing owner hold check misplaced
+                            c.getPlayer().dropMessage(1, "Transaction failed since the shop owner can't hold any more mesos.");
+                            c.announce(MaplePacketCreator.enableActions());
+                            return false;
+                        }
+                        
                         if (canBuy(c, newItem)) {
-                            if (!owner.canHoldMeso(price)) {
-                                owner.dropMessage(1, "Transaction failed since the shop owner can't hold any more mesos.");
-                                c.announce(MaplePacketCreator.enableActions());
-                                return false;
-                            }
-                            
                             c.getPlayer().gainMeso(-price, false);
                             price -= MapleTrade.getFee(price);  // thanks BHB for pointing out trade fees not applying here
                             owner.gainMeso(price, true);

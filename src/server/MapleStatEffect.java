@@ -146,7 +146,7 @@ public class MapleStatEffect {
     private int itemCon, itemConNo;
     private int damage, attackCount, fixdamage;
     private Point lt, rb;
-    private byte bulletCount, bulletConsume;
+    private short bulletCount, bulletConsume;
     private byte mapProtection;
     private CardItemupStats cardStats;
     
@@ -262,6 +262,7 @@ public class MapleStatEffect {
         }
         if (MapleDataTool.getInt("weakness", source, 0) > 0) {
             cure.add(MapleDisease.WEAKEN);
+            cure.add(MapleDisease.SLOW);
         }
         if (MapleDataTool.getInt("curse", source, 0) > 0) {
             cure.add(MapleDisease.CURSE);
@@ -483,8 +484,8 @@ public class MapleStatEffect {
         ret.damage = MapleDataTool.getIntConvert("damage", source, 100);
         ret.fixdamage = MapleDataTool.getIntConvert("fixdamage", source, -1);
         ret.attackCount = MapleDataTool.getIntConvert("attackCount", source, 1);
-        ret.bulletCount = (byte) MapleDataTool.getIntConvert("bulletCount", source, 1);
-        ret.bulletConsume = (byte) MapleDataTool.getIntConvert("bulletConsume", source, 0);
+        ret.bulletCount = (short) MapleDataTool.getIntConvert("bulletCount", source, 1);
+        ret.bulletConsume = (short) MapleDataTool.getIntConvert("bulletConsume", source, 0);
         ret.moneyCon = MapleDataTool.getIntConvert("moneyCon", source, 0);
         ret.itemCon = MapleDataTool.getInt("itemCon", source, 0);
         ret.itemConNo = MapleDataTool.getInt("itemConNo", source, 0);
@@ -960,6 +961,7 @@ public class MapleStatEffect {
         } else if (isCureAllAbnormalStatus()) {
             applyto.dispelDebuff(MapleDisease.SEDUCE);
             applyto.dispelDebuff(MapleDisease.ZOMBIFY);
+            applyto.dispelDebuff(MapleDisease.CONFUSE);
             applyto.dispelDebuffs();
         } else if (isComboReset()) {
             applyto.setCombo((short) 0);
@@ -1007,6 +1009,8 @@ public class MapleStatEffect {
             }
         }
         if (isShadowClaw()) {
+            short projectileConsume = this.getBulletConsume();  // noticed by shavit
+            
             MapleInventory use = applyto.getInventory(MapleInventoryType.USE);
             use.lockInventory();
             try {
@@ -1014,7 +1018,7 @@ public class MapleStatEffect {
                 for (int i = 1; i <= use.getSlotLimit(); i++) { // impose order...
                     Item item = use.getItem((short) i);
                     if (item != null) {
-                        if (ItemConstants.isThrowingStar(item.getItemId()) && item.getQuantity() >= 200) {
+                        if (ItemConstants.isThrowingStar(item.getItemId()) && item.getQuantity() >= projectileConsume) {
                             projectile = item;
                             break;
                         }
@@ -1023,7 +1027,7 @@ public class MapleStatEffect {
                 if (projectile == null) {
                     return false;
                 } else {
-                    MapleInventoryManipulator.removeFromSlot(applyto.getClient(), MapleInventoryType.USE, projectile.getPosition(), (short) 200, false, true);
+                    MapleInventoryManipulator.removeFromSlot(applyto.getClient(), MapleInventoryType.USE, projectile.getPosition(), (short) projectileConsume, false, true);
                 }
             } finally {
                 use.unlockInventory();
@@ -1070,7 +1074,7 @@ public class MapleStatEffect {
         if (isMagicDoor() && !FieldLimit.DOOR.check(applyto.getMap().getFieldLimit())) { // Magic Door
             int y = applyto.getFh();
             if (y == 0) {
-                y = applyto.getPosition().y;
+                y = applyto.getMap().getGroundBelow(applyto.getPosition()).y;    // thanks Lame for pointing out unusual cases of doors sending players on ground below
             }
             Point doorPosition = new Point(applyto.getPosition().x, y);
             MapleDoor door = new MapleDoor(applyto, doorPosition);
@@ -1118,7 +1122,7 @@ public class MapleStatEffect {
                         }
                     }
                 } else {
-                    int amount = opposition.getMembers().size() - 1;
+                    int amount = opposition.getMembers().size();
                     int randd = (int) Math.floor(Math.random() * amount);
                     MapleCharacter chrApp = applyfrom.getMap().getCharacterById(opposition.getMemberByPos(randd).getId());
                     if (chrApp != null && chrApp.getMap().isCPQMap()) {
@@ -1132,16 +1136,7 @@ public class MapleStatEffect {
             }
         } else if (cureDebuffs.size() > 0) { // by Drago-Dragohe4rt
             for (final MapleDisease debuff : cureDebuffs) {
-                if (applyfrom.getParty() != null) {
-                    for (MaplePartyCharacter mpc : applyfrom.getParty().getPartyMembers()) {
-                        MapleCharacter chr = mpc.getPlayer();
-                        if (chr != null) {
-                            chr.dispelDebuff(debuff);
-                        }
-                    }
-                } else {
-                    applyfrom.dispelDebuff(debuff);
-                }
+                applyfrom.dispelDebuff(debuff);
             }
         } else if (mobSkill > 0 && mobSkillLevel > 0) {
             MobSkill ms = MobSkillFactory.getMobSkill(mobSkill, mobSkillLevel);
@@ -1946,11 +1941,11 @@ public class MapleStatEffect {
         return fixdamage;
     }
 
-    public byte getBulletCount() {
+    public short getBulletCount() {
         return bulletCount;
     }
 
-    public byte getBulletConsume() {
+    public short getBulletConsume() {
         return bulletConsume;
     }
 

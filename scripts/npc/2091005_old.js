@@ -26,6 +26,8 @@
 * @Map(s): Dojo Hall
 */
 
+importPackage(Packages.constants.game);
+
 var disabled = false;
 var belts = Array(1132000, 1132001, 1132002, 1132003, 1132004);
 var belt_level = Array(25, 35, 45, 60, 75);
@@ -45,7 +47,7 @@ function start() {
 	
     if (isRestingSpot(cm.getPlayer().getMap().getId())) {
         var text = "I'm surprised you made it this far! But it won't be easy from here on out. You still want the challenge?\r\n\r\n#b#L0#I want to continue#l\r\n#L1#I want to leave#l\r\n";
-        if (!cm.getPlayer().getDojoParty()) {
+        if (!GameConstants.isDojoPartyArea(cm.getPlayer().getMapId())) {
             text += "#L2#I want to record my score up to this point#l";
         }
         cm.sendSimple(text);

@@ -70,6 +70,7 @@ import net.server.services.type.ChannelServices;
 import net.server.services.task.channel.FaceExpressionService;
 import net.server.services.task.channel.MobMistService;
 import net.server.services.task.channel.OverallService;
+import net.server.world.MapleParty;
 import net.server.world.World;
 import scripting.map.MapScriptManager;
 import server.MapleItemInformationProvider;
@@ -757,9 +758,11 @@ public class MapleMap {
         final List<MonsterDropEntry>  dropEntry = new ArrayList<>();
         final List<MonsterDropEntry> visibleQuestEntry = new ArrayList<>();
         final List<MonsterDropEntry> otherQuestEntry = new ArrayList<>();
-        sortDropEntries(YamlConfig.config.server.USE_SPAWN_RELEVANT_LOOT ? mob.retrieveRelevantDrops() : mi.retrieveEffectiveDrop(mob.getId()), dropEntry, visibleQuestEntry, otherQuestEntry, chr);
         
-        if (dropEntry.isEmpty() && visibleQuestEntry.isEmpty()) {   // thanks resinate
+        List<MonsterDropEntry> lootEntry = YamlConfig.config.server.USE_SPAWN_RELEVANT_LOOT ? mob.retrieveRelevantDrops() : mi.retrieveEffectiveDrop(mob.getId());
+        sortDropEntries(lootEntry, dropEntry, visibleQuestEntry, otherQuestEntry, chr);     // thanks Articuno, Limit, Rohenn for noticing quest loots not showing up in only-quest item drops scenario
+        
+        if (lootEntry.isEmpty()) {   // thanks resinate
             return;
         }
         
@@ -1308,15 +1311,13 @@ public class MapleMap {
         return pchars;
     }
     
-    public List<MapleCharacter> getPlayersInRange(Rectangle box, List<MapleCharacter> targets) {
+    public List<MapleCharacter> getPlayersInRange(Rectangle box) {
         List<MapleCharacter> character = new LinkedList<>();
         chrRLock.lock();
         try {
-            for (MapleCharacter chr : targets) {
-                if (characters.contains(chr)) {
-                    if (box.contains(chr.getPosition())) {
-                        character.add(chr);
-                    }
+            for (MapleCharacter chr : characters) {
+                if (box.contains(chr.getPosition())) {
+                    character.add(chr);
                 }
             }
         } finally {
@@ -2413,8 +2414,7 @@ public class MapleMap {
         return null;
     }
     
-    private void addPartyMemberInternal(MapleCharacter chr) {
-        int partyid = chr.getPartyId();
+    private void addPartyMemberInternal(MapleCharacter chr, int partyid) {
         if (partyid == -1) {
             return;
         }
@@ -2430,8 +2430,7 @@ public class MapleMap {
         }
     }
     
-    private void removePartyMemberInternal(MapleCharacter chr) {
-        int partyid = chr.getPartyId();
+    private void removePartyMemberInternal(MapleCharacter chr, int partyid) {
         if (partyid == -1) {
             return;
         }
@@ -2446,19 +2445,19 @@ public class MapleMap {
         }
     }
     
-    public void addPartyMember(MapleCharacter chr) {
+    public void addPartyMember(MapleCharacter chr, int partyid) {
         chrWLock.lock();
         try {
-            addPartyMemberInternal(chr);
+            addPartyMemberInternal(chr, partyid);
         } finally {
             chrWLock.unlock();
         }
     }
             
-    public void removePartyMember(MapleCharacter chr) {
+    public void removePartyMember(MapleCharacter chr, int partyid) {
         chrWLock.lock();
         try {
-            removePartyMemberInternal(chr);
+            removePartyMemberInternal(chr, partyid);
         } finally {
             chrWLock.unlock();
         }
@@ -2475,12 +2474,15 @@ public class MapleMap {
     
     public void addPlayer(final MapleCharacter chr) {
         int chrSize;
+        MapleParty party = chr.getParty();
         chrWLock.lock();
         try {
             characters.add(chr);
             chrSize = characters.size();
             
-            addPartyMemberInternal(chr);
+            if (party != null && party.getMemberById(chr.getId()) != null) {
+                addPartyMemberInternal(chr, party.getId());
+            }
             itemMonitorTimeout = 1;
         } finally {
             chrWLock.unlock();
@@ -2810,9 +2812,13 @@ public class MapleMap {
         service.unregisterFaceExpression(mapid, chr);
         chr.unregisterChairBuff();
         
+        MapleParty party = chr.getParty();
         chrWLock.lock();
         try {
-            removePartyMemberInternal(chr);
+            if (party != null && party.getMemberById(chr.getId()) != null) {
+                removePartyMemberInternal(chr, party.getId());
+            }
+            
             characters.remove(chr);
         } finally {
             chrWLock.unlock();
@@ -3559,7 +3565,7 @@ public class MapleMap {
 
         @Override
         public void run() {
-            reactor.lockReactor();
+            reactor.hitLockReactor();
             try {
                 if(reactor.getReactorType() == 100) {
                     if (reactor.getShouldCollect() == true && mapitem != null && mapitem == getMapObject(mapitem.getObjectId())) {
@@ -3603,7 +3609,7 @@ public class MapleMap {
                     }
                 }
             } finally {
-                reactor.unlockReactor();
+                reactor.hitUnlockReactor();
             }
         }
     }
@@ -4165,14 +4171,6 @@ public class MapleMap {
     public void broadcastEnemyShip(final boolean state) {
         broadcastMessage(MaplePacketCreator.crogBoatPacket(state));
         this.setDocked(state);
-    }
-    
-    public boolean isDojoMap() {
-        return mapid >= 925020000 && mapid < 925040000;
-    }
-    
-    public boolean isDojoFightMap() {
-        return isDojoMap() && (((mapid / 100) % 100) % 6) > 0;
     }
     
     public boolean isHorntailDefeated() {   // all parts of dead horntail can be found here?

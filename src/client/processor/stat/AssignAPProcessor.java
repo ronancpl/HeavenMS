@@ -348,14 +348,7 @@ public class AssignAPProcessor {
                 if(slea.available() < 16) {
                     AutobanFactory.PACKET_EDIT.alert(chr, "Didn't send full packet for Auto Assign.");
                     
-                    final MapleClient client = c;
-                    ThreadManager.getInstance().newTask(new Runnable() {
-                        @Override
-                        public void run() {
-                            client.disconnect(false, false);
-                        }
-                    });
-                    
+                    c.disconnect(true, false);
                     return;
                 }
                 

@@ -123,6 +123,8 @@ import tools.exceptions.NotEnabledException;
 import tools.packets.Wedding;
 import client.autoban.AutobanManager;
 import client.creator.CharacterFactoryRecipe;
+import client.keybind.MapleKeyBinding;
+import client.keybind.MapleQuickslotBinding;
 import client.inventory.Equip;
 import client.inventory.Equip.StatUpgrade;
 import client.inventory.Item;
@@ -142,6 +144,7 @@ import client.processor.action.PetAutopotProcessor;
 import constants.game.ExpTable;
 import constants.game.GameConstants;
 import constants.inventory.ItemConstants;
+import constants.net.ServerConstants;
 import constants.skills.Aran;
 import constants.skills.Beginner;
 import constants.skills.Bishop;
@@ -175,8 +178,8 @@ import net.server.services.type.ChannelServices;
 import net.server.services.task.channel.FaceExpressionService;
 import net.server.services.task.world.CharacterSaveService;
 import net.server.services.type.WorldServices;
-import org.apache.mina.core.session.IoSession;
 import org.apache.mina.util.ConcurrentHashSet;
+import tools.LongTool;
 
 public class MapleCharacter extends AbstractMapleCharacterObject {
     private static final MapleItemInformationProvider ii = MapleItemInformationProvider.getInstance();
@@ -277,6 +280,8 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
     private Map<Integer, MapleSummon> summons = new LinkedHashMap<>();
     private Map<Integer, MapleCoolDownValueHolder> coolDowns = new LinkedHashMap<>();
     private EnumMap<MapleDisease, Pair<MapleDiseaseValueHolder, MobSkill>> diseases = new EnumMap<>(MapleDisease.class);
+    private byte[] m_aQuickslotLoaded;
+    private MapleQuickslotBinding m_pQuickslotKeyMapped;
     private MapleDoor pdoor = null;
     private Map<MapleQuest, Long> questExpirations = new LinkedHashMap<>();
     private ScheduledFuture<?> dragonBloodSchedule;
@@ -568,9 +573,7 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
     }
     
     public void setSessionTransitionState() {
-        IoSession session = client.getSession();
-        session.setAttribute(MapleClient.CLIENT_TRANSITION);
-        Server.getInstance().setCharacteridInTransition(session, this.getId());
+        client.setCharacterOnSessionTransitionState(this.getId());
     }
     
     public boolean getCS() {
@@ -676,7 +679,7 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
         int pts = 0;
         if (dojoPoints < 17000) {
             pts = 1 + ((mapid - 1) / 100 % 100) / 6;
-            if (!getDojoParty()) {
+            if (!GameConstants.isDojoPartyArea(this.getMapId())) {
                 pts++;
             }
             this.dojoPoints += pts;
@@ -1320,6 +1323,10 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
         }
     }
     
+    public void changeQuickslotKeybinding(byte[] aQuickslotKeyMapped) {
+        this.m_pQuickslotKeyMapped = new MapleQuickslotBinding(aQuickslotKeyMapped);
+    }
+    
     public void broadcastStance(int newStance) {
         setStance(newStance);
         broadcastStance();
@@ -1818,6 +1825,8 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
             }
         } else {
             FilePrinter.printError(FilePrinter.MAPLE_MAP, "Character " + this.getName() + " got stuck when moving to map " + map.getId() + ".");
+            client.disconnect(true, false);     // thanks BHB for noticing a player storage stuck case here
+            return;
         }
         
         notifyMapTransferToPartner(map.getId());
@@ -2802,7 +2811,7 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
         dispelDebuff(MapleDisease.POISON);
         dispelDebuff(MapleDisease.SEAL);
         dispelDebuff(MapleDisease.WEAKEN);
-        dispelDebuff(MapleDisease.SLOW);
+        dispelDebuff(MapleDisease.SLOW);    // thanks Conrad for noticing ZOMBIFY isn't dispellable
     }
 
     public void cancelAllDebuffs() {
@@ -4768,10 +4777,6 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
         return dojoEnergy;
     }
 
-    public boolean getDojoParty() {
-        return mapid >= 925030100 && mapid < 925040000;
-    }
-
     public int getDojoPoints() {
         return dojoPoints;
     }
@@ -5317,6 +5322,14 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
 
     public MapleRing getMarriageRing() {
         return partnerId > 0 ? marriageRing : null;
+    }
+    
+    public int getMasterLevel(int skill) {
+        SkillEntry ret = skills.get(SkillFactory.getSkill(skill));
+        if (ret == null) {
+            return 0;
+        }
+        return ret.masterlevel;
     }
 
     public int getMasterLevel(Skill skill) {
@@ -6792,20 +6805,16 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
         MapleInventory cashInv = this.getInventory(MapleInventoryType.CASH);
         if (cashInv == null) return;
         
-        if (cpnLock.tryLock()) {
-            effLock.lock();
-            chrLock.lock();
-            cashInv.lockInventory();
-            try {
-                revertCouponRates();
-                setCouponRates();
-            } finally {
-                cpnLock.unlock();
-                
-                cashInv.unlockInventory();
-                chrLock.unlock();
-                effLock.unlock();
-            }
+        effLock.lock();
+        chrLock.lock();
+        cashInv.lockInventory();
+        try {
+            revertCouponRates();
+            setCouponRates();
+        } finally {
+            cashInv.unlockInventory();
+            chrLock.unlock();
+            effLock.unlock();
         }
     }
     
@@ -7500,6 +7509,17 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
             ret.maplemount.setTiredness(mounttiredness);
             ret.maplemount.setActive(false);
             
+            try (final PreparedStatement pSelectQuickslotKeyMapped = con.prepareStatement("SELECT keymap FROM quickslotkeymapped WHERE accountid = ?;")) {
+                pSelectQuickslotKeyMapped.setInt(1, ret.getAccountID());
+
+                try (final ResultSet pResultSet = pSelectQuickslotKeyMapped.executeQuery()) {
+                    if (pResultSet.next()) {
+                        ret.m_aQuickslotLoaded = LongTool.LongToBytes(pResultSet.getLong(1));
+                        ret.m_pQuickslotKeyMapped = new MapleQuickslotBinding(ret.m_aQuickslotLoaded);
+                    }
+                }
+            }
+            
             con.close();
             return ret;
         } catch (SQLException | RuntimeException e) {
@@ -7509,7 +7529,7 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
     }
     
     public void reloadQuestExpirations() {
-        for(MapleQuestStatus mqs: getQuests()) {
+        for(MapleQuestStatus mqs: getStartedQuests()) {
             if(mqs.getExpirationTime() > 0) {
                 questTimeLimit2(mqs.getQuest(), mqs.getExpirationTime());
             }
@@ -7690,29 +7710,23 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
     }
     
     public void sitChair(int itemId) {
-        if (client.tryacquireClient()) {
-            try {
-                if (this.isLoggedinWorld()) {
-                    if (itemId >= 1000000) {    // sit on item chair
-                        if (chair.get() < 0) {
-                            setChair(itemId);
-                            getMap().broadcastMessage(this, MaplePacketCreator.showChair(this.getId(), itemId), false);
-                        }
-                        announce(MaplePacketCreator.enableActions());
-                    } else if (itemId >= 0) {    // sit on map chair
-                        if (chair.get() < 0) {
-                            setChair(itemId);
-                            if (registerChairBuff()) {
-                                getMap().broadcastMessage(this, MaplePacketCreator.giveForeignChairSkillEffect(this.getId()), false);
-                            }
-                            announce(MaplePacketCreator.cancelChair(itemId));
-                        }
-                    } else {    // stand up
-                        unsitChairInternal();
-                    }
+        if (this.isLoggedinWorld()) {
+            if (itemId >= 1000000) {    // sit on item chair
+                if (chair.get() < 0) {
+                    setChair(itemId);
+                    getMap().broadcastMessage(this, MaplePacketCreator.showChair(this.getId(), itemId), false);
                 }
-            } finally {
-                client.releaseClient();
+                announce(MaplePacketCreator.enableActions());
+            } else if (itemId >= 0) {    // sit on map chair
+                if (chair.get() < 0) {
+                    setChair(itemId);
+                    if (registerChairBuff()) {
+                        getMap().broadcastMessage(this, MaplePacketCreator.giveForeignChairSkillEffect(this.getId()), false);
+                    }
+                    announce(MaplePacketCreator.cancelChair(itemId));
+                }
+            } else {    // stand up
+                unsitChairInternal();
             }
         }
     }
@@ -8344,6 +8358,19 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
                 ps.execute();
             }
             ps.close();
+            
+            // No quickslots, or no change.
+            boolean bQuickslotEquals = this.m_pQuickslotKeyMapped == null || (this.m_aQuickslotLoaded != null && Arrays.equals(this.m_pQuickslotKeyMapped.GetKeybindings(), this.m_aQuickslotLoaded));
+            if (!bQuickslotEquals) {
+                long nQuickslotKeymapped = LongTool.BytesToLong(this.m_pQuickslotKeyMapped.GetKeybindings());
+                
+                try (final PreparedStatement pInsertStatement = con.prepareStatement("INSERT INTO quickslotkeymapped (accountid, keymap) VALUES (?, ?) ON DUPLICATE KEY UPDATE keymap = ?;")) {
+                    pInsertStatement.setInt(1, this.getAccountID());
+                    pInsertStatement.setLong(2, nQuickslotKeymapped);
+                    pInsertStatement.setLong(3, nQuickslotKeymapped);
+                    pInsertStatement.executeUpdate();
+                }
+            }
 
             itemsWithType = new ArrayList<>();
             for (MapleInventory iv : inventory) {
@@ -8597,6 +8624,19 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
             ps.executeBatch();
             ps.close();
             
+            // No quickslots, or no change.
+            boolean bQuickslotEquals = this.m_pQuickslotKeyMapped == null || (this.m_aQuickslotLoaded != null && Arrays.equals(this.m_pQuickslotKeyMapped.GetKeybindings(), this.m_aQuickslotLoaded));
+            if (!bQuickslotEquals) {
+                long nQuickslotKeymapped = LongTool.BytesToLong(this.m_pQuickslotKeyMapped.GetKeybindings());
+                
+                try (final PreparedStatement pInsertStatement = con.prepareStatement("INSERT INTO quickslotkeymapped (accountid, keymap) VALUES (?, ?) ON DUPLICATE KEY UPDATE keymap = ?;")) {
+                    pInsertStatement.setInt(1, this.getAccountID());
+                    pInsertStatement.setLong(2, nQuickslotKeymapped);
+                    pInsertStatement.setLong(3, nQuickslotKeymapped);
+                    pInsertStatement.executeUpdate();
+                }
+            }
+            
             deleteWhereCharacterId(con, "DELETE FROM skillmacros WHERE characterid = ?");
             ps = con.prepareStatement("INSERT INTO skillmacros (characterid, skill1, skill2, skill3, name, shout, position) VALUES (?, ?, ?, ?, ?, ?, ?)");
             ps.setInt(1, getId());
@@ -8833,6 +8873,17 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
 
     public void sendKeymap() {
         client.announce(MaplePacketCreator.getKeymap(keymap));
+    }
+    
+    public void sendQuickmap() {
+        // send quickslots to user
+        MapleQuickslotBinding pQuickslotKeyMapped = this.m_pQuickslotKeyMapped;
+
+        if (pQuickslotKeyMapped == null) {
+            pQuickslotKeyMapped = new MapleQuickslotBinding(MapleQuickslotBinding.DEFAULT_QUICKSLOTS);
+        }
+
+        this.announce(MaplePacketCreator.QuickslotMappedInit(pQuickslotKeyMapped));
     }
 
     public void sendMacros() {
@@ -9172,9 +9223,11 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
             MapleKeyBinding autohpPot = this.getKeymap().get(91);
             if (autohpPot != null) {
                 int autohpItemid = autohpPot.getAction();
-                if (((float) this.getHp()) / this.getCurrentMaxHp() <= this.getAutopotHpAlert()) { // try within user settings... thanks Lame, Optimist, Stealth2800
+                float autohpAlert = this.getAutopotHpAlert();
+                if (((float) this.getHp()) / this.getCurrentMaxHp() <= autohpAlert) { // try within user settings... thanks Lame, Optimist, Stealth2800
                     Item autohpItem = this.getInventory(MapleInventoryType.USE).findById(autohpItemid);
                     if (autohpItem != null) {
+                        this.setAutopotHpAlert(0.9f * autohpAlert);
                         PetAutopotProcessor.runAutopotAction(client, autohpItem.getPosition(), autohpItemid);
                     }
                 }
@@ -9185,9 +9238,11 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
             MapleKeyBinding autompPot = this.getKeymap().get(92);
             if (autompPot != null) {
                 int autompItemid = autompPot.getAction();
-                if (((float) this.getMp()) / this.getCurrentMaxMp() <= this.getAutopotMpAlert()) {
+                float autompAlert = this.getAutopotMpAlert();
+                if (((float) this.getMp()) / this.getCurrentMaxMp() <= autompAlert) {
                     Item autompItem = this.getInventory(MapleInventoryType.USE).findById(autompItemid);
                     if (autompItem != null) {
+                        this.setAutopotMpAlert(0.9f * autompAlert); // autoMP would stick to using pots at every depletion in some cases... thanks Rohenn
                         PetAutopotProcessor.runAutopotAction(client, autompItem.getPosition(), autompItemid);
                     }
                 }
@@ -9647,14 +9702,8 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
     }
     
     public void showDojoClock() {
-        if (map.isDojoFightMap()) {
+        if (GameConstants.isDojoBossArea(map.getId())) {
             client.announce(MaplePacketCreator.getClock((int) (getDojoTimeLeft() / 1000)));
-        }
-    }
-    
-    public void timeoutFromDojo() {
-        if(map.isDojoMap()) {
-            client.getPlayer().changeMap(client.getChannelServer().getMapFactory().getMap(925020002));
         }
     }
     
@@ -9974,9 +10023,9 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
                 awardQuestPoint(YamlConfig.config.server.QUEST_POINT_PER_QUEST_COMPLETE);
             }
             qs.setCompleted(qs.getCompleted() + 1);   // count quest completed Jayd's idea
-            
+
             announceUpdateQuest(DelayedQuestUpdate.COMPLETE, questid, qs.getCompletionTime());
-            announceUpdateQuest(DelayedQuestUpdate.INFO, qs);
+            //announceUpdateQuest(DelayedQuestUpdate.INFO, qs); // happens after giving rewards, for non-next quests only
         } else if (qs.getStatus().equals(MapleQuestStatus.Status.NOT_STARTED)) {
             announceUpdateQuest(DelayedQuestUpdate.UPDATE, qs, false);
             if (qs.getInfoNumber() > 0) {
@@ -9987,19 +10036,9 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
     }
     
     private void expireQuest(MapleQuest quest) {
-        MapleQuestStatus mqs = getQuest(quest);
-        if(mqs.getStatus().equals(MapleQuestStatus.Status.COMPLETED)) {
-            return;
+        if (quest.forfeit(this)) {
+            announce(MaplePacketCreator.questExpire(quest.getId()));
         }
-        
-        if(System.currentTimeMillis() < mqs.getExpirationTime()) {
-            return;
-        }
-        
-        announce(MaplePacketCreator.questExpire(quest.getId()));
-        MapleQuestStatus newStatus = new MapleQuestStatus(quest, MapleQuestStatus.Status.NOT_STARTED);
-        newStatus.setForfeited(mqs.getForfeited() + 1);
-        updateQuestStatus(newStatus);
     }
     
     public void cancelQuestExpirationTask() {

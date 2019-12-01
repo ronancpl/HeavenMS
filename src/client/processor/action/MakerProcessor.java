@@ -308,7 +308,7 @@ public class MakerProcessor {
     }
     
     private static short getCreateStatus(MapleClient c, MakerItemCreateEntry recipe) {
-        if(recipe == null) {
+        if(recipe.isInvalid()) {
             return -1;
         }
         

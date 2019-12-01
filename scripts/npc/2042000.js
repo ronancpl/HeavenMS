@@ -437,7 +437,7 @@ function action(mode, type, selection) {
                     cm.sendNext("Oh, and do not worry about turning into a ghost. In the Monster Carnival, #byou will not lose EXP after death#k. So it's really an experience like no other!");
                     cm.dispose();
                 } else if (select == 2) {
-                    cm.sendNext("#bProtetor#k basically an invoked item that drastically increases the abilities of the monsters invoked by your group. Protector works until it is demolished by the opposing group, so I'm hoping you'll summon several monsters first, and then bring the Protector.");
+                    cm.sendNext("#bProtector#k is basically an invoked item that drastically increases the abilities of the monsters invoked by your group. Protector works until it is demolished by the opposing group, so I'm hoping you'll summon several monsters first, and then bring the Protector.");
                 }
             } else if (status == 66) {
                 cm.sendNext("Lastly, while in the Monster Carnival, #byou can not use items / recovery potions that you carry around with you. #kMeanwhile, the monsters let these items fall for good. when, and when you #bget them, the item will immediately activate#k. That's why it's important to know when to get these items.");

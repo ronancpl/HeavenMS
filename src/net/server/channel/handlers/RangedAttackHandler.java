@@ -32,6 +32,7 @@ import client.inventory.MapleInventoryType;
 import client.inventory.MapleWeaponType;
 import client.inventory.manipulator.MapleInventoryManipulator;
 import config.YamlConfig;
+import constants.game.GameConstants;
 import constants.inventory.ItemConstants;
 import constants.skills.Aran;
 import constants.skills.Buccaneer;
@@ -69,7 +70,7 @@ public final class RangedAttackHandler extends AbstractDealDamageHandler {
             }
         }
         
-        if (chr.getMap().isDojoMap() && attack.numAttacked > 0) {
+        if (GameConstants.isDojo(chr.getMap().getId()) && attack.numAttacked > 0) {
             chr.setDojoEnergy(chr.getDojoEnergy() + YamlConfig.config.server.DOJO_ENERGY_ATK);
             c.announce(MaplePacketCreator.getEnergy("energy", chr.getDojoEnergy()));
         }
@@ -104,7 +105,7 @@ public final class RangedAttackHandler extends AbstractDealDamageHandler {
             }
             short slot = -1;
             int projectile = 0;
-            byte bulletCount = 1;
+            short bulletCount = 1;
             MapleStatEffect effect = null;
             if (attack.skill != 0) {
                 effect = attack.getAttackEffect(chr, null);
@@ -168,7 +169,7 @@ public final class RangedAttackHandler extends AbstractDealDamageHandler {
             boolean shadowClaw = chr.getBuffedValue(MapleBuffStat.SHADOW_CLAW) != null;
             if (projectile != 0) {
                 if (!soulArrow && !shadowClaw && attack.skill != 11101004 && attack.skill != 15111007 && attack.skill != 14101006) {
-                    byte bulletConsume = bulletCount;
+                    short bulletConsume = bulletCount;
 
                     if (effect != null && effect.getBulletConsume() != 0) {
                         bulletConsume = (byte) (effect.getBulletConsume() * (hasShadowPartner ? 2 : 1));           

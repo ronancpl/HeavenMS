@@ -193,7 +193,7 @@ server:
     #Besides blocking logging in with several client sessions on the same machine, this also blocks suspicious login attempts for players that tries to login on an account using several diferent remote addresses.
 
     #Multiclient Coordinator Configuration
-    MAX_ALLOWED_ACCOUNT_HWID: 4         #Allows up to N concurrent HWID's for an account. HWID's remains linked to an account longer the more times it's used to login.
+    MAX_ALLOWED_ACCOUNT_HWID: 10        #Allows up to N concurrent HWID's for an account. HWID's remains linked to an account longer the more times it's used to login.
     MAX_ACCOUNT_LOGIN_ATTEMPT: 15       #After N tries on an account, login on that account gets disabled for a short period.
     LOGIN_ATTEMPT_DURATION: 120         #Period in seconds the login attempt remains registered on the system.
 
@@ -239,7 +239,7 @@ server:
     USE_SERVER_AUTOASSIGNER: true       #HeavenMS-builtin autoassigner, uses algorithm based on distributing AP accordingly with required secondary stat on equipments.
     USE_REFRESH_RANK_MOVE: true
     USE_ENFORCE_ADMIN_ACCOUNT: false    #Forces accounts having GM characters to be treated as a "GM account" by the client (localhost). Some of the GM account perks is the ability to FLY, but unable to TRADE.
-    USE_ENFORCE_NOVICE_EXPRATE: false   #Hardsets experience rate 1x for beginners level 10 or under. Ideal for roaming on novice areas without caring too much about losing some stats.
+    USE_ENFORCE_NOVICE_EXPRATE: true    #Hardsets experience rate 1x for beginners level 10 or under. Ideal for roaming on novice areas without caring too much about losing some stats.
     USE_ENFORCE_HPMP_SWAP: false        #Forces players to reuse stats (via AP Resetting) located on HP/MP pool only inside the HP/MP stats.
     USE_ENFORCE_MOB_LEVEL_RANGE: true   #Players N levels below the killed mob will gain no experience from defeating it.
     USE_ENFORCE_JOB_LEVEL_RANGE: false  #Caps the player level on the minimum required to advance their current jobs.
@@ -343,7 +343,7 @@ server:
     USE_ENHANCED_CHSCROLL: true     #Equips even more powerful with chaos upgrade.
     USE_ENHANCED_CRAFTING: true     #Apply chaos scroll on every equip crafted.
     USE_ENHANCED_CLNSLATE: true     #Clean slates can be applied to recover successfully used slots as well.
-    SCROLL_CHANCE_RATE: 10              #Number of rolls for success on a scroll, set 1 for default.
+    SCROLL_CHANCE_ROLLS: 10         #Number of rolls for success on a scroll, set 1 for default.
     CHSCROLL_STAT_RATE: 3               #Number of rolls of stat upgrade on a successfully applied chaos scroll, set 1 for default.
     CHSCROLL_STAT_RANGE: 6              #Stat upgrade range (-N, N) on chaos scrolls.
 
@@ -414,7 +414,7 @@ server:
     #Pet Auto-Pot Configuration
     USE_COMPULSORY_AUTOPOT: true    #Pets will consume as many potions as needed to fulfill the AUTOHP/MP ratio threshold.
     USE_EQUIPS_ON_AUTOPOT: true     #Player MaxHP and MaxMP check values on autopot handler will be updated by the HP/MP bonuses on equipped items.
-    PET_AUTOHP_RATIO: 0.99           #Will automatically consume potions until given ratio of the MaxHP/MaxMP is reached.
+    PET_AUTOHP_RATIO: 0.99          #Will automatically consume potions until given ratio of the MaxHP/MaxMP is reached.
     PET_AUTOMP_RATIO: 0.99
 
     #Pet & Mount Configuration

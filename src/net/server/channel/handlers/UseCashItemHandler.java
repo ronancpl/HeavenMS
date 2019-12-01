@@ -635,11 +635,11 @@ public final class UseCashItemHandler extends AbstractMaplePacketHandler {
                     position = it.getPosition();
                 }
             }
+            
+            MapleInventoryManipulator.removeFromSlot(c, MapleInventoryType.CASH, position, (short) 1, true, false);
         } finally {
             cashInv.unlockInventory();
         }
-        
-        MapleInventoryManipulator.removeFromSlot(c, MapleInventoryType.CASH, position, (short) 1, true, false);
     }
 
     private static boolean getIncubatedItem(MapleClient c, int id) {

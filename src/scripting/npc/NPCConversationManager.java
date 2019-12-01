@@ -588,7 +588,10 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
         }
         
         public Object[] getAvailableSkillBooks() {
-                return MapleItemInformationProvider.getInstance().usableSkillBooks(this.getPlayer()).toArray();
+                List<Integer> ret = MapleItemInformationProvider.getInstance().usableSkillBooks(this.getPlayer());
+                ret.addAll(MapleSkillbookInformationProvider.getInstance().getTeachableSkills(this.getPlayer()));
+                
+                return ret.toArray();
         }
         
         public Object[] getNamesWhoDropsItem(Integer itemId) {
@@ -597,7 +600,19 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
         
         public String getSkillBookInfo(int itemid) {
                 SkillBookEntry sbe = MapleSkillbookInformationProvider.getInstance().getSkillbookAvailability(itemid);
-                return sbe != SkillBookEntry.UNAVAILABLE ? "    Obtainable through #rquestline#k." : "";
+                switch (sbe) {
+                        case UNAVAILABLE:
+                                return "";
+                        
+                        case QUEST_BOOK:
+                                return "    Obtainable through #rquestline#k (collecting book).";
+                                
+                        case QUEST_REWARD:
+                                return "    Obtainable through #rquestline#k (quest reward).";
+
+                        default:
+                                return "    Obtainable through #rquestline#k.";
+                }
         }
         
         // By Drago/Dragohe4rt CPQ + WED
@@ -719,6 +734,45 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
                 mc.changeMap(out, out.getPortal(0));
             }
         }
+        
+        private int isCPQParty(MapleMap lobby, MapleParty party) {
+            int cpqMinLvl, cpqMaxLvl;
+            
+            if (lobby.isCPQLobby()) {
+                cpqMinLvl = 30;
+                cpqMaxLvl = 50;
+            } else {
+                cpqMinLvl = 51;
+                cpqMaxLvl = 70;
+            }
+            
+            List<MaplePartyCharacter> partyMembers = party.getPartyMembers();
+            for (MaplePartyCharacter pchr : partyMembers) {
+                if (pchr.getLevel() >= cpqMinLvl && pchr.getLevel() <= cpqMaxLvl) {
+                    if (lobby.getCharacterById(pchr.getId()) == null) {
+                        return 1;  // party member detected out of area
+                    }
+                } else {
+                    return 2;  // party member doesn't fit requirements
+                }
+            }
+            
+            return 0;
+        }
+        
+        private int canStartCPQ(MapleMap lobby, MapleParty party, MapleParty challenger) {
+            int ret = isCPQParty(lobby, party);
+            if (ret != 0) {
+                return ret;
+            }
+            
+            ret = isCPQParty(lobby, challenger);
+            if (ret != 0) {
+                return -ret;
+            }
+            
+            return 0;
+        }
 
         public void startCPQ(final MapleCharacter challenger, final int field) {
             try {
@@ -779,7 +833,13 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
                             return;
                         }
                         
-                        new MonsterCarnival(getPlayer().getParty(), challenger.getParty(), mapid, true, (field / 100) % 10);
+                        MapleParty lobbyParty = getPlayer().getParty(), challengerParty = challenger.getParty();
+                        int status = canStartCPQ(lobbyMap, lobbyParty, challengerParty);
+                        if (status == 0) {
+                            new MonsterCarnival(lobbyParty, challengerParty, mapid, true, (field / 100) % 10);
+                        } else {
+                            warpoutCPQLobby(lobbyMap);
+                        }
                     }
                 }, 11000);
             } catch (Exception e) {
@@ -828,7 +888,13 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
                             return;
                         }
                         
-                        new MonsterCarnival(getPlayer().getParty(), challenger.getParty(), mapid, false, (field / 1000) % 10);
+                        MapleParty lobbyParty = getPlayer().getParty(), challengerParty = challenger.getParty();
+                        int status = canStartCPQ(lobbyMap, lobbyParty, challengerParty);
+                        if (status == 0) {
+                            new MonsterCarnival(lobbyParty, challengerParty, mapid, false, (field / 1000) % 10);
+                        } else {
+                            warpoutCPQLobby(lobbyMap);
+                        }
                     }
                 }, 10000);
             } catch (Exception e) {

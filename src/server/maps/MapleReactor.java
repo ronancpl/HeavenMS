@@ -86,6 +86,16 @@ public class MapleReactor extends AbstractMapleMapObject {
     public void unlockReactor() {
         reactorLock.unlock();
     }
+    
+    public void hitLockReactor() {
+        hitLock.lock();
+        reactorLock.lock();
+    }
+
+    public void hitUnlockReactor() {
+        reactorLock.unlock();
+        hitLock.unlock();
+    }
 
     public void setState(byte state) {
         this.state = state;

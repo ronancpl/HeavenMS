@@ -88,8 +88,9 @@ public final class LoginPasswordHandler implements MaplePacketHandler {
         
         slea.skip(6);   // localhost masked the initial part with zeroes...
         byte[] hwidNibbles = slea.read(4);
-        int loginok = c.login(login, pwd, HexTool.toCompressedString(hwidNibbles));
-
+        String nibbleHwid = HexTool.toCompressedString(hwidNibbles);
+        int loginok = c.login(login, pwd, nibbleHwid);
+        
         Connection con = null;
         PreparedStatement ps = null;
 
@@ -112,7 +113,7 @@ public final class LoginPasswordHandler implements MaplePacketHandler {
                 e.printStackTrace();
             } finally {
                 disposeSql(con, ps);
-                loginok = c.login(login, pwd, HexTool.toCompressedString(hwidNibbles));
+                loginok = c.login(login, pwd, nibbleHwid);
             }
         }
 

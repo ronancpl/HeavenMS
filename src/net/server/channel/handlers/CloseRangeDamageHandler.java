@@ -68,7 +68,7 @@ public final class CloseRangeDamageHandler extends AbstractDealDamageHandler {
         
         if (chr.getDojoEnergy() < 10000 && (attack.skill == 1009 || attack.skill == 10001009 || attack.skill == 20001009)) // PE hacking or maybe just lagging
             return;
-        if (chr.getMap().isDojoMap() && attack.numAttacked > 0) {
+        if (GameConstants.isDojo(chr.getMap().getId()) && attack.numAttacked > 0) {
             chr.setDojoEnergy(chr.getDojoEnergy() + YamlConfig.config.server.DOJO_ENERGY_ATK);
             c.announce(MaplePacketCreator.getEnergy("energy", chr.getDojoEnergy()));
         }

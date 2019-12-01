@@ -129,8 +129,8 @@ function scheduledTimeout(eim) {
 function changedMap(eim, player, mapid) {
     if (mapid < minMapId || mapid > maxMapId) {
 	if (eim.isExpeditionTeamLackingNow(true, minPlayers, player)) {
-            eim.dropMessage(5, "[Expedition] Either the leader has quit the expedition or there is no longer the minimum number of members required to continue it.");
             eim.unregisterPlayer(player);
+            eim.dropMessage(5, "[Expedition] Either the leader has quit the expedition or there is no longer the minimum number of members required to continue it.");
             end(eim);
         }
         else {
@@ -170,8 +170,8 @@ function monsterRevive(eim, mob) {
 
 function playerDisconnected(eim, player) {
     if (eim.isExpeditionTeamLackingNow(true, minPlayers, player)) {
-        eim.dropMessage(5, "[Expedition] Either the leader has quit the expedition or there is no longer the minimum number of members required to continue it.");
         eim.unregisterPlayer(player);
+        eim.dropMessage(5, "[Expedition] Either the leader has quit the expedition or there is no longer the minimum number of members required to continue it.");
         end(eim);
     }
     else {

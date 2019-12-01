@@ -33,7 +33,6 @@ import tools.HexTool;
 import tools.MapleAESOFB;
 import tools.data.input.ByteArrayByteStream;
 import tools.data.input.GenericLittleEndianAccessor;
-import net.opcodes.RecvOpcode;
 import tools.FilePrinter;
 
 public class MaplePacketDecoder extends CumulativeProtocolDecoder {

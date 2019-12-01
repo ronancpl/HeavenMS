@@ -31,7 +31,6 @@ import constants.game.ExpTable;
 import net.AbstractMaplePacketHandler;
 import client.inventory.manipulator.MapleInventoryManipulator;
 import tools.MaplePacketCreator;
-import tools.Pair;
 import tools.data.input.SeekableLittleEndianAccessor;
 
 /**
