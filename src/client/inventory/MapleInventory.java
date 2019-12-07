@@ -453,10 +453,10 @@ public class MapleInventory implements Iterable<Item> {
     private static boolean checkItemRestricted(List<Pair<Item, MapleInventoryType>> items) {
         MapleItemInformationProvider ii = MapleItemInformationProvider.getInstance();
         
-        Set<Integer> itemids = new HashSet<>();
+        // thanks Shavit for noticing set creation that would be only effective in rare situations
         for (Pair<Item, MapleInventoryType> p : items) {
             int itemid = p.getLeft().getItemId();
-            if (ii.isPickupRestricted(itemid) && (p.getLeft().getQuantity() > 1 || !itemids.add(itemid))) {
+            if (ii.isPickupRestricted(itemid) && p.getLeft().getQuantity() > 1) {
                 return false;
             }
         }

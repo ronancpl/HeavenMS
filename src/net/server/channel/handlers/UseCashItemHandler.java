@@ -244,7 +244,7 @@ public final class UseCashItemHandler extends AbstractMaplePacketHandler {
                     eq.setExpiration(currentServerTime() + (period * 60 * 60 * 24 * 1000));
                 }
 
-                remove(c, position, itemId);
+                // double-remove found thanks to BHB
             } else if (itemId == 5060002) { // Incubator
                 byte inventory2 = (byte) slea.readInt();
                 short slot2 = (short) slea.readInt();

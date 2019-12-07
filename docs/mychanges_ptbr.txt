@@ -2306,3 +2306,26 @@ Corrigido buff Final Attack de Cygnus sendo reaplicado a todo acerto de skill.
 Corrigido caso não sendo checado devidamente com Maker.
 Corrigido contagem de projéteis nos stats de skill usando tipo de dados de tamanho insuficiente.
 Refatorado acesso a membros relativos a Dojo em canais de forma a buscar melhorar efetividade dos ingressos e liberações de lobby.
+Revisado exceção inutilizável na classe geradora de áreas do jogo.
+
+27 Novembro 2019,
+Revisado carregamento de storage da DB ocorrendo a cada login realizado.
+Revisado aquisição de itens no CS ocorrendo antes de utilizar os pontos disponíveis.
+
+28 Novembro 2019,
+Revisado interação de flag de permissão de ganho de EXP em equipamentos.
+
+29 - 30 Novembro 2019,
+Fatorado diversas habilidades (Energy Charge, Wind Walk, Dash) não transcorrendo como esperado na visão de outros jogadores ao trocar de mapas.
+
+02 - 03 Dezembro 2019,
+Revisado uso de locks compartilhados em MapleClient.
+Refatorado criação de conjunto durante checagem de slots, que seria de fato efetivo em cenários muito raros (melhor deixar inserção de itens limitados dar fail-fast nas réplicas).
+Refatorado sistema de pool de stats, que estava atuando erroneamente em casos-limite.
+Corrigido Item Guard inconsistentemente levando a NPE ao utilizar o mesmo.
+Corrigido itens perdendo flags ao equipar aqueles tidos como "untradeable após equipar".
+Revisado Inventory Sort, agora ordenando projéteis por bônus de dano.
+
+06 Dezembro 2019,
+Implementado pacote para visão de buffs de efeito imbuído em armas para outros jogadores.
+Corrigido casos de exceção devido a portais nulos na função que troca jogador de mapas interferindo com próximas trocas de mapa (jogador fica preso até relogar).

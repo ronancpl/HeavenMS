@@ -467,7 +467,13 @@ public class World {
         }
     }
     
-    public void registerAccountStorage(Integer accountId) {
+    public void loadAccountStorage(Integer accountId) {
+        if (getAccountStorage(accountId) == null) {
+            registerAccountStorage(accountId);
+        }
+    }
+    
+    private void registerAccountStorage(Integer accountId) {
         MapleStorage storage = MapleStorage.loadOrCreateFromDB(accountId, this.id);
         accountCharsLock.lock();
         try {
@@ -572,7 +578,7 @@ public class World {
         
         if(cserv != null) {
             if(!cserv.removePlayer(chr)) {
-                // oy the player is not where it should be, find this mf
+                // oy the player is not where they should be, find this mf
 
                 for(Channel ch : getChannels()) {
                     if(ch.removePlayer(chr)) {

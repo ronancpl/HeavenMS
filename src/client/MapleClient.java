@@ -118,8 +118,7 @@ public class MapleClient {
 	private final Lock lock = MonitoredReentrantLockFactory.createLock(MonitoredLockType.CLIENT, true);
         private final Lock encoderLock = MonitoredReentrantLockFactory.createLock(MonitoredLockType.CLIENT_ENCODER, true);
         private final Lock announcerLock = MonitoredReentrantLockFactory.createLock(MonitoredLockType.CLIENT_ANNOUNCER, true);
-        private static final int lockCount = 200;
-        private static final Lock loginLocks[] = new Lock[lockCount];  // thanks Masterrulax & try2hack for pointing out a bottleneck issue here
+        // thanks Masterrulax & try2hack for pointing out a bottleneck issue with shared locks, shavit for noticing an opportunity for improvement
         private Calendar tempBanCalendar;
 	private int votePoints;
 	private int voteTime = -1;
@@ -128,12 +127,6 @@ public class MapleClient {
 	private long sessionId;
         private long lastPacket = System.currentTimeMillis();
         private int lang = 0;
-        
-        static {
-            for (int i = 0; i < lockCount; i++) {
-                loginLocks[i] = MonitoredReentrantLockFactory.createLock(MonitoredLockType.CLIENT_LOGIN, true);
-            }
-        }
         
 	public void updateLastPacket() {
 		lastPacket = System.currentTimeMillis();
@@ -453,8 +446,7 @@ public class MapleClient {
 	}
 
 	public int finishLogin() {
-                Lock loginLock = loginLocks[this.getAccID() % lockCount];
-                loginLock.lock();
+                encoderLock.lock();
                 try {
                     if (getLoginState() > LOGIN_NOTLOGGEDIN) { // 0 = LOGIN_NOTLOGGEDIN, 1= LOGIN_SERVER_TRANSITION, 2 = LOGIN_LOGGEDIN
                         loggedIn = false;
@@ -462,7 +454,7 @@ public class MapleClient {
                     }
                     updateLoginState(MapleClient.LOGIN_LOGGEDIN);
                 } finally {
-                    loginLock.unlock();
+                    encoderLock.unlock();
                 }
             
 		return 0;
@@ -1379,8 +1371,12 @@ public class MapleClient {
                 characterSlots = slots;
 	}
         
+        public boolean canGainCharacterSlot() {
+                return characterSlots < 15;
+        }
+        
         public synchronized boolean gainCharacterSlot() {
-		if (characterSlots < 15) {
+		if (canGainCharacterSlot()) {
 			Connection con = null;
 			try {
                                 con = DatabaseConnection.getConnection();

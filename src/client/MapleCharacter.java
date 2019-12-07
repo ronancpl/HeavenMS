@@ -1472,11 +1472,14 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
         changeMap(to, to.getPortal(portal));
     }
     
-    public void changeMap(final MapleMap target, final MaplePortal pto) {
+    public void changeMap(final MapleMap target, MaplePortal pto) {
         canWarpCounter++;
         
         eventChangedMap(target.getId());    // player can be dropped from an event here, hence the new warping target.
         MapleMap to = getWarpMap(target.getId());
+        if (pto == null) {
+            pto = to.getPortal(0);
+        }
         changeMapInternal(to, pto.getPosition(), MaplePacketCreator.getWarpToMap(to, pto.getId(), this));
         canWarpMap = false;
         
@@ -1504,7 +1507,7 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
         eventAfterChangedMap(this.getMapId());
     }
     
-    public void forceChangeMap(final MapleMap target, final MaplePortal pto) {
+    public void forceChangeMap(final MapleMap target, MaplePortal pto) {
         // will actually enter the map given as parameter, regardless of being an eventmap or whatnot
         
         canWarpCounter++;
@@ -1525,6 +1528,9 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
         }
         
         MapleMap to = target; // warps directly to the target intead of the target's map id, this allows GMs to patrol players inside instances.
+        if (pto == null) {
+            pto = to.getPortal(0);
+        }
         changeMapInternal(to, pto.getPosition(), MaplePacketCreator.getWarpToMap(to, pto.getId(), this));
         canWarpMap = false;
         
@@ -6102,7 +6108,7 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
                     List<Pair<MapleBuffStat, Integer>> stat = Collections.singletonList(new Pair<>(MapleBuffStat.ENERGY_CHARGE, energybar));
                     setBuffedValue(MapleBuffStat.ENERGY_CHARGE, energybar);
                     client.announce(MaplePacketCreator.giveBuff(energybar, 0, stat));
-                    getMap().broadcastMessage(chr, MaplePacketCreator.giveForeignBuff(energybar, stat));
+                    getMap().broadcastMessage(chr, MaplePacketCreator.cancelForeignFirstDebuff(id, ((long) 1) << 50));
                 }
             }, ceffect.getDuration());
         }
@@ -9403,25 +9409,41 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
     public byte getSlots(int type) {
         return type == MapleInventoryType.CASH.getType() ? 96 : inventory[type].getSlotLimit();
     }
-
+    
+    public boolean canGainSlots(int type, int slots) {
+        slots += inventory[type].getSlotLimit();
+        return slots <= 96;
+    }
+    
     public boolean gainSlots(int type, int slots) {
         return gainSlots(type, slots, true);
     }
 
     public boolean gainSlots(int type, int slots, boolean update) {
-        slots += inventory[type].getSlotLimit();
-        if (slots <= 96) {
-            inventory[type].setSlotLimit(slots);
-
+        boolean ret = gainSlotsInternal(type, slots, update);
+        if (ret) {
             this.saveCharToDB();
             if (update) {
                 client.announce(MaplePacketCreator.updateInventorySlotLimit(type, slots));
             }
-
-            return true;
         }
-
-        return false;
+        
+        return ret;
+    }
+    
+    private boolean gainSlotsInternal(int type, int slots, boolean update) {
+        inventory[type].lockInventory();
+        try {
+            if (canGainSlots(type, slots)) {
+                slots += inventory[type].getSlotLimit();
+                inventory[type].setSlotLimit(slots);
+                return true;
+            } else {
+                return false;
+            }
+        } finally {
+            inventory[type].unlockInventory();
+        }
     }
     
     public int sellAllItemsFromName(byte invTypeId, String name) {
@@ -10487,18 +10509,20 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
     }
     
     public void increaseEquipExp(int expGain) {
-        if(expGain < 0) {
-            expGain = Integer.MAX_VALUE;
-        }
-        
-        for (Item item : getUpgradeableEquipList()) {
-            Equip nEquip = (Equip) item;
-            String itemName = ii.getName(nEquip.getItemId());
-            if (itemName == null) {
-                continue;
+        if (allowExpGain) {     // thanks Vcoc for suggesting equip EXP gain conditionally
+            if(expGain < 0) {
+                expGain = Integer.MAX_VALUE;
             }
-            
-            nEquip.gainItemExp(client, expGain);
+
+            for (Item item : getUpgradeableEquipList()) {
+                Equip nEquip = (Equip) item;
+                String itemName = ii.getName(nEquip.getItemId());
+                if (itemName == null) {
+                    continue;
+                }
+
+                nEquip.gainItemExp(client, expGain);
+            }
         }
     }
     

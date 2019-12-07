@@ -1,6 +1,6 @@
 /*
     This file is part of the HeavenMS MapleStory Server
-    Copyleft (L) 2016 - 2018 RonanLana
+    Copyleft (L) 2016 - 2019 RonanLana
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Affero General Public License as
@@ -61,8 +61,9 @@ function writeFeatureTab_Skills() {
         addFeature("Maker skill features developed - pckts thanks Arnah.");
         addFeature("Chair Mastery - map chair boosts HP/MP rec.");
         addFeature("Mu Lung Dojo skills functional.");
-        addFeature("Monster Magnet skill no longer crashes players.");
+        addFeature("Monster Magnet skill on bosses no longer crash.");
         addFeature("HP/MP consumption from skills triggers pet autopot.");
+        addFeature("Elemental weapon imbue visibility for other players.");
 }
 
 function writeFeatureTab_Quests() {

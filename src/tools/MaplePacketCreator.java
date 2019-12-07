@@ -1890,7 +1890,7 @@ public class MaplePacketCreator {
                 }
                 long buffmask = 0;
                 Integer buffvalue = null;
-                if (chr.getBuffedValue(MapleBuffStat.DARKSIGHT) != null && !chr.isHidden()) {
+                if ((chr.getBuffedValue(MapleBuffStat.DARKSIGHT) != null || chr.getBuffedValue(MapleBuffStat.WIND_WALK) != null) && !chr.isHidden()) {
                         buffmask |= MapleBuffStat.DARKSIGHT.getValue();
                 }
                 if (chr.getBuffedValue(MapleBuffStat.COMBO) != null) {
@@ -1906,10 +1906,6 @@ public class MaplePacketCreator {
                 if (chr.getBuffedValue(MapleBuffStat.MORPH) != null) {
                         buffvalue = Integer.valueOf(chr.getBuffedValue(MapleBuffStat.MORPH).intValue());
                 }
-                if (chr.getBuffedValue(MapleBuffStat.ENERGY_CHARGE) != null) {
-                        buffmask |= MapleBuffStat.ENERGY_CHARGE.getValue();
-                        buffvalue = Integer.valueOf(chr.getBuffedValue(MapleBuffStat.ENERGY_CHARGE).intValue());
-                }//AREN'T THESE 
                 mplew.writeInt((int) ((buffmask >> 32) & 0xffffffffL));
                 if (buffvalue != null) {
                         if (chr.getBuffedValue(MapleBuffStat.MORPH) != null) { //TEST
@@ -1919,16 +1915,24 @@ public class MaplePacketCreator {
                         }
                 }
                 mplew.writeInt((int) (buffmask & 0xffffffffL));
-                int CHAR_MAGIC_SPAWN = Randomizer.nextInt();
-                mplew.skip(6);
-                mplew.writeInt(CHAR_MAGIC_SPAWN);
+                
+                // Energy Charge
+                mplew.writeInt(chr.getEnergyBar() == 15000 ? 1 : 0);
+                mplew.writeShort(0);
+                mplew.skip(4);
+                
+                boolean dashBuff = chr.getBuffedValue(MapleBuffStat.DASH) != null;
+                // Dash Speed
+                mplew.writeInt(dashBuff ? 1 << 24 : 0);
                 mplew.skip(11);
-                mplew.writeInt(CHAR_MAGIC_SPAWN);//v74
-                mplew.skip(11);
-                mplew.writeInt(CHAR_MAGIC_SPAWN);
+                mplew.writeShort(0);
+                // Dash Jump
+                mplew.skip(9);
+                mplew.writeInt(dashBuff ? 1 << 24 : 0);
                 mplew.writeShort(0);
                 mplew.write(0);
                 
+                // Monster Riding
                 Integer bv = chr.getBuffedValue(MapleBuffStat.MONSTER_RIDING);
                 if (bv != null) {
                         MapleMount mount = chr.getMount();
@@ -1942,17 +1946,23 @@ public class MaplePacketCreator {
                         mplew.writeLong(0);
                 }
                 
+                int CHAR_MAGIC_SPAWN = Randomizer.nextInt();    // skill references found thanks to Rien dev team
                 mplew.writeInt(CHAR_MAGIC_SPAWN);
+                // Speed Infusion
+                mplew.skip(8);
+                mplew.writeInt(CHAR_MAGIC_SPAWN);
+                mplew.write(0);
+                mplew.writeInt(CHAR_MAGIC_SPAWN);
+                mplew.writeShort(0);
+                // Homing Beacon
+                mplew.skip(9);
+                mplew.writeInt(CHAR_MAGIC_SPAWN);
+                mplew.writeInt(0);
+                // Zombify
                 mplew.skip(9);
                 mplew.writeInt(CHAR_MAGIC_SPAWN);
                 mplew.writeShort(0);
-                mplew.writeInt(0); // actually not 0, why is it 0 then?
-                mplew.skip(10);
-                mplew.writeInt(CHAR_MAGIC_SPAWN);
-                mplew.skip(13);
-                mplew.writeInt(CHAR_MAGIC_SPAWN);
                 mplew.writeShort(0);
-                mplew.write(0);
         }
         
         /**
@@ -3067,6 +3077,15 @@ public class MaplePacketCreator {
                 return mplew.getPacket();
         }
 
+        public static byte[] cancelForeignFirstDebuff(int cid, long mask) {
+                final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+                mplew.writeShort(SendOpcode.CANCEL_FOREIGN_BUFF.getValue());
+                mplew.writeInt(cid);
+                mplew.writeLong(mask);
+                mplew.writeLong(0);
+                return mplew.getPacket();
+        }
+        
         public static byte[] cancelForeignDebuff(int cid, long mask) {
                 final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
                 mplew.writeShort(SendOpcode.CANCEL_FOREIGN_BUFF.getValue());
@@ -3194,6 +3213,20 @@ public class MaplePacketCreator {
                 mplew.writeShort(900);
                 
                 mplew.skip(7);
+                
+                return mplew.getPacket();
+        }
+        
+        // packet found thanks to Ronan
+        public static byte[] giveForeignWKChargeEffect(int cid, int buffid, List<Pair<MapleBuffStat, Integer>> statups) {
+                final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter(19);
+                mplew.writeShort(SendOpcode.GIVE_FOREIGN_BUFF.getValue());
+                mplew.writeInt(cid);
+                writeLongMask(mplew, statups);
+                mplew.writeInt(buffid);
+                mplew.writeShort(600);
+                mplew.writeShort(1000);//Delay
+                mplew.write(1);
                 
                 return mplew.getPacket();
         }

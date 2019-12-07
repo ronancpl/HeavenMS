@@ -41,5 +41,5 @@ public class DisposeCommand extends Command {
         c.announce(MaplePacketCreator.enableActions());
         c.removeClickedNPC();
         c.getPlayer().message("You've been disposed.");
+        }
     }
-}

@@ -35,7 +35,6 @@ import client.inventory.Equip;
 import client.inventory.MapleInventory;
 import client.inventory.MapleInventoryType;
 import client.inventory.ModifyInventory;
-import constants.net.ServerConstants;
 import server.MapleItemInformationProvider;
 import net.server.Server;
 
@@ -73,7 +72,11 @@ class PairedQuicksort {
         } while (i <= j);
     }
     
-    private void PartitionByItemIdReverse(int Esq, int Dir, ArrayList<Item> A) {
+    private int getWatkForProjectile(Item item) {
+        return ii.getWatkForProjectile(item.getItemId());
+    }
+    
+    private void PartitionByProjectileAtk(int Esq, int Dir, ArrayList<Item> A) {
         Item x, w;
 
         i = Esq;
@@ -81,8 +84,9 @@ class PairedQuicksort {
         
         x = A.get((i + j) / 2);
         do {
-            while (x.getItemId() < A.get(i).getItemId()) i++;
-            while (x.getItemId() > A.get(j).getItemId()) j--;
+            int watk = getWatkForProjectile(x);
+            while (watk < getWatkForProjectile(A.get(i))) i++;
+            while (watk > getWatkForProjectile(A.get(j))) j--;
             
             if (i <= j) {
                 w = A.get(i);
@@ -228,7 +232,7 @@ class PairedQuicksort {
     
     public void reverseSortSublist(ArrayList<Item> A, int[] range) {
         if (range != null) {
-            PartitionByItemIdReverse(range[0], range[1], A);
+            PartitionByProjectileAtk(range[0], range[1], A);
         }
     }
     

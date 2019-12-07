@@ -523,7 +523,10 @@ public class MapleInventoryManipulator {
         }
         boolean itemChanged = false;
         if (ii.isUntradeableOnEquip(source.getItemId())) {
-            source.setFlag((byte) ItemConstants.UNTRADEABLE);
+            short flag = source.getFlag();      // thanks BHB for noticing flags missing after equipping these
+            flag |= ItemConstants.UNTRADEABLE;
+            source.setFlag(flag);
+            
             itemChanged = true;
         }
         if (dst == -6) { // unequip the overall

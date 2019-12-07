@@ -114,12 +114,16 @@ public class MapleStorage {
         return slots;
     }
 
+    public boolean canGainSlots(int slots) {
+        slots += this.slots;
+        return slots <= 48;
+    }
+    
     public boolean gainSlots(int slots) {
         lock.lock();
         try {
-            slots += this.slots;
-            
-            if (slots <= 48) {
+            if (canGainSlots(slots)) {
+                slots += this.slots;
                 this.slots = (byte) slots;
                 return true;
             }

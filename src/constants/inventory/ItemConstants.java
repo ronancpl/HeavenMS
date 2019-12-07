@@ -21,7 +21,6 @@
 */
 package constants.inventory;
 
-import constants.net.ServerConstants;
 import client.inventory.MapleInventoryType;
 import config.YamlConfig;
 
