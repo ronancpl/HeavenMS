@@ -652,20 +652,25 @@ public abstract class AbstractMapleCharacterObject extends AbstractAnimatedMaple
                 return false;
             }
 
-            int newStr = str + deltaStr, newDex = dex + deltaDex, newInt = int_ + deltaInt, newLuk = luk + deltaLuk;
-            if (newStr < 4 && deltaStr != null || newStr > YamlConfig.config.server.MAX_AP) {
+            int newStr = str, newDex = dex, newInt = int_, newLuk = luk;
+            if (deltaStr != null) newStr += deltaStr;   // thanks Rohenn for noticing an NPE case after "null" started being used
+            if (deltaDex != null) newDex += deltaDex;
+            if (deltaInt != null) newInt += deltaInt;
+            if (deltaLuk != null) newLuk += deltaLuk;
+            
+            if (newStr < 4 || newStr > YamlConfig.config.server.MAX_AP) {
                 return false;
             }
 
-            if (newDex < 4 && deltaDex != null || newDex > YamlConfig.config.server.MAX_AP) {
+            if (newDex < 4 || newDex > YamlConfig.config.server.MAX_AP) {
                 return false;
             }
 
-            if (newInt < 4 && deltaInt != null || newInt > YamlConfig.config.server.MAX_AP) {
+            if (newInt < 4 || newInt > YamlConfig.config.server.MAX_AP) {
                 return false;
             }
 
-            if (newLuk < 4 && deltaLuk != null || newLuk > YamlConfig.config.server.MAX_AP) {
+            if (newLuk < 4 || newLuk > YamlConfig.config.server.MAX_AP) {
                 return false;
             }
 
