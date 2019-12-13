@@ -21,7 +21,7 @@
         Refining NPC: 
 	* Chaos scroll SYNTHETIZER (rofl)
         * 
-        * @author RonanLana
+        * @author RonanLana (ronancpl)
 */
 
 var status = 0;

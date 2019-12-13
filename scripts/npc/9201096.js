@@ -18,7 +18,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 /* Jack - Refining NPC
-	@author RonanLana
+	@author ronancpl (Ronan)
  */
 
 var status = 0;

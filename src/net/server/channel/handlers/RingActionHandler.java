@@ -466,7 +466,7 @@ public final class RingActionHandler extends AbstractMaplePacketHandler {
                 
             case 9: 
                 try {
-                    // By -- Drago (Dragohe4rt)
+                    // By -- Dragoso (Drago)
                     // Groom and Bride's Wishlist
 
                     MapleCharacter player = c.getPlayer();

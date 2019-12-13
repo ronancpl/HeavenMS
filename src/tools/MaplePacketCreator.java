@@ -340,7 +340,7 @@ public class MaplePacketCreator {
                 if (!viewall) {
                         mplew.write(0);
                 }
-                if (chr.isGM() || chr.isGmJob()) {  // thanks Egg Daddy (Ubaware), resinate for noticing GM jobs crashing on non-GM players account
+                if (chr.isGM() || chr.isGmJob()) {  // thanks Daddy Egg (Ubaware), resinate for noticing GM jobs crashing on non-GM players account
                         mplew.write(0);
                         return;
                 }

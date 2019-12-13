@@ -561,7 +561,7 @@ public class GameConstants {
     }
     
     public static boolean isFreeMarketRoom(int mapid) {
-        return mapid / 1000000 == 910 && mapid > 910000000; // FM rooms subset, thanks to shavit
+        return mapid / 1000000 == 910 && mapid > 910000000; // FM rooms subset, thanks to shavitush (shavit)
     }
     
     public static boolean isMerchantLocked(MapleMap map) {

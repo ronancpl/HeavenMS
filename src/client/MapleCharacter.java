@@ -3566,7 +3566,7 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
                 p = new Pair<>(mbs, 0);
             }
             
-            if (!isSingletonStatup(mbs)) {   // thanks resinate, Egg Daddy for pointing out morph issues when updating it along with other statups
+            if (!isSingletonStatup(mbs)) {   // thanks resinate, Daddy Egg for pointing out morph issues when updating it along with other statups
                 ret.add(p);
             } else {
                 singletonStatups.add(p);
@@ -7385,7 +7385,7 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
                 rs = ps.executeQuery();
                 while (rs.next()) {
                     Skill pSkill = SkillFactory.getSkill(rs.getInt("skillid"));
-                    if(pSkill != null)  // edit reported by shavit, thanks Zein for noticing an NPE here
+                    if(pSkill != null)  // edit reported by Shavit (=＾● ⋏ ●＾=), thanks Zein for noticing an NPE here
                     {
                         ret.skills.put(pSkill, new SkillEntry(rs.getByte("skilllevel"), rs.getInt("masterlevel"), rs.getLong("expiration")));
                     }
@@ -7972,7 +7972,7 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
                 client.announce(MaplePacketCreator.updatePlayerStats(hpmpupdate, true, this));
             }
 
-            if (oldmaxhp != localmaxhp) {   // thanks Wh1SK3Y for pointing out a deadlock occuring related to party members HP
+            if (oldmaxhp != localmaxhp) {   // thanks Wh1SK3Y (Suwaidy) for pointing out a deadlock occuring related to party members HP
                 updatePartyMemberHP();
             }
         } finally {
