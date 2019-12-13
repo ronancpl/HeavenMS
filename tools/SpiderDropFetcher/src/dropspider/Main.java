@@ -21,7 +21,7 @@ import javax.net.ssl.HttpsURLConnection;
 
 /**
  *
- * @author Simon
+ * @author Simon (DropSpider)
  */
 
 //NOTE: this tool is currently unsupported since HS started using HTTPS. Missing proper SSL certificates to access Hidden-Street's website.
@@ -226,7 +226,7 @@ public class Main {
             ArrayList<Integer> item_ids = DataTool.itemIdsFromName(item_name);
             
             if(scroll && item_ids.isEmpty()) {
-                // Try adding on the % again. Thanks nexon...
+                // Try adding on the % again. Ty nexon...
                 if(scrollType == 0) item_name += " 100%";
                 if(scrollType == 1) item_name += " 60%";
                 if(scrollType == 2) item_name += " 10%";

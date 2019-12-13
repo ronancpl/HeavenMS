@@ -22,7 +22,7 @@
 /**
 	Assistant Travis
 -- By ---------------------------------------------------------------------------------------------
-	Angel (get31720 ragezone)
+	Angel (get31720)
 -- Version Info -----------------------------------------------------------------------------------
 	1.0 - First Version by Angel
         2.0 - Second Version by happydud3 & XotiCraze

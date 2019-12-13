@@ -341,7 +341,7 @@ public class MaplePacketCreator {
                 if (!viewall) {
                         mplew.write(0);
                 }
-                if (chr.isGM() || chr.isGmJob()) {  // thanks Egg Daddy (Ubaware), resinate for noticing GM jobs crashing on non-GM players account
+                if (chr.isGM() || chr.isGmJob()) {  // thanks Daddy Egg (Ubaware), resinate for noticing GM jobs crashing on non-GM players account
                         mplew.write(0);
                         return;
                 }
@@ -425,7 +425,7 @@ public class MaplePacketCreator {
                         mplew.writeShort(pet.getCloseness());
                         mplew.write(pet.getFullness());
                         addExpirationTime(mplew, item.getExpiration());
-                        mplew.writeInt(pet.getPetFlag());  /* pet flags found by -- lrenex & Spoon */
+                        mplew.writeInt(pet.getPetFlag());  /* pet flags noticed by lrenex & Spoon */
                         
                         mplew.write(new byte[]{(byte) 0x50, (byte) 0x46}); //wonder what this is
                         mplew.writeInt(0);
@@ -588,8 +588,8 @@ public class MaplePacketCreator {
          * Sends a hello packet.
          *
          * @param mapleVersion The maple client version.
-         * @param sendIv the IV used by the server for sending
-         * @param recvIv the IV used by the server for receiving
+         * @param sendIv the IV in use by the server for sending
+         * @param recvIv the IV in use by the server for receiving
          * @return
          */
         public static byte[] getHello(short mapleVersion, byte[] sendIv, byte[] recvIv) {
@@ -2236,7 +2236,7 @@ public class MaplePacketCreator {
                 mplew.write(game.getGameType().getValue());
                 mplew.writeInt(game.getObjectId()); // gameid/shopid
                 mplew.writeMapleAsciiString(game.getDescription()); // desc
-                mplew.writeBool(!game.getPassword().isEmpty());    // password here, thanks GabrielSin!
+                mplew.writeBool(!game.getPassword().isEmpty());    // password here, thanks GabrielSin
                 mplew.write(game.getPieceType());
                 mplew.write(ammount);
                 mplew.write(2);         //player capacity
@@ -2250,7 +2250,7 @@ public class MaplePacketCreator {
                 mplew.writeInt(hm.getObjectId());
                 mplew.writeMapleAsciiString(hm.getDescription());
                 mplew.write(hm.getItemId() % 100);
-                mplew.write(roomInfo);    // visitor capacity here, thanks GabrielSin!
+                mplew.write(roomInfo);    // visitor capacity here, thanks GabrielSin
         }
         
         public static byte[] updateHiredMerchantBox(MapleHiredMerchant hm) {
@@ -2302,7 +2302,7 @@ public class MaplePacketCreator {
 
         private static void rebroadcastMovementList(LittleEndianWriter lew, SeekableLittleEndianAccessor slea, long movementDataLength) {
         	//movement command length is sent by client, probably not a big issue? (could be calculated on server)
-        	//if multiple write/reads are slow, could use a (cached?) byte[] buffer
+        	//if multiple write/reads are slow, could use (and cache?) a byte[] buffer
         	for(long i = 0; i < movementDataLength; i++) {
         		lew.write(slea.readByte());
         	}
@@ -3415,7 +3415,7 @@ public class MaplePacketCreator {
         }
 
         /**
-         * Possible values for <code>operation</code>:<br> 2: Trade cancelled by the
+         * Possible values for <code>operation</code>:<br> 2: Trade cancelled, by the
          * other character<br> 7: Trade successful<br> 8: Trade unsuccessful<br> 
          * 9: Cannot carry more one-of-a-kind items<br> 12: Cannot trade on different maps<br>
          * 13: Cannot trade, game files damaged<br> 
@@ -3512,7 +3512,7 @@ public class MaplePacketCreator {
                 return mplew.getPacket();
         }
         
-        // thanks NPC Quiz packets thanks to Eric
+        // NPC Quiz packets thanks to Eric
         public static byte[] OnAskQuiz(int nSpeakerTypeID, int nSpeakerTemplateID, int nResCode, String sTitle, String sProblemText, String sHintText, int nMinInput, int nMaxInput, int tRemainInitialQuiz) { 
                 MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter(); 
                 mplew.writeShort(SendOpcode.NPC_TALK.getValue()); 
@@ -7505,7 +7505,7 @@ public class MaplePacketCreator {
          * now.<br> 2: You cannot go to that place.<br> 3: Unable to approach due to
          * the force of the ground.<br> 4: You cannot teleport to or on this
          * map.<br> 5: Unable to approach due to the force of the ground.<br> 6:
-         * This map can only be entered by party members.<br> 7: The Cash Shop is
+         * Only party members can enter this map.<br> 7: The Cash Shop is
          * currently not available. Stay tuned...<br>
          *
          * @param type The type
@@ -7993,7 +7993,7 @@ public class MaplePacketCreator {
          * E0 = event or free test time ended
          * E6 = item cannot be purchased with MaplePoints
          * E7 = lol sorry for the inconvenience, eh?
-         * E8 = cannot be purchased by anyone under 7
+         * E8 = cannot purchase by anyone under 7
          */
         public static byte[] showCashShopMessage(byte message) {
                 final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter(4);

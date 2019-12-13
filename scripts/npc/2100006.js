@@ -3,7 +3,7 @@
 	Map(s): 		The Burning Road: Ariant(2600000000)
 	Description: 	Hair Salon Owner
 
-        GMS-like revised by Ronan. Contents found thanks to Mitsune (GamerBewbs), Waltzing, AyumiLove
+        GMS-like revised by Ronan -- contents found thanks to Mitsune (GamerBewbs), Waltzing, AyumiLove
 */
 
 var status = 0;

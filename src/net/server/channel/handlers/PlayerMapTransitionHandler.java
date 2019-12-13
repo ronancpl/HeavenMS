@@ -1,6 +1,6 @@
 /*
     This file is part of the HeavenMS MapleStory Server
-    Copyleft (L) 2016 - 2018 RonanLana
+    Copyleft (L) 2016 - 2019 RonanLana
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Affero General Public License as
@@ -51,7 +51,7 @@ public final class PlayerMapTransitionHandler extends AbstractMaplePacketHandler
             chr.announce(MaplePacketCreator.giveBuff(1, beaconid, stat));
         }
         
-        if (!chr.isHidden()) {  // thanks Lame for noticing hidden characters controlling mobs
+        if (!chr.isHidden()) {  // thanks Lame (Conrad) for noticing hidden characters controlling mobs
             for (MapleMapObject mo : chr.getMap().getMonsters()) {    // thanks BHB, IxianMace, Jefe for noticing several issues regarding mob statuses (such as freeze)
                 MapleMonster m = (MapleMonster) mo;
                 if (m.getSpawnEffect() == 0 || m.getHp() < m.getMaxHp()) {     // avoid effect-spawning mobs

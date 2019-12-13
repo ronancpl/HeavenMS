@@ -48,7 +48,7 @@ import tools.packets.Wedding;
 /**
  * @author Jvlaple
  * @author Ronan - major overhaul on Ring handling mechanics
- * @author Drago/Dragohe4rt - on Wishlist
+ * @author Drago (Dragohe4rt) - on Wishlist
  */
 public final class RingActionHandler extends AbstractMaplePacketHandler {
     private static int getBoxId(int useItemId) {
@@ -466,7 +466,7 @@ public final class RingActionHandler extends AbstractMaplePacketHandler {
                 
             case 9: 
                 try {
-                    // By Drago/Dragohe4rt
+                    // By -- Dragoso (Drago)
                     // Groom and Bride's Wishlist
 
                     MapleCharacter player = c.getPlayer();

@@ -5,8 +5,8 @@ package constants.game;
  * @author GabrielSin <gabrielsin@playellin.net>
  * @date   16/09/2018
  * 
- * Adaptations to use Pair and Set, in order to suit a one-packet marshall,
- * by Ronan
+ * Adaptations to use Pair and Set, in order to suit a one-packet marshall.
+ * Adapted by Ronan
  */
 
 import java.util.HashSet;

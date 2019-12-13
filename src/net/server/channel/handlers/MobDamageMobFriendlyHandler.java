@@ -32,7 +32,7 @@ import client.MapleClient;
 
 /**
  *
- * @author Xotic & BubblesDev
+ * @author Xotic (XoticStory) & BubblesDev
  */
 
 public final class MobDamageMobFriendlyHandler extends AbstractMaplePacketHandler {
@@ -49,7 +49,7 @@ public final class MobDamageMobFriendlyHandler extends AbstractMaplePacketHandle
 			return;
 		}
 
-		int damage = Randomizer.nextInt(((monster.getMaxHp() / 13 + monster.getPADamage() * 10)) * 2 + 500) / 10; //Beng's formula.
+		int damage = Randomizer.nextInt(((monster.getMaxHp() / 13 + monster.getPADamage() * 10)) * 2 + 500) / 10; // Formula planned by Beng.
                 
                 if (monster.getHp() - damage < 1) {     // friendly dies
                         if(monster.getId() == 9300102) {

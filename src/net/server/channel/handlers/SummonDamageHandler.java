@@ -86,7 +86,7 @@ public final class SummonDamageHandler extends AbstractDealDamageHandler {
         List<SummonAttackEntry> allDamage = new ArrayList<>();
         byte direction = slea.readByte();
         int numAttacked = slea.readByte();
-        slea.skip(8); //Thanks Gerald :D, I failed lol (mob x,y and summon x,y)
+        slea.skip(8); // I failed lol (mob x,y and summon x,y), Thanks Gerald
         for (int x = 0; x < numAttacked; x++) {
             int monsterOid = slea.readInt(); // attacked oid
             slea.skip(18);

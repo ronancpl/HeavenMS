@@ -4,7 +4,7 @@
                        Matthias Butz <matze@odinms.de>
                        Jan Christian Meyer <vimes@odinms.de>
 
-    Copyleft (L) 2016 - 2018 RonanLana (HeavenMS)
+    Copyleft (L) 2016 - 2019 RonanLana (HeavenMS)
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Affero General Public License version 3
@@ -24,7 +24,7 @@
 /* Hikekuro the Owner
 	Showa VIP Face & Eye Change.
 
-        GMS-like revised by Ronan. Contents found thanks to Mitsune (GamerBewbs), Waltzing, AyumiLove
+        GMS-like revised by Ronan -- contents found thanks to Mitsune (GamerBewbs), Waltzing, AyumiLove
 */
 var status = 0;
 var beauty = 0;

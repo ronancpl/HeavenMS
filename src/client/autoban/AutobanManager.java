@@ -53,8 +53,6 @@ public class AutobanManager {
 
             if (points.get(fac) >= fac.getMaximum()) {
                 chr.autoban(reason);
-                //chr.autoban("Autobanned for " + fac.name() + " ;" + reason, 1);
-                //chr.sendPolice("You have been blocked by #bMooplePolice for the HACK reason#k.");
             }
         }
         if (YamlConfig.config.server.USE_AUTOBAN_LOG) {

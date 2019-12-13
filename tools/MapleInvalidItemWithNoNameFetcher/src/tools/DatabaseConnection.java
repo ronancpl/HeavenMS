@@ -6,7 +6,7 @@ import java.sql.SQLException;
 
 /**
  * @author Frz (Big Daddy)
- * @author The Real Spookster (some modifications to this beautiful code)
+ * @author The Real Spookster - some modifications to this beautiful code
  */
 public class DatabaseConnection {
     private static String DB_URL = "jdbc:mysql://localhost:3306/heavenms";

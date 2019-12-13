@@ -1,6 +1,6 @@
 /*
     This file is part of the HeavenMS MapleStory Server, commands OdinMS-based
-    Copyleft (L) 2016 - 2018 RonanLana
+    Copyleft (L) 2016 - 2019 RonanLana
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Affero General Public License as
@@ -50,7 +50,7 @@ public class GotoCommand extends Command {
         sortGotoEntries(towns);
         
         try {
-            // thanks shavit for noticing goto areas getting loaded from wz needlessly, only for the name retrieval
+            // thanks shavit for noticing goto areas getting loaded from wz needlessly only for the name retrieval
             
             for (Map.Entry<String, Integer> e : towns) {
                 GOTO_TOWNS_INFO += ("'" + e.getKey() + "' - #b" + (MapleMapFactory.loadPlaceName(e.getValue())) + "#k\r\n");
@@ -111,7 +111,7 @@ public class GotoCommand extends Command {
         HashMap<String, Integer> gotomaps;
         if (player.isGM()) {
             gotomaps = new HashMap<>(GameConstants.GOTO_AREAS);     // distinct map registry for GM/users suggested thanks to Vcoc
-            gotomaps.putAll(GameConstants.GOTO_TOWNS);  // thanks Halcyon for pointing out duplicates on listed entries functionality
+            gotomaps.putAll(GameConstants.GOTO_TOWNS);  // thanks Halcyon (UltimateMors) for pointing out duplicates on listed entries functionality
         } else {
             gotomaps = GameConstants.GOTO_TOWNS;
         }

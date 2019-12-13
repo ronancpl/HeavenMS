@@ -2262,7 +2262,7 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
     
     public static boolean deleteCharFromDB(MapleCharacter player, int senderAccId) {
             int cid = player.getId();
-            if(!Server.getInstance().haveCharacterEntry(senderAccId, cid)) {    // thanks zera (EpiphanyMS) for pointing a critical exploit with non-authored character deletion request
+            if(!Server.getInstance().haveCharacterEntry(senderAccId, cid)) {    // thanks zera (EpiphanyMS) for pointing a critical exploit with non-authed character deletion request
                     return false;
             }
             
@@ -3282,7 +3282,7 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
         }
     }
     
-    public boolean canHoldMeso(int gain) {  // thanks lucasziron found pointing out a need to check space availability for mesos on player transactions
+    public boolean canHoldMeso(int gain) {  // thanks lucasziron for pointing out a need to check space availability for mesos on player transactions
         long nextMeso = (long) meso.get() + gain;
         return nextMeso <= Integer.MAX_VALUE;
     }
@@ -3581,7 +3581,7 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
                 p = new Pair<>(mbs, 0);
             }
             
-            if (!isSingletonStatup(mbs)) {   // thanks resinate, Egg Daddy for pointing out morph issues when updating it along with other statups
+            if (!isSingletonStatup(mbs)) {   // thanks resinate, Daddy Egg for pointing out morph issues when updating it along with other statups
                 ret.add(p);
             } else {
                 singletonStatups.add(p);
@@ -7404,7 +7404,7 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
                 rs = ps.executeQuery();
                 while (rs.next()) {
                     Skill pSkill = SkillFactory.getSkill(rs.getInt("skillid"));
-                    if(pSkill != null)  // edit reported by shavit, thanks Zein for noticing an NPE here
+                    if(pSkill != null)  // edit reported by Shavit (=＾● ⋏ ●＾=), thanks Zein for noticing an NPE here
                     {
                         ret.skills.put(pSkill, new SkillEntry(rs.getByte("skilllevel"), rs.getInt("masterlevel"), rs.getLong("expiration")));
                     }
@@ -8002,7 +8002,7 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
                 client.announce(MaplePacketCreator.updatePlayerStats(hpmpupdate, true, this));
             }
 
-            if (oldmaxhp != localmaxhp) {   // thanks Wh1SK3Y for pointing out a deadlock occuring related to party members HP
+            if (oldmaxhp != localmaxhp) {   // thanks Wh1SK3Y (Suwaidy) for pointing out a deadlock occuring related to party members HP
                 updatePartyMemberHP();
             }
         } finally {
@@ -10044,7 +10044,7 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
             if (!mquest.isSameDayRepeatable() && !MapleQuest.isExploitableQuest(questid)) {
                 awardQuestPoint(YamlConfig.config.server.QUEST_POINT_PER_QUEST_COMPLETE);
             }
-            qs.setCompleted(qs.getCompleted() + 1);   // count quest completed Jayd's idea
+            qs.setCompleted(qs.getCompleted() + 1);   // Jayd's idea - count quest completed
 
             announceUpdateQuest(DelayedQuestUpdate.COMPLETE, questid, qs.getCompletionTime());
             //announceUpdateQuest(DelayedQuestUpdate.INFO, qs); // happens after giving rewards, for non-next quests only

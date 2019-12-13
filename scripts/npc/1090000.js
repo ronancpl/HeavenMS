@@ -36,7 +36,7 @@ jobType = 5;
 var advQuest = 0;
 function start() {
     if (cm.isQuestStarted(6330)) {
-        if (cm.getEventInstance() != null) {    // missing script for skill test found thanks to Lost(tm)
+        if (cm.getEventInstance() != null) {    // missing script for skill test found thanks to Jade™
             advQuest = 5;                       // string visibility thanks to iPunchEm & Glvelturall
             cm.sendNext("Not bad at all. Let's discuss this outside!");
         } else if (cm.getQuestProgressInt(6330, 6331) == 0) {

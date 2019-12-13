@@ -1,6 +1,6 @@
 /*
     This file is part of the HeavenMS MapleStory Server
-    Copyleft (L) 2016 - 2018 RonanLana
+    Copyleft (L) 2016 - 2019 RonanLana
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Affero General Public License as
@@ -20,7 +20,7 @@
 
 var status = -1;
 
-function start(mode, type, selection) { // missing script for questid found thanks to Lost(tm)
+function start(mode, type, selection) { // missing script for questid found thanks to Jade™
     if (mode == -1) {
         qm.dispose();
     } else {

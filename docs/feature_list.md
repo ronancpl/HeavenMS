@@ -184,8 +184,8 @@ Server potentials:
 * Implemented old GMS AP assigning for novices level 10 or below. Usage of the edited localhost is mandatory on this.
 * Implemented SP capping for players that passed the job upgrade level. After upgrading jobs, the missing SP amount is replenished.
 * Bypassable PIN/PIC system for players that were already authenticated and are currently loggedin and active.
-* Accounts can be created automatically when trying to login on an inexistent account -- credits to shavit.
-* Usage of Bcrypt (up-to-date) as the main password hashing algorithm, replacing old SHA's -- credits to shavit.
+* Accounts can be created automatically when trying to login on an inexistent account - credits to shavit.
+* Usage of Bcrypt (up-to-date) as the main password hashing algorithm, replacing old SHA's - credits to shavit.
 
 Custom NPCs:
 
@@ -203,7 +203,7 @@ Server Commands:
 * Spawn Zakum/Horntail/Pinkbean.
 * Several new commands.
 * Rank command highlighting users either by world or server-wide.
-* Revamped command files layout -- thanks Arthur L.
+* Revamped command files layout - thanks Arthur L.
 * Optimized Search command, caching search range contents and added map search functionality.
 
 External tools:

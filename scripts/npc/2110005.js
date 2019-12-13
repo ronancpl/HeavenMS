@@ -26,7 +26,7 @@
     1.3 - Actually fixed by Alan (SharpAceX)
     1.2 - Fixed and recoded by Moogra
     1.1 - Shortened by Moogra
-    1.0 - First Version by Maple4U, who actually can't code at all
+    1.0 - First Version by Maple4U - who stepped up and coded first version of several Magatia NPCs
 ---------------------------------------------------------------------------------------------------
 */
 

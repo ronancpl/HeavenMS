@@ -160,7 +160,7 @@ public final class MoveLifeHandler extends AbstractMovementPacketHandler {
                 
                 try {
                         long movementDataStart = slea.getPosition();
-                        updatePosition(slea, monster, -2);  // Thanks Doodle and ZERO傑洛 for noticing sponge-based bosses moving out of stage in case of no-offset applied
+                        updatePosition(slea, monster, -2);  // Thanks Doodle & ZERO傑洛 for noticing sponge-based bosses moving out of stage in case of no-offset applied
                         long movementDataLength = slea.getPosition() - movementDataStart; //how many bytes were read by updatePosition
                         slea.seek(movementDataStart);
                         

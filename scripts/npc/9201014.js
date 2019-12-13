@@ -22,7 +22,7 @@
 /**
 	Pila Present
 -- By ---------------------------------------------------------------------------------------------
-	Angel (get31720 ragezone)
+	get31720 (RaGEZONE)
 -- Version Info -----------------------------------------------------------------------------------
 	1.0 - First Version by Angel
         2.0 - Second Version by happydud3 & XotiCraze

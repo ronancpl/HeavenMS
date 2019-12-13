@@ -22,7 +22,7 @@
 package client;
 
 /**
- * @author PurpleMadness Patrick :O
+ * @author PurpleMadness < Patrick :O >
  */
 public class MapleMount {
     private int itemid;

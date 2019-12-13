@@ -20,7 +20,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 /*
-Stage 2: Door guarded by Dark Muscle Golems - Guild Quest
+Stage 2: Door guard by Dark Muscle Golems - Guild Quest
 
 @Author Lerk
 */

@@ -102,7 +102,7 @@ public final class AdminCommandHandler extends AbstractMaplePacketHandler {
                     c.announce(MaplePacketCreator.getGMEffect(6, (byte) 1));
                 }
                 break;
-            case 0x10: // /h, information by vana (and tele mode f1) ... hide ofcourse
+            case 0x10: // /h, information added by vana -- <and tele mode f1> ... hide ofcourse
                 c.getPlayer().Hide(slea.readByte() == 1);
                 break;
             case 0x11: // Entering a map

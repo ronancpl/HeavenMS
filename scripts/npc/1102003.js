@@ -20,7 +20,9 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 /*
- * @author BubblesDev, Rich for text, Ronan for PNPCs
+ * @author BubblesDev
+ * @author Rich - text
+ * @author Ronan - PNPCs
  */
 
 var status = 0;

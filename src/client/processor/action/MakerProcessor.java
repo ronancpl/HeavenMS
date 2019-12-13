@@ -1,6 +1,6 @@
 /*
     This file is part of the HeavenMS MapleStory Server
-    Copyleft (L) 2016 - 2018 RonanLana
+    Copyleft (L) 2016 - 2019 RonanLana
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Affero General Public License as
@@ -267,7 +267,7 @@ public class MakerProcessor {
             reagentids.remove(i);
         }
         
-        // only quantity 1 of each gem will be accepted by the Maker skill
+        // the Maker skill will use only one of each gem
         for(Integer i : reagentids.keySet()) {
             reagentids.put(i, (short) 1);
         }

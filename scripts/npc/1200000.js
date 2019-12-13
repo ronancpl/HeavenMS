@@ -20,7 +20,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 /* ===========================================================
-			Resonance
+        @author Resonance
 	NPC Name: 		Pusla
 	Map(s): 		Snow Island: Rien (140000000)
 	Description: 	Open Storage

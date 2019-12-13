@@ -19,7 +19,9 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-//By Moogra
+/*
+ * @Author: Moogra
+ */
 
 function start() {
     cm.sendYesNo("Beep... beep... you can make your escape to a safer place through me. Beep... beep... would you like to leave this place?");

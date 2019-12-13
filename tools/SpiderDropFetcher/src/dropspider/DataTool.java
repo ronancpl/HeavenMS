@@ -22,7 +22,7 @@ import tools.Pair;
 
 /**
  *
- * @author Simon
+ * @author Simon (DropSpider)
  */
 public class DataTool {
     private static Map<String, Integer> hardcodedMobs = new HashMap<>();

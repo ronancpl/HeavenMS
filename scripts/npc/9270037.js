@@ -24,7 +24,7 @@
 	@Author Cody (FlowsionMS)
         @Author AAron (FlowsionMS)
 
-        GMS-like revised by Ronan. Contents found thanks to Mitsune (GamerBewbs), Waltzing, AyumiLove
+        GMS-like revised by Ronan -- contents found thanks to Mitsune (GamerBewbs), Waltzing, AyumiLove
  */
 var status = 0;
 var beauty = 0;

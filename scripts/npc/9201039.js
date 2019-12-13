@@ -23,7 +23,7 @@
 /* Claudia
 	Amoria Quest Hair Change.
 
-        GMS-like revised by Ronan. Contents found thanks to Mitsune (GamerBewbs), Waltzing, AyumiLove
+        GMS-like revised by Ronan -- contents found thanks to Mitsune (GamerBewbs), Waltzing, AyumiLove
 */
 
 var status = 0;

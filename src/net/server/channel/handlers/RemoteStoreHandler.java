@@ -31,7 +31,7 @@ import tools.data.input.SeekableLittleEndianAccessor;
 
 /**
  *
- * @author kevintjuh93 :3
+ * @author kevintjuh93 - :3
  */
 public class RemoteStoreHandler extends AbstractMaplePacketHandler {
     @Override

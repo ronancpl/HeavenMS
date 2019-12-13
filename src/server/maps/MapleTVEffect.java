@@ -29,7 +29,7 @@ import tools.MaplePacketCreator;
 
 /*
  * MapleTVEffect
- * @author MrXotic
+ * @author MrXotic (XoticStory)
  * @author Ronan - made MapleTV mechanics synchronous
  */
 public class MapleTVEffect {

@@ -164,7 +164,7 @@ public abstract class AbstractDealDamageHandler extends AbstractMaplePacketHandl
                 int mobCount = attackEffect.getMobCount();
                 if (attack.skill != Cleric.HEAL) {
                     if (player.isAlive()) {
-                        if(attack.skill == Aran.BODY_PRESSURE || attack.skill == Marauder.ENERGY_CHARGE || attack.skill == ThunderBreaker.ENERGY_CHARGE) {  // thanks IxianMace for noticing Energy Charge skills refreshing on touch, leading to misleading buff applies
+                        if(attack.skill == Aran.BODY_PRESSURE || attack.skill == Marauder.ENERGY_CHARGE || attack.skill == ThunderBreaker.ENERGY_CHARGE) {  // thanks IxianMace for noticing Energy Charge skills refreshing on touch
                             // prevent touch dmg skills refreshing
                         } else if(attack.skill == DawnWarrior.FINAL_ATTACK || attack.skill == WindArcher.FINAL_ATTACK) {
                             // prevent cygnus FA refreshing

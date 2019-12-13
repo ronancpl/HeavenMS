@@ -20,7 +20,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 /**
- * @author BubblesDev v83 (Moogra)
+ * @author Moogra (BubblesDev)
  * @purpose Warps to the second drill hall
  */
 function enter(pi) {

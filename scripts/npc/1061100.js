@@ -25,7 +25,7 @@
 -- By ---------------------------------------------------------------------------------------------
 	Unknown
 -- Version Info -----------------------------------------------------------------------------------
-        1.3 - More Cleanup by Moogra (12/17/09)
+        1.3 - More Cleanup by Moogra - 12/17/09
         1.2 - Cleanup and Statement fix by Moogra
 	1.1 - Statement fix [Information]
 	1.0 - First Version by Unknown

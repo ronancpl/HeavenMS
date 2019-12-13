@@ -56,7 +56,7 @@ import java.util.Arrays;
 /**
  *
  * @author Matze
- * @author Ronan - concurrency safety & reviewed minigames
+ * @author Ronan - concurrency safety and reviewed minigames
  */
 public final class PlayerInteractionHandler extends AbstractMaplePacketHandler {
     public enum Action {

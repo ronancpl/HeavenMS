@@ -1,6 +1,6 @@
 /*
     This file is part of the HeavenMS MapleStory Server
-    Copyleft (L) 2016 - 2018 RonanLana
+    Copyleft (L) 2016 - 2019 RonanLana
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Affero General Public License as
@@ -42,7 +42,7 @@ import java.util.Set;
  * @author RonanLana
  * 
  * This application finds inexistent itemids within the drop data from
- * the Maplestory database specified by the URL below. This program
+ * the Maplestory database specified in the URL below. This program
  * assumes all itemids uses 7 digits.
  * 
  * A file is generated listing all the inexistent ids.

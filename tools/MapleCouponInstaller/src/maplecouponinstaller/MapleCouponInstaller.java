@@ -1,6 +1,6 @@
 /*
     This file is part of the HeavenMS MapleStory Server
-    Copyleft (L) 2016 - 2018 RonanLana
+    Copyleft (L) 2016 - 2019 RonanLana
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Affero General Public License as
@@ -31,7 +31,7 @@ import java.sql.SQLException;
  * 
  * This application gathers information about the Cash Shop's EXP & DROP coupons,
  * such as applied rates, active times of day and days of week and dumps them in
- * a SQL table, in which will be used by the server.
+ * a SQL table that the server will make use.
  * 
  */
 public class MapleCouponInstaller {

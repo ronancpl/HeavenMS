@@ -1061,7 +1061,7 @@ public class MapleMap {
         return count;
     }
     
-    public void pickItemDrop(byte[] pickupPacket, MapleMapItem mdrop) { // mdrop must be already locked and not-pickedup checked by now
+    public void pickItemDrop(byte[] pickupPacket, MapleMapItem mdrop) { // mdrop must be already locked and not-pickedup checked at this point
         broadcastMessage(pickupPacket, mdrop.getPosition());
         
         droppedItemCount.decrementAndGet();
@@ -3222,7 +3222,7 @@ public class MapleMap {
     }
     
     public void removeMonsterSpawn(int mobId, int x, int y) {
-        // assumption: spawn points are identified by tuple (lifeid, x, y)
+        // assumption: spawn points identifies by tuple (lifeid, x, y)
         
         Point checkpos = calcPointBelow(new Point(x, y));
         checkpos.y -= 1;
@@ -3245,7 +3245,7 @@ public class MapleMap {
     }
     
     public void removeAllMonsterSpawn(int mobId, int x, int y) {
-        // assumption: spawn points are identified by tuple (lifeid, x, y)
+        // assumption: spawn points identifies by tuple (lifeid, x, y)
         
         Point checkpos = calcPointBelow(new Point(x, y));
         checkpos.y -= 1;

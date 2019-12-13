@@ -1,5 +1,5 @@
 /*
-	Made by RMZero213 of RaGEZONE forums.
+        @author RMZero213 (RaGEZONE)
 	Just keep this header here and don't claim that you made it.
 */
 

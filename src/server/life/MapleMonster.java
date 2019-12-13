@@ -518,7 +518,7 @@ public class MapleMonster extends AbstractLoadedMapleLife {
             avgExpReward += exp;
         }
         
-        // thanks Simon for finding an issue with solo party player gaining yellow EXP when soloing mobs
+        // thanks Simon (HarborMS) for finding an issue with solo party player gaining yellow EXP when soloing mobs
         avgExpReward /= totalEntries;
         
         float varExpReward = 0.0f;
@@ -658,7 +658,7 @@ public class MapleMonster extends AbstractLoadedMapleLife {
         
         double sdevRatio = calcExperienceStandDevThreshold(entryExpRatio, totalEntries);
         
-        // GMS-like player and party split calculations found thanks to Russt, KaidaTan, Dusk, AyumiLove. Src: https://ayumilovemaple.wordpress.com/maplestory_calculator_formula/
+        // GMS-like player and party split calculations found thanks to Russt, KaidaTan, Dusk, AyumiLove - src: https://ayumilovemaple.wordpress.com/maplestory_calculator_formula/
         Set<MapleCharacter> underleveled = new HashSet<>();
         for (Entry<MapleCharacter, Long> chrParticipation : soloExpDist.entrySet()) {
             float exp = chrParticipation.getValue() * expPerDmg;
@@ -2149,7 +2149,7 @@ public class MapleMonster extends AbstractLoadedMapleLife {
             
             /*
             For some reason, some mobs loses aggro on controllers if other players also attacks them.
-            Maybe it was intended by Nexon to interchange controllers at every attack...
+            Maybe Nexon intended to interchange controllers at every attack...
             
             else if (chrController != null) {
                 chrController.announce(MaplePacketCreator.stopControllingMonster(this.getObjectId()));

@@ -1,6 +1,6 @@
 /*
     This file is part of the HeavenMS MapleStory Server
-    Copyleft (L) 2016 - 2018 RonanLana
+    Copyleft (L) 2016 - 2019 RonanLana
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Affero General Public License as
@@ -38,7 +38,7 @@ import tools.MaplePacketCreator;
  *
  * @author RonanLana
  * 
- * Note: the podium uses getGroundBelow that in its turn uses inputted posY decremented by 7.
+ * Note: the podium uses getGroundBelow that in its turn uses inputted posY minus 7.
  * Podium system will implement increase-by-7 to negate that behaviour.
  */
 public class MaplePlayerNPCPodium {

@@ -1,10 +1,10 @@
 /* ===========================================================
-			Resonance
+        @author Resonance
 	NPC Name: 		Maple Administrator
 	Description: 	Quest -  Kingdom of Mushroom in Danger
 =============================================================
 Version 1.0 - Script Done.(17/7/2010)
-Version 2.0 - Script Reworked by Ronan.(16/11/2018)
+Version 2.0 - Script Reworked by Ronan - (16/11/2018)
 =============================================================
 */
 

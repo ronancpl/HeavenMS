@@ -4,7 +4,7 @@ import client.MapleCharacter;
 
 /**
  *
- * @author Drago - Dragohe4rt
+ * @author Drago (Dragohe4rt)
  */
 public class LanguageConstants {
     

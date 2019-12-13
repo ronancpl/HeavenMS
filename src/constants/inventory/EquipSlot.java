@@ -2,7 +2,7 @@ package constants.inventory;
 
 /**
  *
- * @author The Spookster
+ * @author The Spookster (The Real Spookster)
  */
 public enum EquipSlot {
 

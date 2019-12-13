@@ -43,7 +43,7 @@ public final class MesoDropHandler extends AbstractMaplePacketHandler {
             slea.skip(4);
             int meso = slea.readInt();
 
-            if (c.tryacquireClient()) {     // thanks imbee for noticing players not being able to throw mesos too fast, dampening gameplay of some classes
+            if (c.tryacquireClient()) {     // thanks imbee for noticing players not being able to throw mesos too fast
                 try {
                     if (meso <= player.getMeso() && meso > 9 && meso < 50001) {
                         player.gainMeso(-meso, false, true, false);

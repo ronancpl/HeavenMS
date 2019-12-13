@@ -34,7 +34,9 @@ import tools.data.input.SeekableLittleEndianAccessor;
 
 /**
  *
- * @author XoticStory; modified by kevintjuh93, Ronan
+ * @author XoticStory
+ * 
+ * Modified by -- kevintjuh93, Ronan
  */
 public final class UseSolomonHandler extends AbstractMaplePacketHandler {
 

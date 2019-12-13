@@ -4,7 +4,7 @@
                        Matthias Butz <matze@odinms.de>
                        Jan Christian Meyer <vimes@odinms.de>
 
-    Copyleft (L) 2016 - 2018 RonanLana (HeavenMS)
+    Copyleft (L) 2016 - 2019 RonanLana (HeavenMS)
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Affero General Public License version 3
@@ -59,7 +59,7 @@ function action(mode, type, selection) {
                 else
                         status--;
     
-                if (status == 0) {    // missing script for skill test found thanks to Lost(tm)
+                if (status == 0) {    // missing script for skill test found thanks to Jade™
                         if (!cm.isQuestStarted(6400)) {
                                 cm.sendOk("Who are you talking to me? If you're just bored, go bother somebody else.");
                                 cm.dispose();

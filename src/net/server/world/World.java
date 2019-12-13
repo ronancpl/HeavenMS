@@ -110,7 +110,7 @@ import tools.packets.Fishing;
 /**
  *
  * @author kevintjuh93
- * @author Ronan - thread-oriented world schedules, guild queue, marriages & party chars
+ * @author Ronan - thread-oriented (world schedules + guild queue + marriages + party chars)
  */
 public class World {
 
@@ -517,7 +517,7 @@ public class World {
         return getAllCharactersView();
     }
     
-    public List<MapleCharacter> getAllCharactersView() {    // sorted by accountid, charid
+    public List<MapleCharacter> getAllCharactersView() {    // sorting by accountid, charid
         List<MapleCharacter> chrList = new LinkedList<>();
         Map<Integer, SortedMap<Integer, MapleCharacter>> accChars;
         

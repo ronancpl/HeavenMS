@@ -20,7 +20,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 /**
- * @author DiscoveryMS (Twdtwd), Ronan
+ * @author Twdtwd (DiscoveryMS), Ronan
  * @purpose Warps to the Cold Cave for Resurection.
  */
 function enter(pi) {

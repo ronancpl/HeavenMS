@@ -1,6 +1,6 @@
 /*
     This file is part of the HeavenMS MapleStory Server
-    Copyleft (L) 2016 - 2018 RonanLana
+    Copyleft (L) 2016 - 2019 RonanLana
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Affero General Public License as
@@ -22,8 +22,8 @@
     |- Warps you to 102000003 (Warriors' Sanctuary)
 
     Version
-    |- 1.0 by Jayd
-    |- 1.1 by Ronan (check job requirements)
+    |- 1.0 First Version by Jayd
+    |- 1.1 Edited by Ronan - check job requirements
  */
 
 var status;

@@ -21,7 +21,7 @@
 */
 /*
  * @author RMZero213 - base
- * @author Moogra - fixed, clean up
+ * @author Moogra - fixed and clean up
  */
 function act() {
     var map = rm.getPlayer().getMapId();
