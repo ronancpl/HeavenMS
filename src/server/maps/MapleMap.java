@@ -2017,7 +2017,7 @@ public class MapleMap {
         if (getEventInstance() != null) {
             getEventInstance().registerMonster(monster);
         }
-
+        
         spawnAndAddRangedMapObject(monster, new DelayedPacketCreation() {
             @Override
             public void sendPackets(MapleClient c) {
@@ -2108,7 +2108,7 @@ public class MapleMap {
                 c.announce(MaplePacketCreator.spawnFakeMonster(monster, 0));
             }
         });
-
+        
         spawnedMonstersOnMap.incrementAndGet();
         addSelfDestructive(monster);
     }
@@ -2116,7 +2116,6 @@ public class MapleMap {
     public void makeMonsterReal(final MapleMonster monster) {
         monster.setFake(false);
         broadcastMessage(MaplePacketCreator.makeMonsterReal(monster));
-        monster.broadcastMonsterStatus();
         monster.aggroUpdateController();
         updateBossSpawn(monster);
     }
@@ -3081,8 +3080,6 @@ public class MapleMap {
         for (MapleMapObject o : objects) {
             if (isNonRangedType(o.getType())) {
                 o.sendSpawnData(c);
-            } else if (o.getType() == MapleMapObjectType.MONSTER) {
-                ((MapleMonster) o).aggroUpdateController();
             } else if (o.getType() == MapleMapObjectType.SUMMON) {
                 MapleSummon summon = (MapleSummon) o;
                 if (summon.getOwner() == chr) {
@@ -3110,6 +3107,10 @@ public class MapleMap {
                 } else {
                     o.sendSpawnData(chr.getClient());
                     chr.addVisibleMapObject(o);
+                    
+                    if (o.getType() == MapleMapObjectType.MONSTER) {
+                        ((MapleMonster) o).aggroUpdateController();
+                    }
                 }
             }
         }

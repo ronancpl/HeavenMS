@@ -60,7 +60,6 @@ import client.inventory.MaplePet;
 import constants.game.GameConstants;
 import constants.inventory.ItemConstants;
 import constants.string.LanguageConstants;
-import net.server.PlayerStorage;
 import net.server.channel.Channel;
 import net.server.coordinator.matchchecker.MatchCheckerListenerFactory.MatchCheckerType;
 import server.MapleMarriage;
@@ -603,6 +602,12 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
                 switch (sbe) {
                         case UNAVAILABLE:
                                 return "";
+                              
+                        case REACTOR:
+                                return "    Obtainable through #rexploring#k (loot boxes).";
+                            
+                        case SCRIPT:
+                                return "    Obtainable through #rexploring#k (field interaction).";
                         
                         case QUEST_BOOK:
                                 return "    Obtainable through #rquestline#k (collecting book).";
@@ -633,7 +638,7 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
             for (int i = 0; i < 6; i++) {
                 if (fieldTaken(i)) {
                     if (fieldLobbied(i)) {
-                        msg += "#b#L" + i + "#Carnival Field " + (i + 1) + " (Level: "  // "Carnival field" GMS-like improvement thanks to Jayd
+                        msg += "#b#L" + i + "#Carnival Field " + (i + 1) + " (Level: "  // "Carnival field" GMS-like improvement thanks to Jayd (jaydenseah)
                                 + cpqCalcAvgLvl(980000100 + i * 100) + " / "
                                 + getPlayerCount(980000100 + i * 100) + "x"
                                 + getPlayerCount(980000100 + i * 100) + ")  #l\r\n";

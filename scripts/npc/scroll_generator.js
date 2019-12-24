@@ -353,7 +353,7 @@ function calculateScrollTiers() {
     return tiers;
 }
 
-function getRandomScroll(tiers) {
+function getRandomScrollFromTiers(tiers) {
     var typeTier = tiers[0], subtypeTier = tiers[1], successTier = tiers[2];
     var scrollTypePool = getScrollTypePool(typeTier);
     var scrollPool = getAvailableScrollsPool(scrollTypePool, subtypeTier, successTier);
@@ -363,6 +363,36 @@ function getRandomScroll(tiers) {
     } else {
         return -1;
     }
+}
+
+function getRandomScrollFromRightPermutations(tiers) {
+    for (var i = 2; i >= 0; i--) {
+        for (var j = i - 1; j >= 0; j--) {
+            if (tiers[i] >= 3) {
+                break;
+            } else if (tiers[j] > 1) {
+                tiers[i]++;
+                tiers[j]--;
+
+                var itemid = getRandomScrollFromTiers(tiers);
+                if (itemid != -1) {
+                    return itemid;
+                }
+            }
+        }
+    }
+
+    return -1;
+}
+
+function getRandomScroll(tiers) {
+    var itemid = getRandomScrollFromTiers(tiers);
+    if (itemid == -1) {
+        // worst case shift-right permutations...
+        itemid = getRandomScrollFromRightPermutations(tiers);
+    }
+    
+    return itemid;
 }
 
 function performExchange(sgItemid, sgCount) {

@@ -23,7 +23,6 @@ import client.MapleCharacter;
 import config.YamlConfig;
 import constants.game.GameConstants;
 import constants.inventory.ItemConstants;
-import constants.net.ServerConstants;
 import server.MapleItemInformationProvider;
 import tools.MaplePacketCreator;
 

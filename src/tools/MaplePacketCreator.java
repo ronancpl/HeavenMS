@@ -1486,6 +1486,43 @@ public class MaplePacketCreator {
                 mplew.write(newSpawn ? -2 : -1);
         }
         
+        private static void encodeTemporary(MaplePacketLittleEndianWriter mplew, Map<MonsterStatus, MonsterStatusEffect> stati) {
+                int pCounter = -1, mCounter = -1;
+            
+                writeLongEncodeTemporaryMask(mplew, stati.keySet());    // packet structure mapped thanks to Eric
+                
+                for (Entry<MonsterStatus, MonsterStatusEffect> s : stati.entrySet()) {
+                        MonsterStatusEffect mse = s.getValue();
+                        mplew.writeShort(mse.getStati().get(s.getKey()));
+                        
+                        MobSkill mobSkill = mse.getMobSkill();
+                        if (mobSkill != null) {
+                                mplew.writeShort(mobSkill.getSkillId());
+                                mplew.writeShort(mobSkill.getSkillLevel());
+
+                                switch(s.getKey()) {
+                                    case WEAPON_REFLECT:
+                                            pCounter = mobSkill.getX();
+                                            break;
+                                            
+                                    case MAGIC_REFLECT:
+                                            mCounter = mobSkill.getY();
+                                            break;
+                                }
+                        } else {
+                            Skill skill = mse.getSkill();
+                            mplew.writeInt(skill != null ? skill.getId() : 0);
+                        }
+                        
+                        mplew.writeShort(-1);    // duration
+                }
+                
+                // reflect packet structure found thanks to Arnah (Vertisy)
+		if(pCounter != -1) mplew.writeInt(pCounter);// wPCounter_
+		if(mCounter != -1) mplew.writeInt(mCounter);// wMCounter_
+		if(pCounter != -1 || mCounter != -1) mplew.writeInt(100);// nCounterProb_
+        }
+        
         /**
          * Internal function to handler monster spawning and controlling.
          *
@@ -1513,9 +1550,13 @@ public class MaplePacketCreator {
                 mplew.writeInt(life.getObjectId());
                 mplew.write(life.getController() == null ? 5 : 1);
                 mplew.writeInt(life.getId());
-                mplew.skip(15);
-                mplew.write(0x88);
-                mplew.skip(6);
+                
+                if (requestController) {
+                    encodeTemporary(mplew, life.getStati());    // thanks shot for noticing encode temporary buffs missing
+                } else {
+                    mplew.skip(16);
+                }
+                
                 mplew.writePos(life.getPosition());
                 mplew.write(life.getStance());
                 mplew.writeShort(0); //Origin FH //life.getStartFh()
@@ -1561,9 +1602,7 @@ public class MaplePacketCreator {
                 mplew.writeInt(life.getObjectId());
                 mplew.write(5);
                 mplew.writeInt(life.getId());
-                mplew.skip(15);
-                mplew.write(0x88);
-                mplew.skip(6);
+                encodeTemporary(mplew, life.getStati());
                 mplew.writePos(life.getPosition());
                 mplew.write(life.getStance());
                 mplew.writeShort(0);//life.getStartFh()
@@ -1591,9 +1630,7 @@ public class MaplePacketCreator {
                 mplew.writeInt(life.getObjectId());
                 mplew.write(5);
                 mplew.writeInt(life.getId());
-                mplew.skip(15);
-                mplew.write(0x88);
-                mplew.skip(6);
+                encodeTemporary(mplew, life.getStati());
                 mplew.writePos(life.getPosition());
                 mplew.write(life.getStance());
                 mplew.writeShort(0);//life.getStartFh()
@@ -3151,6 +3188,21 @@ public class MaplePacketCreator {
                 mplew.writeLong(firstmask);
                 mplew.writeLong(secondmask);
         }
+        
+        private static void writeLongEncodeTemporaryMask(final MaplePacketLittleEndianWriter mplew, Collection<MonsterStatus> stati) {
+                int masks[] = new int[4];
+                
+                for (MonsterStatus statup : stati) {
+                        int pos = statup.isFirst() ? 0 : 2;
+                        for (int i = 0; i < 2; i++) {
+                                masks[pos + i] |= statup.getValue() >> 32 * i;
+                        }
+                }
+                
+                for (int i = 0; i < masks.length; i++) {
+                        mplew.writeInt(masks[i]);
+                }
+        }
 
         public static byte[] cancelDebuff(long mask) {
                 final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter(19);
@@ -4135,30 +4187,6 @@ public class MaplePacketCreator {
                 }
                 mplew.writeInt(firstmask);
                 mplew.writeInt(secondmask);
-        }
-        
-        public static byte[] applyMonsterStatus(int oid, Map<MonsterStatus, Integer> stats, int skill, boolean monsterSkill, int delay, MobSkill mobskill) {
-                MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
-                mplew.writeShort(SendOpcode.APPLY_MONSTER_STATUS.getValue());
-                mplew.writeInt(oid);
-                int mask = 0;
-                for (MonsterStatus stat : stats.keySet()) {
-                        mask |= stat.getValue();
-                }
-                mplew.writeInt(mask);
-                for (Integer val : stats.values()) {
-                        mplew.writeShort(val);
-                        if (monsterSkill) {
-                                mplew.writeShort(mobskill.getSkillId());
-                                mplew.writeShort(mobskill.getSkillLevel());
-                        } else {
-                                mplew.writeInt(skill);
-                        }
-                        mplew.writeShort(0); // as this looks similar to giveBuff this
-                }
-                mplew.writeShort(delay); // delay in ms
-                mplew.write(1); // ?
-                return mplew.getPacket();
         }
         
         public static byte[] applyMonsterStatus(final int oid, final MonsterStatusEffect mse, final List<Integer> reflection) {

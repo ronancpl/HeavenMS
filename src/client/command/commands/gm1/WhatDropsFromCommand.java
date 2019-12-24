@@ -29,7 +29,6 @@ import client.MapleClient;
 import server.MapleItemInformationProvider;
 import server.life.MapleMonsterInformationProvider;
 import server.life.MonsterDropEntry;
-import tools.MaplePacketCreator;
 import tools.Pair;
 
 import java.util.Iterator;

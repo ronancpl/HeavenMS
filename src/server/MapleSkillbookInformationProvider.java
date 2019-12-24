@@ -65,17 +65,10 @@ public class MapleSkillbookInformationProvider {
         SCRIPT
     }
     
-    private static String host = "jdbc:mysql://localhost:3306/heavenms";
-    private static String driver = "com.mysql.jdbc.Driver";
-    private static String username = "root";
-    private static String password = "";
-    
     private static String rootDirectory = ".";
     
     private static int skillbookMinItemid = 2280000;
     private static int skillbookMaxItemid = 2300000;  // exclusively
-    
-    private static Set<Integer> questSkills = new HashSet<>();
     
     static {
         loadSkillbooks();
@@ -156,7 +149,13 @@ public class MapleSkillbookInformationProvider {
                             int skillid = MapleDataTool.getInt("id", questSkillData, 0);
                             if (is4thJobSkill(skillid)) {
                                 // negative itemids are skill rewards
-                                foundSkillbooks.put(-skillid, SkillBookEntry.QUEST_REWARD);
+                                
+                                int questbook = fetchQuestbook(checkData, questData.getName());
+                                if (questbook < 0) {
+                                    foundSkillbooks.put(-skillid, SkillBookEntry.QUEST_REWARD);
+                                } else {
+                                    foundSkillbooks.put(-skillid, SkillBookEntry.QUEST_BOOK);
+                                }
                             }
                         }
                     }

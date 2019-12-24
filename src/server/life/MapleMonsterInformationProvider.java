@@ -316,16 +316,10 @@ public class MapleMonsterInformationProvider {
     public String getMobNameFromId(int id) {
         String mobName = mobNameCache.get(id);
         if (mobName == null) {
-            try {
-                mobName = MapleLifeFactory.getMonster(id).getName();
-            } catch (NullPointerException npe) {
-                mobName = ""; //nonexistant mob
-            } catch (Exception e) {
-                e.printStackTrace();
-                System.err.println("Nonexistant mob id " + id);
-                mobName = ""; //nonexistant mob
-            }
-
+            MapleDataProvider dataProvider = MapleDataProviderFactory.getDataProvider(new File("wz/String.wz"));
+            MapleData mobData = dataProvider.getData("Mob.img");
+            
+            mobName = MapleDataTool.getString(mobData.getChildByPath(id + "/name"), "");
             mobNameCache.put(id, mobName);
         }
 

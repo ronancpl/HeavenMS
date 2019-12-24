@@ -413,18 +413,6 @@ public class MapleHiredMerchant extends AbstractMapleMapObject {
         this.removeOwner(c.getPlayer());
 
         try {
-            MapleCharacter player = c.getWorldServer().getPlayerStorage().getCharacterById(ownerId);
-            if(player != null) {
-                    player.setHasMerchant(false);
-            } else {
-                    Connection con = DatabaseConnection.getConnection();
-                    try (PreparedStatement ps = con.prepareStatement("UPDATE characters SET HasMerchant = 0 WHERE id = ?", Statement.RETURN_GENERATED_KEYS)) {
-                            ps.setInt(1, ownerId);
-                            ps.executeUpdate();
-                    }
-                    con.close();
-            }
-
             List<MaplePlayerShopItem> copyItems = getItems();
             if (check(c.getPlayer(), copyItems) && !timeout) {
                 for (MaplePlayerShopItem mpsi : copyItems) {
@@ -446,6 +434,19 @@ public class MapleHiredMerchant extends AbstractMapleMapObject {
                 this.saveItems(timeout);
             } catch (Exception e) {
                 e.printStackTrace();
+            }
+            
+            // thanks Rohenn for noticing a possible dupe scenario on closing shop
+            MapleCharacter player = c.getWorldServer().getPlayerStorage().getCharacterById(ownerId);
+            if(player != null) {
+                    player.setHasMerchant(false);
+            } else {
+                    Connection con = DatabaseConnection.getConnection();
+                    try (PreparedStatement ps = con.prepareStatement("UPDATE characters SET HasMerchant = 0 WHERE id = ?", Statement.RETURN_GENERATED_KEYS)) {
+                            ps.setInt(1, ownerId);
+                            ps.executeUpdate();
+                    }
+                    con.close();
             }
             
             if (YamlConfig.config.server.USE_ENFORCE_MERCHANT_SAVE) {

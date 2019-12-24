@@ -33,7 +33,7 @@ public class DisposeCommand extends Command {
     {
         setDescription("");
     }
-
+    
     @Override
     public void execute(MapleClient c, String[] params) {
         NPCScriptManager.getInstance().dispose(c);
@@ -41,5 +41,5 @@ public class DisposeCommand extends Command {
         c.announce(MaplePacketCreator.enableActions());
         c.removeClickedNPC();
         c.getPlayer().message("You've been disposed.");
-        }
     }
+}

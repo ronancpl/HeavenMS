@@ -125,7 +125,7 @@ function action(mode, type, selection) {
                         sendStr += "  #L" + i + "# " + mobList[i] + "#l\r\n";
                     }
 
-                    sendStr += "\r\n";
+                    sendStr += "\r\n\r\n";
                 }
             } else {
                 sendStr = "\r\n\r\n";

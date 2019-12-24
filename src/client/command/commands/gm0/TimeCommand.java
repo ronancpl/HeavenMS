@@ -25,7 +25,6 @@ package client.command.commands.gm0;
 
 import client.MapleClient;
 import client.command.Command;
-import constants.net.ServerConstants;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;

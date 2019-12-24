@@ -958,10 +958,7 @@ public class MapleStatEffect {
         if (isDispel() && makeChanceResult()) {
             applyto.dispelDebuffs();
         } else if (isCureAllAbnormalStatus()) {
-            applyto.dispelDebuff(MapleDisease.SEDUCE);
-            applyto.dispelDebuff(MapleDisease.ZOMBIFY);
-            applyto.dispelDebuff(MapleDisease.CONFUSE);
-            applyto.dispelDebuffs();
+            applyto.purgeDebuffs();
         } else if (isComboReset()) {
             applyto.setCombo((short) 0);
         }

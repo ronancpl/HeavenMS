@@ -179,6 +179,7 @@ public class ServerConfig {
     public int MOB_STATUS_MONITOR_LIFE;
     public int MOB_STATUS_AGGRO_PERSISTENCE;
     public int MOB_STATUS_AGGRO_INTERVAL;
+    public boolean USE_AUTOAGGRO_NEARBY;
 
     //Some Gameplay Enhancing Configurations
     //Scroll Configuration

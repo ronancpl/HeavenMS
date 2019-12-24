@@ -6,7 +6,7 @@ Besides myself for maintaining this repository, credits are to be given to Wizet
 
 Regarding distributability and usage of the code presented here: like it was before, this MapleStory server is open-source. By that, it is meant that anyone is **free to install, use, modify and redistribute the contents**, as long as there is **no kind of commercial trading involved** and the **credits to the original creators are maintained** within the codes.
 
-This is a NetBeans 8.2 Project, that should be built and run on Java 8 in order to run properly (used to be ran in Java 7, thanks @kolakcc for the Java 8 support!).
+This is a NetBeans 8.2 Project, that should be built and run on Java 8 in order to run properly. -- Used to be ran in Java 7, thanks kolakcc (Familiar) for the Java 8 support!
 
 Being a NetBeans 8.2 Project, this means that it's easier to install the project via opening the server project folder inside NetBeans' IDE. Once installed, build this project on your machine and run the server using the "launch.bat" application.
 
@@ -32,6 +32,8 @@ Java 8 SDK & NetBeans bundle: https://www.oracle.com/technetwork/pt/java/javase/
   The following list, in bottom-up chronological order, holds information regarding all changes that were applied from the starting localhost used in this development. Some lines have a link attached, that will lead you to a snapshot of the localhost at that version of the artifact. Naturally, later versions holds all previous changes along with the proposed changes.
 
 **Change log:**
+
+  * Fixed Monster Magnet crashing the caster when trying to pull fixed mobs. https://gofile.io/?c=BW7dVM
 
   * Cleared need for administrator privileges (OS) to play the game, credits to Ubaware.
 
@@ -75,7 +77,7 @@ HeavenClient Github: https://github.com/ryantpayton/HeavenClient
 ---
 ### Development information
 
-Status: <span style="color:grey">__In development (4th round)__</span>.
+Status: <span style="color:SkyBlue">__Released (4 rounds)__</span>.
 
 #### Mission
 
@@ -112,15 +114,11 @@ Our Discord channel is still available on: https://discord.gg/Q7wKxHX
 
 <hr id="donate" />
 
-### Donation
-
-If you REALLY liked what you have seen on the project, please feel free to donate a little something as a helping hand for my contributions towards Maple development. Also remember to **support Nexon**!
-
-Paypal: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=3K8KVTWRLFBQ4
+[//]: <> (If you REALLY liked what you have seen on the project, please feel free to donate a little something as a helping hand for my contributions towards Maple development. Also remember to **support Nexon**!)
 
 ### Disclaimer
 
-* HeavenMS development is decisively __ONLY accepting donations__ from the Paypal link aforementioned, in the __ronancpl/HeavenMS__ repository readme (no patreons or other revenue resources).
+[//]: <> (* HeavenMS development is decisively __ONLY accepting donations__ from the Paypal link aforementioned, in the __ronancpl/HeavenMS__ repository readme (no patreons or other revenue resources).)
 
 * HeavenMS staff has __no current intention__ to publicly open a server with this source, if that ever comes to happen this note will be lifted. __Don't be scammed!__
 

@@ -58,13 +58,13 @@ public final class PlayerMapTransitionHandler extends AbstractMaplePacketHandler
                     if (m.getController() == chr) {
                         c.announce(MaplePacketCreator.stopControllingMonster(m.getObjectId()));
                         m.sendDestroyData(c);
-                        m.aggroRedirectController();
+                        m.aggroRemoveController();
                     } else {
                         m.sendDestroyData(c);
                     }
 
-                    m.aggroSwitchController(chr, false);
                     m.sendSpawnData(c);
+                    m.aggroSwitchController(chr, false);
                 }
             }
         }

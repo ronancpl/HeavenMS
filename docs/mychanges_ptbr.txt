@@ -2330,3 +2330,29 @@ Revisado Inventory Sort, agora ordenando projéteis por bônus de dano.
 06 Dezembro 2019,
 Implementado pacote para visão de buffs de efeito imbuído em armas para outros jogadores.
 Corrigido casos de exceção devido a portais nulos na função que troca jogador de mapas interferindo com próximas trocas de mapa (jogador fica preso até relogar).
+
+07 Dezembro 2019,
+Corrigido caso de exceção ao tentar atribuir pontos de stats ao jogador, que passou a ocorrer após mudança recente no sistema de stats.
+
+09 Dezembro 2019,
+Implementado aplicação de buffs ao se realizar a chamada/requisição de controle de um mob.
+
+11 Dezembro 2019,
+Incrementado suporte para aplicação de buffs de mobs de dano refletido, completando-se a ronda.
+
+14 Dezembro 2019,
+Melhorado NPC de geração de scrolls, agora testando outras possibilidades caso nenhum scroll encontrado em conjunto de scrolls.
+Corrigido método de ganho de slots atualizado recentemente levando a bug visual, onde somente os 4 primeiros itens do inventário estariam aparecendo na tela.
+Revisado método de busca por nomes, não mais tentando gerar um objeto de mob somente para checar o nome.
+Adicionado limpa de debuffs ao se utilizar buyback.
+Revisado anunciador de skillbooks não informando devidamente sobre os campos de reatores e scripts.
+
+16 Dezembro 2019,
+Revisado possível caso de dupe com itens ao fechar Hired Merchant.
+
+20 Dezembro 2019,
+Corrigido autoaggro não atuando devidamente em mobs assim que jogador entra no mapa e adquire controladores sobre os mesmos.
+Corrigido anunciador de skillbooks não reportando etc de quest para começar, quando lidando com questlines onde se obtém a skill diretamente.
+
+21 Dezembro 2019,
+Corrigido mobs em estado "fake" desaparecendo da tela assim que muda-se o controlador do mesmo.

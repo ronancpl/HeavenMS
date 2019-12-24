@@ -335,6 +335,7 @@ server:
     MOB_STATUS_MONITOR_LIFE: 84         #Idle proc count the mob disease monitor is allowed to be there before closing it due to inactivity.
     MOB_STATUS_AGGRO_PERSISTENCE: 2     #Idle proc count on aggro update for a mob to keep following the current controller, given him/her is the leading damage dealer.
     MOB_STATUS_AGGRO_INTERVAL: 5000     #Interval in milliseconds between aggro logistics update.
+    USE_AUTOAGGRO_NEARBY: false         #Mobs start following the player when approached.
 
     #Some Gameplay Enhancing Configurations
     #Scroll Configuration

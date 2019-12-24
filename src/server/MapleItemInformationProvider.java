@@ -60,7 +60,6 @@ import client.inventory.Item;
 import client.inventory.MapleInventory;
 import client.inventory.MapleInventoryType;
 import client.inventory.MapleWeaponType;
-import constants.net.ServerConstants;
 import constants.inventory.EquipSlot;
 import constants.inventory.ItemConstants;
 import constants.skills.Assassin;
@@ -2117,7 +2116,7 @@ public class MapleItemInformationProvider {
             ResultSet rs = ps.executeQuery();
             while(rs.next()) {
                 String resultName = MapleMonsterInformationProvider.getInstance().getMobNameFromId(rs.getInt("dropperid"));
-                if (resultName != null) {
+                if (!resultName.isEmpty()) {
                     list.add(resultName);
                 }
             }

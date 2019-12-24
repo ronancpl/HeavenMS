@@ -354,7 +354,7 @@ public class MapleMatchCheckerCoordinator {
                             
                             if (mmce != null) {
                                 synchronized (mmce) {
-                                    if (!mmce.isMatchActive()) {    // thanks Alex (CanIGetaPR) for noticing that exploiters could stall on match checking
+                                    if (!mmce.isMatchActive()) {    // thanks Alex (Alex-0000) for noticing that exploiters could stall on match checking
                                         matchEntries.remove(cid);
                                         mmce = null;
                                     } else {

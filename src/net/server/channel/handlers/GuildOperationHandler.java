@@ -25,7 +25,6 @@ import config.YamlConfig;
 import net.server.guild.MapleGuildResponse;
 import net.server.guild.MapleGuild;
 import constants.game.GameConstants;
-import constants.net.ServerConstants;
 import client.MapleClient;
 import net.AbstractMaplePacketHandler;
 import tools.data.input.SeekableLittleEndianAccessor;

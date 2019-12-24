@@ -88,7 +88,7 @@ function setEventRewards(eim) {
 function afterSetup(eim) {}
 
 function setup(channel) {
-    var eim = em.newInstance("Horntail" + channel);     // thanks Thora for reporting an issue with misleading event name here
+    var eim = em.newInstance("Horntail" + channel);     // thanks Thora (Arufonsu) for reporting an issue with misleading event name here
     eim.setProperty("canJoin", 1);
     eim.setProperty("defeatedBoss", 0);
     eim.setProperty("defeatedHead", 0);

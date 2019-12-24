@@ -70,6 +70,7 @@ public class BuybackProcessor {
             }
 
             chr.healHpMp();
+            chr.purgeDebuffs();
             chr.broadcastStance(chr.isFacingLeft() ? 5 : 4);
             
             MapleMap map = chr.getMap();

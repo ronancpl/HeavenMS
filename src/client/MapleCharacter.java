@@ -144,7 +144,6 @@ import client.processor.action.PetAutopotProcessor;
 import constants.game.ExpTable;
 import constants.game.GameConstants;
 import constants.inventory.ItemConstants;
-import constants.net.ServerConstants;
 import constants.skills.Aran;
 import constants.skills.Beginner;
 import constants.skills.Bishop;
@@ -2819,7 +2818,14 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
         dispelDebuff(MapleDisease.WEAKEN);
         dispelDebuff(MapleDisease.SLOW);    // thanks Conrad for noticing ZOMBIFY isn't dispellable
     }
-
+    
+    public void purgeDebuffs() {
+        dispelDebuff(MapleDisease.SEDUCE);
+        dispelDebuff(MapleDisease.ZOMBIFY);
+        dispelDebuff(MapleDisease.CONFUSE);
+        dispelDebuffs();
+    }
+    
     public void cancelAllDebuffs() {
         chrLock.lock();
         try {
@@ -9420,26 +9426,27 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
     }
 
     public boolean gainSlots(int type, int slots, boolean update) {
-        boolean ret = gainSlotsInternal(type, slots, update);
-        if (ret) {
+        int newLimit = gainSlotsInternal(type, slots);
+        if (newLimit != -1) {
             this.saveCharToDB();
             if (update) {
-                client.announce(MaplePacketCreator.updateInventorySlotLimit(type, slots));
+                client.announce(MaplePacketCreator.updateInventorySlotLimit(type, newLimit));
             }
+            return true;
+        } else {
+            return false;
         }
-        
-        return ret;
     }
     
-    private boolean gainSlotsInternal(int type, int slots, boolean update) {
+    private int gainSlotsInternal(int type, int slots) {
         inventory[type].lockInventory();
         try {
             if (canGainSlots(type, slots)) {
-                slots += inventory[type].getSlotLimit();
-                inventory[type].setSlotLimit(slots);
-                return true;
+                int newLimit = inventory[type].getSlotLimit() + slots;
+                inventory[type].setSlotLimit(newLimit);
+                return newLimit;
             } else {
-                return false;
+                return -1;
             }
         } finally {
             inventory[type].unlockInventory();
@@ -10652,6 +10659,12 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
                     client = null;  // clients still triggers handlers a few times after disconnecting
                     map = null;
                     setListener(null);
+                    
+                    // thanks Shavit for noticing a memory leak with inventories holding owner object
+                    for (int i = 0; i < inventory.length; i++) {
+                        inventory[i].dispose();
+                    }
+                    inventory = null;
                 }
             }, 5 * 60 * 1000);
         }
