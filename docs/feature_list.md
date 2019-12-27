@@ -25,7 +25,7 @@ normal WZs will load properly, there is no guarantee in-game bugs and issues
 may arise because of some incompatibilities with the clean files.
 
 ---------------------------
-Feature list:
+Feature list (as of rev397):
 ---------------------------
 
 PQs:
@@ -47,20 +47,20 @@ Skills:
 * Some skills behaving oddly have been patched, such as Steal, Venomous Star/Stab, Heal and Mystic Doors.
 * Maker skill features properly developed.
 * Improved current Battleship skill, now showing the HP properly on buff tab and making visible for others after changing maps.
-* Server is using heuristics to calculate fee costs for the Maker (errors sums up to 8k mesos, reagent errors stacks up comformant with it's level).
+* Server is using heuristics to calculate fee costs for the Maker (errors sum up to 8k mesos, reagent errors stacks up conformant with its level).
 * New skill: Chair Mastery (max lv 1) - Players having this passive skill can gain a significant boost of HP/MP recovery when sitting on a field/map chair.
 * Mu Lung Dojo skills functional.
 * M. Magnet on bosses no longer crash.
 * M. Magnet on fixed mobs no longer crash - thanks shavit!
-* Skills that uses up HP/MP triggers pet autopot.
+* Skills that use up HP/MP triggers pet autopot.
 * Skills that imbue weapon with elemental attribute (WK Charges, Snow Charge, etc) is now visible for other players.
 
 Quests:
 
 * Doll house quest functional.
 * Quests can now reward properly items when matching a reward item with the player's job.
-* Quest rewards according to jobs works properly.
-* Reward selection and randomed reward works properly.
+* Quest rewards according to jobs work properly.
+* Reward selection and randomized reward work properly.
 * Loads of quests have been patched.
 * Meso requirement for starting/completing quests now must be met by the player.
 * Lots of job questlines (rewarding skills) have been patched/implemented.
@@ -73,7 +73,7 @@ Quests:
 * Exclusive quest items that went missing from inventory reacquireable from NPC quest talk.
 * Mechanics for Item Raise functionality operational.
 * Players no longer are given movement control just after completing a quest but still talking with the NPC.
-* Quests that makes use of progress data shows up as completeable to the player on conditions met.
+* Quests that make use of progress data show up as completable to the player on conditions met.
 
 Player Social Network:
 
@@ -81,7 +81,7 @@ Player Social Network:
 * Implemented Marriage system from the ground-up (excluding character packet encoding parts that were already present, proper credits given throughout the source files).
 * Marriage ring effects functional.
 * Beginners can create and join a "beginner-only" party (characters up to level 10).
-* HP bar of party members now properly calculates the HP gain from equipments.
+* HP bar of party members now properly calculates the HP gain from equipment.
 * Enhanced synchronization on Player Shops and Hired Merchants. Transactions made are instantly informed to the owner.
 * Player Shops and Hired Merchants properly displaying the correct shop image to other players, and informing whether the shop is available to visit or full.
 * Game minirooms such as match cards and omok now has a functional password system.
@@ -89,7 +89,7 @@ Player Social Network:
 * Further improved the server's ranking system, now displaying properly daily player ranking movement.
 * Automated support for Player NPCs and Hall of Fame.
 * Protected concurrently and improved the face expression system, guarding from trivial packet spam and exploits.
-* All upgradeable non-cash equipments in inventory with level & EXP information available for read by anyone, given proper visibility.
+* All upgradeable non-cash equipment in inventory with level & EXP information available for reading by anyone, given proper visibility.
 * Further improved the existent minigame mechanics: remarkably checking out for no-item match requests, allowing different omok/matchcard match layouts and status update on the player matchbox tooltips.
 * Further improved the trading system.
 * Party Search system nominal.
@@ -98,7 +98,7 @@ Player Social Network:
 Cash & Items:
 
 * EXP/DROP/Cosmetic Coupons.
-* EXP/DROP coupons now appears as a buff effect when on active time.
+* EXP/DROP coupons now appear as a buff effect when on active time.
 * Code coupons functional, with support for multiple items on the same code.
 * Merged unique ids for pets, rings and cash items, thus solving some cash shop inventory issues.
 * Great deal of cash items functional.
@@ -134,14 +134,14 @@ Monsters, Maps & Reactors:
 * Mobs only drops loot from items that are visible/collectable by the player's party.
 * Mobs shouldn't fall from foothold too often now.
 * Redesigned HT mechanics for spawn and linked damage to the sponge.
-* Reviewed aspects of MoveLifeHandler: implemented banish move, patched MP cost not contabilized on non-skill mob moves and slightly fixed mobs dropping from footholds in certain cases.
+* Reviewed aspects of MoveLifeHandler: implemented banish move, patched MP cost not accounted on non-skill mob moves and slightly fixed mobs dropping from footholds in certain cases.
 * Limited item count on maps, smartly expiring oldest registered items, preventing potential item flooding.
 * Implemented Zombify disease status.
 * Added Boss HP Bar for dozens of bosses (needs provided custom wz).
 * If multiple bosses are on the same area, client will prioritize Boss HP bar of the target of the player.
 * Boss HP Bar and Server Messages now toggles (server message disappears when a boss battle is detected, and returns afterwards). Idea thanks to GabrielSin.
 * Improved map bounding checks for item drop points, assuring most of the items dropped will be available to pickup inside the walkable map area.
-* Boats, elevator and other travelling mechanics fully working.
+* Boats, elevator and other traveling mechanics fully working.
 * HP decreasing overtime on maps and mechanics to prevent them (consumables, equips) fully functional.
 * Crimson Balrog boat approaching visual effect made functional.
 * Maps having everlasting items no longer expires them.
@@ -164,7 +164,7 @@ PQ potentials:
 * Advanced synchronization and smart management of the PQ registration system, as expected for a core server mechanic that is largely used by the players.
 * Lobby system - Multiple PQ instances on same channel.
 * Expedition system - Multiples parties can attempt on a same instance (lobbies and expeds are mutually-exclusive).
-* Guild queue system - Guilds can register themselves on a queue for the GPQ.
+* Guild queue system - Guilds can register themselves in a queue for the GPQ.
 * EIM Pool system - After the first instance setup, next event instances are loaded beforehand and set on a pooling queue, optimizing future loadouts.
 * Recall system - Players can rejoin the last event instance they were in before disconnection.
 
@@ -189,7 +189,7 @@ Server potentials:
 * Enhanced auto-pot system: pet uses as many potions as necessary to reach the desired threshold.
 * Enhanced buff system: smartly checks for the best available buff effects to be active on the player.
 * Enhanced AP auto-assigner: exactly matches AP with the needed for the player's current level, surplus assigned to the primary attribute.
-* Enhanced inventory check: free slots on inventory smartly fetched on demand.
+* Enhanced inventory check: free slots on inventory smartly fetched on-demand.
 * Enhanced auto-loot handler: optimized the brute-force checks for some cash items on the player equipped inventory at every requisition.
 * Added players-appointed bestsellers item ranking system for Owl of Minerva and Cash Shop.
 * Tweaked pet/mount hunger: calculations for fullness/tiredness takes active time of the subject into account.
@@ -201,7 +201,7 @@ Server potentials:
 * Channel capacity bar functional and world servers with max capacity checks.
 * Disease status are now visible for other players, even when changing maps.
 * Players keep their current disease status saved when exiting the game, returning with them on login.
-* Poison damage value are now visible for other players.
+* Poison damage value is now visible for other players.
 * Mastery book announcer displays droppers of needed books of a player, by reading underlying DB.
 * Custom jail system (needs provided custom wz).
 * Custom buyback system.
@@ -220,7 +220,7 @@ Server potentials:
 * Bypassable PIN/PIC system for players that were already authenticated and are currently loggedin and active.
 * Accounts can be created automatically when trying to login on an inexistent account - credits to shavit.
 * Usage of Bcrypt (up-to-date) as the main password hashing algorithm, replacing old SHA's - credits to shavit.
-* Implemented matching system, on which all involved players accepts the term or at least one denies/times-out before an event takes place.
+* Implemented matching system, on which all involved players accept the term or at least one denies/times-out before an event takes place.
 * Implemented support for custom spawn areas for NPCs & mobs.
 
 Custom NPCs:
