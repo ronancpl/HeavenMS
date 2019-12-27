@@ -2356,3 +2356,7 @@ Corrigido anunciador de skillbooks não reportando etc de quest para começar, q
 
 21 Dezembro 2019,
 Corrigido mobs em estado "fake" desaparecendo da tela assim que muda-se o controlador do mesmo.
+
+26 Dezembro 2019,
+Revisado bosses no Dojo levando dano integral de Bamboo Rain (deveria ser 30% do MaxHP do mesmo).
+Corrigido atributo padrão "partySearch" definido com valor booleano inadequado na DB.

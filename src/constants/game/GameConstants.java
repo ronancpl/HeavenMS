@@ -589,10 +589,13 @@ public class GameConstants {
     	return mapid >= 925030100 && mapid < 925040000;
     }
     
+    public static boolean isDojoBoss(int mobid) {
+        return mobid >= 9300184 && mobid < 9300216;
+    }
+    
     public static boolean isDojoBossArea(int mapid) {
         return isDojo(mapid) && (((mapid / 100) % 100) % 6) > 0;
     }
-    
     
     public static boolean isPyramid(int mapid) {
     	return mapid >= 926010010 & mapid <= 930010000;

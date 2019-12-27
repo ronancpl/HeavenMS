@@ -1,4 +1,4 @@
-# HeavenMS
+<img src="https://heavenmssurveyhome.files.wordpress.com/2018/12/heavenmslogo.png"  width="370" height="auto">
 
 Credits:
 
@@ -9,6 +9,10 @@ Vcoc - Freelance Developer
 Thora - Contributor
 
 GabrielSin - Contributor
+
+Masterrulax - Contributor
+
+MedicOP - Adjunct Developer
 
 ---------------------------
 DISCLAIMER:
@@ -26,13 +30,17 @@ Feature list:
 
 PQs:
 
-* HPQ/KPQ/LPQ/LMPQ/OPQ/EllinPQ/PiratePQ/MagatiaPQ/HorntailPQ/AmoriaPQ/TreasurePQ/ElnathPQ/HolidayPQ.
+* HPQ/KPQ/LPQ/LMPQ/OPQ/APQ/EllinPQ/PiratePQ.
+* RnJPQ/HorntailPQ/TreasurePQ/ElnathPQ/HolidayPQ.
 * CWKPQ as Expedition-based event.
 * Expeditions: Scarga/Horntail/Showa/Balrog/Zakum/Pinkbean.
+* Monster Carnival 1 & 2 - thanks Dragohe4rt & Jayd!
+* AriantPQ - thanks Dragohe4rt & Jayd!
 * GuildPQ + Guild queue with multi-lobby system available.
 * Brand-new PQs: BossRushPQ, CafePQ.
 * Mu Lung Dojo.
 * Capt. Latanica remade as an event (parties can now fight the boss).
+* Expeditions with daily/weekly entries system available.
 
 Skills:
 
@@ -42,6 +50,10 @@ Skills:
 * Server is using heuristics to calculate fee costs for the Maker (errors sums up to 8k mesos, reagent errors stacks up comformant with it's level).
 * New skill: Chair Mastery (max lv 1) - Players having this passive skill can gain a significant boost of HP/MP recovery when sitting on a field/map chair.
 * Mu Lung Dojo skills functional.
+* M. Magnet on bosses no longer crash.
+* M. Magnet on fixed mobs no longer crash - thanks shavit!
+* Skills that uses up HP/MP triggers pet autopot.
+* Skills that imbue weapon with elemental attribute (WK Charges, Snow Charge, etc) is now visible for other players.
 
 Quests:
 
@@ -57,6 +69,11 @@ Quests:
 * Reviewed Aran questline.
 * Reviewed 4th job skill questlines as a whole.
 * Complete overhaul on the 3rd job quiz (explorers), with all 40-question pool now made available.
+* Quest items supposed to be lootable, as those are required to start quests, shows up properly.
+* Exclusive quest items that went missing from inventory reacquireable from NPC quest talk.
+* Mechanics for Item Raise functionality operational.
+* Players no longer are given movement control just after completing a quest but still talking with the NPC.
+* Quests that makes use of progress data shows up as completeable to the player on conditions met.
 
 Player Social Network:
 
@@ -74,6 +91,9 @@ Player Social Network:
 * Protected concurrently and improved the face expression system, guarding from trivial packet spam and exploits.
 * All upgradeable non-cash equipments in inventory with level & EXP information available for read by anyone, given proper visibility.
 * Further improved the existent minigame mechanics: remarkably checking out for no-item match requests, allowing different omok/matchcard match layouts and status update on the player matchbox tooltips.
+* Further improved the trading system.
+* Party Search system nominal.
+* Wedding Wishlists - thanks Dragohe4rt!
 
 Cash & Items:
 
@@ -90,6 +110,10 @@ Cash & Items:
 * Close-quarters evaluation mode for items (sandbox).
 * Further improved Karma scissors & Untradeable items mechanics.
 * Reviewed pet/item position data inconsistency within CASH inventory.
+* Implemented close-quarters trial mode for items.
+* Reviewed stylish-related contents, close to GMS-like.
+* Plastic surgeons/stylists no longer stuck characters.
+* Reworked gachapon loots, website-lists lookalike.
 * Spikes on shoes.
 * Vega's spell.
 * Owl of Minerva.
@@ -98,6 +122,7 @@ Cash & Items:
 * Kite.
 * Cash Shop Surprise.
 * Maple Life.
+* EXP Increase.
 
 Monsters, Maps & Reactors:
 
@@ -106,7 +131,8 @@ Monsters, Maps & Reactors:
 * Monsterbook displays drop data info conformant with the underlying DB (needs custom wz). See more on the MobBookUpdate feature.
 * Every skill/mastery book is now droppable by mobs.
 * Mobs now can drop more than one of the same equipment (number of possible drops defined at droptime, uses the minimum/maximum quantity fields on DB).
-* Mobs only drops items that are visible/collectable by the player's party.
+* Mobs only drops loot from items that are visible/collectable by the player's party.
+* Mobs shouldn't fall from foothold too often now.
 * Redesigned HT mechanics for spawn and linked damage to the sponge.
 * Reviewed aspects of MoveLifeHandler: implemented banish move, patched MP cost not contabilized on non-skill mob moves and slightly fixed mobs dropping from footholds in certain cases.
 * Limited item count on maps, smartly expiring oldest registered items, preventing potential item flooding.
@@ -114,7 +140,7 @@ Monsters, Maps & Reactors:
 * Added Boss HP Bar for dozens of bosses (needs provided custom wz).
 * If multiple bosses are on the same area, client will prioritize Boss HP bar of the target of the player.
 * Boss HP Bar and Server Messages now toggles (server message disappears when a boss battle is detected, and returns afterwards). Idea thanks to GabrielSin.
-* Improved map bounding checks for item drop points, assuring most of the items dropped will be available to pickup inside the accessible map area.
+* Improved map bounding checks for item drop points, assuring most of the items dropped will be available to pickup inside the walkable map area.
 * Boats, elevator and other travelling mechanics fully working.
 * HP decreasing overtime on maps and mechanics to prevent them (consumables, equips) fully functional.
 * Crimson Balrog boat approaching visual effect made functional.
@@ -128,6 +154,10 @@ Monsters, Maps & Reactors:
 * Added World Tour and Masteria continents in the world map.
 * Reviewed World Map's town/field tooltips and links from the main world map and Masteria region.
 * Giant Cake (anniversary-themed boss) drops Maple equipments, Maple scrolls, summoning bags and many more interesting items.
+* Enhanced aggro system, with real-time damage output target redirection.
+* Puppets influence mob aggroing.
+* Limited quantity of summons an individual mob can perform.
+* Damage Reflect (MobSkill) status no longer lags to display.
 
 PQ potentials:
 
@@ -148,6 +178,7 @@ Player potentials:
 * Reviewed keybinding system.
 * Account's Character slots: either each world has it's own count or there's a shared value between all worlds.
 * Optional cash shop inventory separated by player classes or fully account-ranged.
+* Rock-paper-scissors minigame - thanks Arnah!
 
 Server potentials:
 
@@ -163,6 +194,7 @@ Server potentials:
 * Added players-appointed bestsellers item ranking system for Owl of Minerva and Cash Shop.
 * Tweaked pet/mount hunger: calculations for fullness/tiredness takes active time of the subject into account.
 * Consistent experience and meso gain system.
+* Fredrick Store Bank now has expirable storage, which warns the player of time remaining and eventually delete unclaimed items.
 * NPC crafters (equips, plates/jewels, etc) now won't take items freely if the requirement conditions are not properly met.
 * Improved Duey mechanics: package received popup and reviewed many delivery mechanics.
 * Pet item pickup now gives preference to player attacks rather than forcing attack disables when automatically picking up.
@@ -173,6 +205,8 @@ Server potentials:
 * Mastery book announcer displays droppers of needed books of a player, by reading underlying DB.
 * Custom jail system (needs provided custom wz).
 * Custom buyback system.
+* Custom fishing system, having planned 'seasonal' catch times.
+* Custom map leasing system.
 * Delete Character (requires ENABLE_PIC activated).
 * Smoothed up view-all-char feature, now showing properly all available characters and not disconnecting players too often.
 * Centralized getcurrenttime throughout several server handlers, boosting it's performance overall.
@@ -186,6 +220,8 @@ Server potentials:
 * Bypassable PIN/PIC system for players that were already authenticated and are currently loggedin and active.
 * Accounts can be created automatically when trying to login on an inexistent account - credits to shavit.
 * Usage of Bcrypt (up-to-date) as the main password hashing algorithm, replacing old SHA's - credits to shavit.
+* Implemented matching system, on which all involved players accepts the term or at least one denies/times-out before an event takes place.
+* Implemented support for custom spawn areas for NPCs & mobs.
 
 Custom NPCs:
 
@@ -196,6 +232,7 @@ Custom NPCs:
 * Dalair: automatized equipment-merger.
 * Donation Box: automatized item-buyer.
 * Coco & Ace of Hearts: C. scroll crafters.
+* Barry (MapleTV): fill book & exchange items for scroll.
 
 Server Commands:
 
@@ -246,8 +283,10 @@ Project:
 * Developed many survey tools for content profiling.
 * Developed a robust anti-exploit login coordinator system.
 * Protected many flaws with login management system.
+* Remodeled item scripts, properly using NPC dialogs.
 * Channel, World and Server-wide timer management.
 * Heavily reviewed future task management inside the project. Way less trivial schedules are spawned now, relieving task overload on the TimerManager.
+* Developed services to act as a central task scheduler, in order to spawn less timer threads.
 * ThreadTracker: embedded auditing tool for run-time deadlock scanning throughout the server source (relies heavily on memory usage, designed only for debugging purposes).
 
 Exploits patched:

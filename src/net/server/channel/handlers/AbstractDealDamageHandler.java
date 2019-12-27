@@ -25,6 +25,7 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -290,6 +291,18 @@ public abstract class AbstractDealDamageHandler extends AbstractMaplePacketHandl
                         }
                     }
                     
+                    if (GameConstants.isDojoBoss(monster.getId())) {
+                        if (attack.skill == 1009 || attack.skill == 10001009 || attack.skill == 20001009) {
+                            int dmgLimit = (int) Math.ceil(0.3 * monster.getMaxHp());
+                            List<Integer> _onedList = new LinkedList<>();
+                            for (Integer i : onedList) {
+                                _onedList.add(i < dmgLimit ? i : dmgLimit);
+                            }
+                            
+                            onedList = _onedList;
+                        }
+                    }
+                                        
                     for (Integer eachd : onedList) {
                         if(eachd < 0) eachd += Integer.MAX_VALUE;
                         totDamageToOneMonster += eachd;

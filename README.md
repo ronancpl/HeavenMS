@@ -33,7 +33,7 @@ Java 8 SDK & NetBeans bundle: https://www.oracle.com/technetwork/pt/java/javase/
 
 **Change log:**
 
-  * Fixed Monster Magnet crashing the caster when trying to pull fixed mobs. https://gofile.io/?c=BW7dVM
+  * Fixed Monster Magnet crashing the caster when trying to pull fixed mobs, credits to Shavit. https://gofile.io/?c=BW7dVM
 
   * Cleared need for administrator privileges (OS) to play the game, credits to Ubaware.
 
@@ -98,11 +98,7 @@ By taking the v83 MapleStory as the angular stone, incrementally look forward to
 
 HeavenMS development as we can see right now achieved an acceptable state-of-the-art. A heartfelt thanks for everyone that contributed in some way for the progress of this server!
 
-As development and support for fixing features that were implemented here is still up, with **your** help we can improve it even further! Please help where you can to better the server for everyone.
-
-Furthermore, you can actively help improving the server by issuing pull requests with informative details about what's changing.
-
-Note for anyone up to contribute further pull requests: make awareness to use __english language__ in codes and messages, as usage of any other languages will render it open to faculty of whether this content will be ready to be accepted or *further changes are going to be requested* before it becomes apt to merge.
+A case study has been conducted with the objective of overview results achieved during HeavenMS development. Those can be checked out on: https://heavenms-survey.home.blog/2019/12/24/project-visualizations/
 
 #### Support HeavenMS
 
@@ -204,7 +200,7 @@ The client's set-up is quite straightforward:
 2. Once done, erase these files: "HShield" (folder), "ASPLnchr.exe", "MapleStory.exe" and "Patcher.exe".
 3. Extract into the client folder the "localhost.exe" from the provided link.
 4. Overwrite the original WZ files with the ones provided from either one of those folders on the Google Drive:
-	- "commit???_wz" (last published RELEASE, referring to commit of same number).
+	- "commit397_wz" (last published RELEASE, referring to commit of same number).
 	- "current_wz" (latest source update).
 
 #### Editing localhost IP target
